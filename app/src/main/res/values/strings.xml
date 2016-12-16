@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Toutiao</string>
+
+    <string name="text_news">News</string>
+    <string name="text_schedules">Schedules</string>
+    <string name="text_music">Music</string>
+    <string name="double_click_exit">再按一次退出程序</string>
+    <string name="network_error">网络不给力</string>
+</resources>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="name">
+        <item>热点</item>
+        <item>推荐</item>
+        <item>社会</item>
+        <item>娱乐</item>
+        <item>科技</item>
+        <item>军事</item>
+        <item>体育</item>
+        <item>汽车</item>
+        <item>财经</item>
+        <item>国际</item>
+    </string-array>
+
+    <string-array name="id">
+        <item>__all__</item>
+        <item>news_hot</item>
+        <item>news_society</item>
+        <item>news_entertainment</item>
+        <item>news_tech</item>
+        <item>news_military</item>
+        <item>news_sports</item>
+        <item>news_car</item>
+        <item>news_finance</item>
+        <item>news_world</item>
+    </string-array>
+
+
+
+    <!--'推荐': '__all__',-->
+    <!--'热点': 'news_hot',-->
+    <!--'社会': 'news_society',-->
+    <!--'娱乐': 'news_entertainment',-->
+    <!--'科技': 'news_tech',-->
+    <!--'军事': 'news_military',-->
+    <!--'体育': 'news_sports'-->
+    <!--'汽车': 'news_car',-->
+    <!--'财经': 'news_finance',-->
+    <!--'国际': 'news_world',-->
+    <!--'时尚': 'news_fashion',-->
+    <!--'旅游': 'news_travel',-->
+    <!--'探索': 'news_discovery',-->
+    <!--'育儿': 'news_baby',-->
+    <!--'养生': 'news_regimen',-->
+    <!--'故事': 'news_story',-->
+    <!--'美文': 'news_essay',-->
+    <!--'游戏': 'news_game',-->
+    <!--'历史': 'news_history',-->
+    <!--'美食': 'news_food',-->
+</resources>
