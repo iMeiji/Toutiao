@@ -1,4 +1,4 @@
-package com.meiji.toutiao.news;
+package com.meiji.toutiao.news.tab;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -38,7 +38,7 @@ public class NewsTabLayout extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.news_viewpage, container, false);
+        View view = inflater.inflate(R.layout.news_tab_adapter, container, false);
         initView(view);
         initData();
         return view;

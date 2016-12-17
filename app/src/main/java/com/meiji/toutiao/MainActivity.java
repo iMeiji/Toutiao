@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.meiji.toutiao.news.NewsTabLayout;
+import com.meiji.toutiao.news.tab.NewsTabLayout;
 import com.meiji.toutiao.utils.ColorUtil;
 
 public class MainActivity extends BaseActivity {

@@ -35,8 +35,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="2"
-                    android:textSize="14dp"
                     android:text="菲总统称中国将向菲提供武器 已指示军方前往接收"
+                    android:textSize="14dp"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -49,10 +49,10 @@
                     android:textSize="12dp"/>
 
                 <LinearLayout
-                    android:gravity="bottom"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="2dp"
+                    android:gravity="bottom"
                     android:orientation="horizontal">
 
                     <TextView

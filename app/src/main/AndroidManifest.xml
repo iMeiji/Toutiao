@@ -24,6 +24,11 @@
             android:name=".BaseActivity">
         </activity>
 
+        <activity
+            android:name=".news.content.ContentView"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
     </application>
 
 </manifest>

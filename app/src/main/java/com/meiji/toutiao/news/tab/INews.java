@@ -1,4 +1,4 @@
-package com.meiji.toutiao.news;
+package com.meiji.toutiao.news.tab;
 
 import com.meiji.toutiao.bean.NewsBean;
 
@@ -32,6 +32,8 @@ interface INews {
         void doRefresh();
 
         void onFail();
+
+        void doOnClickItem(int position);
     }
 
     interface Model {

@@ -31,9 +31,9 @@ public class Api {
      */
 
     private static final String NEWS_URL =
-            "http://toutiao.com/api/article/recent/?source=2&category=类型&as=A1C5D7A9962A7C9";
+            "http://toutiao.com/api/article/recent/?source=2&category=类型&as=A1C5D7A9962A7C9&count=20";
     private static final String NEWS_URL_REFRESH =
-            "http://toutiao.com/api/article/recent/?source=2&category=类型&as=A105177907376A5&cp=5797C7865AD54E1&_=时间";
+            "http://toutiao.com/api/article/recent/?source=2&category=类型&as=A105177907376A5&cp=5797C7865AD54E1&_=时间&count=20";
 
     public static String getNewsUrl(String category) {
         return NEWS_URL.replace("类型", category);

@@ -1,4 +1,4 @@
-package com.meiji.toutiao.news;
+package com.meiji.toutiao.news.tab;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.NewsAdapter;
 import com.meiji.toutiao.bean.NewsBean;
+import com.meiji.toutiao.interfaces.IOnItemClickListener;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class NewsView extends Fragment implements SwipeRefreshLayout.OnRefreshLi
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.news_content, container, false);
+        View view = inflater.inflate(R.layout.news_tab_content, container, false);
         presenter = new NewsPresenter(this);
         initView(view);
         onRequestData();
@@ -93,6 +94,12 @@ public class NewsView extends Fragment implements SwipeRefreshLayout.OnRefreshLi
         if (adapter == null) {
             adapter = new NewsAdapter(getActivity(), list);
             recycler_view.setAdapter(adapter);
+            adapter.setOnItemClickListener(new IOnItemClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    presenter.doOnClickItem(position);
+                }
+            });
         } else {
             adapter.notifyItemInserted(list.size());
         }

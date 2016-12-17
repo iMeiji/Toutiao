@@ -1,4 +1,4 @@
-package com.meiji.toutiao.news;
+package com.meiji.toutiao.news.tab;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -23,10 +23,8 @@ public class NewsModel implements INews.Model {
     private List<NewsBean> newsList = new ArrayList<>();
     private List<NewsBean.DataBean> dataList = new ArrayList<>();
     private List<NewsBean.NextBean> nextList = new ArrayList<>();
-    private INews.Presenter presenter;
 
-    public NewsModel(INews.Presenter presenter) {
-        this.presenter = presenter;
+    public NewsModel() {
     }
 
     @Override
@@ -61,10 +59,10 @@ public class NewsModel implements INews.Model {
             if (dataList.size() != 0) {
                 dataList.remove(dataList.size() - 1);
             }
-            // 移除无图片的 Item
+            // 移除无图片的 Item 和 source 为 "头条问答"
             for (int i = 0; i < dataList.size(); i++) {
                 NewsBean.DataBean dataBean = dataList.get(i);
-                if (!dataBean.isHas_image()) {
+                if (!dataBean.isHas_image() || dataBean.getSource().contains("头条问答") || dataBean.getTag().contains("ad")) {
                     dataList.remove(i);
                 }
             }
