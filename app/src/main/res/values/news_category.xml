@@ -2,8 +2,8 @@
 <resources>
 
     <string-array name="name">
-        <!--<item>热点</item>-->
         <item>推荐</item>
+        <item>热点</item>
         <item>社会</item>
         <item>娱乐</item>
         <item>科技</item>
@@ -15,8 +15,8 @@
     </string-array>
 
     <string-array name="id">
-        <!--<item>__all__</item>-->
         <item>news_hot</item>
+        <item>__all__</item>
         <item>news_society</item>
         <item>news_entertainment</item>
         <item>news_tech</item>

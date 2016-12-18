@@ -44,7 +44,9 @@ public class NewsPresenter implements INews.Presenter {
     public void doGetUrl(String parameter) {
         view.onShowRefreshing();
         this.category = parameter;
-        doRequestData(Api.getNewsUrl(parameter));
+//        doRequestData(Api.getNewsUrl(parameter));
+        String url = Api.getNewsRefreshUrl(category, model.getmax_behot_time() + "");
+        doRequestData(url);
     }
 
     @Override
@@ -88,15 +90,21 @@ public class NewsPresenter implements INews.Presenter {
     @Override
     public void doOnClickItem(int position) {
         NewsBean.DataBean bean = dataList.get(position);
-        String title = bean.getTitle();
         String display_url = bean.getDisplay_url();
+        String title = bean.getTitle();
+        String groupId = String.valueOf(bean.getGroup_id());
+        String itemId = String.valueOf(bean.getItem_id());
+        String mediaName = bean.getMedia_name();
+
         Intent intent = new Intent(InitApp.AppContext, ContentView.class);
         intent.putExtra(ContentView.DISPLAY_URL, display_url);
         intent.putExtra(ContentView.TITLR, title);
-        intent.putExtra(ContentView.TITLR, title);
+        intent.putExtra(ContentView.GROUP_ID, groupId);
+        intent.putExtra(ContentView.ITEM_ID, itemId);
+        intent.putExtra(ContentView.MEDIA_NAME, mediaName);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         InitApp.AppContext.startActivity(intent);
         // 打印下点击的标题和链接
-        System.out.println("doOnClickItem---" + title + "  " + display_url);
+        System.out.println("点击的标题和链接---" + title + "  " + display_url);
     }
 }

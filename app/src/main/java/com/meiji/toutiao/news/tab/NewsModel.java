@@ -55,16 +55,21 @@ public class NewsModel implements INews.Model {
     public List<NewsBean.DataBean> getDataList() {
         for (NewsBean bean : newsList) {
             dataList = bean.getData();
-            // 移除最后一项 数据有重复
-            if (dataList.size() != 0) {
-                dataList.remove(dataList.size() - 1);
-            }
-            // 移除无图片的 Item 和 source 为 "头条问答"
-            for (int i = 0; i < dataList.size(); i++) {
-                NewsBean.DataBean dataBean = dataList.get(i);
-                if (!dataBean.isHas_image() || dataBean.getSource().contains("头条问答") || dataBean.getTag().contains("ad")) {
-                    dataList.remove(i);
+            try {
+                // 移除最后一项 数据有重复
+                if (dataList.size() != 0) {
+                    dataList.remove(dataList.size() - 1);
+                    dataList.remove(0);
                 }
+                // 移除无图片的 Item 和 source 为 "头条问答"
+                for (int i = 0; i < dataList.size(); i++) {
+                    NewsBean.DataBean dataBean = dataList.get(i);
+                    if (!dataBean.isHas_image() || dataBean.getSource().contains("头条问答") || dataBean.getTag().contains("ad")) {
+                        dataList.remove(i);
+                    }
+                }
+            } catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
             }
         }
         return dataList;

@@ -17,6 +17,10 @@ public interface IContent {
          * 请求数据失败
          */
         void onFail();
+
+        void onShowRefreshing();
+
+        void onHideRefreshing();
     }
 
     interface Presenter {
@@ -28,7 +32,7 @@ public interface IContent {
         /**
          * 设置浏览器
          */
-        void doSetWebView(boolean flag);
+        void doSetWebView();
 
         /**
          * 请求数据失败
@@ -46,7 +50,7 @@ public interface IContent {
         /**
          * 返回内容
          */
-        String getHtml(boolean flag);
+        String getHtml();
     }
 
 

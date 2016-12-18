@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/news_content_comment"
+        android:title="查看评论"/>
+
+    <item
+        android:id="@+id/news_content_follow"
+        android:title="关注此头条号"/>
+
+    <item
+        android:id="@+id/news_content_share"
+        android:title="分享至"/>
+
+</menu>

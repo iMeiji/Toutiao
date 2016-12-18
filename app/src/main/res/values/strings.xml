@@ -6,4 +6,7 @@
     <string name="text_music">Music</string>
     <string name="double_click_exit">再按一次退出程序</string>
     <string name="network_error">网络不给力</string>
+    <string name="md_loading">加载中</string>
+    <string name="share_app_text">来瞧瞧这个：适配了质感设计的 今日头条！</string>
+    <string name="share_to">分享至</string>
 </resources>

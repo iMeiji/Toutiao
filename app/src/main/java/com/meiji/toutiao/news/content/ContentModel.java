@@ -4,7 +4,7 @@ import com.meiji.toutiao.InitApp;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
+import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 
@@ -28,7 +28,7 @@ public class ContentModel implements IContent.Model {
 
         boolean flag = false;
 
-        if (url != null && url.contains("toutiao")) {
+        if (url != null && url.contains("://toutiao")) {
             // 判断网址是否转跳 转跳则不处理 HTML (待写)
             this.url = url.replace("toutiao", "m.toutiao");
             System.out.println("新闻内容链接 " + this.url);
@@ -36,9 +36,10 @@ public class ContentModel implements IContent.Model {
             try {
                 Request request = new Request.Builder().get().url(this.url).build();
                 Response response = InitApp.okHttpClient.newCall(request).execute();
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && !response.isRedirect()) {
                     html = response.body().string();
                     flag = true;
+//                    System.out.println(html);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -54,45 +55,55 @@ public class ContentModel implements IContent.Model {
     }
 
     @Override
-    public String getHtml(boolean flag) {
-        if (flag) {
-            Document document = Jsoup.parse(html);
-            Elements content = document.getElementsByClass("article-content");
-            if (html != null) {
-                html = content.toString();
-                System.out.println("切割后的HTML " + html);
-
-                String result = "<!DOCTYPE html>\n" +
-                        "<html lang=\"en\">\n" +
-                        "<head>\n" +
-                        "    <meta charset=\"UTF-8\">\n" +
-                        "    <title>Title</title>\n" +
-                        "    <!--<link rel=\"stylesheet\" type=\"text/css\" href=\"ed.css.css\">-->\n" +
-                        "\n" +
-                        "    <style type=\"text/css\">\n" +
-                        "        .article-content {\n" +
-                        "            font-size: 16px;\n" +
-                        "        }\n" +
-                        "\n" +
-                        "        img {\n" +
-                        "            max-width: 300px;\n" +
-                        "        }\n" +
-                        "    </style>\n" +
-                        "</head>\n" +
-                        "\n" +
-                        "<body>" +
-                        html +
-                        "</body>\n" +
-                        "</html>";
-
-                return result;
-            } else {
-                return this.url;
-            }
-        } else {
-            return this.url;
+    public String getHtml() {
+        String result = parseHtml(html);
+        if (result != null) {
+            return result;
         }
+        return null;
     }
 
+    /**
+     * news_image 类型的另外处理
+     */
+    private String parseHtml(String response) {
+        String content = null;
+        try {
+            Document document = Jsoup.parse(response);
+            Element main = document.getElementById("article-main");
+            main.getElementsByClass("footnote").remove();
+            main.getElementsByClass("article-actions").remove();
+            content = main.toString();
 
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        // 如果切割后的内容不为空
+        if (content != null) {
+//            System.out.println("切割后的HTML " + content);
+            String css = "<link rel=\"stylesheet\" href=\"file:///android_asset/wap.css\" type=\"text/css\">";
+
+            String html = "<!DOCTYPE html>\n" +
+                    "<html lang=\"en\">\n" +
+                    "<head>\n" +
+                    "    <meta charset=\"UTF-8\">" +
+                    css +
+                    "<body>\n" +
+                    "<article class=\"article-container\">\n" +
+                    "    <div class=\"article__content article-content\">" +
+                    content +
+                    "    </div>\n" +
+                    "</article>\n" +
+                    "</body>\n" +
+                    "</html>";
+
+            return html;
+        } else {
+            return null;
+        }
+    }
 }
+
+
