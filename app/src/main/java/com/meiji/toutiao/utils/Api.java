@@ -6,42 +6,54 @@ package com.meiji.toutiao.utils;
 
 public class Api {
 
-    /**
-     * 类型
-     * '推荐': '__all__',
-     * '热点': 'news_hot',
-     * '社会': 'news_society',
-     * '娱乐': 'news_entertainment',
-     * '科技': 'news_tech',
-     * '军事': 'news_military',
-     * '体育': 'news_sports'
-     * '汽车': 'news_car',
-     * '财经': 'news_finance',
-     * '国际': 'news_world',
-     * '时尚': 'news_fashion',
-     * '旅游': 'news_travel',
-     * '探索': 'news_discovery',
-     * '育儿': 'news_baby',
-     * '养生': 'news_regimen',
-     * '故事': 'news_story',
-     * '美文': 'news_essay',
-     * '游戏': 'news_game',
-     * '历史': 'news_history',
-     * '美食': 'news_food',
-     */
 
-    private static final String NEWS_URL =
-            "http://toutiao.com/api/article/recent/?source=2&category=类型&as=A1C5D7A9962A7C9&count=20";
-    private static final String NEWS_URL_REFRESH =
+//    private static final String NEWS_ARTICLE_URL =
+//            "http://toutiao.com/api/article/recent/?source=2&category=类型&as=A1C5D7A9962A7C9&count=20";
+
+    private static final String NEWS_ARTICLE_URL =
             "http://toutiao.com/api/article/recent/?source=2&category=类型&as=A105177907376A5&cp=5797C7865AD54E1&_=时间&count=20";
 
-    public static String getNewsUrl(String category) {
-        return NEWS_URL.replace("类型", category);
-    }
+    private static final String NEWS_INFO_URL = "http://m.toutiao.com/item_seo_url值/info/";
 
-    public static String getNewsRefreshUrl(String category, String max_behot_time) {
-        return NEWS_URL_REFRESH
+    private static final String NEWS_COMMENT_URL =
+            "http://www.toutiao.com/api/comment/list/?group_id=头条号&item_id=文章号&offset=偏移量&count=数量";
+
+    /**
+     * http://toutiao.com/api/article/recent/?source=2&category=news_hot&as=A105177907376A5&cp=5797C7865AD54E1&count=20&_=1481986412
+     */
+    public static String getNewsArticleUrl(String category, String max_behot_time) {
+        return NEWS_ARTICLE_URL
                 .replace("类型", category)
                 .replace("时间", max_behot_time);
     }
+
+    /**
+     * /item/6365771196654420481/
+     * /i6365733620811825665/
+     * /item/6365802820284727809/?_as_=1482159839
+     */
+    public static String getNewsInfoUrl(String item_seo_url) {
+
+        if (item_seo_url.contains("/item/")) {
+            item_seo_url = item_seo_url.replace("item/", "i");
+        }
+        if (item_seo_url.contains("?")) {
+            int i = item_seo_url.indexOf("?");
+            item_seo_url = item_seo_url.substring(0, i);
+        }
+        return NEWS_INFO_URL.replace("/item_seo_url值/", item_seo_url);
+    }
+
+    /**
+     * http://www.toutiao.com/api/comment/list/?group_id=6364965628189327618&item_id=6364969235889783298&offset=0&count=10
+     */
+    public static String getNewsCommentUrl(String group_id, String item_id, int offset, int count) {
+
+        return NEWS_COMMENT_URL
+                .replace("头条号", group_id)
+                .replace("文章号", item_id)
+                .replace("偏移量", offset + "")
+                .replace("数量", count + "");
+    }
+
 }

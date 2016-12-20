@@ -1,4 +1,7 @@
-package com.meiji.toutiao.bean;
+package com.meiji.toutiao.bean.news;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -8,7 +11,7 @@ import java.util.List;
  * Created by Meiji on 2016/12/14.
  */
 
-public class NewsBean {
+public class NewsArticleBean {
 
     /**
      * has_more : true
@@ -70,7 +73,18 @@ public class NewsBean {
         }
     }
 
-    public static class DataBean {
+    public static class DataBean implements Parcelable {
+        public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {
+            @Override
+            public DataBean createFromParcel(Parcel in) {
+                return new DataBean(in);
+            }
+
+            @Override
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
+            }
+        };
         /**
          * media_name : 中国台湾网
          * abstract : 美国总统当选人特朗普日前暗示，可能拿美国的“一中政策”当谈判筹码，与中国大陆就诸如人民币汇率及南海等争议讨价还价。
@@ -233,6 +247,162 @@ public class NewsBean {
         private List<?> ad_track_url_list;
         private List<?> ad_click_track_url_list;
         private List<LargeImageListBean> large_image_list;
+
+        protected DataBean(Parcel in) {
+            media_name = in.readString();
+            abstractX = in.readString();
+            impression_count = in.readInt();
+            media_avatar_url = in.readString();
+            external_visit_count = in.readInt();
+            article_type = in.readInt();
+            more_mode = in.readByte() != 0;
+            tag = in.readString();
+            is_favorite = in.readInt();
+            has_m3u8_video = in.readInt();
+            keywords = in.readString();
+            chinese_tag = in.readString();
+            has_mp4_video = in.readInt();
+            favorite_count = in.readInt();
+            display_url = in.readString();
+            article_sub_type = in.readInt();
+            tag_url = in.readString();
+            bury_count = in.readInt();
+            title = in.readString();
+            datetime = in.readString();
+            has_video = in.readByte() != 0;
+            share_url = in.readString();
+            id = in.readLong();
+            source = in.readString();
+            comment_count = in.readInt();
+            article_url = in.readString();
+            create_time = in.readInt();
+            recommend = in.readInt();
+            image_url = in.readString();
+            tips = in.readInt();
+            aggr_type = in.readInt();
+            item_source_url = in.readString();
+            media_url = in.readString();
+            display_time = in.readInt();
+            publish_time = in.readInt();
+            go_detail_count = in.readInt();
+            group_flags = in.readInt();
+            middle_mode = in.readByte() != 0;
+            display_title = in.readString();
+            gallary_image_count = in.readInt();
+            item_seo_url = in.readString();
+            tag_id = in.readLong();
+            source_url = in.readString();
+            article_genre = in.readString();
+            large_mode = in.readByte() != 0;
+            item_id = in.readLong();
+            natant_level = in.readInt();
+            is_digg = in.readInt();
+            seo_url = in.readString();
+            repin_count = in.readInt();
+            url = in.readString();
+            level = in.readInt();
+            digg_count = in.readInt();
+            behot_time = in.readInt();
+            hot = in.readInt();
+            preload_web = in.readInt();
+            comments_count = in.readInt();
+            has_image = in.readByte() != 0;
+            is_bury = in.readInt();
+            group_id = in.readLong();
+            has_gallery = in.readByte() != 0;
+            video_duration = in.readInt();
+            video_duration_str = in.readString();
+            video_play_count = in.readInt();
+            log_extra = in.readString();
+            ad_click_track_url = in.readString();
+            display_info = in.readString();
+            ad_label = in.readString();
+            ad_id = in.readLong();
+            ad_track_url = in.readString();
+            cell_flag = in.readInt();
+            honey = in.readByte() != 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(media_name);
+            dest.writeString(abstractX);
+            dest.writeInt(impression_count);
+            dest.writeString(media_avatar_url);
+            dest.writeInt(external_visit_count);
+            dest.writeInt(article_type);
+            dest.writeByte((byte) (more_mode ? 1 : 0));
+            dest.writeString(tag);
+            dest.writeInt(is_favorite);
+            dest.writeInt(has_m3u8_video);
+            dest.writeString(keywords);
+            dest.writeString(chinese_tag);
+            dest.writeInt(has_mp4_video);
+            dest.writeInt(favorite_count);
+            dest.writeString(display_url);
+            dest.writeInt(article_sub_type);
+            dest.writeString(tag_url);
+            dest.writeInt(bury_count);
+            dest.writeString(title);
+            dest.writeString(datetime);
+            dest.writeByte((byte) (has_video ? 1 : 0));
+            dest.writeString(share_url);
+            dest.writeLong(id);
+            dest.writeString(source);
+            dest.writeInt(comment_count);
+            dest.writeString(article_url);
+            dest.writeInt(create_time);
+            dest.writeInt(recommend);
+            dest.writeString(image_url);
+            dest.writeInt(tips);
+            dest.writeInt(aggr_type);
+            dest.writeString(item_source_url);
+            dest.writeString(media_url);
+            dest.writeInt(display_time);
+            dest.writeInt(publish_time);
+            dest.writeInt(go_detail_count);
+            dest.writeInt(group_flags);
+            dest.writeByte((byte) (middle_mode ? 1 : 0));
+            dest.writeString(display_title);
+            dest.writeInt(gallary_image_count);
+            dest.writeString(item_seo_url);
+            dest.writeLong(tag_id);
+            dest.writeString(source_url);
+            dest.writeString(article_genre);
+            dest.writeByte((byte) (large_mode ? 1 : 0));
+            dest.writeLong(item_id);
+            dest.writeInt(natant_level);
+            dest.writeInt(is_digg);
+            dest.writeString(seo_url);
+            dest.writeInt(repin_count);
+            dest.writeString(url);
+            dest.writeInt(level);
+            dest.writeInt(digg_count);
+            dest.writeInt(behot_time);
+            dest.writeInt(hot);
+            dest.writeInt(preload_web);
+            dest.writeInt(comments_count);
+            dest.writeByte((byte) (has_image ? 1 : 0));
+            dest.writeInt(is_bury);
+            dest.writeLong(group_id);
+            dest.writeByte((byte) (has_gallery ? 1 : 0));
+            dest.writeInt(video_duration);
+            dest.writeString(video_duration_str);
+            dest.writeInt(video_play_count);
+            dest.writeString(log_extra);
+            dest.writeString(ad_click_track_url);
+            dest.writeString(display_info);
+            dest.writeString(ad_label);
+            dest.writeLong(ad_id);
+            dest.writeString(ad_track_url);
+            dest.writeInt(cell_flag);
+            dest.writeByte((byte) (honey ? 1 : 0));
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
 
         public String getMedia_name() {
             return media_name;

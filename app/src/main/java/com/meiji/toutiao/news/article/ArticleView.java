@@ -1,4 +1,4 @@
-package com.meiji.toutiao.news.tab;
+package com.meiji.toutiao.news.article;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,8 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.adapter.NewsAdapter;
-import com.meiji.toutiao.bean.NewsBean;
+import com.meiji.toutiao.adapter.news.NewsAdapter;
+import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.List;
  * Created by Meiji on 2016/12/12.
  */
 
-public class NewsView extends Fragment implements SwipeRefreshLayout.OnRefreshListener, INews.View {
+public class ArticleView extends Fragment implements SwipeRefreshLayout.OnRefreshListener, IArticle.View {
 
     public static final String CATEGORY = "CATEGORY";
     private RecyclerView recycler_view;
@@ -32,14 +32,14 @@ public class NewsView extends Fragment implements SwipeRefreshLayout.OnRefreshLi
 
     private String categoryId;
     private boolean canLoading = false;
-    private INews.Presenter presenter;
+    private IArticle.Presenter presenter;
 
-    public static NewsView newInstance(String categoryId) {
+    public static ArticleView newInstance(String categoryId) {
         Bundle bundle = new Bundle();
         bundle.putString(CATEGORY, categoryId);
-        NewsView newsView = new NewsView();
-        newsView.setArguments(bundle);
-        return newsView;
+        ArticleView articleView = new ArticleView();
+        articleView.setArguments(bundle);
+        return articleView;
     }
 
     @Override
@@ -54,8 +54,8 @@ public class NewsView extends Fragment implements SwipeRefreshLayout.OnRefreshLi
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.news_tab_content, container, false);
-        presenter = new NewsPresenter(this);
+        View view = inflater.inflate(R.layout.news_article_main, container, false);
+        presenter = new ArticlePresenter(this);
         initView(view);
         onRequestData();
         return view;
@@ -68,8 +68,7 @@ public class NewsView extends Fragment implements SwipeRefreshLayout.OnRefreshLi
 
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
-        refresh_layout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
-                android.R.color.holo_orange_light, android.R.color.holo_red_light);
+        refresh_layout.setColorSchemeResources(R.color.colorPrimary);
         // 设置手指在屏幕上下拉多少距离开始刷新
         refresh_layout.setDistanceToTriggerSync(300);
         // 设置下拉刷新按钮的背景颜色
@@ -90,7 +89,7 @@ public class NewsView extends Fragment implements SwipeRefreshLayout.OnRefreshLi
     }
 
     @Override
-    public void onSetAdapter(final List<NewsBean.DataBean> list) {
+    public void onSetAdapter(final List<NewsArticleBean.DataBean> list) {
         if (adapter == null) {
             adapter = new NewsAdapter(getActivity(), list);
             recycler_view.setAdapter(adapter);
@@ -105,7 +104,7 @@ public class NewsView extends Fragment implements SwipeRefreshLayout.OnRefreshLi
         }
 
         // 打印下标题
-//        for (NewsBean.DataBean bean : list) {
+//        for (NewsArticleBean.DataBean bean : list) {
 //            System.out.println(bean.getTitle());
 //        }
 

@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.meiji.toutiao.news.tab.NewsTabLayout;
+import com.meiji.toutiao.news.article.ArticleTabLayout;
 import com.meiji.toutiao.utils.ColorUtil;
 
 public class MainActivity extends BaseActivity {
@@ -22,7 +22,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        replaceFragment(NewsTabLayout.getInstance(), getResources().getColor(R.color.colorPrimary));
+        replaceFragment(ArticleTabLayout.getInstance(), getResources().getColor(R.color.colorPrimary));
     }
 
     private void initView() {
@@ -34,10 +34,10 @@ public class MainActivity extends BaseActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_news:
-                        replaceFragment(NewsTabLayout.getInstance(), getResources().getColor(R.color.colorPrimary));
+                        replaceFragment(ArticleTabLayout.getInstance(), getResources().getColor(R.color.colorPrimary));
                         break;
                     case R.id.action_schedules:
-//                        replaceFragment(NewsView.newInstance("__all__"), getResources().getColor(R.color.blue));
+//                        replaceFragment(ArticleView.newInstance("__all__"), getResources().getColor(R.color.blue));
                         break;
                     case R.id.action_music:
                         break;

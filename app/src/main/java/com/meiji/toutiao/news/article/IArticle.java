@@ -1,6 +1,6 @@
-package com.meiji.toutiao.news.tab;
+package com.meiji.toutiao.news.article;
 
-import com.meiji.toutiao.bean.NewsBean;
+import com.meiji.toutiao.bean.news.NewsArticleBean;
 
 import java.util.List;
 
@@ -8,12 +8,12 @@ import java.util.List;
  * Created by Meiji on 2016/12/15.
  */
 
-interface INews {
+interface IArticle {
 
     interface View {
         void onRequestData();
 
-        void onSetAdapter(List<NewsBean.DataBean> list);
+        void onSetAdapter(List<NewsArticleBean.DataBean> list);
 
         void onShowRefreshing();
 
@@ -39,7 +39,7 @@ interface INews {
     interface Model {
         boolean requestData(String url);
 
-        List<NewsBean.DataBean> getDataList();
+        List<NewsArticleBean.DataBean> getDataList();
 
         int getmax_behot_time();
     }

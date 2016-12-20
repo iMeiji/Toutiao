@@ -1,12 +1,12 @@
-package com.meiji.toutiao.news.tab;
+package com.meiji.toutiao.news.article;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 
 import com.meiji.toutiao.InitApp;
-import com.meiji.toutiao.bean.NewsBean;
-import com.meiji.toutiao.news.content.ContentView;
+import com.meiji.toutiao.bean.news.NewsArticleBean;
+import com.meiji.toutiao.news.info.InfoView;
 import com.meiji.toutiao.utils.Api;
 
 import java.util.ArrayList;
@@ -16,11 +16,11 @@ import java.util.List;
  * Created by Meiji on 2016/12/15.
  */
 
-public class NewsPresenter implements INews.Presenter {
+public class ArticlePresenter implements IArticle.Presenter {
 
-    private INews.View view;
-    private INews.Model model;
-    private List<NewsBean.DataBean> dataList = new ArrayList<>();
+    private IArticle.View view;
+    private IArticle.Model model;
+    private List<NewsArticleBean.DataBean> dataList = new ArrayList<>();
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -35,9 +35,9 @@ public class NewsPresenter implements INews.Presenter {
     });
     private String category;
 
-    public NewsPresenter(INews.View view) {
+    public ArticlePresenter(IArticle.View view) {
         this.view = view;
-        this.model = new NewsModel();
+        this.model = new ArticleModel();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class NewsPresenter implements INews.Presenter {
         view.onShowRefreshing();
         this.category = parameter;
 //        doRequestData(Api.getNewsUrl(parameter));
-        String url = Api.getNewsRefreshUrl(category, model.getmax_behot_time() + "");
+        String url = Api.getNewsArticleUrl(category, model.getmax_behot_time() + "");
         doRequestData(url);
     }
 
@@ -77,7 +77,7 @@ public class NewsPresenter implements INews.Presenter {
     @Override
     public void doRefresh() {
         view.onShowRefreshing();
-        String url = Api.getNewsRefreshUrl(category, model.getmax_behot_time() + "");
+        String url = Api.getNewsArticleUrl(category, model.getmax_behot_time() + "");
         doRequestData(url);
     }
 
@@ -89,22 +89,12 @@ public class NewsPresenter implements INews.Presenter {
 
     @Override
     public void doOnClickItem(int position) {
-        NewsBean.DataBean bean = dataList.get(position);
-        String display_url = bean.getDisplay_url();
-        String title = bean.getTitle();
-        String groupId = String.valueOf(bean.getGroup_id());
-        String itemId = String.valueOf(bean.getItem_id());
-        String mediaName = bean.getMedia_name();
-
-        Intent intent = new Intent(InitApp.AppContext, ContentView.class);
-        intent.putExtra(ContentView.DISPLAY_URL, display_url);
-        intent.putExtra(ContentView.TITLR, title);
-        intent.putExtra(ContentView.GROUP_ID, groupId);
-        intent.putExtra(ContentView.ITEM_ID, itemId);
-        intent.putExtra(ContentView.MEDIA_NAME, mediaName);
+        NewsArticleBean.DataBean bean = dataList.get(position);
+        Intent intent = new Intent(InitApp.AppContext, InfoView.class);
+        intent.putExtra(InfoView.TAG, bean);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         InitApp.AppContext.startActivity(intent);
         // 打印下点击的标题和链接
-        System.out.println("点击的标题和链接---" + title + "  " + display_url);
+        System.out.println("点击的标题和链接---" + bean.getTitle() + "  " + bean.getDisplay_url());
     }
 }

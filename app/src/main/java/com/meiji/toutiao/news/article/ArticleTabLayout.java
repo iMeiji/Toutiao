@@ -1,4 +1,4 @@
-package com.meiji.toutiao.news.tab;
+package com.meiji.toutiao.news.article;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.adapter.NewsPagerAdapter;
+import com.meiji.toutiao.adapter.news.NewsPagerAdapter;
 import com.meiji.toutiao.utils.ColorUtil;
 
 import java.util.ArrayList;
@@ -21,16 +21,16 @@ import java.util.List;
  * Created by Meiji on 2016/12/12.
  */
 
-public class NewsTabLayout extends Fragment {
+public class ArticleTabLayout extends Fragment {
 
-    private static NewsTabLayout instance = null;
+    private static ArticleTabLayout instance = null;
     private TabLayout tab_layout;
     private ViewPager view_pager;
     private List<Fragment> list = new ArrayList<>();
 
-    public static NewsTabLayout getInstance() {
+    public static ArticleTabLayout getInstance() {
         if (instance == null) {
-            instance = new NewsTabLayout();
+            instance = new ArticleTabLayout();
         }
         return instance;
     }
@@ -38,7 +38,7 @@ public class NewsTabLayout extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.news_tab_adapter, container, false);
+        View view = inflater.inflate(R.layout.news_article_adapter, container, false);
         initView(view);
         initData();
         return view;
@@ -55,13 +55,13 @@ public class NewsTabLayout extends Fragment {
     }
 
     /**
-     * 初始化 NewsView 数据
+     * 初始化 ArticleView 数据
      */
     private void initData() {
         String categoryId[] = InitApp.AppContext.getResources().getStringArray(R.array.id);
         String categoryName[] = InitApp.AppContext.getResources().getStringArray(R.array.name);
         for (int i = 0; i < categoryId.length; i++) {
-            Fragment fragment = NewsView.newInstance(categoryId[i]);
+            Fragment fragment = ArticleView.newInstance(categoryId[i]);
             list.add(fragment);
         }
         NewsPagerAdapter adapter = new NewsPagerAdapter(getFragmentManager(), list, categoryName);

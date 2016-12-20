@@ -1,4 +1,4 @@
-package com.meiji.toutiao.adapter;
+package com.meiji.toutiao.adapter.news;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.bean.NewsBean;
+import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.utils.TimeUtil;
 
@@ -23,11 +23,11 @@ import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
 
-    private List<NewsBean.DataBean> list = new ArrayList<>();
+    private List<NewsArticleBean.DataBean> list = new ArrayList<>();
     private IOnItemClickListener onItemClickListener;
     private Context context;
 
-    public NewsAdapter(Context context, List<NewsBean.DataBean> list) {
+    public NewsAdapter(Context context, List<NewsArticleBean.DataBean> list) {
         this.list = list;
         this.context = context;
     }
@@ -38,14 +38,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
     @Override
     public NewsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.news_tab_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.news_article_item, parent, false);
         return new NewsViewHolder(view, onItemClickListener);
     }
 
     @Override
     public void onBindViewHolder(NewsViewHolder holder, int position) {
-        NewsBean.DataBean bean = list.get(position);
-        List<NewsBean.DataBean.ImageListBean> image_list = bean.getImage_list();
+        NewsArticleBean.DataBean bean = list.get(position);
+        List<NewsArticleBean.DataBean.ImageListBean> image_list = bean.getImage_list();
         if (image_list.size() != 0) {
             String url = image_list.get(0).getUrl();
             Glide.with(context).load(url).asBitmap().centerCrop().into(holder.iv_image_url);

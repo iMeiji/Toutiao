@@ -1,4 +1,4 @@
-package com.meiji.toutiao.news.content;
+package com.meiji.toutiao.news.info;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -16,37 +16,29 @@ import android.webkit.WebViewClient;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.meiji.toutiao.BaseActivity;
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.bean.news.NewsArticleBean;
 
 /**
  * Created by Meiji on 2016/12/17.
  */
 
-public class ContentView extends BaseActivity implements IContent.View {
+public class InfoView extends BaseActivity implements IInfo.View {
 
+    public static final String TAG = "InfoView";
     // 新闻链接 标题 头条号 文章号 媒体名
-    public static final String DISPLAY_URL = "display_url";
-    public static final String TITLR = "title";
-    public static final String GROUP_ID = "group_id";
-    public static final String ITEM_ID = "item_id";
-    public static final String MEDIA_NAME = "media_name";
-
-    private String display_url;
-    private String title;
-    private String groupId;
-    private String itemId;
-    private String mediaName;
+    private String shareUrl;
 
     private Toolbar toolbar;
     private WebView webView;
     private ActionBar actionBar;
     private MaterialDialog dialog;
-    private IContent.Presenter presenter;
+    private IInfo.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.news_content_main);
-        presenter = new ContentPresenter(this);
+        setContentView(R.layout.news_info_main);
+        presenter = new InfoPresenter(this);
         initView();
         initWebClient();
         onShowRefreshing();
@@ -55,14 +47,10 @@ public class ContentView extends BaseActivity implements IContent.View {
 
     private void initData() {
         Intent intent = getIntent();
-        display_url = intent.getStringExtra(DISPLAY_URL);
-        title = intent.getStringExtra(TITLR);
-        groupId = intent.getStringExtra(GROUP_ID);
-        itemId = intent.getStringExtra(ITEM_ID);
-        mediaName = intent.getStringExtra(MEDIA_NAME);
-
-        presenter.doRequestData(display_url);
-        actionBar.setTitle(mediaName);
+        NewsArticleBean.DataBean dataBean = intent.getParcelableExtra(TAG);
+        presenter.doRequestData(dataBean);
+        shareUrl = dataBean.getDisplay_url();
+        actionBar.setTitle(dataBean.getMedia_name());
     }
 
     private void initView() {
@@ -87,16 +75,19 @@ public class ContentView extends BaseActivity implements IContent.View {
             case android.R.id.home:
                 onBackPressed();
                 break;
-            case R.id.news_content_comment:
 
+            case R.id.news_content_comment:
+                presenter.doGetComment();
                 break;
+
             case R.id.news_content_follow:
                 break;
+
             case R.id.news_content_share:
                 Intent shareIntent = new Intent()
                         .setAction(Intent.ACTION_SEND)
                         .setType("text/plain")
-                        .putExtra(Intent.EXTRA_TEXT, display_url);
+                        .putExtra(Intent.EXTRA_TEXT, shareUrl);
                 startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
                 break;
         }
@@ -123,6 +114,11 @@ public class ContentView extends BaseActivity implements IContent.View {
                 return true;
             }
 
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                onHideRefreshing();
+                super.onPageFinished(view, url);
+            }
         });
 
         webView.setOnKeyListener(new View.OnKeyListener() {
@@ -151,12 +147,11 @@ public class ContentView extends BaseActivity implements IContent.View {
 
     @Override
     public void onSetWebView(String url, boolean flag) {
-        onHideRefreshing();
         // 是否为头条的网站
         if (flag) {
             webView.loadDataWithBaseURL(null, url, "text/html", "utf-8", null);
         } else {
-            webView.loadUrl(url);
+            webView.loadUrl(shareUrl);
         }
     }
 

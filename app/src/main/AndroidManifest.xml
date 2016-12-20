@@ -25,10 +25,15 @@
         </activity>
 
         <activity
-            android:name=".news.content.ContentView"
+            android:name=".news.info.InfoView"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <activity
+            android:name=".news.comment.CommentView"
+            android:label="评论"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

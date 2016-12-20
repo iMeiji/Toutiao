@@ -14,7 +14,8 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "0.1"
-        testInstrumentationRunner "android.support.NewsBean.runner.AndroidJUnitRunner"
+        //multiDexEnabled true
+        testInstrumentationRunner "android.support.NewsArticleBean.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -40,4 +41,5 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'org.jsoup:jsoup:1.10.1'
     compile 'com.afollestad.material-dialogs:commons:0.9.1.0'
+    compile 'com.github.franmontiel:PersistentCookieJar:v1.0.0'
 }

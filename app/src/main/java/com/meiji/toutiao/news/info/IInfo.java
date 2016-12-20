@@ -1,10 +1,12 @@
-package com.meiji.toutiao.news.content;
+package com.meiji.toutiao.news.info;
+
+import com.meiji.toutiao.bean.news.NewsArticleBean;
 
 /**
  * Created by Meiji on 2016/12/17.
  */
 
-public interface IContent {
+public interface IInfo {
 
     interface View {
 
@@ -24,10 +26,6 @@ public interface IContent {
     }
 
     interface Presenter {
-        /**
-         * 请求数据
-         */
-        void doRequestData(String url);
 
         /**
          * 设置浏览器
@@ -38,6 +36,10 @@ public interface IContent {
          * 请求数据失败
          */
         void onFail();
+
+        void doRequestData(NewsArticleBean.DataBean dataBean);
+
+        void doGetComment();
     }
 
     interface Model {

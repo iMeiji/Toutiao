@@ -1,0 +1,41 @@
+package com.meiji.toutiao.news.comment;
+
+import com.meiji.toutiao.bean.news.NewsCommentBean;
+
+import java.util.List;
+
+/**
+ * Created by Meiji on 2016/12/20.
+ */
+
+public interface IComment {
+
+    interface View {
+        void onRequestData();
+
+        void onSetAdapter(List<NewsCommentBean.DataBean.CommentsBean> list);
+
+        void onShowRefreshing();
+
+        void onHideRefreshing();
+
+        void onFail();
+    }
+
+    interface Presenter {
+        void doRequestData(String group_id, String item_id);
+
+        void doSetAdapter();
+
+        void doRefresh();
+
+        void onFail();
+    }
+
+    interface Model {
+        boolean requestData(String url);
+
+        List<NewsCommentBean.DataBean.CommentsBean> getDataList();
+
+    }
+}

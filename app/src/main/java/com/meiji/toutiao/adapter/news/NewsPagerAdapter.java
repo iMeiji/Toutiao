@@ -1,4 +1,4 @@
-package com.meiji.toutiao.adapter;
+package com.meiji.toutiao.adapter.news;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
