@@ -23,7 +23,10 @@ public interface IComment {
     }
 
     interface Presenter {
-        void doRequestData(String group_id, String item_id);
+
+        void doGetUrl(String group_id, String item_id);
+
+        void doRequestData(String url);
 
         void doSetAdapter();
 

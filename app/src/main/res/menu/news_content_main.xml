@@ -4,6 +4,7 @@
 
     <item
         android:id="@+id/news_content_comment"
+        android:icon="@drawable/ic_comment"
         android:title="查看评论"
         app:showAsAction="ifRoom"/>
 

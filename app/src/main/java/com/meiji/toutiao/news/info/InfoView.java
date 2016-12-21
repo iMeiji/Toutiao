@@ -83,6 +83,7 @@ public class InfoView extends BaseActivity implements IInfo.View {
             case R.id.news_content_follow:
                 break;
 
+
             case R.id.news_content_share:
                 Intent shareIntent = new Intent()
                         .setAction(Intent.ACTION_SEND)
@@ -157,7 +158,6 @@ public class InfoView extends BaseActivity implements IInfo.View {
 
     @Override
     public void onFail() {
-
     }
 
     @Override

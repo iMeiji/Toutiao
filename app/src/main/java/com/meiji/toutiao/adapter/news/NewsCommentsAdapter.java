@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsCommentBean;
+import com.meiji.toutiao.interfaces.IOnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,16 +24,21 @@ public class NewsCommentsAdapter extends RecyclerView.Adapter<NewsCommentsAdapte
 
     private List<NewsCommentBean.DataBean.CommentsBean> commentsBeanList = new ArrayList<>();
     private Context context;
+    private IOnItemClickListener onItemClickListener;
 
     public NewsCommentsAdapter(List<NewsCommentBean.DataBean.CommentsBean> commentsBeanList, Context context) {
         this.commentsBeanList = commentsBeanList;
         this.context = context;
     }
 
+    public void setOnItemClickListener(IOnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     @Override
     public NewsCommentsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.news_comment_item, parent, false);
-        return new NewsCommentsViewHolder(view);
+        return new NewsCommentsViewHolder(view, onItemClickListener);
     }
 
     @Override
@@ -54,18 +60,28 @@ public class NewsCommentsAdapter extends RecyclerView.Adapter<NewsCommentsAdapte
         return commentsBeanList != null ? commentsBeanList.size() : 0;
     }
 
-    public class NewsCommentsViewHolder extends RecyclerView.ViewHolder {
+    public class NewsCommentsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView iv_avatar;
         private TextView tv_username;
         private TextView tv_text;
         private TextView tv_likes;
+        private IOnItemClickListener onItemClickListener;
 
-        public NewsCommentsViewHolder(View itemView) {
+        public NewsCommentsViewHolder(View itemView, IOnItemClickListener onItemClickListener) {
             super(itemView);
             this.iv_avatar = (ImageView) itemView.findViewById(R.id.iv_avatar);
             this.tv_username = (TextView) itemView.findViewById(R.id.tv_username);
             this.tv_text = (TextView) itemView.findViewById(R.id.tv_text);
             this.tv_likes = (TextView) itemView.findViewById(R.id.tv_likes);
+            this.onItemClickListener = onItemClickListener;
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (onItemClickListener != null) {
+                onItemClickListener.onClick(view, getLayoutPosition());
+            }
         }
     }
 }

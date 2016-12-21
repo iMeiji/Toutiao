@@ -29,6 +29,11 @@ public class CommentModel implements IComment.Model {
 
     @Override
     public boolean requestData(String url) {
+        // 清除旧数据
+        if (commentBeanList.size() != 0) {
+            commentBeanList.clear();
+        }
+
         System.out.println("newsCommentApi -- " + url);
         boolean flag = false;
         Request request = new Request.Builder()
