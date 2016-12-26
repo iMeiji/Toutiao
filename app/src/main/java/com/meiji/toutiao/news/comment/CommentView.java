@@ -12,11 +12,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.meiji.toutiao.BaseActivity;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.news.NewsCommentsAdapter;
@@ -114,11 +115,7 @@ public class CommentView extends BaseActivity implements SwipeRefreshLayout.OnRe
             adapter.setOnItemClickListener(new IOnItemClickListener() {
                 @Override
                 public void onClick(View view, int position) {
-                    ClipboardManager copy = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                    ClipData clipData = ClipData.newPlainText("text", list.get(position).getText());
-                    copy.setPrimaryClip(clipData);
-                    Log.d(TAG, "onClick: " + clipData);
-                    Toast.makeText(CommentView.this, "已复制", Toast.LENGTH_SHORT).show();
+                    showCopyDialog(position, list.get(position).getText());
                 }
             });
         } else {
@@ -148,6 +145,33 @@ public class CommentView extends BaseActivity implements SwipeRefreshLayout.OnRe
         });
     }
 
+    private void showCopyDialog(int position, final String content) {
+        final MaterialDialog dialog = new MaterialDialog.Builder(CommentView.this)
+                .title("是否复制评论?")
+                .content(content).build();
+        dialog.setActionButton(DialogAction.NEGATIVE, "取消");
+        dialog.getActionButton(DialogAction.NEGATIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setActionButton(DialogAction.POSITIVE, "确定");
+        dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClipboardManager copy = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("text", content);
+                copy.setPrimaryClip(clipData);
+                Toast.makeText(CommentView.this, "已复制", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
     @Override
     public void onShowRefreshing() {
         refresh_layout.setRefreshing(true);
@@ -162,4 +186,6 @@ public class CommentView extends BaseActivity implements SwipeRefreshLayout.OnRe
     public void onFail() {
         Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT).show();
     }
+
+
 }

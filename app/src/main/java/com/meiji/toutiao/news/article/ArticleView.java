@@ -26,10 +26,10 @@ import java.util.List;
 public class ArticleView extends Fragment implements SwipeRefreshLayout.OnRefreshListener, IArticle.View {
 
     public static final String CATEGORY = "CATEGORY";
+    private static final String TAG = "ArticleView";
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
     private NewsAdapter adapter;
-
     private String categoryId;
     private boolean canLoading = false;
     private IArticle.Presenter presenter;
@@ -146,4 +146,11 @@ public class ArticleView extends Fragment implements SwipeRefreshLayout.OnRefres
         Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (adapter != null) {
+            adapter = null;
+        }
+    }
 }

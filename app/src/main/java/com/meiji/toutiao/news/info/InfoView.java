@@ -27,6 +27,7 @@ public class InfoView extends BaseActivity implements IInfo.View {
     public static final String TAG = "InfoView";
     // 新闻链接 标题 头条号 文章号 媒体名
     private String shareUrl;
+    private String shareTitle;
 
     private Toolbar toolbar;
     private WebView webView;
@@ -50,6 +51,7 @@ public class InfoView extends BaseActivity implements IInfo.View {
         NewsArticleBean.DataBean dataBean = intent.getParcelableExtra(TAG);
         presenter.doRequestData(dataBean);
         shareUrl = dataBean.getDisplay_url();
+        shareTitle = dataBean.getTitle();
         actionBar.setTitle(dataBean.getMedia_name());
     }
 
@@ -88,7 +90,7 @@ public class InfoView extends BaseActivity implements IInfo.View {
                 Intent shareIntent = new Intent()
                         .setAction(Intent.ACTION_SEND)
                         .setType("text/plain")
-                        .putExtra(Intent.EXTRA_TEXT, shareUrl);
+                        .putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + shareUrl);
                 startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
                 break;
         }

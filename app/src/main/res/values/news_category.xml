@@ -2,8 +2,8 @@
 <resources>
 
     <string-array name="name">
-        <item>推荐</item>
         <item>热点</item>
+        <item>推荐</item>
         <item>社会</item>
         <item>娱乐</item>
         <item>科技</item>
@@ -12,6 +12,12 @@
         <item>汽车</item>
         <item>财经</item>
         <item>国际</item>
+        <item>游戏</item>
+        <item>时尚</item>
+        <item>旅游</item>
+        <item>探索</item>
+        <item>育儿</item>
+        <item>故事</item>
     </string-array>
 
     <string-array name="id">
@@ -25,6 +31,12 @@
         <item>news_car</item>
         <item>news_finance</item>
         <item>news_world</item>
+        <item>news_game</item>
+        <item>news_fashion</item>
+        <item>news_travel</item>
+        <item>news_discovery</item>
+        <item>news_baby</item>
+        <item>news_story</item>
     </string-array>
 
 

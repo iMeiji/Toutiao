@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 ext {
-    SUPPORT_LIBRARY_VERSION = '25.0.1'
+    SUPPORT_LIBRARY_VERSION = '25.1.0'
     BUILD_TOOLS = "25.0.0"
 }
 
@@ -15,7 +15,6 @@ android {
         versionCode 1
         versionName "0.1"
         //multiDexEnabled true
-        testInstrumentationRunner "android.support.NewsArticleBean.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {

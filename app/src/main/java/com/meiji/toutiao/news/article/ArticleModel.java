@@ -60,10 +60,10 @@ public class ArticleModel implements IArticle.Model {
                     dataList.remove(dataList.size() - 1);
 //                    dataList.remove(0);
                 }
-                // 移除无图片的 Item 和 source 为 "头条问答"
+                // 移除无图片的 Item 和 source 为 "ad"
                 for (int i = 0; i < dataList.size(); i++) {
                     NewsArticleBean.DataBean dataBean = dataList.get(i);
-                    if (!dataBean.isHas_image() || dataBean.getSource().contains("头条问答") || dataBean.getTag().contains("ad")) {
+                    if (!dataBean.isHas_image() || dataBean.getTag().contains("ad")) {
                         dataList.remove(i);
                     }
                 }

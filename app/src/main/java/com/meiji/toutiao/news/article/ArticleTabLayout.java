@@ -48,10 +48,10 @@ public class ArticleTabLayout extends Fragment {
         tab_layout = (TabLayout) view.findViewById(R.id.tab_layout);
         view_pager = (ViewPager) view.findViewById(R.id.view_pager);
 
-        tab_layout.setBackgroundColor(ColorUtil.getColor());
+        tab_layout.setBackgroundColor(ColorUtil.getColor(getActivity()));
         tab_layout.setupWithViewPager(view_pager);
         tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        view_pager.setOffscreenPageLimit(10);
+        view_pager.setOffscreenPageLimit(5);
     }
 
     /**
@@ -69,8 +69,10 @@ public class ArticleTabLayout extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        instance = null;
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (instance != null) {
+            instance = null;
+        }
     }
 }

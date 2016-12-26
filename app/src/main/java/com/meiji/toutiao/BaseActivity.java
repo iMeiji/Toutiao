@@ -4,6 +4,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 
+import com.afollestad.materialdialogs.color.CircleView;
 import com.meiji.toutiao.utils.ColorUtil;
 
 /**
@@ -15,11 +16,11 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        int color = ColorUtil.getColor();
+        int color = ColorUtil.getColor(this);
         if (getSupportActionBar() != null)
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(color));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(color);
+            getWindow().setStatusBarColor(CircleView.shiftColorDown(color));
             getWindow().setNavigationBarColor(color);
         }
     }

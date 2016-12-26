@@ -33,7 +33,6 @@ public class InfoModel implements IInfo.Model {
             Request request = new Request.Builder()
                     .get()
                     .url(url)
-                    .addHeader("User-Agent", "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Mobile Safari/537.36")
                     .build();
             Response response = InitApp.getOkHttpClient().newCall(request).execute();
             if (response.isSuccessful()) {
