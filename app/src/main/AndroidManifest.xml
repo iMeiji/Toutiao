@@ -25,7 +25,7 @@
         </activity>
 
         <activity
-            android:name=".news.info.InfoView"
+            android:name=".news.content.ContetnView"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 

@@ -8,15 +8,15 @@
         android:title="@string/text_news"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/action_schedules"
+        android:id="@+id/action_other"
         android:enabled="true"
         android:icon="@drawable/ic_access_time_white_24dp"
-        android:title="@string/text_schedules"
+        android:title="@string/text_other"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/action_music"
+        android:id="@+id/action_media"
         android:enabled="true"
         android:icon="@drawable/ic_audiotrack_white_24dp"
-        android:title="@string/text_music"
+        android:title="@string/text_media"
         app:showAsAction="ifRoom"/>
 </menu>

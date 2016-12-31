@@ -13,7 +13,7 @@ import java.util.List;
  * Created by Meiji on 2016/12/20.
  */
 
-public class CommentPresenter implements IComment.Presenter {
+class CommentPresenter implements IComment.Presenter {
 
     private IComment.View view;
     private IComment.Model model;
@@ -34,7 +34,7 @@ public class CommentPresenter implements IComment.Presenter {
         }
     });
 
-    public CommentPresenter(IComment.View view) {
+    CommentPresenter(IComment.View view) {
         this.view = view;
         this.model = new CommentModel();
     }

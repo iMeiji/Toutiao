@@ -1,4 +1,4 @@
-package com.meiji.toutiao.news.info;
+package com.meiji.toutiao.news.content;
 
 import com.meiji.toutiao.bean.news.NewsArticleBean;
 
@@ -6,7 +6,7 @@ import com.meiji.toutiao.bean.news.NewsArticleBean;
  * Created by Meiji on 2016/12/17.
  */
 
-public interface IInfo {
+interface IContent {
 
     interface View {
 

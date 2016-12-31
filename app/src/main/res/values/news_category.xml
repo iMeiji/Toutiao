@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="name">
+    <string-array name="news_name">
         <item>热点</item>
         <item>推荐</item>
         <item>社会</item>
@@ -20,7 +20,7 @@
         <item>故事</item>
     </string-array>
 
-    <string-array name="id">
+    <string-array name="news_id">
         <item>news_hot</item>
         <item>__all__</item>
         <item>news_society</item>

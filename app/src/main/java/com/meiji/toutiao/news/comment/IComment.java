@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Meiji on 2016/12/20.
  */
 
-public interface IComment {
+interface IComment {
 
     interface View {
         void onRequestData();

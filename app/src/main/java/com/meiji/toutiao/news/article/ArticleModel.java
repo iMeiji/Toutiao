@@ -16,14 +16,14 @@ import okhttp3.Response;
  * Created by Meiji on 2016/12/15.
  */
 
-public class ArticleModel implements IArticle.Model {
+class ArticleModel implements IArticle.Model {
 
     private Gson gson = new Gson();
     private List<NewsArticleBean> newsList = new ArrayList<>();
     private List<NewsArticleBean.DataBean> dataList = new ArrayList<>();
     private List<NewsArticleBean.NextBean> nextList = new ArrayList<>();
 
-    public ArticleModel() {
+    ArticleModel() {
     }
 
     @Override

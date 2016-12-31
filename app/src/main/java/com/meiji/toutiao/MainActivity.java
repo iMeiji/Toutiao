@@ -13,22 +13,25 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.color.CircleView;
-import com.meiji.toutiao.media.MediaView;
-import com.meiji.toutiao.news.article.ArticleTabLayout;
+import com.meiji.toutiao.news.NewsTabLayout;
+import com.meiji.toutiao.other.OtherTabLayout;
 import com.meiji.toutiao.utils.ColorUtil;
 
 public class MainActivity extends BaseActivity {
 
     private static final String POSITION = "position";
     private static final int FRAGMENT_NEWS = 0;
-    private static final int FRAGMENT_MEDIA = 1;
+    private static final int FRAGMENT_OTHER = 1;
+    private static final int FRAGMENT_MEDIA = 2;
+
+    private NewsTabLayout newsTabLayout;
+    private OtherTabLayout otherTabLayout;
+
     private Toolbar toolbar;
     private BottomNavigationView bottom_navigation;
     private long exitTime;
-    private FragmentManager fragmentManager;
-    private ArticleTabLayout articleTabLayout;
-    private MediaView mediaView;
     private int position;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +64,11 @@ public class MainActivity extends BaseActivity {
                     case R.id.action_news:
                         showFragment(FRAGMENT_NEWS);
                         break;
-                    case R.id.action_schedules:
-                        showFragment(FRAGMENT_MEDIA);
+                    case R.id.action_other:
+                        showFragment(FRAGMENT_OTHER);
                         break;
-                    case R.id.action_music:
+                    case R.id.action_media:
+                        showFragment(FRAGMENT_MEDIA);
                         break;
                 }
                 return true;
@@ -81,27 +85,27 @@ public class MainActivity extends BaseActivity {
         position = index;
         switch (index) {
             case FRAGMENT_NEWS:
-                toolbar.setTitle("NEWS");
+                toolbar.setTitle("新闻");
                 /**
                  * 如果Fragment为空，就新建一个实例
                  * 如果不为空，就将它从栈中显示出来
                  */
-                if (articleTabLayout == null) {
-                    articleTabLayout = ArticleTabLayout.getInstance();
-                    ft.add(R.id.content_main, articleTabLayout);
+                if (newsTabLayout == null) {
+                    newsTabLayout = NewsTabLayout.getInstance();
+                    ft.add(R.id.content_main, newsTabLayout);
                 } else {
-                    ft.show(articleTabLayout);
+                    ft.show(newsTabLayout);
                 }
                 setColor(getResources().getColor(R.color.colorPrimary));
                 break;
 
-            case FRAGMENT_MEDIA:
-                toolbar.setTitle("MEDIA");
-                if (mediaView == null) {
-                    mediaView = MediaView.getInstance();
-                    ft.add(R.id.content_main, mediaView);
+            case FRAGMENT_OTHER:
+                toolbar.setTitle("其他");
+                if (otherTabLayout == null) {
+                    otherTabLayout = OtherTabLayout.getInstance();
+                    ft.add(R.id.content_main, otherTabLayout);
                 } else {
-                    ft.show(mediaView);
+                    ft.show(otherTabLayout);
                 }
                 setColor(getResources().getColor(R.color.blue));
                 break;
@@ -113,11 +117,11 @@ public class MainActivity extends BaseActivity {
 
     private void hideFragment(FragmentTransaction ft) {
         // 如果不为空，就先隐藏起来
-        if (articleTabLayout != null) {
-            ft.hide(articleTabLayout);
+        if (newsTabLayout != null) {
+            ft.hide(newsTabLayout);
         }
-        if (mediaView != null) {
-            ft.hide(mediaView);
+        if (otherTabLayout != null) {
+            ft.hide(otherTabLayout);
         }
     }
 

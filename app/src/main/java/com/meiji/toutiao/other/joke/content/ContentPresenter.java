@@ -1,26 +1,25 @@
-package com.meiji.toutiao.news.article;
+package com.meiji.toutiao.other.joke.content;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 
-import com.meiji.toutiao.InitApp;
-import com.meiji.toutiao.bean.news.NewsArticleBean;
-import com.meiji.toutiao.news.content.ContetnView;
+import com.meiji.toutiao.bean.other.joke.JokeContentBean;
 import com.meiji.toutiao.utils.Api;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Meiji on 2016/12/15.
+ * Created by Meiji on 2016/12/28.
  */
 
-class ArticlePresenter implements IArticle.Presenter {
+class ContentPresenter implements IContent.Presenter {
 
-    private IArticle.View view;
-    private IArticle.Model model;
-    private List<NewsArticleBean.DataBean> dataList = new ArrayList<>();
+    private IContent.View view;
+    private IContent.Model model;
+    private String category;
+    private int offset = 0;
+    private List<JokeContentBean.DataBean.GroupBean> groupList = new ArrayList<>();
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -33,19 +32,17 @@ class ArticlePresenter implements IArticle.Presenter {
             return false;
         }
     });
-    private String category;
 
-    ArticlePresenter(IArticle.View view) {
+    public ContentPresenter(IContent.View view) {
         this.view = view;
-        this.model = new ArticleModel();
+        model = new ContentModel();
     }
 
     @Override
     public void doGetUrl(String parameter) {
         view.onShowRefreshing();
         this.category = parameter;
-//        doRequestData(Api.getNewsUrl(parameter));
-        String url = Api.getNewsArticleUrl(category, model.getmax_behot_time() + "");
+        String url = Api.getOtherUrl(category);
         doRequestData(url);
     }
 
@@ -68,16 +65,19 @@ class ArticlePresenter implements IArticle.Presenter {
 
     @Override
     public void doSetAdapter() {
-        System.out.println("刷新新闻数量 " + model.getDataList().size());
-        dataList.addAll(model.getDataList());
-        view.onSetAdapter(dataList);
+        if (groupList.size() != 0) {
+            groupList.clear();
+        }
+        groupList.addAll(model.getDataList());
+        view.onSetAdapter(groupList);
         view.onHideRefreshing();
     }
 
     @Override
     public void doRefresh() {
         view.onShowRefreshing();
-        String url = Api.getNewsArticleUrl(category, model.getmax_behot_time() + "");
+        //offset += 20;
+        String url = Api.getOtherUrl(category);
         doRequestData(url);
     }
 
@@ -89,12 +89,10 @@ class ArticlePresenter implements IArticle.Presenter {
 
     @Override
     public void doOnClickItem(int position) {
-        NewsArticleBean.DataBean bean = dataList.get(position);
-        Intent intent = new Intent(InitApp.AppContext, ContetnView.class);
-        intent.putExtra(ContetnView.TAG, bean);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        InitApp.AppContext.startActivity(intent);
-        // 打印下点击的标题和链接
-        System.out.println("点击的标题和链接---" + bean.getTitle() + "  " + bean.getDisplay_url());
+        JokeContentBean.DataBean.GroupBean bean = groupList.get(position);
+        String jokeDd = bean.getId() + "";
+        String jokeCommentCount = bean.getComment_count() + "";
+        // 转跳到评论页面
+
     }
 }

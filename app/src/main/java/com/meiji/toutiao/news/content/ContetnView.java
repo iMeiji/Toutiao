@@ -1,4 +1,4 @@
-package com.meiji.toutiao.news.info;
+package com.meiji.toutiao.news.content;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -22,9 +22,9 @@ import com.meiji.toutiao.bean.news.NewsArticleBean;
  * Created by Meiji on 2016/12/17.
  */
 
-public class InfoView extends BaseActivity implements IInfo.View {
+public class ContetnView extends BaseActivity implements IContent.View {
 
-    public static final String TAG = "InfoView";
+    public static final String TAG = "ContetnView";
     // 新闻链接 标题 头条号 文章号 媒体名
     private String shareUrl;
     private String shareTitle;
@@ -33,13 +33,13 @@ public class InfoView extends BaseActivity implements IInfo.View {
     private WebView webView;
     private ActionBar actionBar;
     private MaterialDialog dialog;
-    private IInfo.Presenter presenter;
+    private IContent.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_info_main);
-        presenter = new InfoPresenter(this);
+        presenter = new ContentPresenter(this);
         initView();
         initWebClient();
         onShowRefreshing();

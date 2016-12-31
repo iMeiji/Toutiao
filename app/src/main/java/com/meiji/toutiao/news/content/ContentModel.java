@@ -1,9 +1,9 @@
-package com.meiji.toutiao.news.info;
+package com.meiji.toutiao.news.content;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.meiji.toutiao.InitApp;
-import com.meiji.toutiao.bean.news.NewsInfoBean;
+import com.meiji.toutiao.bean.news.NewsContentBean;
 
 import java.io.IOException;
 
@@ -14,13 +14,13 @@ import okhttp3.Response;
  * Created by Meiji on 2016/12/17.
  */
 
-public class InfoModel implements IInfo.Model {
+class ContentModel implements IContent.Model {
 
     private Gson gson = new Gson();
     private String url;
-    private NewsInfoBean newsInfoBean;
+    private NewsContentBean newsContentBean;
 
-    public InfoModel() {
+    ContentModel() {
     }
 
     @Override
@@ -39,7 +39,7 @@ public class InfoModel implements IInfo.Model {
                 flag = true;
                 String responseJson = response.body().string();
 //                System.out.println("新闻内容抓取" + html);
-                newsInfoBean = gson.fromJson(responseJson, NewsInfoBean.class);
+                newsContentBean = gson.fromJson(responseJson, NewsContentBean.class);
             }
         } catch (IOException | JsonSyntaxException e) {
             e.printStackTrace();
@@ -52,7 +52,7 @@ public class InfoModel implements IInfo.Model {
     @Override
     public String getHtml() {
 
-        NewsInfoBean.DataBean dataBean = newsInfoBean.getData();
+        NewsContentBean.DataBean dataBean = newsContentBean.getData();
         String title = dataBean.getTitle();
         String content = dataBean.getContent();
         if (content != null) {

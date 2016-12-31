@@ -4,7 +4,7 @@ package com.meiji.toutiao.bean.news;
  * Created by Meiji on 2016/12/19.
  */
 
-public class NewsInfoBean {
+public class NewsContentBean {
 
 
     /**

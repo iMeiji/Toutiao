@@ -21,13 +21,13 @@ import java.util.List;
  * Created by Meiji on 2016/12/13.
  */
 
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
+public class NewsArticleAdapter extends RecyclerView.Adapter<NewsArticleAdapter.NewsViewHolder> {
 
     private List<NewsArticleBean.DataBean> list = new ArrayList<>();
     private IOnItemClickListener onItemClickListener;
     private Context context;
 
-    public NewsAdapter(Context context, List<NewsArticleBean.DataBean> list) {
+    public NewsArticleAdapter(Context context, List<NewsArticleBean.DataBean> list) {
         this.list = list;
         this.context = context;
     }

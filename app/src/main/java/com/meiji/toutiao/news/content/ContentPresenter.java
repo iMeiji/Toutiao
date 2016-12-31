@@ -1,4 +1,4 @@
-package com.meiji.toutiao.news.info;
+package com.meiji.toutiao.news.content;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -13,10 +13,10 @@ import com.meiji.toutiao.utils.Api;
  * Created by Meiji on 2016/12/17.
  */
 
-public class InfoPresenter implements IInfo.Presenter {
+class ContentPresenter implements IContent.Presenter {
 
-    private IInfo.View view;
-    private IInfo.Model model;
+    private IContent.View view;
+    private IContent.Model model;
     private String group_id;
     private String item_id;
     private Handler handler = new Handler(new Handler.Callback() {
@@ -33,9 +33,9 @@ public class InfoPresenter implements IInfo.Presenter {
         }
     });
 
-    public InfoPresenter(IInfo.View view) {
+    ContentPresenter(IContent.View view) {
         this.view = view;
-        model = new InfoModel();
+        model = new ContentModel();
     }
 
     @Override
