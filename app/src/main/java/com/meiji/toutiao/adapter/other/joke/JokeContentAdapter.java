@@ -50,7 +50,7 @@ public class JokeContentAdapter extends RecyclerView.Adapter<JokeContentAdapter.
         String text = bean.getText();
         String digg_count = bean.getDigg_count() + "";
         String bury_count = bean.getBury_count() + "";
-        String comment_count = bean.getComment_count() + "赞";
+        String comment_count = bean.getComment_count() + "评论";
 
         Glide.with(context).load(avatar_url).centerCrop().into(holder.iv_avatar);
         holder.tv_username.setText(name);
@@ -90,7 +90,7 @@ public class JokeContentAdapter extends RecyclerView.Adapter<JokeContentAdapter.
         @Override
         public void onClick(View view) {
             if (onItemClickListener != null) {
-
+                onItemClickListener.onClick(view, getLayoutPosition());
             }
         }
     }

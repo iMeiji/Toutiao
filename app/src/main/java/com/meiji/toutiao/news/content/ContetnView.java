@@ -85,7 +85,6 @@ public class ContetnView extends BaseActivity implements IContent.View {
             case R.id.news_content_follow:
                 break;
 
-
             case R.id.news_content_share:
                 Intent shareIntent = new Intent()
                         .setAction(Intent.ACTION_SEND)

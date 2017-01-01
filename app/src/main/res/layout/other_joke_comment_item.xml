@@ -52,7 +52,7 @@
                     android:id="@+id/tv_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="光看个开头就笑的不行了，咱们中国有个传统，就是家里来客人了，要到门口迎一下，如果手里还带着礼物，那要先接过来，因为人家大老远一路带过来的，已经很累了，更何况老美不远万里带过来的呢，如果不接过来那也太不像话了，会让国际笑话中国，也有失大国风范！这也是一种礼貌，更是中华民族的传统美德！"
+                    android:text="最恨公共场所吸烟的。特别是在饭店。电梯等一些空气不流通的环境"
                     />
 
                 <LinearLayout

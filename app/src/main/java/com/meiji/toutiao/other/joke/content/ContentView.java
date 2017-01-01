@@ -123,11 +123,6 @@ public class ContentView extends BasePageFragment implements SwipeRefreshLayout.
                     }
                 }
             }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
         });
     }
 

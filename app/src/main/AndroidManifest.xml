@@ -34,6 +34,12 @@
             android:label="评论"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
+        <activity
+            android:name=".other.joke.comment.CommentView"
+            android:label="评论"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

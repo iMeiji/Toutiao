@@ -1,28 +1,26 @@
-package com.meiji.toutiao.other.joke.content;
+package com.meiji.toutiao.other.joke.comment;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 
-import com.meiji.toutiao.InitApp;
-import com.meiji.toutiao.bean.other.joke.JokeContentBean;
-import com.meiji.toutiao.other.joke.comment.CommentView;
+import com.meiji.toutiao.bean.other.joke.JokeCommentBean;
 import com.meiji.toutiao.utils.Api;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Meiji on 2016/12/28.
+ * Created by Meiji on 2017/1/1.
  */
 
-class ContentPresenter implements IContent.Presenter {
+class CommentPresenter implements IComment.Presenter {
 
-    private IContent.View view;
-    private IContent.Model model;
-    private String category;
+    private IComment.View view;
+    private IComment.Model model;
+    private String jokeId;
+    private String jokeCommentCount;
     private int offset = 0;
-    private List<JokeContentBean.DataBean.GroupBean> groupList = new ArrayList<>();
+    private List<JokeCommentBean.DataBean.CommentsBean> commentsList = new ArrayList<>();
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -36,16 +34,17 @@ class ContentPresenter implements IContent.Presenter {
         }
     });
 
-    public ContentPresenter(IContent.View view) {
+    CommentPresenter(IComment.View view) {
         this.view = view;
-        model = new ContentModel();
+        this.model = new CommentModel();
     }
 
     @Override
-    public void doGetUrl(String parameter) {
+    public void doGetUrl(String jokeId, String jokeCommentCount) {
         view.onShowRefreshing();
-        this.category = parameter;
-        String url = Api.getOtherUrl(category);
+        this.jokeId = jokeId;
+        this.jokeCommentCount = jokeCommentCount;
+        String url = Api.getOtherJokeCommentUrl(jokeId, 20, 0);
         doRequestData(url);
     }
 
@@ -68,35 +67,30 @@ class ContentPresenter implements IContent.Presenter {
 
     @Override
     public void doSetAdapter() {
-        if (groupList.size() != 0) {
-            groupList.clear();
+        if (commentsList.size() != 0) {
+            commentsList.clear();
         }
-        groupList.addAll(model.getDataList());
-        view.onSetAdapter(groupList);
+        commentsList.addAll(model.getDataList());
+        view.onSetAdapter(commentsList);
         view.onHideRefreshing();
     }
 
     @Override
     public void doRefresh() {
         view.onShowRefreshing();
-        //offset += 20;
-        String url = Api.getOtherUrl(category);
-        doRequestData(url);
+        if (offset < Integer.parseInt(jokeCommentCount)) {
+            offset += 20;
+            String url = Api.getOtherJokeCommentUrl(jokeId, 20, offset);
+            doRequestData(url);
+        } else {
+            view.onFinish();
+            view.onHideRefreshing();
+        }
     }
 
     @Override
     public void onFail() {
         view.onHideRefreshing();
         view.onFail();
-    }
-
-    @Override
-    public void doOnClickItem(int position) {
-        JokeContentBean.DataBean.GroupBean bean = groupList.get(position);
-        // 转跳到评论页面
-        Intent intent = new Intent(InitApp.AppContext, CommentView.class);
-        intent.putExtra(CommentView.TAG, bean);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        InitApp.AppContext.startActivity(intent);
     }
 }

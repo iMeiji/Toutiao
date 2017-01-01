@@ -1,5 +1,8 @@
 package com.meiji.toutiao.bean.other.joke;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -123,7 +126,18 @@ public class JokeContentBean {
             this.comments = comments;
         }
 
-        public static class GroupBean {
+        public static class GroupBean implements Parcelable {
+            public static final Creator<GroupBean> CREATOR = new Creator<GroupBean>() {
+                @Override
+                public GroupBean createFromParcel(Parcel in) {
+                    return new GroupBean(in);
+                }
+
+                @Override
+                public GroupBean[] newArray(int size) {
+                    return new GroupBean[size];
+                }
+            };
             /**
              * text : 我知道这里大神多，巨友帮忙翻译个句子，谢谢了，“如果每天早上醒来都能看到这张脸，那你丈夫我，还会去追求其他的什么么？”这个，翻译成文言文，谢谢了
              * create_time : 1482909018
@@ -197,6 +211,84 @@ public class JokeContentBean {
             private ActivityBean activity;
             private long group_id;
             private int category_id;
+
+            protected GroupBean(Parcel in) {
+                text = in.readString();
+                create_time = in.readInt();
+                id = in.readLong();
+                favorite_count = in.readInt();
+                go_detail_count = in.readInt();
+                user_favorite = in.readInt();
+                share_type = in.readInt();
+                is_can_share = in.readInt();
+                comment_count = in.readInt();
+                share_url = in.readString();
+                label = in.readInt();
+                content = in.readString();
+                category_type = in.readInt();
+                id_str = in.readString();
+                media_type = in.readInt();
+                share_count = in.readInt();
+                type = in.readInt();
+                status = in.readInt();
+                has_comments = in.readInt();
+                user_bury = in.readInt();
+                status_desc = in.readString();
+                user_digg = in.readInt();
+                online_time = in.readInt();
+                category_name = in.readString();
+                category_visible = in.readByte() != 0;
+                bury_count = in.readInt();
+                is_anonymous = in.readByte() != 0;
+                repin_count = in.readInt();
+                digg_count = in.readInt();
+                has_hot_comments = in.readInt();
+                user_repin = in.readInt();
+                group_id = in.readLong();
+                category_id = in.readInt();
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(text);
+                dest.writeInt(create_time);
+                dest.writeLong(id);
+                dest.writeInt(favorite_count);
+                dest.writeInt(go_detail_count);
+                dest.writeInt(user_favorite);
+                dest.writeInt(share_type);
+                dest.writeInt(is_can_share);
+                dest.writeInt(comment_count);
+                dest.writeString(share_url);
+                dest.writeInt(label);
+                dest.writeString(content);
+                dest.writeInt(category_type);
+                dest.writeString(id_str);
+                dest.writeInt(media_type);
+                dest.writeInt(share_count);
+                dest.writeInt(type);
+                dest.writeInt(status);
+                dest.writeInt(has_comments);
+                dest.writeInt(user_bury);
+                dest.writeString(status_desc);
+                dest.writeInt(user_digg);
+                dest.writeInt(online_time);
+                dest.writeString(category_name);
+                dest.writeByte((byte) (category_visible ? 1 : 0));
+                dest.writeInt(bury_count);
+                dest.writeByte((byte) (is_anonymous ? 1 : 0));
+                dest.writeInt(repin_count);
+                dest.writeInt(digg_count);
+                dest.writeInt(has_hot_comments);
+                dest.writeInt(user_repin);
+                dest.writeLong(group_id);
+                dest.writeInt(category_id);
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
 
             public String getText() {
                 return text;

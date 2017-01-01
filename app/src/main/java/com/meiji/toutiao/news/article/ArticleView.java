@@ -108,11 +108,6 @@ public class ArticleView extends BasePageFragment implements SwipeRefreshLayout.
             adapter.notifyItemInserted(list.size());
         }
 
-        // 打印下标题
-//        for (NewsArticleBean.DataBean bean : list) {
-//            System.out.println(bean.getTitle());
-//        }
-
         canLoading = true;
 
         recycler_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -127,11 +122,6 @@ public class ArticleView extends BasePageFragment implements SwipeRefreshLayout.
                         }
                     }
                 }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
             }
         });
     }
