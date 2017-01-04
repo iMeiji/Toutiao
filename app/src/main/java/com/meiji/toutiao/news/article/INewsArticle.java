@@ -1,32 +1,29 @@
-package com.meiji.toutiao.other.joke.comment;
+package com.meiji.toutiao.news.article;
 
-import com.meiji.toutiao.bean.other.joke.JokeCommentBean;
+import com.meiji.toutiao.bean.news.NewsArticleBean;
 
 import java.util.List;
 
 /**
- * Created by Meiji on 2017/1/1.
+ * Created by Meiji on 2016/12/15.
  */
 
-interface IComment {
+interface INewsArticle {
 
     interface View {
         void onRequestData();
 
-        void onSetAdapter(List<JokeCommentBean.DataBean.CommentsBean> list);
+        void onSetAdapter(List<NewsArticleBean.DataBean> list);
 
         void onShowRefreshing();
 
         void onHideRefreshing();
 
         void onFail();
-
-        void onFinish();
     }
 
     interface Presenter {
-
-        void doGetUrl(String jokeId, String jokeCommentCount);
+        void doGetUrl(String parameter);
 
         void doRequestData(String url);
 
@@ -35,12 +32,15 @@ interface IComment {
         void doRefresh();
 
         void onFail();
+
+        void doOnClickItem(int position);
     }
 
     interface Model {
         boolean requestData(String url);
 
-        List<JokeCommentBean.DataBean.CommentsBean> getDataList();
+        List<NewsArticleBean.DataBean> getDataList();
 
+        int getmax_behot_time();
     }
 }

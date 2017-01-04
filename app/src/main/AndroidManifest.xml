@@ -25,18 +25,24 @@
         </activity>
 
         <activity
-            android:name=".news.content.ContetnView"
+            android:name=".news.content.NewsContetnView"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
-            android:name=".news.comment.CommentView"
+            android:name=".news.comment.NewsCommentView"
             android:label="评论"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
-            android:name=".other.joke.comment.CommentView"
+            android:name=".other.joke.comment.JokeCommentView"
+            android:label="评论"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".other.funny.content.FunnyContentView"
             android:label="评论"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

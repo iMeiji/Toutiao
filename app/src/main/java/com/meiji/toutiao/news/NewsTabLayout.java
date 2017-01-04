@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.news.NewsPagerAdapter;
-import com.meiji.toutiao.news.article.ArticleView;
+import com.meiji.toutiao.news.article.NewsArticleView;
 import com.meiji.toutiao.utils.ColorUtil;
 
 import java.util.ArrayList;
@@ -58,13 +58,13 @@ public class NewsTabLayout extends Fragment {
     }
 
     /**
-     * 初始化 ArticleView 数据
+     * 初始化 NewsArticleView 数据
      */
     private void initData() {
         String categoryId[] = InitApp.AppContext.getResources().getStringArray(R.array.news_id);
         String categoryName[] = InitApp.AppContext.getResources().getStringArray(R.array.news_name);
         for (int i = 0; i < categoryId.length; i++) {
-            Fragment fragment = ArticleView.newInstance(categoryId[i]);
+            Fragment fragment = NewsArticleView.newInstance(categoryId[i]);
             list.add(fragment);
         }
         NewsPagerAdapter adapter = new NewsPagerAdapter(getFragmentManager(), list, categoryName);

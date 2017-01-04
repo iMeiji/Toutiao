@@ -21,7 +21,7 @@ import java.util.List;
  * Created by Meiji on 2016/12/13.
  */
 
-public class NewsArticleAdapter extends RecyclerView.Adapter<NewsArticleAdapter.NewsViewHolder> {
+public class NewsArticleAdapter extends RecyclerView.Adapter<NewsArticleAdapter.NewsArticleViewHolder> {
 
     private List<NewsArticleBean.DataBean> list = new ArrayList<>();
     private IOnItemClickListener onItemClickListener;
@@ -37,13 +37,13 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<NewsArticleAdapter.
     }
 
     @Override
-    public NewsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public NewsArticleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.news_article_item, parent, false);
-        return new NewsViewHolder(view, onItemClickListener);
+        return new NewsArticleViewHolder(view, onItemClickListener);
     }
 
     @Override
-    public void onBindViewHolder(NewsViewHolder holder, int position) {
+    public void onBindViewHolder(NewsArticleViewHolder holder, int position) {
         NewsArticleBean.DataBean bean = list.get(position);
         List<NewsArticleBean.DataBean.ImageListBean> image_list = bean.getImage_list();
         if (image_list.size() != 0) {
@@ -73,7 +73,7 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<NewsArticleAdapter.
         return list != null ? list.size() : 0;
     }
 
-    public class NewsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class NewsArticleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView iv_image_url;
         private TextView tv_title;
@@ -83,7 +83,7 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<NewsArticleAdapter.
         private TextView tv_datetime;
         private IOnItemClickListener onItemClickListener;
 
-        public NewsViewHolder(View itemView, IOnItemClickListener onItemClickListener) {
+        public NewsArticleViewHolder(View itemView, IOnItemClickListener onItemClickListener) {
             super(itemView);
             this.iv_image_url = (ImageView) itemView.findViewById(R.id.iv_image_url);
             this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);

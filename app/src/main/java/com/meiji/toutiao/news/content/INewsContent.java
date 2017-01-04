@@ -6,7 +6,7 @@ import com.meiji.toutiao.bean.news.NewsArticleBean;
  * Created by Meiji on 2016/12/17.
  */
 
-interface IContent {
+interface INewsContent {
 
     interface View {
 

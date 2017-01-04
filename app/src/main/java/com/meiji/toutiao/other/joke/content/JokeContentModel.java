@@ -18,9 +18,9 @@ import okhttp3.Response;
  * Created by Meiji on 2016/12/28.
  */
 
-class ContentModel implements IContent.Model {
+class JokeContentModel implements IJokeContent.Model {
 
-    private static final String TAG = "ContentModel";
+    private static final String TAG = "JokeContentModel";
     private Gson gson = new Gson();
     private List<JokeContentBean> jokeList = new ArrayList<>();
     private List<JokeContentBean.DataBean> dataList = new ArrayList<>();

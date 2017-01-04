@@ -6,7 +6,7 @@ import android.os.Message;
 
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
-import com.meiji.toutiao.news.content.ContetnView;
+import com.meiji.toutiao.news.content.NewsContetnView;
 import com.meiji.toutiao.utils.Api;
 
 import java.util.ArrayList;
@@ -16,10 +16,10 @@ import java.util.List;
  * Created by Meiji on 2016/12/15.
  */
 
-class ArticlePresenter implements IArticle.Presenter {
+class NewsArticlePresenter implements INewsArticle.Presenter {
 
-    private IArticle.View view;
-    private IArticle.Model model;
+    private INewsArticle.View view;
+    private INewsArticle.Model model;
     private List<NewsArticleBean.DataBean> dataList = new ArrayList<>();
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -35,9 +35,9 @@ class ArticlePresenter implements IArticle.Presenter {
     });
     private String category;
 
-    ArticlePresenter(IArticle.View view) {
+    NewsArticlePresenter(INewsArticle.View view) {
         this.view = view;
-        this.model = new ArticleModel();
+        this.model = new NewsArticleModel();
     }
 
     @Override
@@ -90,8 +90,8 @@ class ArticlePresenter implements IArticle.Presenter {
     @Override
     public void doOnClickItem(int position) {
         NewsArticleBean.DataBean bean = dataList.get(position);
-        Intent intent = new Intent(InitApp.AppContext, ContetnView.class);
-        intent.putExtra(ContetnView.TAG, bean);
+        Intent intent = new Intent(InitApp.AppContext, NewsContetnView.class);
+        intent.putExtra(NewsContetnView.TAG, bean);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         InitApp.AppContext.startActivity(intent);
         // 打印下点击的标题和链接

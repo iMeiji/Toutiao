@@ -6,17 +6,17 @@ import android.os.Message;
 
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
-import com.meiji.toutiao.news.comment.CommentView;
+import com.meiji.toutiao.news.comment.NewsCommentView;
 import com.meiji.toutiao.utils.Api;
 
 /**
  * Created by Meiji on 2016/12/17.
  */
 
-class ContentPresenter implements IContent.Presenter {
+class NewsContentPresenter implements INewsContent.Presenter {
 
-    private IContent.View view;
-    private IContent.Model model;
+    private INewsContent.View view;
+    private INewsContent.Model model;
     private String group_id;
     private String item_id;
     private Handler handler = new Handler(new Handler.Callback() {
@@ -33,9 +33,9 @@ class ContentPresenter implements IContent.Presenter {
         }
     });
 
-    ContentPresenter(IContent.View view) {
+    NewsContentPresenter(INewsContent.View view) {
         this.view = view;
-        model = new ContentModel();
+        model = new NewsContentModel();
     }
 
     @Override
@@ -75,9 +75,9 @@ class ContentPresenter implements IContent.Presenter {
 
     @Override
     public void doGetComment() {
-        Intent intent = new Intent(InitApp.AppContext, CommentView.class);
-        intent.putExtra(CommentView.GROUP_ID, group_id);
-        intent.putExtra(CommentView.ITEM_ID, item_id);
+        Intent intent = new Intent(InitApp.AppContext, NewsCommentView.class);
+        intent.putExtra(NewsCommentView.GROUP_ID, group_id);
+        intent.putExtra(NewsCommentView.ITEM_ID, item_id);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         InitApp.AppContext.startActivity(intent);
         // 打印下点击的标题和链接

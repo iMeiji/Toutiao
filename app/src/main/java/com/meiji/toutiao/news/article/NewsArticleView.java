@@ -1,4 +1,4 @@
-package com.meiji.toutiao.other.joke.content;
+package com.meiji.toutiao.news.article;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,38 +12,38 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.adapter.other.joke.JokeContentAdapter;
-import com.meiji.toutiao.bean.other.joke.JokeContentBean;
+import com.meiji.toutiao.adapter.news.NewsArticleAdapter;
+import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.view.BasePageFragment;
 
 import java.util.List;
 
 /**
- * Created by Meiji on 2016/12/28.
+ * Created by Meiji on 2016/12/12.
  */
 
-public class ContentView extends BasePageFragment implements SwipeRefreshLayout.OnRefreshListener, IContent.View {
+public class NewsArticleView extends BasePageFragment implements SwipeRefreshLayout.OnRefreshListener, INewsArticle.View {
 
-    private static final String CATEGORY = "CATEGORY";
-    private static final String TAG = "ContentView";
-    private String categoryId;
+    public static final String CATEGORY = "CATEGORY";
+    private static final String TAG = "NewsArticleView";
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
-    private IContent.Presenter presenter;
-    private JokeContentAdapter adapter;
-    private boolean canLoading;
+    private NewsArticleAdapter adapter;
+    private String categoryId;
+    private boolean canLoading = false;
+    private INewsArticle.Presenter presenter;
 
-    public static ContentView newInstance(String categoryId) {
+    public static NewsArticleView newInstance(String categoryId) {
         Bundle bundle = new Bundle();
         bundle.putString(CATEGORY, categoryId);
-        ContentView contentView = new ContentView();
-        contentView.setArguments(bundle);
-        return contentView;
+        NewsArticleView newsArticleView = new NewsArticleView();
+        newsArticleView.setArguments(bundle);
+        return newsArticleView;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -54,8 +54,8 @@ public class ContentView extends BasePageFragment implements SwipeRefreshLayout.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.other_joke_main, container, false);
-        presenter = new ContentPresenter(this);
+        View view = inflater.inflate(R.layout.news_article_main, container, false);
+        presenter = new NewsArticlePresenter(this);
         initView(view);
 //        onRequestData();
         return view;
@@ -68,7 +68,7 @@ public class ContentView extends BasePageFragment implements SwipeRefreshLayout.
 
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
-        refresh_layout.setColorSchemeResources(R.color.blue);
+        refresh_layout.setColorSchemeResources(R.color.colorPrimary);
         // 设置手指在屏幕上下拉多少距离开始刷新
         refresh_layout.setDistanceToTriggerSync(300);
         // 设置下拉刷新按钮的背景颜色
@@ -94,9 +94,9 @@ public class ContentView extends BasePageFragment implements SwipeRefreshLayout.
     }
 
     @Override
-    public void onSetAdapter(List<JokeContentBean.DataBean.GroupBean> list) {
+    public void onSetAdapter(final List<NewsArticleBean.DataBean> list) {
         if (adapter == null) {
-            adapter = new JokeContentAdapter(list, getActivity());
+            adapter = new NewsArticleAdapter(getActivity(), list);
             recycler_view.setAdapter(adapter);
             adapter.setOnItemClickListener(new IOnItemClickListener() {
                 @Override

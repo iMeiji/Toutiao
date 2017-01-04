@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Meiji on 2016/12/20.
  */
 
-interface IComment {
+interface INewsComment {
 
     interface View {
         void onRequestData();
@@ -39,6 +39,5 @@ interface IComment {
         boolean requestData(String url);
 
         List<NewsCommentBean.DataBean.CommentsBean> getDataList();
-
     }
 }

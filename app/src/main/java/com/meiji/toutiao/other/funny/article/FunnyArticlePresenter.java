@@ -1,26 +1,27 @@
-package com.meiji.toutiao.news.comment;
+package com.meiji.toutiao.other.funny.article;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 
-import com.meiji.toutiao.bean.news.NewsCommentBean;
+import com.meiji.toutiao.InitApp;
+import com.meiji.toutiao.bean.other.funny.FunnyArticleBean;
+import com.meiji.toutiao.other.funny.content.FunnyContentView;
 import com.meiji.toutiao.utils.Api;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Meiji on 2016/12/20.
+ * Created by Meiji on 2017/1/2.
  */
 
-class CommentPresenter implements IComment.Presenter {
+class FunnyArticlePresenter implements IFunnyArticle.Presenter {
 
-    private IComment.View view;
-    private IComment.Model model;
-    private String group_id;
-    private String item_id;
-    private int offset = 0;
-    private List<NewsCommentBean.DataBean.CommentsBean> commentsBeanList = new ArrayList<>();
+    private IFunnyArticle.View view;
+    private IFunnyArticle.Model model;
+    private String categoryId;
+    private List<FunnyArticleBean.DataBean> dataList = new ArrayList<>();
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -34,17 +35,15 @@ class CommentPresenter implements IComment.Presenter {
         }
     });
 
-    CommentPresenter(IComment.View view) {
+    FunnyArticlePresenter(IFunnyArticle.View view) {
         this.view = view;
-        this.model = new CommentModel();
+        this.model = new FunnyArticleModel();
     }
 
-    @Override
-    public void doGetUrl(String group_id, String item_id) {
+    public void doGetUrl(String parameter) {
         view.onShowRefreshing();
-        this.group_id = group_id;
-        this.item_id = item_id;
-        String url = Api.getNewsCommentUrl(group_id, item_id, 0, 20);
+        this.categoryId = parameter;
+        String url = Api.getOtherUrl(categoryId);
         doRequestData(url);
     }
 
@@ -67,19 +66,18 @@ class CommentPresenter implements IComment.Presenter {
 
     @Override
     public void doSetAdapter() {
-        if (commentsBeanList.size() != 0) {
-            commentsBeanList.clear();
+        if (dataList.size() != 0) {
+            dataList.clear();
         }
-        commentsBeanList.addAll(model.getDataList());
-        view.onSetAdapter(commentsBeanList);
+        dataList.addAll(model.getDataList());
+        view.onSetAdapter(model.getDataList());
         view.onHideRefreshing();
     }
 
     @Override
     public void doRefresh() {
         view.onShowRefreshing();
-        offset += 20;
-        String url = Api.getNewsCommentUrl(group_id, item_id, offset, 20);
+        String url = Api.getOtherUrl(categoryId);
         doRequestData(url);
     }
 
@@ -87,5 +85,14 @@ class CommentPresenter implements IComment.Presenter {
     public void onFail() {
         view.onHideRefreshing();
         view.onFail();
+    }
+
+    @Override
+    public void doOnClickItem(int position) {
+        FunnyArticleBean.DataBean bean = dataList.get(position);
+        Intent intent = new Intent(InitApp.AppContext, FunnyContentView.class);
+        intent.putExtra(FunnyContentView.TAG, bean);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        InitApp.AppContext.startActivity(intent);
     }
 }

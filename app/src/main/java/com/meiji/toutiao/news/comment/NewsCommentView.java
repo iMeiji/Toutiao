@@ -1,4 +1,4 @@
-package com.meiji.toutiao.other.joke.comment;
+package com.meiji.toutiao.news.comment;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -12,64 +12,60 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.meiji.toutiao.BaseActivity;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.adapter.other.joke.JokeCommentAdapter;
-import com.meiji.toutiao.bean.other.joke.JokeCommentBean;
-import com.meiji.toutiao.bean.other.joke.JokeContentBean;
+import com.meiji.toutiao.adapter.news.NewsCommentsAdapter;
+import com.meiji.toutiao.bean.news.NewsCommentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 
 import java.util.List;
 
 /**
- * Created by Meiji on 2017/1/1.
+ * Created by Meiji on 2016/12/20.
  */
 
-public class CommentView extends BaseActivity implements IComment.View, SwipeRefreshLayout.OnRefreshListener {
+public class NewsCommentView extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, INewsComment.View {
 
-    public static final String TAG = "CommentView";
-    private String jokeId;
-    private String jokeCommentCount;
-    private String jokeText;
-    private boolean canLoading;
+    public static final String GROUP_ID = "group_id";
+    public static final String ITEM_ID = "item_id";
+    private static final String TAG = "NewsCommentView";
+    private String groupId;
+    private String itemId;
 
-    private TextView tv_content;
-    private Toolbar toolbar;
+
+    private NewsCommentsAdapter adapter;
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
-    private JokeCommentAdapter adapter;
+    private Toolbar toolbar;
 
-    private IComment.Presenter presenter;
+
+    private INewsComment.Presenter presenter;
+    private boolean canLoading;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.other_joke_comment_main);
-        presenter = new CommentPresenter(this);
+        setContentView(R.layout.news_comment_main);
+        presenter = new NewsCommentPresenter(this);
         initView();
         initData();
         onRequestData();
     }
 
+    private void initData() {
+        Intent intent = getIntent();
+        groupId = intent.getStringExtra(GROUP_ID);
+        itemId = intent.getStringExtra(ITEM_ID);
+    }
+
     private void initView() {
-        tv_content = (TextView) findViewById(R.id.tv_content);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
-        refresh_layout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
-
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
         recycler_view.setHasFixedSize(true);
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
 
@@ -83,21 +79,12 @@ public class CommentView extends BaseActivity implements IComment.View, SwipeRef
         // 设置下拉刷新按钮的大小
         refresh_layout.setSize(SwipeRefreshLayout.DEFAULT);
         refresh_layout.setOnRefreshListener(this);
-    }
 
-    private void initData() {
-        Intent intent = getIntent();
-        JokeContentBean.DataBean.GroupBean bean = intent.getParcelableExtra(TAG);
-        jokeId = bean.getId() + "";
-        jokeCommentCount = bean.getComment_count() + "";
-        jokeText = bean.getText();
-        tv_content.setText(jokeText);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.other_joke_comment, menu);
-        return super.onCreateOptionsMenu(menu);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
@@ -106,26 +93,24 @@ public class CommentView extends BaseActivity implements IComment.View, SwipeRef
             case android.R.id.home:
                 onBackPressed();
                 break;
-            case R.id.other_joke_comment_share:
-                Intent shareIntent = new Intent()
-                        .setAction(Intent.ACTION_SEND)
-                        .setType("text/plain")
-                        .putExtra(Intent.EXTRA_TEXT, jokeText);
-                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
-                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onRequestData() {
-        presenter.doGetUrl(jokeId, jokeCommentCount);
+    public void onRefresh() {
+        presenter.doRefresh();
     }
 
     @Override
-    public void onSetAdapter(final List<JokeCommentBean.DataBean.CommentsBean> list) {
+    public void onRequestData() {
+        presenter.doGetUrl(groupId, itemId);
+    }
+
+    @Override
+    public void onSetAdapter(final List<NewsCommentBean.DataBean.CommentsBean> list) {
         if (adapter == null) {
-            adapter = new JokeCommentAdapter(list, this);
+            adapter = new NewsCommentsAdapter(list, this);
             recycler_view.setAdapter(adapter);
             adapter.setOnItemClickListener(new IOnItemClickListener() {
                 @Override
@@ -156,7 +141,7 @@ public class CommentView extends BaseActivity implements IComment.View, SwipeRef
     }
 
     private void showCopyDialog(int position, final String content) {
-        final MaterialDialog dialog = new MaterialDialog.Builder(this)
+        final MaterialDialog dialog = new MaterialDialog.Builder(NewsCommentView.this)
                 .title("是否复制评论?")
                 .content(content).build();
         dialog.setActionButton(DialogAction.NEGATIVE, "取消");
@@ -174,7 +159,7 @@ public class CommentView extends BaseActivity implements IComment.View, SwipeRef
                 ClipboardManager copy = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clipData = ClipData.newPlainText("text", content);
                 copy.setPrimaryClip(clipData);
-                Toast.makeText(CommentView.this, "已复制", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewsCommentView.this, "已复制", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
@@ -197,13 +182,5 @@ public class CommentView extends BaseActivity implements IComment.View, SwipeRef
         Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onRefresh() {
-        presenter.doRefresh();
-    }
 
-    @Override
-    public void onFinish() {
-        Snackbar.make(refresh_layout, R.string.no_more, Snackbar.LENGTH_SHORT).show();
-    }
 }

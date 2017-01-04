@@ -12,7 +12,8 @@ import android.view.ViewGroup;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.news.NewsPagerAdapter;
-import com.meiji.toutiao.other.joke.content.ContentView;
+import com.meiji.toutiao.other.funny.article.FunnyArticleView;
+import com.meiji.toutiao.other.joke.content.JokeContentView;
 import com.meiji.toutiao.utils.ColorUtil;
 
 import java.util.ArrayList;
@@ -59,12 +60,15 @@ public class OtherTabLayout extends Fragment {
     private void initData() {
         String categoryId[] = InitApp.AppContext.getResources().getStringArray(R.array.other_id);
         String categoryName[] = InitApp.AppContext.getResources().getStringArray(R.array.other_name);
-        for (int i = 0; i < categoryId.length; i++) {
-            Fragment fragment = ContentView.newInstance(categoryId[i]);
-            list.add(fragment);
-        }
-//        Fragment fragment = ContentView.newInstance(categoryId[0]);
-//        list.add(fragment);
+//        for (int i = 0; i < categoryId.length; i++) {
+//            Fragment fragment = JokeContentView.newInstance(categoryId[i]);
+//            list.add(fragment);
+//        }
+        Fragment jokeContentView = JokeContentView.newInstance(categoryId[0]);
+        Fragment funnyArticleView = FunnyArticleView.newInstance(categoryId[1]);
+        list.add(jokeContentView);
+        list.add(funnyArticleView);
+
         NewsPagerAdapter adapter = new NewsPagerAdapter(getFragmentManager(), list, categoryName);
         view_pager.setAdapter(adapter);
     }

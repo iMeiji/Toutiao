@@ -20,7 +20,6 @@ public class Api {
     private static final String NEWS_COMMENT_URL =
             "http://www.toutiao.com/api/comment/list/?group_id=头条号&item_id=文章号&offset=偏移量&count=数量";
 
-
     // 头条号 (as 和 cp 每次都会变 待处理)
     private static final String MEDIA_ARTICLE_URL =
             "http://www.toutiao.com/pgc/ma/?media_id=头条号&page_type=1&count=10&version=2&platform=pc&as=A1C548D5FDB17E6&cp=585DB1871ED64E1&max_behot_time=偏移量";
@@ -32,6 +31,9 @@ public class Api {
     // 段子评论
     private static final String OTHER_JOKE_COMMENT_URL =
             "http://www.toutiao.com/group/编号/comments/?count=数量&offset=偏移量&item_id=0&format=json";
+
+    //
+
 
     /**
      * http://toutiao.com/api/article/recent/?source=2&category=news_hot&as=A105177907376A5&cp=5797C7865AD54E1&count=20&_=1481986412

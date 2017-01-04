@@ -1,9 +1,15 @@
-package com.meiji.toutiao.news.content;
+package com.meiji.toutiao.other.funny.content;
+
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.meiji.toutiao.InitApp;
-import com.meiji.toutiao.bean.news.NewsContentBean;
+import com.meiji.toutiao.bean.other.funny.FunnyContentBean;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
@@ -11,50 +17,56 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Created by Meiji on 2016/12/17.
+ * Created by Meiji on 2017/1/3.
  */
 
-class ContentModel implements IContent.Model {
+class FunnyContentModel implements IFunnyContent.Model {
 
+    private static final String TAG = "FunnyContentModel";
     private Gson gson = new Gson();
-    private String url;
-    private NewsContentBean newsContentBean;
-
-    ContentModel() {
-    }
+    private FunnyContentBean bean;
 
     @Override
-    public boolean getRequestData(String url) {
+    public boolean requestData(String url) {
 
         boolean flag = false;
-        System.out.println("newsInfoApi " + url);
-
         try {
+            Document document = Jsoup
+                    .connect(url)
+                    .userAgent("Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Mobile Safari/537.36")
+                    .get();
+            Elements select = document.select("link[href~=^.*http.*://www.toutiao.com/(.*)$]");
+            // http://www.toutiao.com/i6371213132714476034
+            url = select.attr("href");
+            // http://m.toutiao.com/i6371213132714476034/info/
+            url = url.replace("www.toutiao.com", "m.toutiao.com") + "/info";
+
+            Log.d(TAG, "requestData: " + url);
             Request request = new Request.Builder()
-                    .get()
                     .url(url)
+                    .get()
                     .build();
+
             Response response = InitApp.getOkHttpClient().newCall(request).execute();
             if (response.isSuccessful()) {
                 flag = true;
                 String responseJson = response.body().string();
-//                System.out.println("新闻内容抓取" + html);
-                newsContentBean = gson.fromJson(responseJson, NewsContentBean.class);
+                Log.d(TAG, "requestData: " + responseJson);
+                bean = gson.fromJson(responseJson, FunnyContentBean.class);
             }
         } catch (IOException | JsonSyntaxException e) {
             e.printStackTrace();
-            flag = false;
         }
-
         return flag;
     }
 
     @Override
     public String getHtml() {
 
-        NewsContentBean.DataBean dataBean = newsContentBean.getData();
-        String title = dataBean.getTitle();
-        String content = dataBean.getContent();
+        FunnyContentBean.DataBean data = bean.getData();
+        String title = data.getTitle();
+        String content = data.getContent();
+
         if (content != null) {
 
             String css = "<link rel=\"stylesheet\" href=\"file:///android_asset/wap.css\" type=\"text/css\">";
@@ -82,5 +94,3 @@ class ContentModel implements IContent.Model {
         }
     }
 }
-
-

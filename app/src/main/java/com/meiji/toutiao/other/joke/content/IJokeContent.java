@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Meiji on 2016/12/28.
  */
 
-interface IContent {
+interface IJokeContent {
 
     interface View {
         void onRequestData();

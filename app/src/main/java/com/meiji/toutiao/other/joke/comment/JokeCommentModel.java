@@ -18,9 +18,9 @@ import okhttp3.Response;
  * Created by Meiji on 2017/1/1.
  */
 
-public class CommentModel implements IComment.Model {
+public class JokeCommentModel implements IJokeComment.Model {
 
-    private static final String TAG = "CommentModel";
+    private static final String TAG = "JokeCommentModel";
     private Gson gson = new Gson();
     private List<JokeCommentBean> jokeCommentList = new ArrayList<>();
     private List<JokeCommentBean.DataBean> dataList = new ArrayList<>();

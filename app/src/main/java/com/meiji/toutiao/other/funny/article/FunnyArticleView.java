@@ -1,4 +1,4 @@
-package com.meiji.toutiao.news.article;
+package com.meiji.toutiao.other.funny.article;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,52 +12,50 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.adapter.news.NewsArticleAdapter;
-import com.meiji.toutiao.bean.news.NewsArticleBean;
+import com.meiji.toutiao.adapter.other.funny.FunnyContentAdapter;
+import com.meiji.toutiao.bean.other.funny.FunnyArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.view.BasePageFragment;
 
 import java.util.List;
 
 /**
- * Created by Meiji on 2016/12/12.
+ * Created by Meiji on 2017/1/2.
  */
 
-public class ArticleView extends BasePageFragment implements SwipeRefreshLayout.OnRefreshListener, IArticle.View {
+public class FunnyArticleView extends BasePageFragment implements IFunnyArticle.View, SwipeRefreshLayout.OnRefreshListener {
 
-    public static final String CATEGORY = "CATEGORY";
-    private static final String TAG = "ArticleView";
+    private static final String TAG = "FunnyArticleView";
+    private String categoryId;
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
-    private NewsArticleAdapter adapter;
-    private String categoryId;
-    private boolean canLoading = false;
-    private IArticle.Presenter presenter;
+    private IFunnyArticle.Presenter presenter;
+    private FunnyContentAdapter adapter;
+    private boolean canLoading;
 
-    public static ArticleView newInstance(String categoryId) {
+    public static FunnyArticleView newInstance(String categoryId) {
         Bundle bundle = new Bundle();
-        bundle.putString(CATEGORY, categoryId);
-        ArticleView articleView = new ArticleView();
-        articleView.setArguments(bundle);
-        return articleView;
+        bundle.putString(TAG, categoryId);
+        FunnyArticleView funnyArticleView = new FunnyArticleView();
+        funnyArticleView.setArguments(bundle);
+        return funnyArticleView;
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            categoryId = bundle.getString(CATEGORY);
+            categoryId = bundle.getString(TAG);
         }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.news_article_main, container, false);
-        presenter = new ArticlePresenter(this);
+        View view = inflater.inflate(R.layout.other_funny_article_main, container, false);
+        presenter = new FunnyArticlePresenter(this);
         initView(view);
-//        onRequestData();
         return view;
     }
 
@@ -68,7 +66,7 @@ public class ArticleView extends BasePageFragment implements SwipeRefreshLayout.
 
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
-        refresh_layout.setColorSchemeResources(R.color.colorPrimary);
+        refresh_layout.setColorSchemeResources(R.color.blue);
         // 设置手指在屏幕上下拉多少距离开始刷新
         refresh_layout.setDistanceToTriggerSync(300);
         // 设置下拉刷新按钮的背景颜色
@@ -84,19 +82,14 @@ public class ArticleView extends BasePageFragment implements SwipeRefreshLayout.
     }
 
     @Override
-    public void onRefresh() {
-        presenter.doRefresh();
-    }
-
-    @Override
     public void onRequestData() {
         presenter.doGetUrl(categoryId);
     }
 
     @Override
-    public void onSetAdapter(final List<NewsArticleBean.DataBean> list) {
+    public void onSetAdapter(List<FunnyArticleBean.DataBean> list) {
         if (adapter == null) {
-            adapter = new NewsArticleAdapter(getActivity(), list);
+            adapter = new FunnyContentAdapter(list, getActivity());
             recycler_view.setAdapter(adapter);
             adapter.setOnItemClickListener(new IOnItemClickListener() {
                 @Override
@@ -142,10 +135,7 @@ public class ArticleView extends BasePageFragment implements SwipeRefreshLayout.
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (adapter != null) {
-            adapter = null;
-        }
+    public void onRefresh() {
+        presenter.doRefresh();
     }
 }

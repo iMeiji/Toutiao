@@ -20,7 +20,7 @@ import java.util.List;
  * Created by Meiji on 2016/12/28.
  */
 
-public class JokeContentAdapter extends RecyclerView.Adapter<JokeContentAdapter.JokeViewHolder> {
+public class JokeContentAdapter extends RecyclerView.Adapter<JokeContentAdapter.JokeContentViewHolder> {
 
     private List<JokeContentBean.DataBean.GroupBean> list = new ArrayList();
     private Context context;
@@ -36,13 +36,13 @@ public class JokeContentAdapter extends RecyclerView.Adapter<JokeContentAdapter.
     }
 
     @Override
-    public JokeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public JokeContentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.other_joke_item, parent, false);
-        return new JokeViewHolder(view, onItemClickListener);
+        return new JokeContentViewHolder(view, onItemClickListener);
     }
 
     @Override
-    public void onBindViewHolder(JokeViewHolder holder, int position) {
+    public void onBindViewHolder(JokeContentViewHolder holder, int position) {
         JokeContentBean.DataBean.GroupBean bean = list.get(position);
 
         String avatar_url = bean.getUser().getAvatar_url();
@@ -65,7 +65,7 @@ public class JokeContentAdapter extends RecyclerView.Adapter<JokeContentAdapter.
         return list != null ? list.size() : 0;
     }
 
-    public class JokeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class JokeContentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private CircleImageView iv_avatar;
         private TextView tv_username;
@@ -75,7 +75,7 @@ public class JokeContentAdapter extends RecyclerView.Adapter<JokeContentAdapter.
         private TextView tv_comment_count;
         private IOnItemClickListener onItemClickListener;
 
-        public JokeViewHolder(View itemView, IOnItemClickListener onItemClickListener) {
+        public JokeContentViewHolder(View itemView, IOnItemClickListener onItemClickListener) {
             super(itemView);
             this.iv_avatar = (CircleImageView) itemView.findViewById(R.id.iv_avatar);
             this.tv_username = (TextView) itemView.findViewById(R.id.tv_username);

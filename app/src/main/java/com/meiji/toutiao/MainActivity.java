@@ -132,7 +132,7 @@ public class MainActivity extends BaseActivity {
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(color));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(CircleView.shiftColorDown(color));
-            getWindow().setNavigationBarColor(color);
+            getWindow().setNavigationBarColor(CircleView.shiftColorDown(color));
         }
     }
 

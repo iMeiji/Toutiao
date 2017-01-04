@@ -1,19 +1,19 @@
-package com.meiji.toutiao.news.article;
+package com.meiji.toutiao.other.funny.article;
 
-import com.meiji.toutiao.bean.news.NewsArticleBean;
+import com.meiji.toutiao.bean.other.funny.FunnyArticleBean;
 
 import java.util.List;
 
 /**
- * Created by Meiji on 2016/12/15.
+ * Created by Meiji on 2017/1/2.
  */
 
-interface IArticle {
+interface IFunnyArticle {
 
     interface View {
         void onRequestData();
 
-        void onSetAdapter(List<NewsArticleBean.DataBean> list);
+        void onSetAdapter(List<FunnyArticleBean.DataBean> list);
 
         void onShowRefreshing();
 
@@ -25,7 +25,7 @@ interface IArticle {
     interface Presenter {
         void doGetUrl(String parameter);
 
-        void doRequestData(String url);
+        void doRequestData(final String url);
 
         void doSetAdapter();
 
@@ -39,7 +39,7 @@ interface IArticle {
     interface Model {
         boolean requestData(String url);
 
-        List<NewsArticleBean.DataBean> getDataList();
+        List<FunnyArticleBean.DataBean> getDataList();
 
         int getmax_behot_time();
     }

@@ -6,7 +6,7 @@ import android.os.Message;
 
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.bean.other.joke.JokeContentBean;
-import com.meiji.toutiao.other.joke.comment.CommentView;
+import com.meiji.toutiao.other.joke.comment.JokeCommentView;
 import com.meiji.toutiao.utils.Api;
 
 import java.util.ArrayList;
@@ -16,10 +16,10 @@ import java.util.List;
  * Created by Meiji on 2016/12/28.
  */
 
-class ContentPresenter implements IContent.Presenter {
+class JokeContentPresenter implements IJokeContent.Presenter {
 
-    private IContent.View view;
-    private IContent.Model model;
+    private IJokeContent.View view;
+    private IJokeContent.Model model;
     private String category;
     private int offset = 0;
     private List<JokeContentBean.DataBean.GroupBean> groupList = new ArrayList<>();
@@ -36,9 +36,9 @@ class ContentPresenter implements IContent.Presenter {
         }
     });
 
-    public ContentPresenter(IContent.View view) {
+    public JokeContentPresenter(IJokeContent.View view) {
         this.view = view;
-        model = new ContentModel();
+        model = new JokeContentModel();
     }
 
     @Override
@@ -94,8 +94,8 @@ class ContentPresenter implements IContent.Presenter {
     public void doOnClickItem(int position) {
         JokeContentBean.DataBean.GroupBean bean = groupList.get(position);
         // 转跳到评论页面
-        Intent intent = new Intent(InitApp.AppContext, CommentView.class);
-        intent.putExtra(CommentView.TAG, bean);
+        Intent intent = new Intent(InitApp.AppContext, JokeCommentView.class);
+        intent.putExtra(JokeCommentView.TAG, bean);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         InitApp.AppContext.startActivity(intent);
     }

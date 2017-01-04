@@ -22,9 +22,9 @@ import com.meiji.toutiao.bean.news.NewsArticleBean;
  * Created by Meiji on 2016/12/17.
  */
 
-public class ContetnView extends BaseActivity implements IContent.View {
+public class NewsContetnView extends BaseActivity implements INewsContent.View {
 
-    public static final String TAG = "ContetnView";
+    public static final String TAG = "NewsContetnView";
     // 新闻链接 标题 头条号 文章号 媒体名
     private String shareUrl;
     private String shareTitle;
@@ -33,13 +33,13 @@ public class ContetnView extends BaseActivity implements IContent.View {
     private WebView webView;
     private ActionBar actionBar;
     private MaterialDialog dialog;
-    private IContent.Presenter presenter;
+    private INewsContent.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.news_info_main);
-        presenter = new ContentPresenter(this);
+        setContentView(R.layout.news_content_main);
+        presenter = new NewsContentPresenter(this);
         initView();
         initWebClient();
         onShowRefreshing();
