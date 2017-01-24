@@ -82,8 +82,8 @@ public class JokeContentBean {
 
         private GroupBean group;
         private int type;
-        //        private int display_time;
-//        private int online_time;
+        private String display_time;
+        private String online_time;
         private List<?> comments;
 
         public GroupBean getGroup() {
@@ -102,21 +102,21 @@ public class JokeContentBean {
             this.type = type;
         }
 
-//        public int getDisplay_time() {
-//            return display_time;
-//        }
-//
-//        public void setDisplay_time(int display_time) {
-//            this.display_time = display_time;
-//        }
-//
-//        public int getOnline_time() {
-//            return online_time;
-//        }
-//
-//        public void setOnline_time(int online_time) {
-//            this.online_time = online_time;
-//        }
+        public String getDisplay_time() {
+            return display_time;
+        }
+
+        public void setDisplay_time(String display_time) {
+            this.display_time = display_time;
+        }
+
+        public String getOnline_time() {
+            return online_time;
+        }
+
+        public void setOnline_time(String online_time) {
+            this.online_time = online_time;
+        }
 
         public List<?> getComments() {
             return comments;

@@ -1,5 +1,7 @@
 package com.meiji.toutiao.news.article;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.meiji.toutiao.InitApp;
@@ -18,6 +20,7 @@ import okhttp3.Response;
 
 class NewsArticleModel implements INewsArticle.Model {
 
+    private static final String TAG = "NewsArticleModel";
     private Gson gson = new Gson();
     private List<NewsArticleBean> newsList = new ArrayList<>();
     private List<NewsArticleBean.DataBean> dataList = new ArrayList<>();
@@ -40,7 +43,7 @@ class NewsArticleModel implements INewsArticle.Model {
                 flag = true;
                 String responseJson = response.body().string();
                 //String result = ChineseUtil.UnicodeToChs(responseJson);
-                System.out.println(responseJson);
+                Log.d(TAG, "requestData: " + responseJson);
                 NewsArticleBean bean = gson.fromJson(responseJson, NewsArticleBean.class);
                 newsList.add(bean);
             }

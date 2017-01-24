@@ -23,8 +23,8 @@ public class JokeCommentModel implements IJokeComment.Model {
     private static final String TAG = "JokeCommentModel";
     private Gson gson = new Gson();
     private List<JokeCommentBean> jokeCommentList = new ArrayList<>();
-    private List<JokeCommentBean.DataBean> dataList = new ArrayList<>();
-    private List<JokeCommentBean.DataBean.CommentsBean> commentsList = new ArrayList<>();
+    private List<JokeCommentBean.DataBean.RecentCommentsBean> dataList = new ArrayList<>();
+    private boolean isFirstTime = true;
 
     @Override
     public boolean requestData(String url) {
@@ -53,14 +53,25 @@ public class JokeCommentModel implements IJokeComment.Model {
     }
 
     @Override
-    public List<JokeCommentBean.DataBean.CommentsBean> getDataList() {
+    public List<JokeCommentBean.DataBean.RecentCommentsBean> getDataList() {
 
         for (JokeCommentBean jokeCommentBean : jokeCommentList) {
-            for (JokeCommentBean.DataBean.CommentsBean commentsBean : jokeCommentBean.getData().getComments()) {
-                commentsList.add(commentsBean);
+            if (isFirstTime) {
+                for (JokeCommentBean.DataBean.TopCommentsBean commentsBean : jokeCommentBean.getData().getTop_comments()) {
+                    JokeCommentBean.DataBean.RecentCommentsBean bean = new JokeCommentBean.DataBean.RecentCommentsBean();
+                    bean.setUser_profile_image_url(commentsBean.getUser_profile_image_url());
+                    bean.setUser_name(commentsBean.getUser_name());
+                    bean.setText(commentsBean.getText());
+                    bean.setDigg_count(commentsBean.getDigg_count());
+                    dataList.add(bean);
+                }
+                isFirstTime = false;
+            }
+            for (JokeCommentBean.DataBean.RecentCommentsBean commentsBean : jokeCommentBean.getData().getRecent_comments()) {
+                dataList.add(commentsBean);
             }
         }
 
-        return commentsList;
+        return dataList;
     }
 }

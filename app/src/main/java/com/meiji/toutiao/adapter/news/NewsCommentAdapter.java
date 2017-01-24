@@ -20,13 +20,13 @@ import java.util.List;
  * Created by Meiji on 2016/12/20.
  */
 
-public class NewsCommentsAdapter extends RecyclerView.Adapter<NewsCommentsAdapter.NewsCommentsViewHolder> {
+public class NewsCommentAdapter extends RecyclerView.Adapter<NewsCommentAdapter.NewsCommentsViewHolder> {
 
     private List<NewsCommentBean.DataBean.CommentsBean> commentsBeanList = new ArrayList<>();
     private Context context;
     private IOnItemClickListener onItemClickListener;
 
-    public NewsCommentsAdapter(List<NewsCommentBean.DataBean.CommentsBean> commentsBeanList, Context context) {
+    public NewsCommentAdapter(List<NewsCommentBean.DataBean.CommentsBean> commentsBeanList, Context context) {
         this.commentsBeanList = commentsBeanList;
         this.context = context;
     }
@@ -49,7 +49,7 @@ public class NewsCommentsAdapter extends RecyclerView.Adapter<NewsCommentsAdapte
         String tv_text = commentsBean.getText();
         int tv_likes = commentsBean.getDigg_count();
 
-        Glide.with(context).load(iv_avatar).asBitmap().centerCrop().into(holder.iv_avatar);
+        Glide.with(context).load(iv_avatar).crossFade().centerCrop().into(holder.iv_avatar);
         holder.tv_username.setText(tv_username);
         holder.tv_text.setText(tv_text);
         holder.tv_likes.setText(tv_likes + "赞");

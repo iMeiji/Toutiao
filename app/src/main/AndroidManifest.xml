@@ -31,19 +31,25 @@
 
         <activity
             android:name=".news.comment.NewsCommentView"
-            android:label="评论"
+            android:label="新闻评论"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
             android:name=".other.joke.comment.JokeCommentView"
-            android:label="评论"
+            android:label="段子评论"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
             android:name=".other.funny.content.FunnyContentView"
-            android:label="评论"
+            android:label="搞笑内容"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".other.funny.comment.FunnyCommentView"
+            android:label="搞笑内容评论"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

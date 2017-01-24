@@ -22,7 +22,7 @@ import java.util.List;
 
 public class JokeCommentAdapter extends RecyclerView.Adapter<JokeCommentAdapter.JokeCommentViewHolder> {
 
-    private List<JokeCommentBean.DataBean.CommentsBean> list = new ArrayList<>();
+    private List<JokeCommentBean.DataBean.RecentCommentsBean> list = new ArrayList<>();
     private Context context;
     private IOnItemClickListener onItemClickListener;
 
@@ -43,13 +43,13 @@ public class JokeCommentAdapter extends RecyclerView.Adapter<JokeCommentAdapter.
 
     @Override
     public void onBindViewHolder(JokeCommentViewHolder holder, int position) {
-        JokeCommentBean.DataBean.CommentsBean bean = list.get(position);
+        JokeCommentBean.DataBean.RecentCommentsBean bean = list.get(position);
         String iv_avatar = bean.getUser_profile_image_url();
         String tv_username = bean.getUser_name();
         String tv_text = bean.getText();
         String tv_likes = bean.getDigg_count() + "赞";
 
-        Glide.with(context).load(iv_avatar).centerCrop().into(holder.iv_avatar);
+        Glide.with(context).load(iv_avatar).crossFade().centerCrop().into(holder.iv_avatar);
         holder.tv_username.setText(tv_username);
         holder.tv_text.setText(tv_text);
         holder.tv_likes.setText(tv_likes);

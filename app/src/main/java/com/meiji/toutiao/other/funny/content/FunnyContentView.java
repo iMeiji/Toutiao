@@ -27,6 +27,7 @@ public class FunnyContentView extends BaseActivity implements IFunnyContent.View
 
     public static final String TAG = "FunnyContentView";
     private String group_id;
+    private String item_id;
     private String source_url;
     private String shareTitle;
     private IFunnyContent.Presenter presenter;
@@ -64,6 +65,10 @@ public class FunnyContentView extends BaseActivity implements IFunnyContent.View
         Intent intent = getIntent();
         FunnyArticleBean.DataBean dataBean = intent.getParcelableExtra(TAG);
         group_id = dataBean.getGroup_id();
+        // http://toutiao.com/m1554439241817090/
+        int start = dataBean.getMedia_url().lastIndexOf("m");
+        int end = dataBean.getMedia_url().lastIndexOf("/");
+        item_id = dataBean.getMedia_url().substring(start + 1, end);
         // http://www.toutiao.com/group/6369021708875383042/
         source_url = "http://www.toutiao.com" + dataBean.getSource_url();
         shareTitle = dataBean.getTitle();
@@ -166,7 +171,7 @@ public class FunnyContentView extends BaseActivity implements IFunnyContent.View
                 break;
 
             case R.id.other_funny_content_comment:
-                presenter.doGetComment();
+                presenter.doGetComment(group_id, item_id);
                 break;
 
             case R.id.other_funny_content_follow:

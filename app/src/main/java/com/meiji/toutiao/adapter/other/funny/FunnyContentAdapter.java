@@ -54,16 +54,16 @@ public class FunnyContentAdapter extends RecyclerView.Adapter<FunnyContentAdapte
             }
             switch (ivs.length) {
                 case 1:
-                    Glide.with(context).load(ivs[0]).centerCrop().into(holder.iv_0);
+                    Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(holder.iv_0);
                     break;
                 case 2:
-                    Glide.with(context).load(ivs[0]).centerCrop().into(holder.iv_0);
-                    Glide.with(context).load(ivs[1]).centerCrop().into(holder.iv_1);
+                    Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(holder.iv_0);
+                    Glide.with(context).load(ivs[1]).crossFade().centerCrop().into(holder.iv_1);
                     break;
                 case 3:
-                    Glide.with(context).load(ivs[0]).centerCrop().into(holder.iv_0);
-                    Glide.with(context).load(ivs[1]).centerCrop().into(holder.iv_1);
-                    Glide.with(context).load(ivs[2]).centerCrop().into(holder.iv_2);
+                    Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(holder.iv_0);
+                    Glide.with(context).load(ivs[1]).crossFade().centerCrop().into(holder.iv_1);
+                    Glide.with(context).load(ivs[2]).crossFade().centerCrop().into(holder.iv_2);
                     break;
                 default:
                     holder.iv_0.setBackgroundColor(Color.WHITE);

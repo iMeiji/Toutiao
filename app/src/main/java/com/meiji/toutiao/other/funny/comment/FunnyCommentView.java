@@ -1,4 +1,4 @@
-package com.meiji.toutiao.news.comment;
+package com.meiji.toutiao.other.funny.comment;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -20,17 +20,17 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.meiji.toutiao.BaseActivity;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.adapter.news.NewsCommentAdapter;
-import com.meiji.toutiao.bean.news.NewsCommentBean;
+import com.meiji.toutiao.adapter.other.funny.FunnyCommentAdapter;
+import com.meiji.toutiao.bean.other.funny.FunnyCommentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 
 import java.util.List;
 
 /**
- * Created by Meiji on 2016/12/20.
+ * Created by Meiji on 2017/1/25.
  */
 
-public class NewsCommentView extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, INewsComment.View {
+public class FunnyCommentView extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, IFunnyComment.View {
 
     public static final String GROUP_ID = "group_id";
     public static final String ITEM_ID = "item_id";
@@ -39,20 +39,20 @@ public class NewsCommentView extends BaseActivity implements SwipeRefreshLayout.
     private String itemId;
 
 
-    private NewsCommentAdapter adapter;
+    private FunnyCommentAdapter adapter;
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
     private Toolbar toolbar;
 
 
-    private INewsComment.Presenter presenter;
+    private IFunnyComment.Presenter presenter;
     private boolean canLoading;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.news_comment_main);
-        presenter = new NewsCommentPresenter(this);
+        setContentView(R.layout.other_funny_comment_main);
+        presenter = new FunnyCommentPresenter(this);
         initView();
         initData();
         onRequestData();
@@ -108,9 +108,9 @@ public class NewsCommentView extends BaseActivity implements SwipeRefreshLayout.
     }
 
     @Override
-    public void onSetAdapter(final List<NewsCommentBean.DataBean.CommentsBean> list) {
+    public void onSetAdapter(final List<FunnyCommentBean.DataBean.CommentsBean> list) {
         if (adapter == null) {
-            adapter = new NewsCommentAdapter(list, this);
+            adapter = new FunnyCommentAdapter(list, this);
             recycler_view.setAdapter(adapter);
             adapter.setOnItemClickListener(new IOnItemClickListener() {
                 @Override
@@ -141,7 +141,7 @@ public class NewsCommentView extends BaseActivity implements SwipeRefreshLayout.
     }
 
     private void showCopyDialog(int position, final String content) {
-        final MaterialDialog dialog = new MaterialDialog.Builder(NewsCommentView.this)
+        final MaterialDialog dialog = new MaterialDialog.Builder(FunnyCommentView.this)
                 .title("是否复制评论?")
                 .content(content).build();
         dialog.setActionButton(DialogAction.NEGATIVE, "取消");
@@ -159,7 +159,7 @@ public class NewsCommentView extends BaseActivity implements SwipeRefreshLayout.
                 ClipboardManager copy = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clipData = ClipData.newPlainText("text", content);
                 copy.setPrimaryClip(clipData);
-                Toast.makeText(NewsCommentView.this, "已复制", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FunnyCommentView.this, "已复制", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });

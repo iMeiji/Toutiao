@@ -28,7 +28,7 @@ interface IFunnyContent {
 
         void onFail();
 
-        void doGetComment();
+        void doGetComment(String group_id, String item_id);
     }
 
     interface Model {

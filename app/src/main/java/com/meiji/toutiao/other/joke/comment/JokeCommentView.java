@@ -123,13 +123,14 @@ public class JokeCommentView extends BaseActivity implements IJokeComment.View, 
     }
 
     @Override
-    public void onSetAdapter(final List<JokeCommentBean.DataBean.CommentsBean> list) {
+    public void onSetAdapter(final List<JokeCommentBean.DataBean.RecentCommentsBean> list) {
         if (adapter == null) {
             adapter = new JokeCommentAdapter(list, this);
             recycler_view.setAdapter(adapter);
             adapter.setOnItemClickListener(new IOnItemClickListener() {
                 @Override
                 public void onClick(View view, int position) {
+                    //JokeCommentBean.DataBean.RecentCommentsBean bean = (JokeCommentBean.DataBean.RecentCommentsBean) list.get(position);
                     showCopyDialog(position, list.get(position).getText());
                 }
             });

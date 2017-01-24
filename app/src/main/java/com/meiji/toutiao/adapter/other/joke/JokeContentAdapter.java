@@ -52,7 +52,7 @@ public class JokeContentAdapter extends RecyclerView.Adapter<JokeContentAdapter.
         String bury_count = bean.getBury_count() + "";
         String comment_count = bean.getComment_count() + "评论";
 
-        Glide.with(context).load(avatar_url).centerCrop().into(holder.iv_avatar);
+        Glide.with(context).load(avatar_url).crossFade().centerCrop().into(holder.iv_avatar);
         holder.tv_username.setText(name);
         holder.tv_text.setText(text);
         holder.tv_digg_count.setText(digg_count);

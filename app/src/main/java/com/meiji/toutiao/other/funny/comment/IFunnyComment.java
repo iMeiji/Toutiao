@@ -1,32 +1,30 @@
-package com.meiji.toutiao.other.joke.comment;
+package com.meiji.toutiao.other.funny.comment;
 
-import com.meiji.toutiao.bean.other.joke.JokeCommentBean;
+import com.meiji.toutiao.bean.other.funny.FunnyCommentBean;
 
 import java.util.List;
 
 /**
- * Created by Meiji on 2017/1/1.
+ * Created by Meiji on 2017/1/25.
  */
 
-interface IJokeComment {
+public class IFunnyComment {
 
     interface View {
         void onRequestData();
 
-        void onSetAdapter(List<JokeCommentBean.DataBean.RecentCommentsBean> list);
+        void onSetAdapter(List<FunnyCommentBean.DataBean.CommentsBean> list);
 
         void onShowRefreshing();
 
         void onHideRefreshing();
 
         void onFail();
-
-        void onFinish();
     }
 
     interface Presenter {
 
-        void doGetUrl(String jokeId, String jokeCommentCount);
+        void doGetUrl(String group_id, String item_id);
 
         void doRequestData(String url);
 
@@ -40,7 +38,6 @@ interface IJokeComment {
     interface Model {
         boolean requestData(String url);
 
-        List<JokeCommentBean.DataBean.RecentCommentsBean> getDataList();
-
+        List<FunnyCommentBean.DataBean.CommentsBean> getDataList();
     }
 }
