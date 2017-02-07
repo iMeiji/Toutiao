@@ -1,0 +1,149 @@
+package com.meiji.toutiao.search;
+
+import android.app.SearchManager;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+
+import com.meiji.toutiao.BaseActivity;
+import com.meiji.toutiao.R;
+import com.meiji.toutiao.adapter.search.SearchAdapter;
+import com.meiji.toutiao.bean.search.SearchBean;
+import com.meiji.toutiao.interfaces.IOnItemClickListener;
+
+import java.util.List;
+
+public class SearchView extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, ISearch.View {
+
+    private static final String TAG = "SearchView";
+    private RecyclerView recycler_view;
+    private SwipeRefreshLayout refresh_layout;
+    private Toolbar toolbar;
+    private ISearch.Presenter presenter;
+    private String query;
+    private SearchAdapter adapter;
+    private boolean canLoading;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: ");
+        setContentView(R.layout.activity_search);
+        initView();
+        handleIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void initView() {
+        recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
+        recycler_view.setHasFixedSize(true);
+        recycler_view.setLayoutManager(new LinearLayoutManager(this));
+
+        refresh_layout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
+        // 设置下拉刷新的按钮的颜色
+        refresh_layout.setColorSchemeResources(R.color.colorPrimary);
+        // 设置手指在屏幕上下拉多少距离开始刷新
+        refresh_layout.setDistanceToTriggerSync(300);
+        // 设置下拉刷新按钮的背景颜色
+        refresh_layout.setProgressBackgroundColorSchemeColor(Color.WHITE);
+        // 设置下拉刷新按钮的大小
+        refresh_layout.setSize(SwipeRefreshLayout.DEFAULT);
+        refresh_layout.setOnRefreshListener(this);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRefresh() {
+        presenter.doRefresh();
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            presenter = new SearchPresenter(this);
+            this.query = intent.getStringExtra(SearchManager.QUERY);
+            Log.d(TAG, "handleIntent: " + query);
+            onRequestData();
+        }
+    }
+
+    @Override
+    public void onRequestData() {
+        presenter.doGetUrl(query);
+    }
+
+    @Override
+    public void onSetAdapter(List<SearchBean.DataBean> list) {
+        if (adapter == null) {
+            adapter = new SearchAdapter(this, list);
+            recycler_view.setAdapter(adapter);
+            adapter.setOnItemClickListener(new IOnItemClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    presenter.doOnClickItem(position);
+                }
+            });
+        } else {
+            adapter.notifyItemInserted(list.size());
+        }
+
+        canLoading = true;
+
+        recycler_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!recyclerView.canScrollVertically(1)) {
+                        if (canLoading) {
+                            presenter.doRefresh();
+                            canLoading = false;
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onShowRefreshing() {
+        refresh_layout.setRefreshing(true);
+    }
+
+    @Override
+    public void onHideRefreshing() {
+        refresh_layout.setRefreshing(false);
+    }
+
+    @Override
+    public void onFail() {
+        Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT).show();
+    }
+}

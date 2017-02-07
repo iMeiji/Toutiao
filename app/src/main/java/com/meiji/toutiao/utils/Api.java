@@ -23,6 +23,7 @@ public class Api {
     // 头条号 (as 和 cp 每次都会变 待处理)
     private static final String MEDIA_ARTICLE_URL =
             "http://www.toutiao.com/pgc/ma/?media_id=头条号&page_type=1&count=10&version=2&platform=pc&as=A1C548D5FDB17E6&cp=585DB1871ED64E1&max_behot_time=偏移量";
+    //"http://www.toutiao.com/pgc/ma_mobile/?page_type=1&max_behot_time=0&aid=&media_id=50502346173&count=10&version=2&as=A1F5B809D12F386&cp=58913FB3B8665E1&timestamp=1476282741654"
 
     // 段子/搞笑/视频内容
     private static final String OTHER_URL =
@@ -34,7 +35,9 @@ public class Api {
     private static final String OTHER_JOKE_COMMENT_URL =
             "http://m.neihanshequ.com/api/get_essay_comments/?group_id=编号&count=数量&offset=偏移量";
 
-    // 搞笑内容评论
+    // 搜索结果
+    private static final String SEARCH_URL =
+            "http://www.toutiao.com/search_content/?offset=0&format=json&keyword=关键词&autoload=true&count=20&cur_tab=1&offset=偏移量";
 
 
     /**
@@ -82,6 +85,12 @@ public class Api {
         return OTHER_JOKE_COMMENT_URL
                 .replace("编号", jokeId)
                 .replace("数量", count + "")
+                .replace("偏移量", offset + "");
+    }
+
+    public static String getSearchUrl(String keywork, int offset) {
+        return SEARCH_URL
+                .replace("关键词", keywork)
                 .replace("偏移量", offset + "");
     }
 }

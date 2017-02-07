@@ -1,5 +1,9 @@
 package com.meiji.toutiao;
 
+import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.ComponentName;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,13 +12,18 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.color.CircleView;
 import com.meiji.toutiao.news.NewsTabLayout;
 import com.meiji.toutiao.other.OtherTabLayout;
+import com.meiji.toutiao.search.SearchView;
 import com.meiji.toutiao.utils.ColorUtil;
 
 public class MainActivity extends BaseActivity {
@@ -32,6 +41,7 @@ public class MainActivity extends BaseActivity {
     private long exitTime;
     private int position;
     private FragmentManager fragmentManager;
+    private FrameLayout content_main;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +87,7 @@ public class MainActivity extends BaseActivity {
 
         fragmentManager = getSupportFragmentManager();
         showFragment(FRAGMENT_NEWS);
+        content_main = (FrameLayout) findViewById(R.id.content_main);
     }
 
     private void showFragment(int index) {
@@ -151,5 +162,52 @@ public class MainActivity extends BaseActivity {
             Toast.makeText(this, R.string.double_click_exit, Toast.LENGTH_SHORT).show();
             exitTime = currentTime;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        setSearchView(menu);
+
+        return true;
+    }
+
+    private void setSearchView(Menu menu) {
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        // 关联检索配置与 SearchView
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) menu.findItem(R.id.action_search).getActionView();
+        SearchableInfo searchableInfo = searchManager.getSearchableInfo(
+                new ComponentName(getApplicationContext(), SearchView.class));
+        searchView.setSearchableInfo(searchableInfo);
+        searchView.setQueryHint(getString(R.string.search_hint));
+        //searchItem.setActionView(searchView);
+
+        // 按一次返回键关闭searchView
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (!b) {
+                    searchItem.collapseActionView();
+                }
+            }
+        });
+
+        // 设置监听 当SearchView折叠和扩展时的响应事件
+        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                // Do something when action item collapses
+                content_main.setVisibility(View.VISIBLE);
+                return true;     //Return true to collapse action view
+            }
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                // Do something when expanded
+                content_main.setVisibility(View.GONE);
+                return true;      // Return true to expand action view
+            }
+        });
     }
 }

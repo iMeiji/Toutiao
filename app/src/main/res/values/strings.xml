@@ -10,4 +10,6 @@
     <string name="share_app_text">来瞧瞧这个：适配了质感设计的 今日头条！</string>
     <string name="share_to">分享至</string>
     <string name="no_more">没有更多了</string>
+    <string name="action_search">搜索</string>
+    <string name="search_hint">搜素...</string>
 </resources>
