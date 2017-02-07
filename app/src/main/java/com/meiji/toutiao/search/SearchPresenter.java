@@ -6,7 +6,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.meiji.toutiao.InitApp;
-import com.meiji.toutiao.bean.search.SearchBean;
+import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.news.content.NewsContetnView;
 import com.meiji.toutiao.utils.Api;
 
@@ -24,7 +24,7 @@ class SearchPresenter implements ISearch.Presenter {
     private String query;
     private ISearch.View view;
     private ISearch.Model model;
-    private List<SearchBean.DataBean> list = new ArrayList<>();
+    private List<NewsArticleBean.DataBean> list = new ArrayList<>();
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -70,6 +70,10 @@ class SearchPresenter implements ISearch.Presenter {
     @Override
     public void doSetAdapter() {
         list.addAll(model.getDataList());
+        for (NewsArticleBean.DataBean dataBean : list) {
+            dataBean.getTitle();
+        }
+
         view.onSetAdapter(list);
         view.onHideRefreshing();
     }
@@ -89,7 +93,7 @@ class SearchPresenter implements ISearch.Presenter {
 
     @Override
     public void doOnClickItem(int position) {
-        SearchBean.DataBean bean = list.get(position);
+        NewsArticleBean.DataBean bean = list.get(position);
         Intent intent = new Intent(InitApp.AppContext, NewsContetnView.class);
         intent.putExtra(NewsContetnView.TAG, bean);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

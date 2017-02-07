@@ -46,7 +46,7 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<NewsArticleAdapter.
     public void onBindViewHolder(NewsArticleViewHolder holder, int position) {
         NewsArticleBean.DataBean bean = list.get(position);
         List<NewsArticleBean.DataBean.ImageListBean> image_list = bean.getImage_list();
-        if (image_list.size() != 0) {
+        if (image_list != null && image_list.size() != 0) {
             String url = image_list.get(0).getUrl();
             Glide.with(context).load(url).crossFade().centerCrop().error(R.drawable.error_image).into(holder.iv_image_url);
         }
@@ -57,7 +57,9 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<NewsArticleAdapter.
         String tv_comment_count = bean.getComment_count() + "评论";
         String tv_datetime = bean.getDatetime();
         // 处理下时间
-        tv_datetime = TimeUtil.timeAgo(TimeUtil.stringConvertDate(tv_datetime));
+        if (tv_datetime != null) {
+            tv_datetime = TimeUtil.timeAgo(TimeUtil.stringConvertDate(tv_datetime));
+        }
 
         holder.tv_title.setText(tv_title);
         holder.tv_abstract.setText(tv_abstract);

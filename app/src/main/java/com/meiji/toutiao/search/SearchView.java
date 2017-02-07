@@ -15,8 +15,8 @@ import android.view.View;
 
 import com.meiji.toutiao.BaseActivity;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.adapter.search.SearchAdapter;
-import com.meiji.toutiao.bean.search.SearchBean;
+import com.meiji.toutiao.adapter.news.NewsArticleAdapter;
+import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class SearchView extends BaseActivity implements SwipeRefreshLayout.OnRef
     private Toolbar toolbar;
     private ISearch.Presenter presenter;
     private String query;
-    private SearchAdapter adapter;
+    private NewsArticleAdapter adapter;
     private boolean canLoading;
 
     @Override
@@ -100,9 +100,9 @@ public class SearchView extends BaseActivity implements SwipeRefreshLayout.OnRef
     }
 
     @Override
-    public void onSetAdapter(List<SearchBean.DataBean> list) {
+    public void onSetAdapter(List<NewsArticleBean.DataBean> list) {
         if (adapter == null) {
-            adapter = new SearchAdapter(this, list);
+            adapter = new NewsArticleAdapter(this, list);
             recycler_view.setAdapter(adapter);
             adapter.setOnItemClickListener(new IOnItemClickListener() {
                 @Override

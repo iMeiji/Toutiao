@@ -1,6 +1,6 @@
 package com.meiji.toutiao.search;
 
-import com.meiji.toutiao.bean.search.SearchBean;
+import com.meiji.toutiao.bean.news.NewsArticleBean;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class ISearch {
     interface View {
         void onRequestData();
 
-        void onSetAdapter(List<SearchBean.DataBean> list);
+        void onSetAdapter(List<NewsArticleBean.DataBean> list);
 
         void onShowRefreshing();
 
@@ -39,6 +39,6 @@ public class ISearch {
     interface Model {
         boolean requestData(String url);
 
-        List<SearchBean.DataBean> getDataList();
+        List<NewsArticleBean.DataBean> getDataList();
     }
 }

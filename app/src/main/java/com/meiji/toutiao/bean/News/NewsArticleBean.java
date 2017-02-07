@@ -20,16 +20,16 @@ public class NewsArticleBean {
      * next : {"max_behot_time":1481707958}
      */
 
-    private boolean has_more;
+    private String has_more;
     private String message;
     private NextBean next;
     private List<DataBean> data;
 
-    public boolean isHas_more() {
+    public String isHas_more() {
         return has_more;
     }
 
-    public void setHas_more(boolean has_more) {
+    public void setHas_more(String has_more) {
         this.has_more = has_more;
     }
 
