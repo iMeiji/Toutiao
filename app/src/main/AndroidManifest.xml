@@ -17,46 +17,40 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".SearchActivity"/>
         </activity>
-
-        <activity
-            android:name=".BaseActivity">
+        <activity android:name=".BaseActivity">
         </activity>
-
         <activity
             android:name=".news.content.NewsContetnView"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
         <activity
             android:name=".news.comment.NewsCommentView"
             android:label="新闻评论"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
         <activity
             android:name=".other.joke.comment.JokeCommentView"
             android:label="段子评论"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
         <activity
             android:name=".other.funny.content.FunnyContentView"
             android:label="搞笑内容"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
         <activity
             android:name=".other.funny.comment.FunnyCommentView"
             android:label="搞笑内容评论"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
         <activity
             android:name=".search.SearchView"
             android:label="搜索结果"

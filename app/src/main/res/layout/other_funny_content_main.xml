@@ -22,7 +22,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="16dp"
-            android:background="@color/white">
+            android:background="@color/White">
         </WebView>
 
     </android.support.v4.widget.NestedScrollView>

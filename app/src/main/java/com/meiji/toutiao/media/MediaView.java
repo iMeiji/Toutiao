@@ -45,11 +45,11 @@ public class MediaView extends Fragment implements SwipeRefreshLayout.OnRefreshL
     }
 
     private void initView(View view) {
-        recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view_photo);
         recycler_view.setHasFixedSize(true);
         recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
+        refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout_photo);
         // 设置下拉刷新的按钮的颜色
         refresh_layout.setColorSchemeResources(R.color.colorPrimary);
         // 设置手指在屏幕上下拉多少距离开始刷新

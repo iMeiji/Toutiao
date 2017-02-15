@@ -24,7 +24,8 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="十条笑话：都是自己的肉，还分什么贵贱！"
+                android:maxLines="1"
+                android:text="看完王健林的私人飞机，再看刘强东的，刚好相差1个小目标的钱"
                 android:textStyle="bold"/>
 
             <LinearLayout

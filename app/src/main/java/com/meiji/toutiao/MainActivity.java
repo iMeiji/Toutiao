@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.color.CircleView;
 import com.meiji.toutiao.news.NewsTabLayout;
 import com.meiji.toutiao.other.OtherTabLayout;
+import com.meiji.toutiao.photo.PhotoTabLayout;
 import com.meiji.toutiao.search.SearchView;
 import com.meiji.toutiao.utils.ColorUtil;
 
@@ -35,6 +36,7 @@ public class MainActivity extends BaseActivity {
 
     private NewsTabLayout newsTabLayout;
     private OtherTabLayout otherTabLayout;
+    private PhotoTabLayout photoTabLayout;
 
     private Toolbar toolbar;
     private BottomNavigationView bottom_navigation;
@@ -118,9 +120,19 @@ public class MainActivity extends BaseActivity {
                 } else {
                     ft.show(otherTabLayout);
                 }
-                setColor(getResources().getColor(R.color.blue));
+                setColor(getResources().getColor(R.color.Blue));
                 break;
 
+            case FRAGMENT_MEDIA:
+                toolbar.setTitle("图片");
+                if (photoTabLayout == null) {
+                    photoTabLayout = PhotoTabLayout.getInstance();
+                    ft.add(R.id.content_main, photoTabLayout);
+                } else {
+                    ft.show(photoTabLayout);
+                }
+                setColor(getResources().getColor(R.color.Green));
+                break;
         }
 
         ft.commit();
@@ -133,6 +145,9 @@ public class MainActivity extends BaseActivity {
         }
         if (otherTabLayout != null) {
             ft.hide(otherTabLayout);
+        }
+        if (photoTabLayout != null) {
+            ft.hide(photoTabLayout);
         }
     }
 

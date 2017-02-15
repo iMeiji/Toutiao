@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="photo_name">
+        <item>全部</item>
+        <item>老照片</item>
+        <item>故事照片</item>
+        <item>摄影集</item>
+    </string-array>
+
+    <string-array name="photo_id">
+        <item>gallery_detail</item>
+        <item>gallery_old_picture</item>
+        <item>gallery_story</item>
+        <item>gallery_photograthy</item>
+    </string-array>
+</resources>

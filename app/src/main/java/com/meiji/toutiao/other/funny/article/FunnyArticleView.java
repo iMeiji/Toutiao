@@ -53,7 +53,7 @@ public class FunnyArticleView extends BasePageFragment implements IFunnyArticle.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.other_funny_article_main, container, false);
+        View view = inflater.inflate(R.layout.base_fragment_main, container, false);
         presenter = new FunnyArticlePresenter(this);
         initView(view);
         return view;
@@ -66,7 +66,7 @@ public class FunnyArticleView extends BasePageFragment implements IFunnyArticle.
 
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
-        refresh_layout.setColorSchemeResources(R.color.blue);
+        refresh_layout.setColorSchemeResources(R.color.Blue);
         // 设置手指在屏幕上下拉多少距离开始刷新
         refresh_layout.setDistanceToTriggerSync(300);
         // 设置下拉刷新按钮的背景颜色

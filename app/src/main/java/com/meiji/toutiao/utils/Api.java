@@ -39,6 +39,9 @@ public class Api {
     private static final String SEARCH_URL =
             "http://www.toutiao.com/search_content/?offset=0&format=json&keyword=关键词&autoload=true&count=20&cur_tab=1&offset=偏移量";
 
+    // 图片类型
+    private static final String NEWS_PHOTO =
+            "http://www.toutiao.com/api/article/recent/?source=2&count=20&category=类型&offset=偏移量&as=A185D80A34A7C96&cp=58A487BC49D6EE1&_=时间";
 
     /**
      * http://toutiao.com/api/article/recent/?source=2&category=news_hot&as=A105177907376A5&cp=5797C7865AD54E1&count=20&_=1481986412
@@ -92,5 +95,11 @@ public class Api {
         return SEARCH_URL
                 .replace("关键词", keywork)
                 .replace("偏移量", offset + "");
+    }
+
+    public static String getNewsPhoto(String category, int offset, String max_behot_time) {
+        return NEWS_PHOTO.replace("类型", category)
+                .replace("偏移量", offset + "")
+                .replace("时间", max_behot_time);
     }
 }

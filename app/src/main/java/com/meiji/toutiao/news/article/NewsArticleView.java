@@ -25,7 +25,7 @@ import java.util.List;
 
 public class NewsArticleView extends BasePageFragment implements SwipeRefreshLayout.OnRefreshListener, INewsArticle.View {
 
-    public static final String CATEGORY = "CATEGORY";
+    private static final String CATEGORY = "CATEGORY";
     private static final String TAG = "NewsArticleView";
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
@@ -54,7 +54,7 @@ public class NewsArticleView extends BasePageFragment implements SwipeRefreshLay
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.news_article_main, container, false);
+        View view = inflater.inflate(R.layout.base_fragment_main, container, false);
         presenter = new NewsArticlePresenter(this);
         initView(view);
 //        onRequestData();

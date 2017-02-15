@@ -8,12 +8,12 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refresh_layout"
+        android:id="@+id/refresh_layout_photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+            android:id="@+id/recycler_view_photo"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </android.support.v7.widget.RecyclerView>

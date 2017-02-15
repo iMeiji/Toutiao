@@ -62,8 +62,8 @@ public class JokeCommentView extends BaseActivity implements IJokeComment.View, 
     private void initView() {
         tv_content = (TextView) findViewById(R.id.tv_content);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
-        refresh_layout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
+        recycler_view = (RecyclerView) findViewById(R.id.recycler_view_photo);
+        refresh_layout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout_photo);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -73,7 +73,7 @@ public class JokeCommentView extends BaseActivity implements IJokeComment.View, 
         recycler_view.setHasFixedSize(true);
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
 
-        refresh_layout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
+        refresh_layout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout_photo);
         // 设置下拉刷新的按钮的颜色
         refresh_layout.setColorSchemeResources(R.color.colorPrimary);
         // 设置手指在屏幕上下拉多少距离开始刷新

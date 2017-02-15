@@ -1,4 +1,4 @@
-package com.meiji.toutiao.other.joke.content;
+package com.meiji.toutiao.photo;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,38 +12,34 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.adapter.other.joke.JokeContentAdapter;
-import com.meiji.toutiao.bean.other.joke.JokeContentBean;
+import com.meiji.toutiao.adapter.photo.PhotoViewAdapter;
+import com.meiji.toutiao.bean.photo.PhotoViewBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.view.BasePageFragment;
 
 import java.util.List;
 
-/**
- * Created by Meiji on 2016/12/28.
- */
-
-public class JokeContentView extends BasePageFragment implements SwipeRefreshLayout.OnRefreshListener, IJokeContent.View {
+public class PhotoView extends BasePageFragment implements IPhoto.View, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String CATEGORY = "CATEGORY";
-    private static final String TAG = "JokeContentView";
-    private String categoryId;
+    private static final String TAG = "PhotoView";
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
-    private IJokeContent.Presenter presenter;
-    private JokeContentAdapter adapter;
-    private boolean canLoading;
+    private PhotoViewAdapter adapter;
+    private String categoryId;
+    private boolean canLoading = false;
+    private IPhoto.Presenter presenter;
 
-    public static JokeContentView newInstance(String categoryId) {
+    public static PhotoView newInstance(String categoryId) {
         Bundle bundle = new Bundle();
         bundle.putString(CATEGORY, categoryId);
-        JokeContentView jokeContentView = new JokeContentView();
-        jokeContentView.setArguments(bundle);
-        return jokeContentView;
+        PhotoView instance = new PhotoView();
+        instance.setArguments(bundle);
+        return instance;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -55,9 +51,8 @@ public class JokeContentView extends BasePageFragment implements SwipeRefreshLay
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.base_fragment_main, container, false);
-        presenter = new JokeContentPresenter(this);
+        presenter = new PhotoPresenter(this);
         initView(view);
-//        onRequestData();
         return view;
     }
 
@@ -68,7 +63,7 @@ public class JokeContentView extends BasePageFragment implements SwipeRefreshLay
 
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
-        refresh_layout.setColorSchemeResources(R.color.Blue);
+        refresh_layout.setColorSchemeResources(R.color.colorPrimary);
         // 设置手指在屏幕上下拉多少距离开始刷新
         refresh_layout.setDistanceToTriggerSync(300);
         // 设置下拉刷新按钮的背景颜色
@@ -94,9 +89,9 @@ public class JokeContentView extends BasePageFragment implements SwipeRefreshLay
     }
 
     @Override
-    public void onSetAdapter(List<JokeContentBean.DataBean.GroupBean> list) {
+    public void onSetAdapter(final List<PhotoViewBean.DataBean> list) {
         if (adapter == null) {
-            adapter = new JokeContentAdapter(list, getActivity());
+            adapter = new PhotoViewAdapter(list, getActivity());
             recycler_view.setAdapter(adapter);
             adapter.setOnItemClickListener(new IOnItemClickListener() {
                 @Override
