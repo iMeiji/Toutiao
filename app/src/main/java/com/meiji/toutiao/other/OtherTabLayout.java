@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.adapter.news.NewsPagerAdapter;
+import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.other.funny.article.FunnyArticleView;
 import com.meiji.toutiao.other.joke.content.JokeContentView;
 import com.meiji.toutiao.utils.ColorUtil;
@@ -69,7 +69,7 @@ public class OtherTabLayout extends Fragment {
         list.add(jokeContentView);
         list.add(funnyArticleView);
 
-        NewsPagerAdapter adapter = new NewsPagerAdapter(getFragmentManager(), list, categoryName);
+        BasePagerAdapter adapter = new BasePagerAdapter(getFragmentManager(), list, categoryName);
         view_pager.setAdapter(adapter);
     }
 

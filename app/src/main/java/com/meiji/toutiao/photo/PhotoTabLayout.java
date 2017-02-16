@@ -11,7 +11,8 @@ import android.view.ViewGroup;
 
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.adapter.photo.PhotoPagerAdapter;
+import com.meiji.toutiao.adapter.base.BasePagerAdapter;
+import com.meiji.toutiao.photo.article.PhotoArticleView;
 import com.meiji.toutiao.utils.ColorUtil;
 
 import java.util.ArrayList;
@@ -59,11 +60,11 @@ public class PhotoTabLayout extends Fragment {
         String categoryId[] = InitApp.AppContext.getResources().getStringArray(R.array.photo_id);
         String categoryName[] = InitApp.AppContext.getResources().getStringArray(R.array.photo_name);
         for (int i = 0; i < categoryId.length; i++) {
-            Fragment fragment = PhotoView.newInstance(categoryId[i]);
+            Fragment fragment = PhotoArticleView.newInstance(categoryId[i]);
             list.add(fragment);
         }
 
-        PhotoPagerAdapter adapter = new PhotoPagerAdapter(getFragmentManager(), list, categoryName);
+        BasePagerAdapter adapter = new BasePagerAdapter(getFragmentManager(), list, categoryName);
         view_pager.setAdapter(adapter);
     }
 

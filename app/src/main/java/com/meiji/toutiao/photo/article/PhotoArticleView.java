@@ -1,4 +1,4 @@
-package com.meiji.toutiao.photo;
+package com.meiji.toutiao.photo.article;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,28 +12,28 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.adapter.photo.PhotoViewAdapter;
-import com.meiji.toutiao.bean.photo.PhotoViewBean;
+import com.meiji.toutiao.adapter.photo.PhotoArticleAdapter;
+import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.view.BasePageFragment;
 
 import java.util.List;
 
-public class PhotoView extends BasePageFragment implements IPhoto.View, SwipeRefreshLayout.OnRefreshListener {
+public class PhotoArticleView extends BasePageFragment implements IPhotoArticle.View, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String CATEGORY = "CATEGORY";
-    private static final String TAG = "PhotoView";
+    private static final String TAG = "PhotoArticleView";
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
-    private PhotoViewAdapter adapter;
+    private PhotoArticleAdapter adapter;
     private String categoryId;
     private boolean canLoading = false;
-    private IPhoto.Presenter presenter;
+    private IPhotoArticle.Presenter presenter;
 
-    public static PhotoView newInstance(String categoryId) {
+    public static PhotoArticleView newInstance(String categoryId) {
         Bundle bundle = new Bundle();
         bundle.putString(CATEGORY, categoryId);
-        PhotoView instance = new PhotoView();
+        PhotoArticleView instance = new PhotoArticleView();
         instance.setArguments(bundle);
         return instance;
     }
@@ -51,7 +51,7 @@ public class PhotoView extends BasePageFragment implements IPhoto.View, SwipeRef
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.base_fragment_main, container, false);
-        presenter = new PhotoPresenter(this);
+        presenter = new PhotoArticlePresenter(this);
         initView(view);
         return view;
     }
@@ -89,9 +89,9 @@ public class PhotoView extends BasePageFragment implements IPhoto.View, SwipeRef
     }
 
     @Override
-    public void onSetAdapter(final List<PhotoViewBean.DataBean> list) {
+    public void onSetAdapter(final List<PhotoArticleBean.DataBean> list) {
         if (adapter == null) {
-            adapter = new PhotoViewAdapter(list, getActivity());
+            adapter = new PhotoArticleAdapter(list, getActivity());
             recycler_view.setAdapter(adapter);
             adapter.setOnItemClickListener(new IOnItemClickListener() {
                 @Override

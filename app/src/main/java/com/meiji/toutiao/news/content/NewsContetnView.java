@@ -74,10 +74,6 @@ public class NewsContetnView extends BaseActivity implements INewsContent.View {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
-
             case R.id.news_content_comment:
                 presenter.doGetComment();
                 break;

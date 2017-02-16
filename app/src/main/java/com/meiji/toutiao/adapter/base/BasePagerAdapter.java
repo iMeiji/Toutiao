@@ -1,4 +1,4 @@
-package com.meiji.toutiao.adapter.photo;
+package com.meiji.toutiao.adapter.base;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,15 +7,15 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.List;
 
 /**
- * Created by Meiji on 2016/12/15.
+ * Created by Meiji on 2017/2/16.
  */
 
-public class PhotoPagerAdapter extends FragmentPagerAdapter {
+public class BasePagerAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> list;
     private String[] title;
 
-    public PhotoPagerAdapter(FragmentManager fm, List<Fragment> list, String[] title) {
+    public BasePagerAdapter(FragmentManager fm, List<Fragment> list, String[] title) {
         super(fm);
         this.list = list;
         this.title = title;

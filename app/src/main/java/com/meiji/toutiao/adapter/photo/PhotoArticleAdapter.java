@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.bean.photo.PhotoViewBean;
+import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 
 import java.util.ArrayList;
@@ -21,13 +21,13 @@ import java.util.List;
  * Created by Meiji on 2016/12/28.
  */
 
-public class PhotoViewAdapter extends RecyclerView.Adapter<PhotoViewAdapter.PhotoViewViewHolder> {
+public class PhotoArticleAdapter extends RecyclerView.Adapter<PhotoArticleAdapter.PhotoViewViewHolder> {
 
-    private List<PhotoViewBean.DataBean> list = new ArrayList();
+    private List<PhotoArticleBean.DataBean> list = new ArrayList();
     private Context context;
     private IOnItemClickListener onItemClickListener;
 
-    public PhotoViewAdapter(List list, Context context) {
+    public PhotoArticleAdapter(List list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -38,13 +38,13 @@ public class PhotoViewAdapter extends RecyclerView.Adapter<PhotoViewAdapter.Phot
 
     @Override
     public PhotoViewViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.photo_view_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.photo_article_item, parent, false);
         return new PhotoViewViewHolder(view, onItemClickListener);
     }
 
     @Override
     public void onBindViewHolder(PhotoViewViewHolder holder, int position) {
-        PhotoViewBean.DataBean bean = list.get(position);
+        PhotoArticleBean.DataBean bean = list.get(position);
         String tv_title = bean.getTitle();
         if (bean.getImage_list() != null) {
             int size = bean.getImage_list().size();

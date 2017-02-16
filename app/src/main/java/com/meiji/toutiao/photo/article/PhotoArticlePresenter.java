@@ -1,9 +1,13 @@
-package com.meiji.toutiao.photo;
+package com.meiji.toutiao.photo.article;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
-import com.meiji.toutiao.bean.photo.PhotoViewBean;
+import com.meiji.toutiao.InitApp;
+import com.meiji.toutiao.bean.photo.PhotoArticleBean;
+import com.meiji.toutiao.photo.content.PhotoContentView;
 import com.meiji.toutiao.utils.Api;
 
 import java.util.ArrayList;
@@ -13,11 +17,12 @@ import java.util.List;
  * Created by Meiji on 2017/2/16.
  */
 
-class PhotoPresenter implements IPhoto.Presenter {
+class PhotoArticlePresenter implements IPhotoArticle.Presenter {
 
-    private IPhoto.View view;
-    private IPhoto.Model model;
-    private List<PhotoViewBean.DataBean> dataList = new ArrayList<>();
+    private static final String TAG = "PhotoArticlePresenter";
+    private IPhotoArticle.View view;
+    private IPhotoArticle.Model model;
+    private List<PhotoArticleBean.DataBean> dataList = new ArrayList<>();
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -33,9 +38,9 @@ class PhotoPresenter implements IPhoto.Presenter {
     private String category;
     private int offset = 0;
 
-    PhotoPresenter(IPhoto.View view) {
+    PhotoArticlePresenter(IPhotoArticle.View view) {
         this.view = view;
-        this.model = new PhotoModel();
+        this.model = new PhotoArticleModel();
     }
 
     @Override
@@ -87,12 +92,11 @@ class PhotoPresenter implements IPhoto.Presenter {
 
     @Override
     public void doOnClickItem(int position) {
-//        NewsArticleBean.DataBean bean = dataList.get(position);
-//        Intent intent = new Intent(InitApp.AppContext, NewsContetnView.class);
-//        intent.putExtra(NewsContetnView.TAG, bean);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        InitApp.AppContext.startActivity(intent);
-//        // 打印下点击的标题和链接
-//        System.out.println("点击的标题和链接---" + bean.getTitle() + "  " + bean.getDisplay_url());
+        PhotoArticleBean.DataBean bean = dataList.get(position);
+        Intent intent = new Intent(InitApp.AppContext, PhotoContentView.class);
+        intent.putExtra(PhotoContentView.TAG, bean);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        InitApp.AppContext.startActivity(intent);
+        Log.d(TAG, "doOnClickItem: " + "点击的标题和链接---" + bean.getTitle() + "  " + bean.getDisplay_url());
     }
 }

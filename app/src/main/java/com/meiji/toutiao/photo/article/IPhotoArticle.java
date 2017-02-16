@@ -1,15 +1,15 @@
-package com.meiji.toutiao.photo;
+package com.meiji.toutiao.photo.article;
 
-import com.meiji.toutiao.bean.photo.PhotoViewBean;
+import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 
 import java.util.List;
 
-interface IPhoto {
+interface IPhotoArticle {
 
     interface View {
         void onRequestData();
 
-        void onSetAdapter(List<PhotoViewBean.DataBean> list);
+        void onSetAdapter(List<PhotoArticleBean.DataBean> list);
 
         void onShowRefreshing();
 
@@ -35,7 +35,7 @@ interface IPhoto {
     interface Model {
         boolean requestData(String url);
 
-        List<PhotoViewBean.DataBean> getDataList();
+        List<PhotoArticleBean.DataBean> getDataList();
 
         int getmax_behot_time();
     }

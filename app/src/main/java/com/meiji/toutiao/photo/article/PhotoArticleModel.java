@@ -1,11 +1,11 @@
-package com.meiji.toutiao.photo;
+package com.meiji.toutiao.photo.article;
 
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.meiji.toutiao.InitApp;
-import com.meiji.toutiao.bean.photo.PhotoViewBean;
+import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,13 +18,13 @@ import okhttp3.Response;
  * Created by Meiji on 2017/2/16.
  */
 
-public class PhotoModel implements IPhoto.Model {
+public class PhotoArticleModel implements IPhotoArticle.Model {
 
     private static final String TAG = "NewsArticleModel";
     private Gson gson = new Gson();
-    private List<PhotoViewBean> newsList = new ArrayList<>();
-    private List<PhotoViewBean.DataBean> dataList = new ArrayList<>();
-    private List<PhotoViewBean.NextBean> nextList = new ArrayList<>();
+    private List<PhotoArticleBean> newsList = new ArrayList<>();
+    private List<PhotoArticleBean.DataBean> dataList = new ArrayList<>();
+    private List<PhotoArticleBean.NextBean> nextList = new ArrayList<>();
 
 
     @Override
@@ -42,7 +42,7 @@ public class PhotoModel implements IPhoto.Model {
                 String responseJson = response.body().string();
                 //String result = ChineseUtil.UnicodeToChs(responseJson);
                 Log.d(TAG, "requestData: " + responseJson);
-                PhotoViewBean bean = gson.fromJson(responseJson, PhotoViewBean.class);
+                PhotoArticleBean bean = gson.fromJson(responseJson, PhotoArticleBean.class);
                 newsList.add(bean);
             }
         } catch (IOException | JsonSyntaxException e) {
@@ -52,8 +52,8 @@ public class PhotoModel implements IPhoto.Model {
     }
 
     @Override
-    public List<PhotoViewBean.DataBean> getDataList() {
-        for (PhotoViewBean bean : newsList) {
+    public List<PhotoArticleBean.DataBean> getDataList() {
+        for (PhotoArticleBean bean : newsList) {
             dataList = bean.getData();
             try {
                 // 移除最后一项 数据有重复
@@ -63,7 +63,7 @@ public class PhotoModel implements IPhoto.Model {
                 }
 //                // 移除无图片的 Item 和 source 为 "ad"
 //                for (int i = 0; i < dataList.size(); i++) {
-//                    PhotoViewBean.DataBean dataBean = dataList.get(i);
+//                    PhotoArticleBean.DataBean dataBean = dataList.get(i);
 //                    if (!dataBean.isHas_image() || dataBean.getTag().contains("ad")) {
 //                        dataList.remove(i);
 //                    }
@@ -78,7 +78,7 @@ public class PhotoModel implements IPhoto.Model {
     @Override
     public int getmax_behot_time() {
         int max_behot_time = 0;
-        for (PhotoViewBean bean : newsList) {
+        for (PhotoArticleBean bean : newsList) {
             max_behot_time = bean.getNext().getMax_behot_time();
         }
         return max_behot_time;

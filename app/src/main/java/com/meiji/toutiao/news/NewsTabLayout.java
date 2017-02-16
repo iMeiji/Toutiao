@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.adapter.news.NewsPagerAdapter;
+import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.news.article.NewsArticleView;
 import com.meiji.toutiao.utils.ColorUtil;
 
@@ -54,7 +54,6 @@ public class NewsTabLayout extends Fragment {
         tab_layout.setupWithViewPager(view_pager);
         tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
         view_pager.setOffscreenPageLimit(pageSize);
-
     }
 
     /**
@@ -67,7 +66,7 @@ public class NewsTabLayout extends Fragment {
             Fragment fragment = NewsArticleView.newInstance(categoryId[i]);
             list.add(fragment);
         }
-        NewsPagerAdapter adapter = new NewsPagerAdapter(getFragmentManager(), list, categoryName);
+        BasePagerAdapter adapter = new BasePagerAdapter(getFragmentManager(), list, categoryName);
         view_pager.setAdapter(adapter);
     }
 

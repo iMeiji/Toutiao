@@ -64,6 +64,12 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
         </activity>
+        <activity
+            android:name=".photo.content.PhotoContentView"
+            android:label="图片浏览"
+            android:process=":image"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
     </application>
 

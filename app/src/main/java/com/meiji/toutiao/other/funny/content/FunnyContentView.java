@@ -166,10 +166,6 @@ public class FunnyContentView extends BaseActivity implements IFunnyContent.View
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         switch (itemId) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
-
             case R.id.other_funny_content_comment:
                 presenter.doGetComment(group_id, item_id);
                 break;
