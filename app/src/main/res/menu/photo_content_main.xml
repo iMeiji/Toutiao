@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/photo_content_comment"
+        android:icon="@drawable/ic_comment"
+        android:title="查看评论"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/photo_content_follow"
+        android:icon="@drawable/ic_favorite_white_24dp"
+        android:title="关注此头条号"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/photo_content_share"
+        android:icon="@drawable/ic_share"
+        android:title="分享至"
+        app:showAsAction="ifRoom"/>
+
+</menu>

@@ -1,5 +1,7 @@
 package com.meiji.toutiao.news.comment;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.meiji.toutiao.InitApp;
@@ -18,6 +20,7 @@ import okhttp3.Response;
 
 class NewsCommentModel implements INewsComment.Model {
 
+    private static final String TAG = "NewsCommentModel";
     private Gson gson = new Gson();
     private List<NewsCommentBean> commentBeanList = new ArrayList<>();
     private List<NewsCommentBean.DataBean> dataBeanList = new ArrayList<>();
@@ -34,7 +37,7 @@ class NewsCommentModel implements INewsComment.Model {
             commentBeanList.clear();
         }
 
-        System.out.println("newsCommentApi -- " + url);
+        Log.d(TAG, "requestData: " + url);
         boolean flag = false;
         Request request = new Request.Builder()
                 .url(url)
@@ -46,7 +49,7 @@ class NewsCommentModel implements INewsComment.Model {
                 flag = true;
                 String responseJson = response.body().string();
                 //String result = ChineseUtil.UnicodeToChs(responseJson);
-                System.out.println(responseJson);
+                Log.d(TAG, "requestData: " + responseJson);
                 NewsCommentBean bean = gson.fromJson(responseJson, NewsCommentBean.class);
                 commentBeanList.add(bean);
             }

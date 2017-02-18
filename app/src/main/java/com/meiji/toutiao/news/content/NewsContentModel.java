@@ -1,5 +1,7 @@
 package com.meiji.toutiao.news.content;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.meiji.toutiao.InitApp;
@@ -16,6 +18,7 @@ import okhttp3.Response;
 
 class NewsContentModel implements INewsContent.Model {
 
+    private static final String TAG = "NewsContentModel";
     private Gson gson = new Gson();
     private String url;
     private NewsContentBean newsContentBean;
@@ -27,7 +30,7 @@ class NewsContentModel implements INewsContent.Model {
     public boolean getRequestData(String url) {
 
         boolean flag = false;
-        System.out.println("newsInfoApi " + url);
+        Log.d(TAG, "getRequestData: " + url);
 
         try {
             Request request = new Request.Builder()
@@ -38,7 +41,7 @@ class NewsContentModel implements INewsContent.Model {
             if (response.isSuccessful()) {
                 flag = true;
                 String responseJson = response.body().string();
-//                System.out.println("新闻内容抓取" + html);
+                Log.d(TAG, "getRequestData: " + responseJson);
                 newsContentBean = gson.fromJson(responseJson, NewsContentBean.class);
             }
         } catch (IOException | JsonSyntaxException e) {

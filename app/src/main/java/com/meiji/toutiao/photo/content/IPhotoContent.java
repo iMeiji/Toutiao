@@ -1,5 +1,7 @@
 package com.meiji.toutiao.photo.content;
 
+import android.content.Context;
+
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
 
@@ -21,6 +23,8 @@ interface IPhotoContent {
         void onShowRefreshing();
 
         void onHideRefreshing();
+
+        void onSaveImageSuccess();
     }
 
     interface Presenter {
@@ -36,7 +40,11 @@ interface IPhotoContent {
 
         void doGetComment();
 
-        int getImageCount();
+        int doGetImageCount();
+
+        void doSetPosition(int position);
+
+        void doSaveImage();
 
     }
 
@@ -51,6 +59,8 @@ interface IPhotoContent {
          * 返回内容
          */
         PhotoGalleryBean getData();
+
+        boolean SaveImage(String url, Context context);
     }
 
 }

@@ -3,6 +3,7 @@ package com.meiji.toutiao.news.article;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
@@ -18,6 +19,7 @@ import java.util.List;
 
 class NewsArticlePresenter implements INewsArticle.Presenter {
 
+    private static final String TAG = "NewsArticlePresenter";
     private INewsArticle.View view;
     private INewsArticle.Model model;
     private List<NewsArticleBean.DataBean> dataList = new ArrayList<>();
@@ -68,7 +70,7 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
 
     @Override
     public void doSetAdapter() {
-        System.out.println("刷新新闻数量 " + model.getDataList().size());
+        Log.d(TAG, "doSetAdapter: " + "刷新新闻数量 " + model.getDataList().size());
         dataList.addAll(model.getDataList());
         view.onSetAdapter(dataList);
         view.onHideRefreshing();
@@ -95,6 +97,6 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         InitApp.AppContext.startActivity(intent);
         // 打印下点击的标题和链接
-        System.out.println("点击的标题和链接---" + bean.getTitle() + "  " + bean.getDisplay_url());
+        Log.d(TAG, "doOnClickItem: " + "点击的标题和链接---" + bean.getTitle() + "  " + bean.getDisplay_url());
     }
 }

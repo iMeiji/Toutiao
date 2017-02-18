@@ -3,6 +3,8 @@
           package="com.meiji.toutiao">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".InitApp"
@@ -47,11 +49,6 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".other.funny.comment.FunnyCommentView"
-            android:label="搞笑内容评论"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
             android:name=".search.SearchView"
             android:label="搜索结果"
             android:launchMode="singleTop"
@@ -68,6 +65,16 @@
             android:name=".photo.content.PhotoContentView"
             android:label="图片浏览"
             android:process=":image"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".photo.comment.PhotoComment"
+            android:label="图片评论"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".other.funny.comment.FunnyComment"
+            android:label="搞笑评论"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 

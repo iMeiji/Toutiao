@@ -31,7 +31,7 @@ class NewsArticleModel implements INewsArticle.Model {
 
     @Override
     public boolean requestData(String url) {
-        System.out.println("newsArticleApi -- " + url);
+        Log.d(TAG, "requestData: " + url);
         boolean flag = false;
         Request request = new Request.Builder()
                 .url(url)

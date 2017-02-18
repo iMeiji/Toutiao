@@ -10,14 +10,13 @@
         android:id="@+id/iv_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.3"
+        android:layout_weight="0.2"
         android:scaleType="center"/>
 
     <TextView
         android:id="@+id/tv_abstract"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="50dp"
         android:layout_weight="1"
         android:gravity="center"
         android:text="222"

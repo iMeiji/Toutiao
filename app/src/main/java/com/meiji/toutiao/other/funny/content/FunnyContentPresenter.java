@@ -6,7 +6,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.meiji.toutiao.InitApp;
-import com.meiji.toutiao.other.funny.comment.FunnyCommentView;
+import com.meiji.toutiao.other.funny.comment.FunnyComment;
 
 /**
  * Created by Meiji on 2017/1/3.
@@ -77,9 +77,9 @@ class FunnyContentPresenter implements IFunnyContent.Presenter {
 
     @Override
     public void doGetComment(String group_id, String item_id) {
-        Intent intent = new Intent(InitApp.AppContext, FunnyCommentView.class);
-        intent.putExtra(FunnyCommentView.GROUP_ID, group_id);
-        intent.putExtra(FunnyCommentView.ITEM_ID, item_id);
+        Intent intent = new Intent(InitApp.AppContext, FunnyComment.class);
+        intent.putExtra(FunnyComment.GROUP_ID, group_id);
+        intent.putExtra(FunnyComment.ITEM_ID, item_id);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         InitApp.AppContext.startActivity(intent);
     }

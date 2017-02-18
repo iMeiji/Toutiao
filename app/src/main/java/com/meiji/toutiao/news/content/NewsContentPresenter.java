@@ -3,6 +3,7 @@ package com.meiji.toutiao.news.content;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
@@ -15,6 +16,7 @@ import com.meiji.toutiao.utils.Api;
 
 class NewsContentPresenter implements INewsContent.Presenter {
 
+    private static final String TAG = "NewsContentPresenter";
     private INewsContent.View view;
     private INewsContent.Model model;
     private String group_id;
@@ -45,7 +47,6 @@ class NewsContentPresenter implements INewsContent.Presenter {
 
         String item_seo_url = dataBean.getItem_seo_url();
         final String url = Api.getNewsInfoUrl(item_seo_url);
-        System.out.println("doRequestData--" + url);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -64,7 +65,6 @@ class NewsContentPresenter implements INewsContent.Presenter {
     @Override
     public void doSetWebView() {
         String html = model.getHtml();
-        System.out.println("设置已处理的url的URL --");
         view.onSetWebView(html, true);
     }
 
@@ -81,6 +81,6 @@ class NewsContentPresenter implements INewsContent.Presenter {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         InitApp.AppContext.startActivity(intent);
         // 打印下点击的标题和链接
-        System.out.println("点击新闻查看评论---" + group_id + "  " + item_id);
+        Log.d(TAG, "doGetComment: " + group_id + "  " + item_id);
     }
 }
