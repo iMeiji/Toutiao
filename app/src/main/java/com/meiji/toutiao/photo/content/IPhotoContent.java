@@ -13,7 +13,7 @@ interface IPhotoContent {
 
     interface View {
 
-        void onSetImageBrwoser(PhotoGalleryBean bean, int position);
+        void onSetImageBrowser(PhotoGalleryBean bean, int position);
 
         /**
          * 请求数据失败
@@ -29,7 +29,7 @@ interface IPhotoContent {
 
     interface Presenter {
 
-        void doSetImageBrwoser();
+        void doSetImageBrowser();
 
         /**
          * 请求数据失败

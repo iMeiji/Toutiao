@@ -19,6 +19,10 @@ import java.util.List;
 class PhotoContentPresenter implements IPhotoContent.Presenter {
 
     private static final String TAG = "PhotoContentPresenter";
+    private static final int SAVE_IMAGE_SUCCESS = 0;
+    private static final int SAVE_IMAGE_FAIL = 1;
+    private static final int HTTP_REQUEST_SUCCESS = 2;
+    private static final int HTTP_REQUEST_FAIL = 3;
     private IPhotoContent.View view;
     private IPhotoContent.Model model;
     private PhotoGalleryBean bean;
@@ -26,7 +30,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
         @Override
         public boolean handleMessage(Message message) {
             if (message.what == HTTP_REQUEST_SUCCESS) {
-                doSetImageBrwoser();
+                doSetImageBrowser();
             }
             if (message.what == SAVE_IMAGE_SUCCESS) {
                 view.onSaveImageSuccess();
@@ -37,30 +41,9 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
             return false;
         }
     });
-
-
-    private Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message message) {
-            if (message.what == HTTP_REQUEST_SUCCESS) {
-                doSetImageBrwoser();
-            }
-            if (message.what == SAVE_IMAGE_SUCCESS) {
-                view.onSaveImageSuccess();
-            }
-            if (message.what == SAVE_IMAGE_FAIL || message.what == HTTP_REQUEST_FAIL) {
-                view.onFail();
-            }
-            return false;
-        }
-    });
-    private static final int SAVE_IMAGE_SUCCESS = 0;
     private int position;
-    private static final int SAVE_IMAGE_FAIL = 1;
     private String group_id;
-    private static final int HTTP_REQUEST_SUCCESS = 2;
     private String item_id;
-    private static final int HTTP_REQUEST_FAIL = 3;
 
 
     PhotoContentPresenter(IPhotoContent.View view) {
@@ -69,9 +52,9 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
     }
 
     @Override
-    public void doSetImageBrwoser() {
+    public void doSetImageBrowser() {
         bean = model.getData();
-        view.onSetImageBrwoser(bean, 0);
+        view.onSetImageBrowser(bean, 0);
     }
 
     @Override
@@ -81,6 +64,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
 
     @Override
     public void doRequestData(PhotoArticleBean.DataBean dataBean) {
+        view.onShowRefreshing();
         group_id = dataBean.getGroup_id() + "";
         item_id = dataBean.getItem_id() + "";
 

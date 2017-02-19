@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,8 +19,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.meiji.toutiao.BaseActivity;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.other.joke.JokeCommentAdapter;
@@ -128,7 +127,7 @@ public class JokeCommentView extends BaseActivity implements IJokeComment.View, 
                 @Override
                 public void onClick(View view, int position) {
                     //JokeCommentBean.DataBean.RecentCommentsBean bean = (JokeCommentBean.DataBean.RecentCommentsBean) list.get(position);
-                    showCopyDialog(position, list.get(position).getText());
+                    showCopyDialog(list.get(position).getText());
                 }
             });
         } else {
@@ -153,20 +152,14 @@ public class JokeCommentView extends BaseActivity implements IJokeComment.View, 
         });
     }
 
-    private void showCopyDialog(int position, final String content) {
-        final MaterialDialog dialog = new MaterialDialog.Builder(this)
-                .title("是否复制评论?")
-                .content(content).build();
-        dialog.setActionButton(DialogAction.NEGATIVE, "取消");
-        dialog.getActionButton(DialogAction.NEGATIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+    private void showCopyDialog(final String content) {
 
-        dialog.setActionButton(DialogAction.POSITIVE, "确定");
-        dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener(new View.OnClickListener() {
+        final BottomSheetDialog dialog = new BottomSheetDialog(this);
+        View view = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
+        dialog.setContentView(view);
+        TextView tv_cpoy = (TextView) view.findViewById(R.id.tv_cpoy);
+        TextView tv_share = (TextView) view.findViewById(R.id.tv_share);
+        tv_cpoy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ClipboardManager copy = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -176,8 +169,44 @@ public class JokeCommentView extends BaseActivity implements IJokeComment.View, 
                 dialog.dismiss();
             }
         });
-
+        tv_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent shareIntent = new Intent()
+                        .setAction(Intent.ACTION_SEND)
+                        .setType("text/plain")
+                        .putExtra(Intent.EXTRA_TEXT, content);
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
+                dialog.dismiss();
+            }
+        });
         dialog.show();
+
+
+//        final MaterialDialog dialog = new MaterialDialog.Builder(this)
+//                .title("是否复制评论?")
+//                .content(content).build();
+//        dialog.setActionButton(DialogAction.NEGATIVE, "取消");
+//        dialog.getActionButton(DialogAction.NEGATIVE).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        dialog.setActionButton(DialogAction.POSITIVE, "确定");
+//        dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ClipboardManager copy = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+//                ClipData clipData = ClipData.newPlainText("text", content);
+//                copy.setPrimaryClip(clipData);
+//                Toast.makeText(JokeCommentView.this, "已复制", Toast.LENGTH_SHORT).show();
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        dialog.show();
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
+import com.meiji.toutiao.photo.content.PhotoContentView;
 import com.meiji.toutiao.utils.WindowUtil;
 
 import java.util.List;
@@ -33,10 +34,12 @@ public class PhotoContentAdapter extends PagerAdapter {
     private PhotoGalleryBean galleryBean;
     private SparseArray<View> cacheView;
     private ViewGroup containerTemp;
+    private PhotoContentView photoContentView;
 
-    public PhotoContentAdapter(Context context, PhotoGalleryBean galleryBean) {
+    public PhotoContentAdapter(Context context, PhotoGalleryBean galleryBean, PhotoContentView photoContentView) {
         this.context = context;
         this.galleryBean = galleryBean;
+        this.photoContentView = photoContentView;
         cacheView = new SparseArray<>(galleryBean.getCount());
     }
 
@@ -54,14 +57,14 @@ public class PhotoContentAdapter extends PagerAdapter {
             TextView text = (TextView) view.findViewById(R.id.tv_abstract);
             PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(image);
 
-
             List<PhotoGalleryBean.SubImagesBean> sub_images = galleryBean.getSub_images();
             List<String> sub_abstracts = galleryBean.getSub_abstracts();
 
             //Glide.with(context).load(sub_images.get(position)).asBitmap().into(new MyTarget(photoViewAttacher));
+
             Glide.with(context).load(sub_images.get(position).getUrl()).asBitmap().centerCrop().into(image);
             text.setText(sub_abstracts.get(position));
-
+            photoContentView.onHideRefreshing();
 
             photoViewAttacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                 @Override

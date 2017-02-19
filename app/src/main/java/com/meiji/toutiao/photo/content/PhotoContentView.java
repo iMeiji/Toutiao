@@ -1,10 +1,16 @@
 package com.meiji.toutiao.photo.content;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -36,6 +42,7 @@ public class PhotoContentView extends BaseActivity implements IPhotoContent.View
     private String shareUrl;
     private String shareTitle;
     private PhotoContentAdapter adapter;
+    private SwipeRefreshLayout refresh_layout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,12 +73,14 @@ public class PhotoContentView extends BaseActivity implements IPhotoContent.View
         tv_save = (TextView) findViewById(R.id.tv_save);
         tv_save.setOnClickListener(this);
         viewPager = (ViewPagerFixed) findViewById(R.id.viewPager);
+
+        refresh_layout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
     }
 
     @Override
-    public void onSetImageBrwoser(PhotoGalleryBean bean, int position) {
+    public void onSetImageBrowser(PhotoGalleryBean bean, int position) {
         if (adapter == null) {
-            adapter = new PhotoContentAdapter(this, bean);
+            adapter = new PhotoContentAdapter(this, bean, this);
             viewPager.setAdapter(adapter);
             viewPager.setCurrentItem(position);
             viewPager.addOnPageChangeListener(this);
@@ -86,12 +95,14 @@ public class PhotoContentView extends BaseActivity implements IPhotoContent.View
 
     @Override
     public void onShowRefreshing() {
-
+        refresh_layout.setRefreshing(true);
+        refresh_layout.setEnabled(true);
     }
 
     @Override
     public void onHideRefreshing() {
-
+        refresh_layout.setRefreshing(false);
+        refresh_layout.setEnabled(false);
     }
 
     @Override
@@ -143,13 +154,37 @@ public class PhotoContentView extends BaseActivity implements IPhotoContent.View
         int id = view.getId();
         switch (id) {
             case R.id.tv_save:
-                Toast.makeText(this, "download", Toast.LENGTH_SHORT).show();
-                presenter.doSaveImage();
+                // 运行时权限处理
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{"需要存储权限保存图片"}
+                            , 1);
+                } else {
+                    presenter.doSaveImage();
+                }
         }
     }
+
 
     @Override
     public void onSaveImageSuccess() {
         Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == 1) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                presenter.doSaveImage();
+            } else {
+                // Permission Denied
+                Toast.makeText(this, "没有权限", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

@@ -9,4 +9,8 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView"/>
 
+    <item
+        android:id="@+id/aciton_setting"
+        android:title="设置"
+        app:showAsAction="never"/>
 </menu>
