@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.utils.TimeUtil;
 
 import java.util.ArrayList;
@@ -45,10 +46,12 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<NewsArticleAdapter.
     @Override
     public void onBindViewHolder(NewsArticleViewHolder holder, int position) {
         NewsArticleBean.DataBean bean = list.get(position);
-        List<NewsArticleBean.DataBean.ImageListBean> image_list = bean.getImage_list();
-        if (image_list != null && image_list.size() != 0) {
-            String url = image_list.get(0).getUrl();
-            Glide.with(context).load(url).crossFade().centerCrop().error(R.drawable.error_image).into(holder.iv_image_url);
+        if (SettingsUtil.getInstance().getPhotoSwitch()) {
+            List<NewsArticleBean.DataBean.ImageListBean> image_list = bean.getImage_list();
+            if (image_list != null && image_list.size() != 0) {
+                String url = image_list.get(0).getUrl();
+                Glide.with(context).load(url).crossFade().centerCrop().error(R.drawable.error_image).into(holder.iv_image_url);
+            }
         }
 
         String tv_title = bean.getTitle();

@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.other.joke.JokeCommentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.view.CircleImageView;
 
 import java.util.ArrayList;
@@ -49,7 +50,9 @@ public class JokeCommentAdapter extends RecyclerView.Adapter<JokeCommentAdapter.
         String tv_text = bean.getText();
         String tv_likes = bean.getDigg_count() + "赞";
 
-        Glide.with(context).load(iv_avatar).crossFade().centerCrop().into(holder.iv_avatar);
+        if (SettingsUtil.getInstance().getPhotoSwitch()) {
+            Glide.with(context).load(iv_avatar).crossFade().centerCrop().into(holder.iv_avatar);
+        }
         holder.tv_username.setText(tv_username);
         holder.tv_text.setText(tv_text);
         holder.tv_likes.setText(tv_likes);

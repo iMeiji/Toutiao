@@ -22,7 +22,7 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_share_grey"/>
+                android:src="@drawable/ic_copy"/>
 
             <TextView
                 android:id="@+id/tv_cpoy"
@@ -46,7 +46,7 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_share_grey"/>
+                android:src="@drawable/ic_share_black"/>
 
             <TextView
                 android:id="@+id/tv_share"

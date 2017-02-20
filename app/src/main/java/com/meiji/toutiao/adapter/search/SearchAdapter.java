@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.search.SearchBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,9 +46,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     public void onBindViewHolder(SearchAdapter.SearchViewHolder holder, int position) {
         SearchBean.DataBean bean = list.get(position);
         List<SearchBean.DataBean.ImageListBean> image_list = bean.getImage_list();
-        if (image_list.size() != 0) {
-            String url = image_list.get(0).getUrl();
-            Glide.with(context).load(url).crossFade().centerCrop().error(R.drawable.error_image).into(holder.iv_image_url);
+        if (SettingsUtil.getInstance().getPhotoSwitch()) {
+            if (image_list.size() != 0) {
+                String url = image_list.get(0).getUrl();
+                Glide.with(context).load(url).crossFade().centerCrop().error(R.drawable.error_image).into(holder.iv_image_url);
+            }
         }
 
         String tv_title = bean.getTitle();

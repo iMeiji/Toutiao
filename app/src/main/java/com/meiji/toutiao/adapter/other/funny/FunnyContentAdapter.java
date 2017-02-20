@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.other.funny.FunnyArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,29 +47,31 @@ public class FunnyContentAdapter extends RecyclerView.Adapter<FunnyContentAdapte
     public void onBindViewHolder(FunnyContentViewHolder holder, int position) {
         FunnyArticleBean.DataBean bean = list.get(position);
         String tv_title = bean.getTitle();
-        if (bean.getImage_list() != null) {
-            int size = bean.getImage_list().size();
-            String[] ivs = new String[size];
-            for (int i = 0; i < bean.getImage_list().size(); i++) {
-                ivs[i] = bean.getImage_list().get(i).getUrl();
-            }
-            switch (ivs.length) {
-                case 1:
-                    Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(holder.iv_0);
-                    break;
-                case 2:
-                    Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(holder.iv_0);
-                    Glide.with(context).load(ivs[1]).crossFade().centerCrop().into(holder.iv_1);
-                    break;
-                case 3:
-                    Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(holder.iv_0);
-                    Glide.with(context).load(ivs[1]).crossFade().centerCrop().into(holder.iv_1);
-                    Glide.with(context).load(ivs[2]).crossFade().centerCrop().into(holder.iv_2);
-                    break;
-                default:
-                    holder.iv_0.setBackgroundColor(Color.WHITE);
-                    holder.iv_1.setBackgroundColor(Color.WHITE);
-                    holder.iv_2.setBackgroundColor(Color.WHITE);
+        if (SettingsUtil.getInstance().getPhotoSwitch()) {
+            if (bean.getImage_list() != null) {
+                int size = bean.getImage_list().size();
+                String[] ivs = new String[size];
+                for (int i = 0; i < bean.getImage_list().size(); i++) {
+                    ivs[i] = bean.getImage_list().get(i).getUrl();
+                }
+                switch (ivs.length) {
+                    case 1:
+                        Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(holder.iv_0);
+                        break;
+                    case 2:
+                        Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(holder.iv_0);
+                        Glide.with(context).load(ivs[1]).crossFade().centerCrop().into(holder.iv_1);
+                        break;
+                    case 3:
+                        Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(holder.iv_0);
+                        Glide.with(context).load(ivs[1]).crossFade().centerCrop().into(holder.iv_1);
+                        Glide.with(context).load(ivs[2]).crossFade().centerCrop().into(holder.iv_2);
+                        break;
+                    default:
+                        holder.iv_0.setBackgroundColor(Color.WHITE);
+                        holder.iv_1.setBackgroundColor(Color.WHITE);
+                        holder.iv_2.setBackgroundColor(Color.WHITE);
+                }
             }
         }
 

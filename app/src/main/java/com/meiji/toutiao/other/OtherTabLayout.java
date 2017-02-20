@@ -51,7 +51,7 @@ public class OtherTabLayout extends Fragment {
         tab_layout = (TabLayout) view.findViewById(R.id.tab_layout_other);
         view_pager = (ViewPager) view.findViewById(R.id.view_pager_other);
 
-        tab_layout.setBackgroundColor(ColorUtil.getColor(getActivity()));
+        tab_layout.setBackgroundColor(ColorUtil.getColor());
         tab_layout.setupWithViewPager(view_pager);
         tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
         view_pager.setOffscreenPageLimit(pageSize);

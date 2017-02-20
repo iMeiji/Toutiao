@@ -40,7 +40,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginRight="4dp"
                     android:layout_weight="1"
-                    android:src="@color/Black"/>
+                    android:src="@color/White"/>
 
                 <ImageView
                     android:id="@+id/iv_1"
@@ -48,14 +48,14 @@
                     android:layout_height="match_parent"
                     android:layout_marginRight="4dp"
                     android:layout_weight="1"
-                    android:src="@color/Blue"/>
+                    android:src="@color/White"/>
 
                 <ImageView
                     android:id="@+id/iv_2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@color/colorPrimary"/>
+                    android:src="@color/White"/>
 
 
             </LinearLayout>

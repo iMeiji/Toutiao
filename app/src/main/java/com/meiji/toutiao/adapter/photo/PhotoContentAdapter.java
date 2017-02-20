@@ -19,6 +19,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
 import com.meiji.toutiao.photo.content.PhotoContentView;
+import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.utils.WindowUtil;
 
 import java.util.List;
@@ -61,8 +62,10 @@ public class PhotoContentAdapter extends PagerAdapter {
             List<String> sub_abstracts = galleryBean.getSub_abstracts();
 
             //Glide.with(context).load(sub_images.get(position)).asBitmap().into(new MyTarget(photoViewAttacher));
-
-            Glide.with(context).load(sub_images.get(position).getUrl()).asBitmap().centerCrop().into(image);
+            // 这个需要加个 在无图模式下 点击加载图片
+            if (SettingsUtil.getInstance().getPhotoSwitch()) {
+                Glide.with(context).load(sub_images.get(position).getUrl()).asBitmap().centerCrop().into(image);
+            }
             text.setText(sub_abstracts.get(position));
             photoContentView.onHideRefreshing();
 

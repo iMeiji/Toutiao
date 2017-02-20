@@ -153,7 +153,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setColor(int color) {
-        ColorUtil.setColor(this, color);
+        ColorUtil.setColor(color);
         bottom_navigation.setBackgroundColor(color);
         if (getSupportActionBar() != null)
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(color));
@@ -164,8 +164,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void replaceFragment(Fragment fragment, int color, String tag) {
-        ColorUtil.setColor(this, color);
-        bottom_navigation.setBackgroundColor(ColorUtil.getColor(this));
+        ColorUtil.setColor(color);
+        bottom_navigation.setBackgroundColor(ColorUtil.getColor());
         getSupportFragmentManager().beginTransaction().replace(R.id.content_main, fragment).addToBackStack(null).commit();
     }
 

@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsCommentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,9 @@ public class NewsCommentAdapter extends RecyclerView.Adapter<NewsCommentAdapter.
         String tv_text = commentsBean.getText();
         int tv_likes = commentsBean.getDigg_count();
 
-        Glide.with(context).load(iv_avatar).crossFade().centerCrop().into(holder.iv_avatar);
+        if (SettingsUtil.getInstance().getPhotoSwitch()) {
+            Glide.with(context).load(iv_avatar).crossFade().centerCrop().into(holder.iv_avatar);
+        }
         holder.tv_username.setText(tv_username);
         holder.tv_text.setText(tv_text);
         holder.tv_likes.setText(tv_likes + "赞");
