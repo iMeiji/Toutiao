@@ -29,25 +29,15 @@
         android:text="保存"
         android:textColor="@android:color/white"/>
 
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refresh_layout"
+    <com.meiji.toutiao.view.ViewPagerFixed
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_marginBottom="48dp"
         android:layout_marginTop="?attr/actionBarSize">
 
-        <com.meiji.toutiao.view.ViewPagerFixed
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true">
-
-        </com.meiji.toutiao.view.ViewPagerFixed>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-
+    </com.meiji.toutiao.view.ViewPagerFixed>
 </RelativeLayout>

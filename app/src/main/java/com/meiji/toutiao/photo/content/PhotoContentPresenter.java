@@ -64,7 +64,6 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
 
     @Override
     public void doRequestData(PhotoArticleBean.DataBean dataBean) {
-        view.onShowRefreshing();
         group_id = dataBean.getGroup_id() + "";
         item_id = dataBean.getItem_id() + "";
 

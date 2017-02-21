@@ -11,11 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
 import com.meiji.toutiao.photo.content.PhotoContentView;
@@ -56,6 +60,8 @@ public class PhotoContentAdapter extends PagerAdapter {
             view.setTag(position);
             ImageView image = (ImageView) view.findViewById(R.id.iv_image);
             TextView text = (TextView) view.findViewById(R.id.tv_abstract);
+            final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
+
             PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(image);
 
             List<PhotoGalleryBean.SubImagesBean> sub_images = galleryBean.getSub_images();
@@ -64,10 +70,22 @@ public class PhotoContentAdapter extends PagerAdapter {
             //Glide.with(context).load(sub_images.get(position)).asBitmap().into(new MyTarget(photoViewAttacher));
             // 这个需要加个 在无图模式下 点击加载图片
             if (SettingsUtil.getInstance().getPhotoSwitch()) {
-                Glide.with(context).load(sub_images.get(position).getUrl()).asBitmap().centerCrop().into(image);
+                Glide.with(context).load(sub_images.get(position).getUrl()).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                }).into(image);
             }
             text.setText(sub_abstracts.get(position));
-            photoContentView.onHideRefreshing();
 
             photoViewAttacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                 @Override

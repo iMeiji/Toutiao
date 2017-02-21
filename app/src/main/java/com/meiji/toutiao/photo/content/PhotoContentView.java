@@ -10,7 +10,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -42,7 +41,6 @@ public class PhotoContentView extends BaseActivity implements IPhotoContent.View
     private String shareUrl;
     private String shareTitle;
     private PhotoContentAdapter adapter;
-    private SwipeRefreshLayout refresh_layout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,8 +71,6 @@ public class PhotoContentView extends BaseActivity implements IPhotoContent.View
         tv_save = (TextView) findViewById(R.id.tv_save);
         tv_save.setOnClickListener(this);
         viewPager = (ViewPagerFixed) findViewById(R.id.viewPager);
-
-        refresh_layout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
     }
 
     @Override
@@ -93,17 +89,6 @@ public class PhotoContentView extends BaseActivity implements IPhotoContent.View
         Snackbar.make(getCurrentFocus(), R.string.network_error, Snackbar.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onShowRefreshing() {
-        refresh_layout.setRefreshing(true);
-        refresh_layout.setEnabled(true);
-    }
-
-    @Override
-    public void onHideRefreshing() {
-        refresh_layout.setRefreshing(false);
-        refresh_layout.setEnabled(false);
-    }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

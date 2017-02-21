@@ -20,10 +20,6 @@ interface IPhotoContent {
          */
         void onFail();
 
-        void onShowRefreshing();
-
-        void onHideRefreshing();
-
         void onSaveImageSuccess();
     }
 
