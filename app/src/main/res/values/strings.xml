@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Toutiao</string>
 
-    <string name="text_news">News</string>
-    <string name="text_other">Other</string>
-    <string name="text_media">Media</string>
+    <string name="text_news">新闻</string>
+    <string name="text_other">其他</string>
+    <string name="text_photo">图片</string>
     <string name="double_click_exit">再按一次退出程序</string>
     <string name="network_error">网络不给力</string>
     <string name="md_loading">加载中</string>
@@ -18,5 +18,13 @@
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
+    <string name="action_setting">设置</string>
+    <string name="action_comment">查看评论</string>
+    <string name="action_follow">关注此头条号</string>
+    <string name="action_share">分享至</string>
+    <string name="setting_photo_switch">无图模式</string>
+    <string name="copy_comment">复制评论</string>
+    <string name="share_comment">分享评论</string>
+    <string name="action_switch_mode">切换主题</string>
 
 </resources>

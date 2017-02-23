@@ -17,6 +17,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.meiji.toutiao.BaseActivity;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
+import com.meiji.toutiao.utils.SettingsUtil;
 
 /**
  * Created by Meiji on 2016/12/17.
@@ -104,6 +105,8 @@ public class NewsContetnView extends BaseActivity implements INewsContent.View {
         settings.setDomStorageEnabled(true);
         // 开启application Cache功能
         settings.setAppCacheEnabled(false);
+        // 判断是否为无图模式
+        settings.setBlockNetworkImage(!SettingsUtil.getInstance().getPhotoSwitch());
         // 不调用第三方浏览器即可进行页面反应
         webView.setWebViewClient(new WebViewClient() {
             @Override

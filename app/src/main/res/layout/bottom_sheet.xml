@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -22,7 +23,7 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_copy"/>
+                app:srcCompat="@drawable/ic_copy"/>
 
             <TextView
                 android:id="@+id/tv_cpoy"
@@ -31,7 +32,7 @@
                 android:layout_gravity="center"
                 android:gravity="center_vertical"
                 android:paddingLeft="12dp"
-                android:text="复制评论"
+                android:text="@string/copy_comment"
                 android:textSize="18sp"/>
         </LinearLayout>
 
@@ -46,7 +47,7 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_share_black"/>
+                app:srcCompat="@drawable/ic_share_grey"/>
 
             <TextView
                 android:id="@+id/tv_share"
@@ -54,7 +55,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:paddingLeft="12dp"
-                android:text="分享评论"
+                android:text="@string/share_comment"
                 android:textSize="18sp"/>
 
         </LinearLayout>

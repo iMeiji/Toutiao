@@ -14,9 +14,9 @@
         android:title="@string/text_other"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/action_media"
+        android:id="@+id/action_photo"
         android:enabled="true"
         android:icon="@drawable/ic_audiotrack_white_24dp"
-        android:title="@string/text_media"
+        android:title="@string/text_photo"
         app:showAsAction="ifRoom"/>
 </menu>

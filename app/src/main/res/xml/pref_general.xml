@@ -3,6 +3,6 @@
     <SwitchPreference
         android:defaultValue="false"
         android:key="photo_switch"
-        android:title="无图模式"/>
+        android:title="@string/setting_photo_switch"/>
 
 </PreferenceScreen>

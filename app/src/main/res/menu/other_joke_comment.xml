@@ -5,7 +5,7 @@
     <item
         android:id="@+id/other_joke_comment_share"
         android:icon="@drawable/ic_share"
-        android:title="分享至"
+        android:title="@string/action_share"
         app:showAsAction="ifRoom"/>
 
 </menu>

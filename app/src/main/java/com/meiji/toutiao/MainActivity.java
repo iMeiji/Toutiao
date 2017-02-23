@@ -5,6 +5,7 @@ import android.app.SearchableInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -80,7 +82,7 @@ public class MainActivity extends BaseActivity {
                     case R.id.action_other:
                         showFragment(FRAGMENT_OTHER);
                         break;
-                    case R.id.action_media:
+                    case R.id.action_photo:
                         showFragment(FRAGMENT_MEDIA);
                         break;
                 }
@@ -99,7 +101,7 @@ public class MainActivity extends BaseActivity {
         position = index;
         switch (index) {
             case FRAGMENT_NEWS:
-                toolbar.setTitle("新闻");
+                toolbar.setTitle(getResources().getString(R.string.text_news));
                 /**
                  * 如果Fragment为空，就新建一个实例
                  * 如果不为空，就将它从栈中显示出来
@@ -110,29 +112,29 @@ public class MainActivity extends BaseActivity {
                 } else {
                     ft.show(newsTabLayout);
                 }
-                setColor(getResources().getColor(R.color.colorPrimary));
+                //setColor(getResources().getColor(R.color.colorPrimary));
                 break;
 
             case FRAGMENT_OTHER:
-                toolbar.setTitle("其他");
+                toolbar.setTitle(getResources().getString(R.string.text_other));
                 if (otherTabLayout == null) {
                     otherTabLayout = OtherTabLayout.getInstance();
                     ft.add(R.id.content_main, otherTabLayout);
                 } else {
                     ft.show(otherTabLayout);
                 }
-                setColor(getResources().getColor(R.color.Blue));
+                //setColor(getResources().getColor(R.color.Blue));
                 break;
 
             case FRAGMENT_MEDIA:
-                toolbar.setTitle("图片");
+                toolbar.setTitle(getResources().getString(R.string.text_photo));
                 if (photoTabLayout == null) {
                     photoTabLayout = PhotoTabLayout.getInstance();
                     ft.add(R.id.content_main, photoTabLayout);
                 } else {
                     ft.show(photoTabLayout);
                 }
-                setColor(getResources().getColor(R.color.Green));
+                //setColor(getResources().getColor(R.color.Green));
                 break;
         }
 
@@ -154,7 +156,7 @@ public class MainActivity extends BaseActivity {
 
     private void setColor(int color) {
         ColorUtil.setColor(color);
-        bottom_navigation.setBackgroundColor(color);
+        //bottom_navigation.setBackgroundColor(color);
         if (getSupportActionBar() != null)
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(color));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -165,7 +167,7 @@ public class MainActivity extends BaseActivity {
 
     private void replaceFragment(Fragment fragment, int color, String tag) {
         ColorUtil.setColor(color);
-        bottom_navigation.setBackgroundColor(ColorUtil.getColor());
+        //bottom_navigation.setBackgroundColor(ColorUtil.getColor());
         getSupportFragmentManager().beginTransaction().replace(R.id.content_main, fragment).addToBackStack(null).commit();
     }
 
@@ -194,6 +196,15 @@ public class MainActivity extends BaseActivity {
         switch (itemId) {
             case R.id.aciton_setting:
                 startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case R.id.action_switch_mode:
+                int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                if (mode == Configuration.UI_MODE_NIGHT_YES) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                }
+                recreate();
                 break;
         }
         return super.onOptionsItemSelected(item);
