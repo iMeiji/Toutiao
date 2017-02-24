@@ -24,11 +24,15 @@ import java.util.List;
 
 public class PhotoTabLayout extends Fragment {
 
+    private static final String TAG = "PhotoTabLayout";
     private static PhotoTabLayout instance = null;
     private static int pageSize = InitApp.AppContext.getResources().getStringArray(R.array.photo_id).length;
+    private String categoryId[] = InitApp.AppContext.getResources().getStringArray(R.array.photo_id);
+    private String categoryName[] = InitApp.AppContext.getResources().getStringArray(R.array.photo_name);
     private TabLayout tab_layout;
     private ViewPager view_pager;
     private List<Fragment> list = new ArrayList<>();
+    private BasePagerAdapter adapter;
 
     public static PhotoTabLayout getInstance() {
         if (instance == null) {
@@ -36,6 +40,18 @@ public class PhotoTabLayout extends Fragment {
         }
         return instance;
     }
+
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        FragmentManager manager = getChildFragmentManager();
+//        manager.putFragment(outState, "0", fragment);
+//    }
+//
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//    }
 
     @Nullable
     @Override
@@ -57,14 +73,11 @@ public class PhotoTabLayout extends Fragment {
     }
 
     private void initData() {
-        String categoryId[] = InitApp.AppContext.getResources().getStringArray(R.array.photo_id);
-        String categoryName[] = InitApp.AppContext.getResources().getStringArray(R.array.photo_name);
         for (int i = 0; i < categoryId.length; i++) {
             Fragment fragment = PhotoArticleView.newInstance(categoryId[i]);
             list.add(fragment);
         }
-
-        BasePagerAdapter adapter = new BasePagerAdapter(getFragmentManager(), list, categoryName);
+        adapter = new BasePagerAdapter(getFragmentManager(), list, categoryName);
         view_pager.setAdapter(adapter);
     }
 
@@ -73,6 +86,9 @@ public class PhotoTabLayout extends Fragment {
         super.onDestroyView();
         if (instance != null) {
             instance = null;
+        }
+        if (adapter != null) {
+            adapter = null;
         }
     }
 }

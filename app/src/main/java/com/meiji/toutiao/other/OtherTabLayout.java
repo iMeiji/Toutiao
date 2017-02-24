@@ -27,15 +27,31 @@ public class OtherTabLayout extends Fragment {
 
     private static OtherTabLayout instance = null;
     private static int pageSize = InitApp.AppContext.getResources().getStringArray(R.array.other_id).length;
+    private String categoryId[] = InitApp.AppContext.getResources().getStringArray(R.array.other_id);
+    private String categoryName[] = InitApp.AppContext.getResources().getStringArray(R.array.other_name);
     private TabLayout tab_layout;
     private ViewPager view_pager;
     private List<Fragment> list = new ArrayList<>();
+    private BasePagerAdapter adapter;
 
     public static OtherTabLayout getInstance() {
         if (instance == null) {
             instance = new OtherTabLayout();
         }
         return instance;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Nullable
@@ -58,18 +74,12 @@ public class OtherTabLayout extends Fragment {
     }
 
     private void initData() {
-        String categoryId[] = InitApp.AppContext.getResources().getStringArray(R.array.other_id);
-        String categoryName[] = InitApp.AppContext.getResources().getStringArray(R.array.other_name);
-//        for (int i = 0; i < categoryId.length; i++) {
-//            Fragment fragment = JokeContentView.newInstance(categoryId[i]);
-//            list.add(fragment);
-//        }
         Fragment jokeContentView = JokeContentView.newInstance(categoryId[0]);
         Fragment funnyArticleView = FunnyArticleView.newInstance(categoryId[1]);
         list.add(jokeContentView);
         list.add(funnyArticleView);
 
-        BasePagerAdapter adapter = new BasePagerAdapter(getFragmentManager(), list, categoryName);
+        adapter = new BasePagerAdapter(getFragmentManager(), list, categoryName);
         view_pager.setAdapter(adapter);
     }
 
@@ -78,6 +88,9 @@ public class OtherTabLayout extends Fragment {
         super.onDestroyView();
         if (instance != null) {
             instance = null;
+        }
+        if (adapter != null) {
+            adapter = null;
         }
     }
 }

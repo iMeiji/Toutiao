@@ -32,6 +32,7 @@ import com.meiji.toutiao.utils.ColorUtil;
 
 public class MainActivity extends BaseActivity {
 
+    private static final String TAG = "MainActivity";
     private static final String POSITION = "position";
     private static final int FRAGMENT_NEWS = 0;
     private static final int FRAGMENT_OTHER = 1;
@@ -53,19 +54,63 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+
+//        if (savedInstanceState != null) {
+
+//            newsTabLayout = (NewsTabLayout) fragmentManager.getFragment(savedInstanceState, "newsTabLayout");
+//            otherTabLayout = (OtherTabLayout) fragmentManager.getFragment(savedInstanceState, "otherTabLayout");
+//            photoTabLayout = (PhotoTabLayout) fragmentManager.getFragment(savedInstanceState, "photoTabLayout");
+//            Log.d(TAG, "onCreate: ");
+//        }
+//        else {
+//            newsTabLayout = NewsTabLayout.getInstance();
+//            otherTabLayout = OtherTabLayout.getInstance();
+//            photoTabLayout = PhotoTabLayout.getInstance();
+//        }
+
+//        if (!newsTabLayout.isAdded()) {
+//            fragmentManager.beginTransaction()
+//                    .add(R.id.content_main, newsTabLayout, "newsTabLayout")
+//                    .commit();
+//        }
+//
+//        if (!otherTabLayout.isAdded()) {
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.content_main, otherTabLayout, "otherTabLayout")
+//                    .commit();
+//        }
+//
+//        if (!photoTabLayout.isAdded()) {
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.content_main, photoTabLayout, "photoTabLayout")
+//                    .commit();
+//        }
+
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         // 屏幕旋转时记录位置
         outState.putInt(POSITION, position);
+//        if (newsTabLayout != null && newsTabLayout.isAdded()) {
+//            fragmentManager.putFragment(outState, "newsTabLayout", newsTabLayout);
+//        }
+//        if (otherTabLayout != null && otherTabLayout.isAdded()) {
+//            fragmentManager.putFragment(outState, "otherTabLayout", otherTabLayout);
+//        }
+//        if (photoTabLayout != null) {
+//            getSupportFragmentManager().putFragment(outState, "photoTabLayout", photoTabLayout);
+//        }
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+//        newsTabLayout = (NewsTabLayout) fragmentManager.getFragment(savedInstanceState, "newsTabLayout");
+//        otherTabLayout = (OtherTabLayout) fragmentManager.getFragment(savedInstanceState, "otherTabLayout");
+//        photoTabLayout = (PhotoTabLayout) getSupportFragmentManager().getFragment(savedInstanceState, "photoTabLayout");
         // 屏幕恢复时取出位置
         showFragment(savedInstanceState.getInt(POSITION));
-        super.onRestoreInstanceState(savedInstanceState);
     }
 
     private void initView() {
@@ -90,13 +135,12 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        fragmentManager = getSupportFragmentManager();
         showFragment(FRAGMENT_NEWS);
         content_main = (FrameLayout) findViewById(R.id.content_main);
     }
 
     private void showFragment(int index) {
-        FragmentTransaction ft = fragmentManager.beginTransaction();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         hideFragment(ft);
         position = index;
         switch (index) {
@@ -112,7 +156,7 @@ public class MainActivity extends BaseActivity {
                 } else {
                     ft.show(newsTabLayout);
                 }
-                //setColor(getResources().getColor(R.color.colorPrimary));
+                setColor(getResources().getColor(R.color.colorPrimary));
                 break;
 
             case FRAGMENT_OTHER:
@@ -123,7 +167,7 @@ public class MainActivity extends BaseActivity {
                 } else {
                     ft.show(otherTabLayout);
                 }
-                //setColor(getResources().getColor(R.color.Blue));
+                setColor(getResources().getColor(R.color.colorPrimary));
                 break;
 
             case FRAGMENT_MEDIA:
@@ -134,7 +178,7 @@ public class MainActivity extends BaseActivity {
                 } else {
                     ft.show(photoTabLayout);
                 }
-                //setColor(getResources().getColor(R.color.Green));
+                setColor(getResources().getColor(R.color.colorPrimary));
                 break;
         }
 
@@ -205,7 +249,6 @@ public class MainActivity extends BaseActivity {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 }
                 recreate();
-                break;
         }
         return super.onOptionsItemSelected(item);
     }

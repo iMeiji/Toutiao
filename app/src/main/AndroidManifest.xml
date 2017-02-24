@@ -18,6 +18,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -30,7 +31,8 @@
                 android:name="android.app.default_searchable"
                 android:value=".SearchActivity"/>
         </activity>
-        <activity android:name=".BaseActivity">
+        <activity
+            android:name=".BaseActivity">
         </activity>
         <activity
             android:name=".news.content.NewsContetnView"
