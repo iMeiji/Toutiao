@@ -67,6 +67,12 @@ public class SearchView extends BaseActivity implements SwipeRefreshLayout.OnRef
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recycler_view.smoothScrollToPosition(0);
+            }
+        });
     }
 
     @Override

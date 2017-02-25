@@ -19,9 +19,9 @@ public class SettingsUtil {
         return SettingsUtilInstance.instance;
     }
 
-    public boolean getPhotoSwitch() {
+    public boolean getNoPhotoMode() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(InitApp.AppContext);
-        return !prefs.getBoolean("photo_switch", false);
+        return prefs.getBoolean("switch_no_photo_mode", false);
     }
 
     private static final class SettingsUtilInstance {

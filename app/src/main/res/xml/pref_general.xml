@@ -2,7 +2,12 @@
 
     <SwitchPreference
         android:defaultValue="false"
-        android:key="photo_switch"
-        android:title="@string/setting_photo_switch"/>
+        android:key="switch_no_photo_mode"
+        android:title="@string/switch_photo_mode"/>
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="switch_night_mode"
+        android:title="@string/switch_night_mode"/>
 
 </PreferenceScreen>

@@ -3,6 +3,7 @@ package com.meiji.toutiao.news.content;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -34,6 +35,7 @@ public class NewsContetnView extends BaseActivity implements INewsContent.View {
     private WebView webView;
     private ActionBar actionBar;
     private MaterialDialog dialog;
+    private NestedScrollView scrollView;
     private INewsContent.Presenter presenter;
 
     @Override
@@ -69,6 +71,13 @@ public class NewsContetnView extends BaseActivity implements INewsContent.View {
                 .content(R.string.md_loading)
                 .cancelable(true)
                 .build();
+        scrollView = (NestedScrollView) findViewById(R.id.scrollView);
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scrollView.smoothScrollTo(0, 0);
+            }
+        });
     }
 
     @Override
@@ -106,7 +115,7 @@ public class NewsContetnView extends BaseActivity implements INewsContent.View {
         // 开启application Cache功能
         settings.setAppCacheEnabled(false);
         // 判断是否为无图模式
-        settings.setBlockNetworkImage(!SettingsUtil.getInstance().getPhotoSwitch());
+        settings.setBlockNetworkImage(SettingsUtil.getInstance().getNoPhotoMode());
         // 不调用第三方浏览器即可进行页面反应
         webView.setWebViewClient(new WebViewClient() {
             @Override

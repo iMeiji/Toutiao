@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.meiji.toutiao.BaseActivity;
 import com.meiji.toutiao.R;
@@ -82,6 +81,12 @@ public class JokeCommentView extends BaseActivity implements IJokeComment.View, 
         // 设置下拉刷新按钮的大小
         refresh_layout.setSize(SwipeRefreshLayout.DEFAULT);
         refresh_layout.setOnRefreshListener(this);
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recycler_view.smoothScrollToPosition(0);
+            }
+        });
     }
 
     private void initData() {
@@ -108,6 +113,12 @@ public class JokeCommentView extends BaseActivity implements IJokeComment.View, 
                         .setType("text/plain")
                         .putExtra(Intent.EXTRA_TEXT, jokeText);
                 startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
+                break;
+            case R.id.other_joke_comment_copy:
+                ClipboardManager copy = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("text", jokeText);
+                copy.setPrimaryClip(clipData);
+                Snackbar.make(refresh_layout, R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -155,21 +166,18 @@ public class JokeCommentView extends BaseActivity implements IJokeComment.View, 
     private void showCopyDialog(final String content) {
 
         final BottomSheetDialog dialog = new BottomSheetDialog(this);
-        View view = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
-        dialog.setContentView(view);
-        TextView tv_cpoy = (TextView) view.findViewById(R.id.tv_cpoy);
-        TextView tv_share = (TextView) view.findViewById(R.id.tv_share);
-        tv_cpoy.setOnClickListener(new View.OnClickListener() {
+        View view = getLayoutInflater().inflate(R.layout.comment_action_sheet, null);
+        view.findViewById(R.id.layout_copy_text).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ClipboardManager copy = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clipData = ClipData.newPlainText("text", content);
                 copy.setPrimaryClip(clipData);
-                Toast.makeText(JokeCommentView.this, "已复制", Toast.LENGTH_SHORT).show();
+                Snackbar.make(refresh_layout, R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
-        tv_share.setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.layout_share_text).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent shareIntent = new Intent()
@@ -180,33 +188,8 @@ public class JokeCommentView extends BaseActivity implements IJokeComment.View, 
                 dialog.dismiss();
             }
         });
+        dialog.setContentView(view);
         dialog.show();
-
-
-//        final MaterialDialog dialog = new MaterialDialog.Builder(this)
-//                .title("是否复制评论?")
-//                .content(content).build();
-//        dialog.setActionButton(DialogAction.NEGATIVE, "取消");
-//        dialog.getActionButton(DialogAction.NEGATIVE).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        dialog.setActionButton(DialogAction.POSITIVE, "确定");
-//        dialog.getActionButton(DialogAction.POSITIVE).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                ClipboardManager copy = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-//                ClipData clipData = ClipData.newPlainText("text", content);
-//                copy.setPrimaryClip(clipData);
-//                Toast.makeText(JokeCommentView.this, "已复制", Toast.LENGTH_SHORT).show();
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        dialog.show();
     }
 
     @Override

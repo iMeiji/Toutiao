@@ -46,7 +46,7 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<NewsArticleAdapter.
     @Override
     public void onBindViewHolder(NewsArticleViewHolder holder, int position) {
         NewsArticleBean.DataBean bean = list.get(position);
-        if (SettingsUtil.getInstance().getPhotoSwitch()) {
+        if (!SettingsUtil.getInstance().getNoPhotoMode()) {
             List<NewsArticleBean.DataBean.ImageListBean> image_list = bean.getImage_list();
             if (image_list != null && image_list.size() != 0) {
                 String url = image_list.get(0).getUrl();

@@ -14,8 +14,4 @@
         android:title="@string/action_setting"
         app:showAsAction="never"/>
 
-    <item
-        android:id="@+id/action_switch_mode"
-        android:title="@string/action_switch_mode"
-        app:showAsAction="never"/>
 </menu>

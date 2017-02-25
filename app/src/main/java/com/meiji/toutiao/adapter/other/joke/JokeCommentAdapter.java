@@ -50,7 +50,7 @@ public class JokeCommentAdapter extends RecyclerView.Adapter<JokeCommentAdapter.
         String tv_text = bean.getText();
         String tv_likes = bean.getDigg_count() + "赞";
 
-        if (SettingsUtil.getInstance().getPhotoSwitch()) {
+        if (!SettingsUtil.getInstance().getNoPhotoMode()) {
             Glide.with(context).load(iv_avatar).crossFade().centerCrop().into(holder.iv_avatar);
         }
         holder.tv_username.setText(tv_username);

@@ -47,7 +47,7 @@ public class FunnyContentAdapter extends RecyclerView.Adapter<FunnyContentAdapte
     public void onBindViewHolder(FunnyContentViewHolder holder, int position) {
         FunnyArticleBean.DataBean bean = list.get(position);
         String tv_title = bean.getTitle();
-        if (SettingsUtil.getInstance().getPhotoSwitch()) {
+        if (!SettingsUtil.getInstance().getNoPhotoMode()) {
             if (bean.getImage_list() != null) {
                 int size = bean.getImage_list().size();
                 String[] ivs = new String[size];

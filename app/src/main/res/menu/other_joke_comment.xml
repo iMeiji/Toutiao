@@ -3,6 +3,12 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/other_joke_comment_copy"
+        android:icon="@drawable/ic_copy_white"
+        android:title="@string/copy_content"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/other_joke_comment_share"
         android:icon="@drawable/ic_share"
         android:title="@string/action_share"

@@ -35,6 +35,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  */
 
 public class PhotoContentAdapter extends PagerAdapter {
+    private static final String TAG = "PhotoContentAdapter";
     private Context context;
     private PhotoGalleryBean galleryBean;
     private SparseArray<View> cacheView;
@@ -45,11 +46,11 @@ public class PhotoContentAdapter extends PagerAdapter {
         this.context = context;
         this.galleryBean = galleryBean;
         this.photoContentView = photoContentView;
-        cacheView = new SparseArray<>(galleryBean.getCount());
+        this.cacheView = new SparseArray<>(galleryBean.getCount());
     }
 
     @Override
-    public Object instantiateItem(final ViewGroup container, int position) {
+    public Object instantiateItem(final ViewGroup container, final int position) {
         if (containerTemp == null)
             containerTemp = container;
 
@@ -58,18 +59,19 @@ public class PhotoContentAdapter extends PagerAdapter {
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.photo_content_item, container, false);
             view.setTag(position);
-            ImageView image = (ImageView) view.findViewById(R.id.iv_image);
-            TextView text = (TextView) view.findViewById(R.id.tv_abstract);
+            final ImageView iv_image = (ImageView) view.findViewById(R.id.iv_image);
+            TextView tv_abstract = (TextView) view.findViewById(R.id.tv_abstract);
+            final TextView tv_onclick = (TextView) view.findViewById(R.id.tv_onclick);
             final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
 
-            PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(image);
+            PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(iv_image);
 
-            List<PhotoGalleryBean.SubImagesBean> sub_images = galleryBean.getSub_images();
+            final List<PhotoGalleryBean.SubImagesBean> sub_images = galleryBean.getSub_images();
             List<String> sub_abstracts = galleryBean.getSub_abstracts();
 
             //Glide.with(context).load(sub_images.get(position)).asBitmap().into(new MyTarget(photoViewAttacher));
             // 这个需要加个 在无图模式下 点击加载图片
-            if (SettingsUtil.getInstance().getPhotoSwitch()) {
+            if (!SettingsUtil.getInstance().getNoPhotoMode()) {
                 Glide.with(context).load(sub_images.get(position).getUrl()).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -83,9 +85,33 @@ public class PhotoContentAdapter extends PagerAdapter {
                         return false;
                     }
 
-                }).into(image);
+                }).into(iv_image);
+            } else {
+                progressBar.setVisibility(View.GONE);
+                tv_onclick.setVisibility(View.VISIBLE);
+                view.findViewById(R.id.layout_onclick).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        tv_onclick.setVisibility(View.GONE);
+                        Glide.with(context).load(sub_images.get(position).getUrl()).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                progressBar.setVisibility(View.GONE);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                progressBar.setVisibility(View.GONE);
+                                return false;
+                            }
+
+                        }).into(iv_image);
+                    }
+                });
             }
-            text.setText(sub_abstracts.get(position));
+            tv_abstract.setText(sub_abstracts.get(position));
 
             photoViewAttacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                 @Override

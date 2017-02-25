@@ -46,7 +46,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     public void onBindViewHolder(SearchAdapter.SearchViewHolder holder, int position) {
         SearchBean.DataBean bean = list.get(position);
         List<SearchBean.DataBean.ImageListBean> image_list = bean.getImage_list();
-        if (SettingsUtil.getInstance().getPhotoSwitch()) {
+        if (!SettingsUtil.getInstance().getNoPhotoMode()) {
             if (image_list.size() != 0) {
                 String url = image_list.get(0).getUrl();
                 Glide.with(context).load(url).crossFade().centerCrop().error(R.drawable.error_image).into(holder.iv_image_url);

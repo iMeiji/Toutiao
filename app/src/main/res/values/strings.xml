@@ -22,9 +22,12 @@
     <string name="action_comment">查看评论</string>
     <string name="action_follow">关注此头条号</string>
     <string name="action_share">分享至</string>
-    <string name="setting_photo_switch">无图模式</string>
+    <string name="switch_photo_mode">无图模式</string>
     <string name="copy_comment">复制评论</string>
     <string name="share_comment">分享评论</string>
     <string name="action_switch_mode">切换主题</string>
+    <string name="copy_content">复制内容</string>
+    <string name="copied_to_clipboard">复制成功</string>
+    <string name="switch_night_mode">夜间模式</string>
 
 </resources>

@@ -87,8 +87,5 @@ public class PhotoTabLayout extends Fragment {
         if (instance != null) {
             instance = null;
         }
-        if (adapter != null) {
-            adapter = null;
-        }
     }
 }
