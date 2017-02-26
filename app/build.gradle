@@ -1,8 +1,12 @@
 apply plugin: 'com.android.application'
 
 ext {
-    SUPPORT_LIBRARY_VERSION = '25.1.1'
+    SUPPORT_LIBRARY_VERSION = '25.2.0'
     BUILD_TOOLS = "25.0.0"
+}
+
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
 android {
@@ -13,14 +17,26 @@ android {
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1
-        versionName "0.1"
-        //multiDexEnabled true
+        versionName "1.0"
+        multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true  //设为false即可断点调试
+            shrinkResources true  //自动移除不用资源
+            debuggable false //设为true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        // 输出apk名称为Toutiao_release_v0.1_2017-02-26.apk
+                        def fileName = "Toutiao_release_v${defaultConfig.versionName}_${releaseTime()}.apk"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
         }
     }
 }
@@ -43,6 +59,4 @@ dependencies {
     compile 'com.afollestad.material-dialogs:commons:0.9.1.0'
     compile 'com.github.franmontiel:PersistentCookieJar:v1.0.0'
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
-    compile 'com.android.support:support-v4:25.1.1'
-    compile 'com.android.support:support-vector-drawable:25.1.1'
 }

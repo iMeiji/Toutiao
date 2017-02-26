@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.bean.news.NewsContentBean;
+import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.io.IOException;
 
@@ -60,7 +61,10 @@ class NewsContentModel implements INewsContent.Model {
         String content = dataBean.getContent();
         if (content != null) {
 
-            String css = "<link rel=\"stylesheet\" href=\"file:///android_asset/wap.css\" type=\"text/css\">";
+            String css = "<link rel=\"stylesheet\" href=\"file:///android_asset/toutiao_light.css\" type=\"text/css\">";
+            if (SettingsUtil.getInstance().getIsNightMode()) {
+                css = css.replace("toutiao_light", "toutiao_dark");
+            }
 
             String html = "<!DOCTYPE html>\n" +
                     "<html lang=\"en\">\n" +

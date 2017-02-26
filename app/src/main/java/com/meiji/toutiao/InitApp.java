@@ -2,11 +2,13 @@ package com.meiji.toutiao;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
+import com.meiji.toutiao.utils.SettingsUtil;
 
 import okhttp3.OkHttpClient;
 
@@ -35,5 +37,10 @@ public class InitApp extends Application {
     public void onCreate() {
         super.onCreate();
         AppContext = getApplicationContext();
+        if (SettingsUtil.getInstance().getIsNightMode()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
 }

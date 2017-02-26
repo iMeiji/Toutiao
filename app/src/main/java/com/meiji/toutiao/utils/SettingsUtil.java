@@ -1,6 +1,5 @@
 package com.meiji.toutiao.utils;
 
-import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.meiji.toutiao.InitApp;
@@ -20,8 +19,11 @@ public class SettingsUtil {
     }
 
     public boolean getNoPhotoMode() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(InitApp.AppContext);
-        return prefs.getBoolean("switch_no_photo_mode", false);
+        return PreferenceManager.getDefaultSharedPreferences(InitApp.AppContext).getBoolean("switch_no_photo_mode", false);
+    }
+
+    public boolean getIsNightMode() {
+        return PreferenceManager.getDefaultSharedPreferences(InitApp.AppContext).getBoolean("switch_night_mode", false);
     }
 
     private static final class SettingsUtilInstance {

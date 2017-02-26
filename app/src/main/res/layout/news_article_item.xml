@@ -22,7 +22,8 @@
             <ImageView
                 android:id="@+id/iv_image_url"
                 android:layout_width="120dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:src="@color/viewBackground"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

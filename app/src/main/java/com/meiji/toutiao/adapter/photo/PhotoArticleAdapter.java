@@ -1,7 +1,6 @@
 package com.meiji.toutiao.adapter.photo;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,10 +66,6 @@ public class PhotoArticleAdapter extends RecyclerView.Adapter<PhotoArticleAdapte
                         Glide.with(context).load(ivs[1]).crossFade().centerCrop().into(holder.iv_1);
                         Glide.with(context).load(ivs[2]).crossFade().centerCrop().into(holder.iv_2);
                         break;
-                    default:
-                        holder.iv_0.setBackgroundColor(Color.WHITE);
-                        holder.iv_1.setBackgroundColor(Color.WHITE);
-                        holder.iv_2.setBackgroundColor(Color.WHITE);
                 }
             }
         }

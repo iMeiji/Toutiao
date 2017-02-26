@@ -41,17 +41,18 @@ public class PhotoTabLayout extends Fragment {
         return instance;
     }
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        FragmentManager manager = getChildFragmentManager();
-//        manager.putFragment(outState, "0", fragment);
-//    }
-//
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//    }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 
     @Nullable
     @Override
@@ -86,6 +87,9 @@ public class PhotoTabLayout extends Fragment {
         super.onDestroyView();
         if (instance != null) {
             instance = null;
+        }
+        if (adapter != null) {
+            adapter = null;
         }
     }
 }
