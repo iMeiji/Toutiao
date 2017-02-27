@@ -5,15 +5,14 @@ import android.app.SearchableInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,12 +20,11 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.color.CircleView;
 import com.meiji.toutiao.news.NewsTabLayout;
 import com.meiji.toutiao.other.OtherTabLayout;
 import com.meiji.toutiao.photo.PhotoTabLayout;
 import com.meiji.toutiao.search.SearchView;
-import com.meiji.toutiao.utils.ColorUtil;
+import com.meiji.toutiao.utils.SettingsUtil;
 
 public class MainActivity extends BaseActivity {
 
@@ -53,62 +51,28 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         initView();
 
-//        if (savedInstanceState != null) {
-
-//            newsTabLayout = (NewsTabLayout) fragmentManager.getFragment(savedInstanceState, "newsTabLayout");
-//            otherTabLayout = (OtherTabLayout) fragmentManager.getFragment(savedInstanceState, "otherTabLayout");
-//            photoTabLayout = (PhotoTabLayout) fragmentManager.getFragment(savedInstanceState, "photoTabLayout");
-//            Log.d(TAG, "onCreate: ");
-//        }
-//        else {
-//            newsTabLayout = NewsTabLayout.getInstance();
-//            otherTabLayout = OtherTabLayout.getInstance();
-//            photoTabLayout = PhotoTabLayout.getInstance();
-//        }
-
-//        if (!newsTabLayout.isAdded()) {
-//            fragmentManager.beginTransaction()
-//                    .add(R.id.content_main, newsTabLayout, "newsTabLayout")
-//                    .commit();
-//        }
-//
-//        if (!otherTabLayout.isAdded()) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.content_main, otherTabLayout, "otherTabLayout")
-//                    .commit();
-//        }
-//
-//        if (!photoTabLayout.isAdded()) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.content_main, photoTabLayout, "photoTabLayout")
-//                    .commit();
-//        }
-
+        if (savedInstanceState != null) {
+            newsTabLayout = (NewsTabLayout) getSupportFragmentManager().findFragmentByTag(NewsTabLayout.class.getName());
+            otherTabLayout = (OtherTabLayout) getSupportFragmentManager().findFragmentByTag(OtherTabLayout.class.getName());
+            photoTabLayout = (PhotoTabLayout) getSupportFragmentManager().findFragmentByTag(PhotoTabLayout.class.getName());
+            // 屏幕恢复时取出位置
+            showFragment(savedInstanceState.getInt(POSITION));
+        } else {
+            showFragment(FRAGMENT_NEWS);
+        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         // 屏幕旋转时记录位置
         outState.putInt(POSITION, position);
-//        if (newsTabLayout != null && newsTabLayout.isAdded()) {
-//            fragmentManager.putFragment(outState, "newsTabLayout", newsTabLayout);
-//        }
-//        if (otherTabLayout != null && otherTabLayout.isAdded()) {
-//            fragmentManager.putFragment(outState, "otherTabLayout", otherTabLayout);
-//        }
-//        if (photoTabLayout != null) {
-//            getSupportFragmentManager().putFragment(outState, "photoTabLayout", photoTabLayout);
-//        }
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-//        newsTabLayout = (NewsTabLayout) fragmentManager.getFragment(savedInstanceState, "newsTabLayout");
-//        otherTabLayout = (OtherTabLayout) fragmentManager.getFragment(savedInstanceState, "otherTabLayout");
-//        photoTabLayout = (PhotoTabLayout) getSupportFragmentManager().getFragment(savedInstanceState, "photoTabLayout");
         // 屏幕恢复时取出位置
-        showFragment(savedInstanceState.getInt(POSITION));
+//        showFragment(savedInstanceState.getInt(POSITION));
     }
 
     private void initView() {
@@ -133,7 +97,6 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        showFragment(FRAGMENT_NEWS);
         content_main = (FrameLayout) findViewById(R.id.content_main);
     }
 
@@ -150,33 +113,30 @@ public class MainActivity extends BaseActivity {
                  */
                 if (newsTabLayout == null) {
                     newsTabLayout = NewsTabLayout.getInstance();
-                    ft.add(R.id.content_main, newsTabLayout);
+                    ft.add(R.id.content_main, newsTabLayout, newsTabLayout.getClass().getName());
                 } else {
                     ft.show(newsTabLayout);
                 }
-                setColor(getResources().getColor(R.color.colorPrimary));
                 break;
 
             case FRAGMENT_OTHER:
                 toolbar.setTitle(getResources().getString(R.string.text_other));
                 if (otherTabLayout == null) {
                     otherTabLayout = OtherTabLayout.getInstance();
-                    ft.add(R.id.content_main, otherTabLayout);
+                    ft.add(R.id.content_main, otherTabLayout, otherTabLayout.getClass().getName());
                 } else {
                     ft.show(otherTabLayout);
                 }
-                setColor(getResources().getColor(R.color.colorPrimary));
                 break;
 
             case FRAGMENT_MEDIA:
                 toolbar.setTitle(getResources().getString(R.string.text_photo));
                 if (photoTabLayout == null) {
                     photoTabLayout = PhotoTabLayout.getInstance();
-                    ft.add(R.id.content_main, photoTabLayout);
+                    ft.add(R.id.content_main, photoTabLayout, photoTabLayout.getClass().getName());
                 } else {
                     ft.show(photoTabLayout);
                 }
-                setColor(getResources().getColor(R.color.colorPrimary));
                 break;
         }
 
@@ -194,23 +154,6 @@ public class MainActivity extends BaseActivity {
         if (photoTabLayout != null) {
             ft.hide(photoTabLayout);
         }
-    }
-
-    private void setColor(int color) {
-        ColorUtil.setColor(color);
-        //bottom_navigation.setBackgroundColor(color);
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(color));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(CircleView.shiftColorDown(color));
-            getWindow().setNavigationBarColor(CircleView.shiftColorDown(color));
-        }
-    }
-
-    private void replaceFragment(Fragment fragment, int color, String tag) {
-        ColorUtil.setColor(color);
-        //bottom_navigation.setBackgroundColor(ColorUtil.getColor());
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_main, fragment).addToBackStack(null).commit();
     }
 
     @Override
@@ -239,14 +182,17 @@ public class MainActivity extends BaseActivity {
             case R.id.aciton_setting:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
-            /*case R.id.action_switch_mode:
+            case R.id.action_switch_night_mode:
                 int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
                 if (mode == Configuration.UI_MODE_NIGHT_YES) {
+                    SettingsUtil.getInstance().setIsNightMode(true);
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 } else {
+                    SettingsUtil.getInstance().setIsNightMode(false);
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 }
-                recreate();*/
+                getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
+                recreate();
         }
         return super.onOptionsItemSelected(item);
     }

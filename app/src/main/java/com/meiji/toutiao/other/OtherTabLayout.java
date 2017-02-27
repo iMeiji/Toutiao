@@ -14,7 +14,6 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.other.funny.article.FunnyArticleView;
 import com.meiji.toutiao.other.joke.content.JokeContentView;
-import com.meiji.toutiao.utils.ColorUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +43,6 @@ public class OtherTabLayout extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-
-        }
     }
 
     @Override
@@ -67,7 +63,6 @@ public class OtherTabLayout extends Fragment {
         tab_layout = (TabLayout) view.findViewById(R.id.tab_layout_other);
         view_pager = (ViewPager) view.findViewById(R.id.view_pager_other);
 
-        tab_layout.setBackgroundColor(ColorUtil.getColor());
         tab_layout.setupWithViewPager(view_pager);
         tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
         view_pager.setOffscreenPageLimit(pageSize);

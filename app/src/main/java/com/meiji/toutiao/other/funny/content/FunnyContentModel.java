@@ -71,7 +71,7 @@ class FunnyContentModel implements IFunnyContent.Model {
         if (content != null) {
 
             String css = "<link rel=\"stylesheet\" href=\"file:///android_asset/toutiao_light.css\" type=\"text/css\">";
-            if (SettingsUtil.getInstance().getIsNightMode()) {
+            if (!SettingsUtil.getInstance().getIsNightMode()) {
                 css = css.replace("toutiao_light", "toutiao_dark");
             }
 

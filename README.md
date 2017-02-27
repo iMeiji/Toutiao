@@ -10,6 +10,9 @@
 ## 截图
 <img src="/art/1.jpg"/>
 
+## 下载
+[GitHub Release](https://github.com/iMeiji/Toutiao/releases)
+
 ## 更新日志
 ```
 2017-2-26

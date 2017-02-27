@@ -15,7 +15,6 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.RingtonePreference;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
@@ -119,9 +118,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
-        getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new GeneralPreferenceFragment())
-                .commit();
+
+        GeneralPreferenceFragment fragment;
+
+        if (savedInstanceState != null) {
+            fragment = (GeneralPreferenceFragment) getFragmentManager().findFragmentByTag(GeneralPreferenceFragment.class.getName());
+            getFragmentManager().beginTransaction().show(fragment).commit();
+        } else {
+            fragment = GeneralPreferenceFragment.getInstance();
+
+            getFragmentManager().beginTransaction()
+                    .add(android.R.id.content, fragment, fragment.getClass().getName())
+                    .commit();
+        }
     }
 
     /**
@@ -178,6 +187,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
+
+        private static GeneralPreferenceFragment instance = null;
+
+        public static GeneralPreferenceFragment getInstance() {
+            if (instance == null) {
+                instance = new GeneralPreferenceFragment();
+            }
+            return instance;
+        }
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -187,21 +206,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             findPreference("switch_no_photo_mode").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    getActivity().recreate();
-                    return false;
-                }
-            });
-
-            findPreference("switch_night_mode").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-                    if (mode == Configuration.UI_MODE_NIGHT_YES) {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    } else {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    }
-                    getActivity().getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
                     getActivity().recreate();
                     return false;
                 }

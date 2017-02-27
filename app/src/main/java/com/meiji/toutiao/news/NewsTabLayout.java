@@ -13,7 +13,6 @@ import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.news.article.NewsArticleView;
-import com.meiji.toutiao.utils.ColorUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +42,6 @@ public class NewsTabLayout extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-
-        }
     }
 
     @Override
@@ -66,7 +62,6 @@ public class NewsTabLayout extends Fragment {
         tab_layout = (TabLayout) view.findViewById(R.id.tab_layout_news);
         view_pager = (ViewPager) view.findViewById(R.id.view_pager_news);
 
-        tab_layout.setBackgroundColor(ColorUtil.getColor());
         tab_layout.setupWithViewPager(view_pager);
         tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
         view_pager.setOffscreenPageLimit(pageSize);

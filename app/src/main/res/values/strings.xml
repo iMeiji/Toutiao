@@ -28,6 +28,6 @@
     <string name="action_switch_mode">切换主题</string>
     <string name="copy_content">复制内容</string>
     <string name="copied_to_clipboard">复制成功</string>
-    <string name="switch_night_mode">夜间模式</string>
+    <string name="change_theme">切换主题</string>
 
 </resources>
