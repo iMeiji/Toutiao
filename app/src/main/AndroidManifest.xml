@@ -23,10 +23,8 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".SearchActivity"/>
@@ -34,57 +32,68 @@
         <activity
             android:name=".BaseActivity">
         </activity>
-        <activity
-            android:name=".news.content.NewsContetnView"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+
         <activity
             android:name=".news.comment.NewsCommentView"
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
             android:label="新闻评论"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".other.joke.comment.JokeCommentView"
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
             android:label="段子评论"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".other.funny.content.FunnyContentView"
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
             android:label="搞笑内容"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".search.SearchView"
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
             android:label="搜索结果"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
-
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
         </activity>
         <activity
             android:name=".photo.content.PhotoContentView"
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
             android:label="图片浏览"
             android:process=":image"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".photo.comment.PhotoComment"
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
             android:label="图片评论"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".other.funny.comment.FunnyComment"
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
             android:label="搞笑评论"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".SettingsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
             android:label="@string/title_activity_settings">
+        </activity>
+
+        <activity
+            android:name=".news.content.NewsContentActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
+            android:label="新闻内容"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

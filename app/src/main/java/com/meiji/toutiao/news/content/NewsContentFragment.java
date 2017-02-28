@@ -3,33 +3,43 @@ package com.meiji.toutiao.news.content;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.meiji.toutiao.BaseActivity;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
+import com.meiji.toutiao.news.comment.NewsCommentFragment;
 import com.meiji.toutiao.utils.SettingsUtil;
 
 /**
- * Created by Meiji on 2016/12/17.
+ * Created by Meiji on 2017/2/28.
  */
 
-public class NewsContetnView extends BaseActivity implements INewsContent.View {
+public class NewsContentFragment extends Fragment implements INewsContent.View {
 
-    public static final String TAG = "NewsContetnView";
+    private static final String TAG = "NewsContentFragment";
+    private static NewsContentFragment instance;
     // 新闻链接 标题 头条号 文章号 媒体名
     private String shareUrl;
     private String shareTitle;
+    private String group_id;
+    private String item_id;
 
     private Toolbar toolbar;
     private WebView webView;
@@ -38,68 +48,63 @@ public class NewsContetnView extends BaseActivity implements INewsContent.View {
     private NestedScrollView scrollView;
     private INewsContent.Presenter presenter;
 
+    public NewsContentFragment() {
+    }
+
+    public static NewsContentFragment newInstance(Parcelable dataBean) {
+        instance = new NewsContentFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(TAG, dataBean);
+        instance.setArguments(bundle);
+        return instance;
+    }
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.news_content_main);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.news_content_main, container, false);
         presenter = new NewsContentPresenter(this);
-        initView();
+        initView(view);
         initWebClient();
         onShowRefreshing();
         initData();
+        setHasOptionsMenu(true);
+        return view;
     }
 
     private void initData() {
-        Intent intent = getIntent();
-        NewsArticleBean.DataBean dataBean = intent.getParcelableExtra(TAG);
+        Bundle bundle = getArguments();
+        NewsArticleBean.DataBean dataBean = bundle.getParcelable(TAG);
         presenter.doRequestData(dataBean);
         shareUrl = dataBean.getDisplay_url();
         shareTitle = dataBean.getTitle();
         actionBar.setTitle(dataBean.getMedia_name());
+        group_id = dataBean.getGroup_id() + "";
+        item_id = dataBean.getItem_id() + "";
     }
 
-    private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
+    private void initView(View view) {
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+        activity.setSupportActionBar(toolbar);
+        actionBar = activity.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        webView = (WebView) findViewById(R.id.webview_content);
-        dialog = new MaterialDialog.Builder(this)
+        webView = (WebView) view.findViewById(R.id.webview_content);
+        dialog = new MaterialDialog.Builder(activity)
                 .progress(true, 100)
                 .content(R.string.md_loading)
                 .cancelable(true)
                 .build();
-        scrollView = (NestedScrollView) findViewById(R.id.scrollView);
+        scrollView = (NestedScrollView) view.findViewById(R.id.scrollView);
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 scrollView.smoothScrollTo(0, 0);
             }
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.news_content_comment:
-                presenter.doGetComment();
-                break;
-
-            case R.id.news_content_follow:
-                break;
-
-            case R.id.news_content_share:
-                Intent shareIntent = new Intent()
-                        .setAction(Intent.ACTION_SEND)
-                        .setType("text/plain")
-                        .putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + shareUrl);
-                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -167,6 +172,7 @@ public class NewsContetnView extends BaseActivity implements INewsContent.View {
 
     @Override
     public void onFail() {
+
     }
 
     @Override
@@ -180,8 +186,34 @@ public class NewsContetnView extends BaseActivity implements INewsContent.View {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.news_content_main, menu);
-        return super.onCreateOptionsMenu(menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.news_content_main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.news_content_comment:
+//                presenter.doGetComment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .add(R.id.content_main, NewsCommentFragment.newInstance(group_id, item_id), NewsCommentFragment.class.getName())
+                        .addToBackStack(NewsCommentFragment.class.getName())
+                        .commit();
+                break;
+
+            case R.id.news_content_follow:
+                break;
+
+            case R.id.news_content_share:
+                Intent shareIntent = new Intent()
+                        .setAction(Intent.ACTION_SEND)
+                        .setType("text/plain")
+                        .putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + shareUrl);
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

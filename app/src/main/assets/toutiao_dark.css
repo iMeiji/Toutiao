@@ -23,6 +23,10 @@ h1 {
     color: #fff
 }
 
+h2 {
+    color: #fff
+}
+
 html {
     background: #fff;
     font-family: STHeiti, Microsoft YaHei, Helvetica, Arial, sans-serif;
@@ -58,6 +62,7 @@ p {
 }
 
 h3 {
+    color: #fff;
     line-height: 18px;
     max-height: 100%
 }
@@ -1931,7 +1936,7 @@ h3 {
     padding-top: 16px;
     line-height: 28px;
     font-weight: bolder;
-    color: #3a3a3a
+    color: #fff
 }
 
 [data-dpr="2"] .article-container strong {

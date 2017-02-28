@@ -23,6 +23,7 @@ import java.util.List;
 
 public class NewsTabLayout extends Fragment {
 
+    private static final String TAG = "NewsTabLayout";
     private static NewsTabLayout instance = null;
     private static int pageSize = InitApp.AppContext.getResources().getStringArray(R.array.news_id).length;
     private String categoryId[] = InitApp.AppContext.getResources().getStringArray(R.array.news_id);
@@ -37,16 +38,6 @@ public class NewsTabLayout extends Fragment {
             instance = new NewsTabLayout();
         }
         return instance;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 
     @Nullable
@@ -75,7 +66,7 @@ public class NewsTabLayout extends Fragment {
             Fragment fragment = NewsArticleView.newInstance(categoryId[i]);
             list.add(fragment);
         }
-        adapter = new BasePagerAdapter(getFragmentManager(), list, categoryName);
+        adapter = new BasePagerAdapter(getChildFragmentManager(), list, categoryName);
         view_pager.setAdapter(adapter);
     }
 

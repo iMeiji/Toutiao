@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
-import com.meiji.toutiao.news.content.NewsContetnView;
+import com.meiji.toutiao.news.content.NewsContentActivity;
 import com.meiji.toutiao.utils.Api;
 
 import java.util.ArrayList;
@@ -94,8 +94,8 @@ class SearchPresenter implements ISearch.Presenter {
     @Override
     public void doOnClickItem(int position) {
         NewsArticleBean.DataBean bean = list.get(position);
-        Intent intent = new Intent(InitApp.AppContext, NewsContetnView.class);
-        intent.putExtra(NewsContetnView.TAG, bean);
+        Intent intent = new Intent(InitApp.AppContext, NewsContentActivity.class);
+        intent.putExtra(NewsContentActivity.TAG, bean);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         InitApp.AppContext.startActivity(intent);
         // 打印下点击的标题和链接

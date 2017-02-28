@@ -40,16 +40,6 @@ public class OtherTabLayout extends Fragment {
         return instance;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -74,7 +64,7 @@ public class OtherTabLayout extends Fragment {
         list.add(jokeContentView);
         list.add(funnyArticleView);
 
-        adapter = new BasePagerAdapter(getFragmentManager(), list, categoryName);
+        adapter = new BasePagerAdapter(getChildFragmentManager(), list, categoryName);
         view_pager.setAdapter(adapter);
     }
 
