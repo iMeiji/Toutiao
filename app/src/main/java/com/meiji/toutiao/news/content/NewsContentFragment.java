@@ -34,7 +34,6 @@ import com.meiji.toutiao.utils.SettingsUtil;
 public class NewsContentFragment extends Fragment implements INewsContent.View {
 
     private static final String TAG = "NewsContentFragment";
-    private static NewsContentFragment instance;
     // 新闻链接 标题 头条号 文章号 媒体名
     private String shareUrl;
     private String shareTitle;
@@ -52,7 +51,7 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
     }
 
     public static NewsContentFragment newInstance(Parcelable dataBean) {
-        instance = new NewsContentFragment();
+        NewsContentFragment instance = new NewsContentFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(TAG, dataBean);
         instance.setArguments(bundle);
@@ -198,8 +197,9 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
             case R.id.news_content_comment:
 //                presenter.doGetComment();
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .add(R.id.content_main, NewsCommentFragment.newInstance(group_id, item_id), NewsCommentFragment.class.getName())
+                        .add(R.id.container, NewsCommentFragment.newInstance(group_id, item_id), NewsCommentFragment.class.getName())
                         .addToBackStack(NewsCommentFragment.class.getName())
+                        .hide(this)
                         .commit();
                 break;
 

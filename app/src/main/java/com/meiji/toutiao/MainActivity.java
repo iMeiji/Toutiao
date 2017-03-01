@@ -97,7 +97,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        content_main = (FrameLayout) findViewById(R.id.content_main);
+        content_main = (FrameLayout) findViewById(R.id.container);
     }
 
     private void showFragment(int index) {
@@ -113,7 +113,7 @@ public class MainActivity extends BaseActivity {
                  */
                 if (newsTabLayout == null) {
                     newsTabLayout = NewsTabLayout.getInstance();
-                    ft.add(R.id.content_main, newsTabLayout, newsTabLayout.getClass().getName());
+                    ft.add(R.id.container, newsTabLayout, newsTabLayout.getClass().getName());
                 } else {
                     ft.show(newsTabLayout);
                 }
@@ -123,7 +123,7 @@ public class MainActivity extends BaseActivity {
                 toolbar.setTitle(getResources().getString(R.string.text_other));
                 if (otherTabLayout == null) {
                     otherTabLayout = OtherTabLayout.getInstance();
-                    ft.add(R.id.content_main, otherTabLayout, otherTabLayout.getClass().getName());
+                    ft.add(R.id.container, otherTabLayout, otherTabLayout.getClass().getName());
                 } else {
                     ft.show(otherTabLayout);
                 }
@@ -133,7 +133,7 @@ public class MainActivity extends BaseActivity {
                 toolbar.setTitle(getResources().getString(R.string.text_photo));
                 if (photoTabLayout == null) {
                     photoTabLayout = PhotoTabLayout.getInstance();
-                    ft.add(R.id.content_main, photoTabLayout, photoTabLayout.getClass().getName());
+                    ft.add(R.id.container, photoTabLayout, photoTabLayout.getClass().getName());
                 } else {
                     ft.show(photoTabLayout);
                 }

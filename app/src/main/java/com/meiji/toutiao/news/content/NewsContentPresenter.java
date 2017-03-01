@@ -1,13 +1,9 @@
 package com.meiji.toutiao.news.content;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
-import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
-import com.meiji.toutiao.news.comment.NewsCommentView;
 import com.meiji.toutiao.utils.Api;
 
 /**
@@ -75,12 +71,12 @@ class NewsContentPresenter implements INewsContent.Presenter {
 
     @Override
     public void doGetComment() {
-        Intent intent = new Intent(InitApp.AppContext, NewsCommentView.class);
-        intent.putExtra(NewsCommentView.GROUP_ID, group_id);
-        intent.putExtra(NewsCommentView.ITEM_ID, item_id);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        InitApp.AppContext.startActivity(intent);
-        // 打印下点击的标题和链接
-        Log.d(TAG, "doGetComment: " + group_id + "  " + item_id);
+//        Intent intent = new Intent(InitApp.AppContext, NewsCommentView.class);
+//        intent.putExtra(NewsCommentView.GROUP_ID, group_id);
+//        intent.putExtra(NewsCommentView.ITEM_ID, item_id);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        InitApp.AppContext.startActivity(intent);
+//        // 打印下点击的标题和链接
+//        Log.d(TAG, "doGetComment: " + group_id + "  " + item_id);
     }
 }

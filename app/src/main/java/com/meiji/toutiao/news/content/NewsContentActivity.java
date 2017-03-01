@@ -14,15 +14,13 @@ public class NewsContentActivity extends BaseActivity {
 
     public static final String TAG = "NewsContentActivity";
 
-    private NewsContentFragment newsContentFragment;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_main);
-        newsContentFragment = NewsContentFragment.newInstance(getIntent().getParcelableExtra(TAG));
+        setContentView(R.layout.container);
+        NewsContentFragment newsContentFragment = NewsContentFragment.newInstance(getIntent().getParcelableExtra(TAG));
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content_main, newsContentFragment, newsContentFragment.getClass().getName())
+                .replace(R.id.container, newsContentFragment, newsContentFragment.getClass().getName())
                 .commit();
     }
 }

@@ -3,30 +3,36 @@ package com.meiji.toutiao.other.funny.content;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.meiji.toutiao.BaseActivity;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.other.funny.FunnyArticleBean;
+import com.meiji.toutiao.other.funny.comment.FunnyCommentFragment;
 
 /**
- * Created by Meiji on 2017/1/3.
+ * Created by Meiji on 2017/3/1.
  */
 
-public class FunnyContentView extends BaseActivity implements IFunnyContent.View {
+public class FunnyContentFragment extends Fragment implements IFunnyContent.View {
 
-    public static final String TAG = "FunnyContentView";
+    public static final String TAG = "FunnyContentFragment";
     private String group_id;
     private String item_id;
     private String source_url;
@@ -38,41 +44,35 @@ public class FunnyContentView extends BaseActivity implements IFunnyContent.View
     private MaterialDialog dialog;
     private NestedScrollView scrollView;
 
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.other_funny_content_main);
+
+    public FunnyContentFragment() {
+
+    }
+
+    public static FunnyContentFragment newInstance(Parcelable dataBean) {
+        FunnyContentFragment instance = new FunnyContentFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(TAG, dataBean);
+        instance.setArguments(bundle);
+        return instance;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.other_funny_content_main, container, false);
         presenter = new FunnyContentPresenter(this);
-        initView();
+        initView(view);
         initWebClient();
         initData();
         onRequestData();
-    }
-
-    private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-        webView = (WebView) findViewById(R.id.webview_content);
-        dialog = new MaterialDialog.Builder(this)
-                .progress(true, 100)
-                .content(R.string.md_loading)
-                .cancelable(true)
-                .build();
-        scrollView = (NestedScrollView) findViewById(R.id.scrollView);
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                scrollView.smoothScrollTo(0, 0);
-            }
-        });
+        setHasOptionsMenu(true);
+        return view;
     }
 
     private void initData() {
-        Intent intent = getIntent();
-        FunnyArticleBean.DataBean dataBean = intent.getParcelableExtra(TAG);
+        Bundle bundle = getArguments();
+        FunnyArticleBean.DataBean dataBean = bundle.getParcelable(TAG);
         group_id = dataBean.getGroup_id();
         // http://toutiao.com/m1554439241817090/
         int start = dataBean.getMedia_url().lastIndexOf("m");
@@ -82,6 +82,29 @@ public class FunnyContentView extends BaseActivity implements IFunnyContent.View
         source_url = "http://www.toutiao.com" + dataBean.getSource_url();
         shareTitle = dataBean.getTitle();
         actionBar.setTitle(dataBean.getSource());
+    }
+
+    private void initView(View view) {
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+        actionBar = activity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        webView = (WebView) view.findViewById(R.id.webview_content);
+        dialog = new MaterialDialog.Builder(getActivity())
+                .progress(true, 100)
+                .content(R.string.md_loading)
+                .cancelable(true)
+                .build();
+        scrollView = (NestedScrollView) view.findViewById(R.id.scrollView);
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scrollView.smoothScrollTo(0, 0);
+            }
+        });
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -166,9 +189,9 @@ public class FunnyContentView extends BaseActivity implements IFunnyContent.View
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.other_funny_content_main, menu);
-        return super.onCreateOptionsMenu(menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.other_funny_content_main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -176,7 +199,12 @@ public class FunnyContentView extends BaseActivity implements IFunnyContent.View
         int itemId = item.getItemId();
         switch (itemId) {
             case R.id.other_funny_content_comment:
-                presenter.doGetComment(group_id, item_id);
+//                presenter.doGetComment(group_id, item_id);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .add(R.id.container, FunnyCommentFragment.newInstance(group_id, item_id), FunnyCommentFragment.class.getName())
+                        .addToBackStack(FunnyCommentFragment.class.getName())
+                        .hide(this)
+                        .commit();
                 break;
 
             case R.id.other_funny_content_follow:

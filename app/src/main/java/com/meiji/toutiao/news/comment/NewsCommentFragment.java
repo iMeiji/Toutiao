@@ -11,6 +11,7 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -60,7 +61,6 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
         initView(view);
         initData();
         onRequestData();
-        setHasOptionsMenu(true);
         return view;
     }
 
@@ -87,18 +87,18 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
         refresh_layout.setOnRefreshListener(this);
 
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-//        AppCompatActivity activity = (AppCompatActivity) getActivity();
-//        activity.setSupportActionBar(toolbar);
-//        if (activity.getSupportActionBar() != null) {
-//            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        }
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+        if (activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 recycler_view.smoothScrollToPosition(0);
             }
         });
-        toolbar.setTitle("新闻评论");
+        toolbar.setTitle("评论");
     }
 
     @Override

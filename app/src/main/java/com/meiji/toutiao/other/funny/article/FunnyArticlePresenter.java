@@ -6,7 +6,7 @@ import android.os.Message;
 
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.bean.other.funny.FunnyArticleBean;
-import com.meiji.toutiao.other.funny.content.FunnyContentView;
+import com.meiji.toutiao.other.funny.content.FunnyContentActivity;
 import com.meiji.toutiao.utils.Api;
 
 import java.util.ArrayList;
@@ -90,8 +90,8 @@ class FunnyArticlePresenter implements IFunnyArticle.Presenter {
     @Override
     public void doOnClickItem(int position) {
         FunnyArticleBean.DataBean bean = dataList.get(position);
-        Intent intent = new Intent(InitApp.AppContext, FunnyContentView.class);
-        intent.putExtra(FunnyContentView.TAG, bean);
+        Intent intent = new Intent(InitApp.AppContext, FunnyContentActivity.class);
+        intent.putExtra(FunnyContentActivity.TAG, bean);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         InitApp.AppContext.startActivity(intent);
     }

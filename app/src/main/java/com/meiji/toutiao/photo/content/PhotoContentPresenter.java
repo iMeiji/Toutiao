@@ -1,6 +1,5 @@
 package com.meiji.toutiao.photo.content;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -8,7 +7,6 @@ import android.util.Log;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
-import com.meiji.toutiao.photo.comment.PhotoComment;
 
 import java.util.List;
 
@@ -115,13 +113,13 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
 
     @Override
     public void doGetComment() {
-        Intent intent = new Intent(InitApp.AppContext, PhotoComment.class);
-        intent.putExtra(PhotoComment.GROUP_ID, group_id);
-        intent.putExtra(PhotoComment.ITEM_ID, item_id);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        InitApp.AppContext.startActivity(intent);
-        // 打印下点击的标题和链接
-        Log.d(TAG, "doGetComment: " + group_id + "  " + item_id);
+//        Intent intent = new Intent(InitApp.AppContext, PhotoCommentFragment.class);
+//        intent.putExtra(PhotoCommentFragment.GROUP_ID, group_id);
+//        intent.putExtra(PhotoCommentFragment.ITEM_ID, item_id);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        InitApp.AppContext.startActivity(intent);
+//        // 打印下点击的标题和链接
+//        Log.d(TAG, "doGetComment: " + group_id + "  " + item_id);
     }
 
 }

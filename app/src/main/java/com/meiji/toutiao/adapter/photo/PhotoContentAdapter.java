@@ -22,7 +22,6 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
-import com.meiji.toutiao.photo.content.PhotoContentView;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.utils.WindowUtil;
 
@@ -40,12 +39,10 @@ public class PhotoContentAdapter extends PagerAdapter {
     private PhotoGalleryBean galleryBean;
     private SparseArray<View> cacheView;
     private ViewGroup containerTemp;
-    private PhotoContentView photoContentView;
 
-    public PhotoContentAdapter(Context context, PhotoGalleryBean galleryBean, PhotoContentView photoContentView) {
+    public PhotoContentAdapter(Context context, PhotoGalleryBean galleryBean) {
         this.context = context;
         this.galleryBean = galleryBean;
-        this.photoContentView = photoContentView;
         this.cacheView = new SparseArray<>(galleryBean.getCount());
     }
 

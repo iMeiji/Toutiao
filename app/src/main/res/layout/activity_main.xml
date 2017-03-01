@@ -8,7 +8,7 @@
 
     <include layout="@layout/toolbar"/>
 
-    <include layout="@layout/content_main"/>
+    <include layout="@layout/container"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
