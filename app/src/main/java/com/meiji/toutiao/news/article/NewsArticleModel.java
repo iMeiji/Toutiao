@@ -63,10 +63,10 @@ class NewsArticleModel implements INewsArticle.Model {
                     dataList.remove(dataList.size() - 1);
 //                    dataList.remove(0);
                 }
-                // 移除无图片的 Item 和 source 为 "ad"
+                // 移除头条问答 和 广告
                 for (int i = 0; i < dataList.size(); i++) {
                     NewsArticleBean.DataBean dataBean = dataList.get(i);
-                    if (!dataBean.isHas_image() || dataBean.getTag().contains("ad")) {
+                    if (dataBean.getSource().contains("头条问答") || dataBean.getTag().contains("ad") || dataBean.isHas_video()) {
                         dataList.remove(i);
                     }
                 }

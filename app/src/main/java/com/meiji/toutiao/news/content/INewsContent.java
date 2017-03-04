@@ -1,5 +1,7 @@
 package com.meiji.toutiao.news.content;
 
+import android.support.v4.app.FragmentActivity;
+
 import com.meiji.toutiao.bean.news.NewsArticleBean;
 
 /**
@@ -39,7 +41,7 @@ interface INewsContent {
 
         void doRequestData(NewsArticleBean.DataBean dataBean);
 
-        void doGetComment();
+        void doGetComment(FragmentActivity context, NewsContentFragment newsContentFragment);
     }
 
     interface Model {

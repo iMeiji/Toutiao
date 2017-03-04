@@ -6,9 +6,9 @@ import android.os.Message;
 import android.util.Log;
 
 import com.meiji.toutiao.InitApp;
+import com.meiji.toutiao.api.NewsApi;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.news.content.NewsContentActivity;
-import com.meiji.toutiao.utils.Api;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +46,7 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
     public void doGetUrl(String parameter) {
         view.onShowRefreshing();
         this.category = parameter;
-//        doRequestData(Api.getNewsUrl(parameter));
-        String url = Api.getNewsArticleUrl(category, model.getmax_behot_time() + "");
+        String url = NewsApi.getNewsArticle_PCUrl(category, model.getmax_behot_time() + "");
         doRequestData(url);
     }
 
@@ -79,7 +78,7 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
     @Override
     public void doRefresh() {
         view.onShowRefreshing();
-        String url = Api.getNewsArticleUrl(category, model.getmax_behot_time() + "");
+        String url = NewsApi.getNewsArticle_PCUrl(category, model.getmax_behot_time() + "");
         doRequestData(url);
     }
 

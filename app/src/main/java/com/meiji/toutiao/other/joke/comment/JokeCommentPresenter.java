@@ -3,8 +3,8 @@ package com.meiji.toutiao.other.joke.comment;
 import android.os.Handler;
 import android.os.Message;
 
+import com.meiji.toutiao.api.JokeApi;
 import com.meiji.toutiao.bean.other.joke.JokeCommentBean;
-import com.meiji.toutiao.utils.Api;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ class JokeCommentPresenter implements IJokeComment.Presenter {
         view.onShowRefreshing();
         this.jokeId = jokeId;
         this.jokeCommentCount = jokeCommentCount;
-        String url = Api.getOtherJokeCommentUrl(jokeId, 20, 0);
+        String url = JokeApi.getJokeCommentUrl(jokeId, 20, 0);
         doRequestData(url);
     }
 
@@ -80,7 +80,7 @@ class JokeCommentPresenter implements IJokeComment.Presenter {
         view.onShowRefreshing();
         if (offset < Integer.parseInt(jokeCommentCount)) {
             offset += 20;
-            String url = Api.getOtherJokeCommentUrl(jokeId, 20, offset);
+            String url = JokeApi.getJokeCommentUrl(jokeId, 20, offset);
             doRequestData(url);
         } else {
             view.onFinish();

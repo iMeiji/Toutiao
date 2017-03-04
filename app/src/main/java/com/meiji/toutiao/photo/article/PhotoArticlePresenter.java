@@ -6,9 +6,9 @@ import android.os.Message;
 import android.util.Log;
 
 import com.meiji.toutiao.InitApp;
+import com.meiji.toutiao.api.PhotoApi;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.photo.content.PhotoContentActivity;
-import com.meiji.toutiao.utils.Api;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +47,7 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
     public void doGetUrl(String parameter) {
         view.onShowRefreshing();
         this.category = parameter;
-//        doRequestData(Api.getNewsUrl(parameter));
-        String url = Api.getNewsPhoto(category, 0, model.getmax_behot_time() + "");
+        String url = PhotoApi.getPhotoArticleUrl(category, 0, model.getmax_behot_time() + "");
         doRequestData(url);
     }
 
@@ -80,7 +79,7 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
     public void doRefresh() {
         view.onShowRefreshing();
         offset += 20;
-        String url = Api.getNewsPhoto(category, offset, model.getmax_behot_time() + "");
+        String url = PhotoApi.getPhotoArticleUrl(category, offset, model.getmax_behot_time() + "");
         doRequestData(url);
     }
 

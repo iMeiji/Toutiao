@@ -49,4 +49,20 @@ public class TimeUtil {
             return format.format(new Date(0));
         }
     }
+
+    /**
+     * 根据时间戳 返回发布时间距离当前的时间
+     */
+    public static String getTimeStampAgo(String timeStamp) {
+        Long time = Long.valueOf(timeStamp);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        String string = sdf.format(time * 1000L);
+        Date date = null;
+        try {
+            date = sdf.parse(string);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return timeAgo(date);
+    }
 }

@@ -3,8 +3,8 @@ package com.meiji.toutiao.news.comment;
 import android.os.Handler;
 import android.os.Message;
 
+import com.meiji.toutiao.api.NewsApi;
 import com.meiji.toutiao.bean.news.NewsCommentBean;
-import com.meiji.toutiao.utils.Api;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ class NewsCommentPresenter implements INewsComment.Presenter {
         view.onShowRefreshing();
         this.group_id = group_id;
         this.item_id = item_id;
-        String url = Api.getNewsCommentUrl(group_id, item_id, 0, 20);
+        String url = NewsApi.getNewsCommentUrl(group_id, item_id, 0, 20);
         doRequestData(url);
     }
 
@@ -79,7 +79,7 @@ class NewsCommentPresenter implements INewsComment.Presenter {
     public void doRefresh() {
         view.onShowRefreshing();
         offset += 20;
-        String url = Api.getNewsCommentUrl(group_id, item_id, offset, 20);
+        String url = NewsApi.getNewsCommentUrl(group_id, item_id, offset, 20);
         doRequestData(url);
     }
 

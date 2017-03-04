@@ -6,9 +6,9 @@ import android.os.Message;
 import android.util.Log;
 
 import com.meiji.toutiao.InitApp;
+import com.meiji.toutiao.api.SearchApi;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.news.content.NewsContentActivity;
-import com.meiji.toutiao.utils.Api;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ class SearchPresenter implements ISearch.Presenter {
     public void doGetUrl(String parameter) {
         view.onShowRefreshing();
         this.query = parameter;
-        String url = Api.getSearchUrl(parameter, 0);
+        String url = SearchApi.getSearchUrl(parameter, 0);
         doRequestData(url);
     }
 
@@ -82,7 +82,7 @@ class SearchPresenter implements ISearch.Presenter {
     public void doRefresh() {
         view.onShowRefreshing();
         offset += 20;
-        String url = Api.getSearchUrl(query, offset);
+        String url = SearchApi.getSearchUrl(query, offset);
         doRequestData(url);
     }
 

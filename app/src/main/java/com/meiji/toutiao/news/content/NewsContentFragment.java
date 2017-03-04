@@ -24,7 +24,6 @@ import android.webkit.WebViewClient;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
-import com.meiji.toutiao.news.comment.NewsCommentFragment;
 import com.meiji.toutiao.utils.SettingsUtil;
 
 /**
@@ -37,8 +36,6 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
     // 新闻链接 标题 头条号 文章号 媒体名
     private String shareUrl;
     private String shareTitle;
-    private String group_id;
-    private String item_id;
 
     private Toolbar toolbar;
     private WebView webView;
@@ -74,18 +71,15 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
     private void initData() {
         Bundle bundle = getArguments();
         NewsArticleBean.DataBean dataBean = bundle.getParcelable(TAG);
-        presenter.doRequestData(dataBean);
         shareUrl = dataBean.getDisplay_url();
         shareTitle = dataBean.getTitle();
         actionBar.setTitle(dataBean.getMedia_name());
-        group_id = dataBean.getGroup_id() + "";
-        item_id = dataBean.getItem_id() + "";
+        presenter.doRequestData(dataBean);
     }
 
     private void initView(View view) {
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
         activity.setSupportActionBar(toolbar);
         actionBar = activity.getSupportActionBar();
         if (actionBar != null) {
@@ -195,12 +189,7 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
         int id = item.getItemId();
         switch (id) {
             case R.id.news_content_comment:
-//                presenter.doGetComment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .add(R.id.container, NewsCommentFragment.newInstance(group_id, item_id), NewsCommentFragment.class.getName())
-                        .addToBackStack(NewsCommentFragment.class.getName())
-                        .hide(this)
-                        .commit();
+                presenter.doGetComment(getActivity(), this);
                 break;
 
             case R.id.news_content_follow:

@@ -10,6 +10,7 @@ import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.io.IOException;
 
+import okhttp3.HttpUrl;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -37,13 +38,28 @@ class NewsContentModel implements INewsContent.Model {
             Request request = new Request.Builder()
                     .get()
                     .url(url)
+                    .addHeader("User-Agent", "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Mobile Safari/537.36")
                     .build();
             Response response = InitApp.getOkHttpClient().newCall(request).execute();
             if (response.isSuccessful()) {
-                flag = true;
-                String responseJson = response.body().string();
-                Log.d(TAG, "getRequestData: " + responseJson);
-                newsContentBean = gson.fromJson(responseJson, NewsContentBean.class);
+                // 获取重定向后的链接
+                HttpUrl redirectUrl = response.request().url();
+
+                // 拼凑API再次请求
+                String realUrl = redirectUrl + "info";
+                Log.d(TAG, "getRequestData: realUrl " + realUrl);
+                Request realRequest = new Request.Builder()
+                        .get()
+                        .url(realUrl)
+                        .build();
+                Response realResponse = InitApp.getOkHttpClient().newCall(realRequest).execute();
+                if (realResponse.isSuccessful()) {
+                    // 得到API返回数据
+                    String responseJson = realResponse.body().string();
+                    Log.d(TAG, "getRequestData: " + responseJson);
+                    newsContentBean = gson.fromJson(responseJson, NewsContentBean.class);
+                    flag = true;
+                }
             }
         } catch (IOException | JsonSyntaxException e) {
             e.printStackTrace();

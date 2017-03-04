@@ -2,9 +2,11 @@ package com.meiji.toutiao.news.content;
 
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 
+import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
-import com.meiji.toutiao.utils.Api;
+import com.meiji.toutiao.news.comment.NewsCommentFragment;
 
 /**
  * Created by Meiji on 2016/12/17.
@@ -13,6 +15,8 @@ import com.meiji.toutiao.utils.Api;
 class NewsContentPresenter implements INewsContent.Presenter {
 
     private static final String TAG = "NewsContentPresenter";
+    private static final int HTTP_REQUEST_FAIL = 0;
+    private static final int HTTP_REQUEST_SUCCESS = 1;
     private INewsContent.View view;
     private INewsContent.Model model;
     private String group_id;
@@ -20,10 +24,10 @@ class NewsContentPresenter implements INewsContent.Presenter {
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
-            if (message.what == 1) {
+            if (message.what == HTTP_REQUEST_SUCCESS) {
                 doSetWebView();
             }
-            if (message.what == 0) {
+            if (message.what == HTTP_REQUEST_FAIL) {
                 System.out.println("设置未处理的url --");
                 view.onSetWebView(null, false);
             }
@@ -40,18 +44,17 @@ class NewsContentPresenter implements INewsContent.Presenter {
     public void doRequestData(NewsArticleBean.DataBean dataBean) {
         group_id = dataBean.getGroup_id() + "";
         item_id = dataBean.getItem_id() + "";
+        final String url = dataBean.getDisplay_url();
 
-        String item_seo_url = dataBean.getItem_seo_url();
-        final String url = Api.getNewsInfoUrl(item_seo_url);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 boolean result = model.getRequestData(url);
                 if (result) {
-                    Message message = handler.obtainMessage(1);
+                    Message message = handler.obtainMessage(HTTP_REQUEST_SUCCESS);
                     message.sendToTarget();
                 } else {
-                    Message message = handler.obtainMessage(0);
+                    Message message = handler.obtainMessage(HTTP_REQUEST_FAIL);
                     message.sendToTarget();
                 }
             }
@@ -70,13 +73,11 @@ class NewsContentPresenter implements INewsContent.Presenter {
     }
 
     @Override
-    public void doGetComment() {
-//        Intent intent = new Intent(InitApp.AppContext, NewsCommentView.class);
-//        intent.putExtra(NewsCommentView.GROUP_ID, group_id);
-//        intent.putExtra(NewsCommentView.ITEM_ID, item_id);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        InitApp.AppContext.startActivity(intent);
-//        // 打印下点击的标题和链接
-//        Log.d(TAG, "doGetComment: " + group_id + "  " + item_id);
+    public void doGetComment(FragmentActivity context, NewsContentFragment newsContentFragment) {
+        context.getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, NewsCommentFragment.newInstance(group_id, item_id), NewsCommentFragment.class.getName())
+                .addToBackStack(NewsCommentFragment.class.getName())
+                .hide(newsContentFragment)
+                .commit();
     }
 }

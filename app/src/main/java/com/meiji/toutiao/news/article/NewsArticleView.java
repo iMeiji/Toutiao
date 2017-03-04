@@ -114,12 +114,23 @@ public class NewsArticleView extends BasePageFragment implements SwipeRefreshLay
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!recyclerView.canScrollVertically(1)) {
-                        if (canLoading) {
-                            presenter.doRefresh();
-                            canLoading = false;
-                        }
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//                    if (!recyclerView.canScrollVertically(1)) {
+//                        if (canLoading) {
+//                            presenter.doRefresh();
+//                            canLoading = false;
+//                        }
+//                    }
+//                }
+                LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int totalItemCount = recyclerView.getAdapter().getItemCount();
+                int lastVisibleItemPosition = lm.findLastVisibleItemPosition();
+                int visibleItemCount = recyclerView.getChildCount();
+//                 添加预加载 滚动快到底部时候自动加载
+                if (lastVisibleItemPosition + 4 >= totalItemCount - 1 && visibleItemCount > 0) {
+                    if (canLoading) {
+                        presenter.doRefresh();
+                        canLoading = false;
                     }
                 }
             }
@@ -128,17 +139,34 @@ public class NewsArticleView extends BasePageFragment implements SwipeRefreshLay
 
     @Override
     public void onShowRefreshing() {
-        refresh_layout.setRefreshing(true);
+        refresh_layout.post(new Runnable() {
+            @Override
+            public void run() {
+                refresh_layout.setRefreshing(true);
+            }
+        });
     }
 
     @Override
     public void onHideRefreshing() {
-        refresh_layout.setRefreshing(false);
+        refresh_layout.post(new Runnable() {
+            @Override
+            public void run() {
+                refresh_layout.setRefreshing(false);
+            }
+        });
     }
 
     @Override
     public void onFail() {
-        Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT)
+                .setAction("重试", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        presenter.doGetUrl(categoryId);
+                    }
+                }).show();
+//        Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
     }
 
     @Override

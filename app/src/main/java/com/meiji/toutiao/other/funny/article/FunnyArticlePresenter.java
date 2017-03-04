@@ -5,9 +5,9 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.meiji.toutiao.InitApp;
+import com.meiji.toutiao.api.FunnyApi;
 import com.meiji.toutiao.bean.other.funny.FunnyArticleBean;
 import com.meiji.toutiao.other.funny.content.FunnyContentActivity;
-import com.meiji.toutiao.utils.Api;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ class FunnyArticlePresenter implements IFunnyArticle.Presenter {
     public void doGetUrl(String parameter) {
         view.onShowRefreshing();
         this.categoryId = parameter;
-        String url = Api.getOtherUrl(categoryId);
+        String url = FunnyApi.getFunnyArticleUrl();
         doRequestData(url);
     }
 
@@ -77,7 +77,7 @@ class FunnyArticlePresenter implements IFunnyArticle.Presenter {
     @Override
     public void doRefresh() {
         view.onShowRefreshing();
-        String url = Api.getOtherUrl(categoryId);
+        String url = FunnyApi.getFunnyArticleUrl();
         doRequestData(url);
     }
 

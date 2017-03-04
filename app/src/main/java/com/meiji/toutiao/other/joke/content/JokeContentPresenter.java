@@ -5,9 +5,9 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.meiji.toutiao.InitApp;
+import com.meiji.toutiao.api.JokeApi;
 import com.meiji.toutiao.bean.other.joke.JokeContentBean;
 import com.meiji.toutiao.other.joke.comment.JokeCommentView;
-import com.meiji.toutiao.utils.Api;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +45,7 @@ class JokeContentPresenter implements IJokeContent.Presenter {
     public void doGetUrl(String parameter) {
         view.onShowRefreshing();
         this.category = parameter;
-        String url = Api.getOtherUrl(category);
+        String url = JokeApi.getJokeContentUrl();
         doRequestData(url);
     }
 
@@ -80,7 +80,7 @@ class JokeContentPresenter implements IJokeContent.Presenter {
     public void doRefresh() {
         view.onShowRefreshing();
         //offset += 20;
-        String url = Api.getOtherUrl(category);
+        String url = JokeApi.getJokeContentUrl();
         doRequestData(url);
     }
 
