@@ -8,7 +8,7 @@
 以下所有 API 均由 `今日头条` 提供, 本人采取非正常手段获取. 获取与共享之行为或有侵犯 `今日头条` 权益的嫌疑.若被告知需停止共享与使用, 本人会及时删除此页面与整个项目.
 
 ## 截图
-<img src="/art/1.jpg"/>
+<img src="/art/2.jpg"/>
 
 ## 下载
 [GitHub Release](https://github.com/iMeiji/Toutiao/releases)
