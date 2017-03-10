@@ -34,6 +34,7 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
 
     public static final String GROUP_ID = "group_id";
     public static final String ITEM_ID = "item_id";
+    private static final String TAG = "NewsCommentFragment";
     private static NewsCommentFragment instance;
     private String groupId;
     private String itemId;

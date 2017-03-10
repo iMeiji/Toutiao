@@ -6,8 +6,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
-    <uses-permission-sdk-23 android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission-sdk-23 android:name="android.permission.INTERNET"/>
     <uses-permission-sdk-23 android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission-sdk-23 android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".InitApp"
@@ -76,6 +77,13 @@
             android:name=".photo.content.PhotoContentActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
             android:label="图片浏览"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".news.channel.NewsChannelActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
+            android:label="拖拽排序"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

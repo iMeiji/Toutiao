@@ -25,6 +25,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.other.funny.FunnyArticleBean;
 import com.meiji.toutiao.other.funny.comment.FunnyCommentFragment;
+import com.meiji.toutiao.utils.SettingsUtil;
 
 /**
  * Created by Meiji on 2017/3/1.
@@ -119,6 +120,8 @@ public class FunnyContentFragment extends Fragment implements IFunnyContent.View
         settings.setDomStorageEnabled(true);
         // 开启application Cache功能
         settings.setAppCacheEnabled(false);
+        // 判断是否为无图模式
+        settings.setBlockNetworkImage(SettingsUtil.getInstance().getNoPhotoMode());
         // 不调用第三方浏览器即可进行页面反应
         webView.setWebViewClient(new WebViewClient() {
             @Override

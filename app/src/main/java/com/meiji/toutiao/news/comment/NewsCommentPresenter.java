@@ -15,6 +15,7 @@ import java.util.List;
 
 class NewsCommentPresenter implements INewsComment.Presenter {
 
+    private static final String TAG = "NewsCommentPresenter";
     private INewsComment.View view;
     private INewsComment.Model model;
     private String group_id;

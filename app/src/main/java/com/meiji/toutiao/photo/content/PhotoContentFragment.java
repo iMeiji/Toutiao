@@ -1,16 +1,16 @@
 package com.meiji.toutiao.photo.content;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -130,18 +130,17 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
 
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
             case R.id.tv_save:
                 // 运行时权限处理
-                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
 
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{"需要存储权限保存图片"}
-                            , 1);
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 } else {
                     presenter.doSaveImage();
                 }
@@ -179,7 +178,6 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
         int id = item.getItemId();
         switch (id) {
             case R.id.photo_content_comment:
-//                presenter.doGetComment();
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .add(R.id.container, PhotoCommentFragment.newInstance(group_id, item_id), PhotoCommentFragment.class.getName())
                         .addToBackStack(PhotoCommentFragment.class.getName())
