@@ -1,5 +1,5 @@
 ## 头条
-一款第三方今日头条客户端, 目前仍在开发中
+一款第三方今日头条客户端, 不断完善中
 
 其中API来自 [今日头条Api分析](https://github.com/iMeiji/Toutiao/wiki/%E4%BB%8A%E6%97%A5%E5%A4%B4%E6%9D%A1Api%E5%88%86%E6%9E%90)
 
@@ -61,6 +61,7 @@ WebView无图模式(beta)
 ```
 
 ## TODO
+- 拖拽标签
 - WebView无图模式支持点击加载图片
 - 添加视频模块
 - 本地缓存(待定)

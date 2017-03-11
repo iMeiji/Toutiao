@@ -29,27 +29,29 @@ public class NewsChannelDao {
         String categoryId[] = InitApp.AppContext.getResources().getStringArray(R.array.news_id);
         String categoryName[] = InitApp.AppContext.getResources().getStringArray(R.array.news_name);
         for (int i = 0; i < categoryId.length; i++) {
-            add(categoryId[i], categoryName[i], 1);
+            add(categoryId[i], categoryName[i], 1, i);
         }
     }
 
-    public boolean add(String channelId, String channelName, int isEnable) {
+    public boolean add(String channelId, String channelName, int isEnable, int position) {
         ContentValues values = new ContentValues();
         values.put(NewsChannelTable.CHANNEL_ID, channelId);
         values.put(NewsChannelTable.CHANNEL_NAME, channelName);
         values.put(NewsChannelTable.CHANNEL_ISENABLE, isEnable);
+        values.put(NewsChannelTable.CHANNEL_POSITION, position);
         long result = db.insert(NewsChannelTable.TABLENAME, null, values);
         return result != -1;
     }
 
     public List<NewsChannelBean> query(int isEnable) {
-        Cursor cursor = db.query(NewsChannelTable.TABLENAME, null, NewsChannelTable.CHANNEL_ISENABLE, new String[]{isEnable + ""}, null, null, null);
+        Cursor cursor = db.query(NewsChannelTable.TABLENAME, null, NewsChannelTable.CHANNEL_ISENABLE + "=?", new String[]{isEnable + ""}, null, null, null);
         List<NewsChannelBean> list = new ArrayList<>();
         while (cursor.moveToNext()) {
             NewsChannelBean bean = new NewsChannelBean();
             bean.setChannelId(cursor.getString(NewsChannelTable.ID_CHANNELID));
             bean.setChannelName(cursor.getString(NewsChannelTable.ID_CHANNELNAME));
             bean.setIsEnable(cursor.getInt(NewsChannelTable.ID_CHANNELISENABLE));
+            bean.setPosition(cursor.getInt(NewsChannelTable.ID_CHANNELPOSITION));
             list.add(bean);
         }
         cursor.close();
@@ -64,10 +66,14 @@ public class NewsChannelDao {
             bean.setChannelId(cursor.getString(NewsChannelTable.ID_CHANNELID));
             bean.setChannelName(cursor.getString(NewsChannelTable.ID_CHANNELNAME));
             bean.setIsEnable(cursor.getInt(NewsChannelTable.ID_CHANNELISENABLE));
+            bean.setPosition(cursor.getInt(NewsChannelTable.ID_CHANNELPOSITION));
             list.add(bean);
         }
         cursor.close();
         return list;
+    }
+
+    public void updateAll(List<NewsChannelBean> list) {
     }
 
     public boolean removeAll() {

@@ -49,7 +49,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
         if (!SettingsUtil.getInstance().getNoPhotoMode()) {
             if (image_list.size() != 0) {
                 String url = image_list.get(0).getUrl();
-                Glide.with(context).load(url).crossFade().centerCrop().error(R.drawable.error_image).into(holder.iv_image_url);
+                Glide.with(context).load(url).crossFade().centerCrop().error(R.mipmap.error_image).into(holder.iv_image_url);
             }
         }
 

@@ -80,7 +80,7 @@ public class NewsTabLayout extends Fragment {
         String[] categoryName = new String[pageSize];
         if (tabList.size() == 0) {
             dao.addInitData();
-            tabList = dao.queryAll();
+            tabList = dao.query(1);
         }
         for (int i = 0; i < tabList.size(); i++) {
             Fragment fragment = NewsArticleView.newInstance(tabList.get(i).getChannelId());
