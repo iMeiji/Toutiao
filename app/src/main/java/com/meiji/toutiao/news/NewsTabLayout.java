@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import com.meiji.toutiao.news.channel.NewsChannelActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by Meiji on 2016/12/12.
  */
@@ -31,6 +34,7 @@ public class NewsTabLayout extends Fragment {
     private static final String TAG = "NewsTabLayout";
     private static NewsTabLayout instance = null;
     private static int pageSize = InitApp.AppContext.getResources().getStringArray(R.array.news_id).length;
+    private final int REQUEST_CODE = 1;
     //    private String categoryId[] = InitApp.AppContext.getResources().getStringArray(R.array.news_id);
 //    private String categoryName[] = InitApp.AppContext.getResources().getStringArray(R.array.news_name);
     private TabLayout tab_layout;
@@ -66,7 +70,8 @@ public class NewsTabLayout extends Fragment {
         add_channel_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), NewsChannelActivity.class));
+                Intent intent = new Intent(getActivity(), NewsChannelActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
     }
@@ -76,11 +81,11 @@ public class NewsTabLayout extends Fragment {
      */
     private void initData() {
         NewsChannelDao dao = new NewsChannelDao();
-        List<NewsChannelBean> tabList = dao.queryAll();
+        List<NewsChannelBean> tabList = dao.query(1);
         String[] categoryName = new String[pageSize];
         if (tabList.size() == 0) {
             dao.addInitData();
-            tabList = dao.query(1);
+            tabList = dao.queryAll();
         }
         for (int i = 0; i < tabList.size(); i++) {
             Fragment fragment = NewsArticleView.newInstance(tabList.get(i).getChannelId());
@@ -99,6 +104,17 @@ public class NewsTabLayout extends Fragment {
         }
         if (adapter != null) {
             adapter = null;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Log.d(TAG, "onActivityResult: ");
+                getActivity().recreate();
+            }
         }
     }
 }

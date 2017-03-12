@@ -24,10 +24,13 @@ import java.util.List;
 
 public class NewsChannelActivity extends BaseActivity {
 
+    private static final String TAG = "NewsChannelActivity";
     private Toolbar toolbar;
     private RecyclerView recycler_view;
     private NewsChannelAdapter adapter;
     private NewsChannelDao dao = new NewsChannelDao();
+    private List<NewsChannelBean> items = dao.query(1);
+    private List<NewsChannelBean> otherItems = dao.query(0);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,19 +79,34 @@ public class NewsChannelActivity extends BaseActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        List<NewsChannelBean> items = adapter.getmMyChannelItems();
-        List<NewsChannelBean> otherItems = adapter.getmOtherChannelItems();
-        dao.removeAll();
-        for (int i = 0; i < items.size(); i++) {
-            NewsChannelBean bean = items.get(i);
-            dao.add(bean.getChannelId(), bean.getChannelName(), 1, i);
-        }
-        for (int i = 0; i < otherItems.size(); i++) {
-            NewsChannelBean bean = otherItems.get(i);
-            dao.add(bean.getChannelId(), bean.getChannelName(), 0, i);
-        }
+    public void onBackPressed() {
 
+        if (!compare(items, adapter.getmMyChannelItems())) {
+            List<NewsChannelBean> items = adapter.getmMyChannelItems();
+            List<NewsChannelBean> otherItems = adapter.getmOtherChannelItems();
+            dao.removeAll();
+            for (int i = 0; i < items.size(); i++) {
+                NewsChannelBean bean = items.get(i);
+                dao.add(bean.getChannelId(), bean.getChannelName(), 1, i);
+            }
+            for (int i = 0; i < otherItems.size(); i++) {
+                NewsChannelBean bean = otherItems.get(i);
+                dao.add(bean.getChannelId(), bean.getChannelName(), 0, i);
+            }
+            setResult(RESULT_OK);
+        }
+        super.onBackPressed();
+    }
+
+    public boolean compare(List a, List b) {
+        if (a.size() != b.size())
+            return false;
+//        Collections.sort(a);
+//        Collections.sort(b);
+        for (int i = 0; i < a.size(); i++) {
+            if (!a.get(i).equals(b.get(i)))
+                return false;
+        }
+        return true;
     }
 }

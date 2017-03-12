@@ -59,4 +59,5 @@ dependencies {
     compile 'com.afollestad.material-dialogs:commons:0.9.1.0'
     compile 'com.github.franmontiel:PersistentCookieJar:v1.0.0'
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
+    compile 'com.facebook.stetho:stetho:1.4.2'
 }
