@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Toutiao</string>
+    <string name="app_name">头条</string>
 
     <string name="text_news">新闻</string>
     <string name="text_other">其他</string>

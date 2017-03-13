@@ -25,12 +25,10 @@ import java.util.List;
 public class NewsChannelActivity extends BaseActivity {
 
     private static final String TAG = "NewsChannelActivity";
-    private Toolbar toolbar;
     private RecyclerView recycler_view;
     private NewsChannelAdapter adapter;
     private NewsChannelDao dao = new NewsChannelDao();
     private List<NewsChannelBean> items = dao.query(1);
-    private List<NewsChannelBean> otherItems = dao.query(0);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +68,7 @@ public class NewsChannelActivity extends BaseActivity {
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -98,7 +96,7 @@ public class NewsChannelActivity extends BaseActivity {
         super.onBackPressed();
     }
 
-    public boolean compare(List a, List b) {
+    public synchronized <T extends Comparable<T>> boolean compare(List<T> a, List<T> b) {
         if (a.size() != b.size())
             return false;
 //        Collections.sort(a);

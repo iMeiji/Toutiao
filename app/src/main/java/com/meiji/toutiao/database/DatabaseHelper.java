@@ -20,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static DatabaseHelper instance = null;
     private static SQLiteDatabase db = null;
 
-    public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    private DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 

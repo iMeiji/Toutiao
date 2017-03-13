@@ -1,10 +1,12 @@
 package com.meiji.toutiao.bean.news;
 
+import android.support.annotation.NonNull;
+
 /**
  * Created by Meiji on 2017/3/10.
  */
 
-public class NewsChannelBean {
+public class NewsChannelBean implements Comparable<NewsChannelBean> {
 
     private String channelId;
     private String channelName;
@@ -69,5 +71,10 @@ public class NewsChannelBean {
         result = 31 * result + isEnable;
         result = 31 * result + position;
         return result;
+    }
+
+    @Override
+    public int compareTo(@NonNull NewsChannelBean o) {
+        return this.position - o.getPosition();
     }
 }

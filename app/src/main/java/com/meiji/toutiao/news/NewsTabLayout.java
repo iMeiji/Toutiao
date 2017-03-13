@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.bean.news.NewsChannelBean;
@@ -33,15 +32,11 @@ public class NewsTabLayout extends Fragment {
 
     private static final String TAG = "NewsTabLayout";
     private static NewsTabLayout instance = null;
-    private static int pageSize = InitApp.AppContext.getResources().getStringArray(R.array.news_id).length;
+    //    private static int pageSize = InitApp.AppContext.getResources().getStringArray(R.array.news_id).length;
     private final int REQUEST_CODE = 1;
-    //    private String categoryId[] = InitApp.AppContext.getResources().getStringArray(R.array.news_id);
-//    private String categoryName[] = InitApp.AppContext.getResources().getStringArray(R.array.news_name);
-    private TabLayout tab_layout;
     private ViewPager view_pager;
     private List<Fragment> list = new ArrayList<>();
     private BasePagerAdapter adapter;
-    private ImageView add_channel_iv;
 
     public static NewsTabLayout getInstance() {
         if (instance == null) {
@@ -60,13 +55,12 @@ public class NewsTabLayout extends Fragment {
     }
 
     private void initView(View view) {
-        tab_layout = (TabLayout) view.findViewById(R.id.tab_layout_news);
+        TabLayout tab_layout = (TabLayout) view.findViewById(R.id.tab_layout_news);
         view_pager = (ViewPager) view.findViewById(R.id.view_pager_news);
 
         tab_layout.setupWithViewPager(view_pager);
         tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        view_pager.setOffscreenPageLimit(pageSize);
-        add_channel_iv = (ImageView) view.findViewById(R.id.add_channel_iv);
+        ImageView add_channel_iv = (ImageView) view.findViewById(R.id.add_channel_iv);
         add_channel_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,11 +76,11 @@ public class NewsTabLayout extends Fragment {
     private void initData() {
         NewsChannelDao dao = new NewsChannelDao();
         List<NewsChannelBean> tabList = dao.query(1);
-        String[] categoryName = new String[pageSize];
         if (tabList.size() == 0) {
             dao.addInitData();
             tabList = dao.queryAll();
         }
+        String[] categoryName = new String[tabList.size()];
         for (int i = 0; i < tabList.size(); i++) {
             Fragment fragment = NewsArticleView.newInstance(tabList.get(i).getChannelId());
             list.add(fragment);
@@ -94,6 +88,7 @@ public class NewsTabLayout extends Fragment {
         }
         adapter = new BasePagerAdapter(getChildFragmentManager(), list, categoryName);
         view_pager.setAdapter(adapter);
+        view_pager.setOffscreenPageLimit(tabList.size());
     }
 
     @Override
