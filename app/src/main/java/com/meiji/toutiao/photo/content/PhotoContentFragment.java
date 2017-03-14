@@ -64,7 +64,7 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.photo_content_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_photo_content, container, false);
         presenter = new PhotoContentPresenter(this);
         initView(view);
         initData();

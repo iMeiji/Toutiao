@@ -54,7 +54,7 @@ public class PhotoContentAdapter extends PagerAdapter {
         View view = cacheView.get(position);
 
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.photo_content_item, container, false);
+            view = LayoutInflater.from(context).inflate(R.layout.item_photo_content, container, false);
             view.setTag(position);
             final ImageView iv_image = (ImageView) view.findViewById(R.id.iv_image);
             TextView tv_abstract = (TextView) view.findViewById(R.id.tv_abstract);

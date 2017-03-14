@@ -38,7 +38,7 @@ public class NewsCommentAdapter extends RecyclerView.Adapter<NewsCommentAdapter.
 
     @Override
     public NewsCommentsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.news_comment_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_news_comment, parent, false);
         return new NewsCommentsViewHolder(view, onItemClickListener);
     }
 

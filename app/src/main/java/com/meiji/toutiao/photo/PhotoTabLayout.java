@@ -43,7 +43,7 @@ public class PhotoTabLayout extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.photo_adapter, container, false);
+        View view = inflater.inflate(R.layout.fragment_photo_tab, container, false);
         initView(view);
         initData();
         return view;

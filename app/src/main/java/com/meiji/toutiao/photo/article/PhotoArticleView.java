@@ -50,7 +50,7 @@ public class PhotoArticleView extends BasePageFragment implements IPhotoArticle.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.base_fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_base_main, container, false);
         presenter = new PhotoArticlePresenter(this);
         initView(view);
         return view;

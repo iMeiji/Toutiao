@@ -57,7 +57,7 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.news_comment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_news_comment, container, false);
         presenter = new NewsCommentPresenter(this);
         initView(view);
         initData();
@@ -72,11 +72,11 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     private void initView(View view) {
-        recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view_photo);
+        recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view_comment);
         recycler_view.setHasFixedSize(true);
         recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout_photo);
+        refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout_comment);
         // 设置下拉刷新的按钮的颜色
         refresh_layout.setColorSchemeResources(R.color.colorPrimary);
         // 设置手指在屏幕上下拉多少距离开始刷新
@@ -148,7 +148,7 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
     private void showCopyDialog(final String content) {
 
         final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
-        View view = getActivity().getLayoutInflater().inflate(R.layout.comment_action_sheet, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.item_comment_action_sheet, null);
         view.findViewById(R.id.layout_copy_text).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

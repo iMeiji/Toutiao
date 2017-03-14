@@ -50,7 +50,7 @@ public class JokeCommentView extends BaseActivity implements IJokeComment.View, 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.other_joke_comment_main);
+        setContentView(R.layout.activity_other_joke_comment);
         presenter = new JokeCommentPresenter(this);
         initView();
         initData();
@@ -60,8 +60,8 @@ public class JokeCommentView extends BaseActivity implements IJokeComment.View, 
     private void initView() {
         tv_content = (TextView) findViewById(R.id.tv_content);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        recycler_view = (RecyclerView) findViewById(R.id.recycler_view_photo);
-        refresh_layout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout_photo);
+        recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
+        refresh_layout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
 
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -71,7 +71,7 @@ public class JokeCommentView extends BaseActivity implements IJokeComment.View, 
         recycler_view.setHasFixedSize(true);
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
 
-        refresh_layout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout_photo);
+        refresh_layout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
         refresh_layout.setColorSchemeResources(R.color.colorPrimary);
         // 设置手指在屏幕上下拉多少距离开始刷新
@@ -166,7 +166,7 @@ public class JokeCommentView extends BaseActivity implements IJokeComment.View, 
     private void showCopyDialog(final String content) {
 
         final BottomSheetDialog dialog = new BottomSheetDialog(this);
-        View view = getLayoutInflater().inflate(R.layout.comment_action_sheet, null);
+        View view = getLayoutInflater().inflate(R.layout.item_comment_action_sheet, null);
         view.findViewById(R.id.layout_copy_text).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

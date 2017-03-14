@@ -33,7 +33,7 @@ public class MediaView extends Fragment implements SwipeRefreshLayout.OnRefreshL
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.media_main, container, false);
+        View view = inflater.inflate(R.layout.activity_media, container, false);
         initView(view);
         initData();
         return view;
@@ -45,11 +45,11 @@ public class MediaView extends Fragment implements SwipeRefreshLayout.OnRefreshL
     }
 
     private void initView(View view) {
-        recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view_photo);
+        recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
         recycler_view.setHasFixedSize(true);
         recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout_photo);
+        refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
         refresh_layout.setColorSchemeResources(R.color.colorPrimary);
         // 设置手指在屏幕上下拉多少距离开始刷新

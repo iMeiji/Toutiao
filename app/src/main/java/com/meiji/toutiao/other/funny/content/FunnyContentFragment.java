@@ -61,7 +61,7 @@ public class FunnyContentFragment extends Fragment implements IFunnyContent.View
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.other_funny_content_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_other_funny_content, container, false);
         presenter = new FunnyContentPresenter(this);
         initView(view);
         initWebClient();

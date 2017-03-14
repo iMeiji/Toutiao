@@ -39,7 +39,7 @@ public class FunnyContentAdapter extends RecyclerView.Adapter<FunnyContentAdapte
 
     @Override
     public FunnyContentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.other_funny_article_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_other_funny_article, parent, false);
         return new FunnyContentViewHolder(view, onItemClickListener);
     }
 

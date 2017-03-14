@@ -38,7 +38,7 @@ public class PhotoArticleAdapter extends RecyclerView.Adapter<PhotoArticleAdapte
 
     @Override
     public PhotoViewViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.photo_article_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_photo_article, parent, false);
         return new PhotoViewViewHolder(view, onItemClickListener);
     }
 

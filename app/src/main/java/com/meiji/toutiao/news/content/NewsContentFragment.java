@@ -58,7 +58,7 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.news_content_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_news_content, container, false);
         presenter = new NewsContentPresenter(this);
         initView(view);
         initWebClient();
