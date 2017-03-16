@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -21,8 +22,10 @@ import com.meiji.toutiao.view.ItemDragHelperCallback;
 
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
- * Created by Meiji on 2017/3/14.
+ * Created by Meiji on 2017/3/15.
  */
 
 public class NewsChannelFragment extends Fragment {
@@ -42,7 +45,20 @@ public class NewsChannelFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_news_channel, container, false);
         initView(view);
         initData();
+        setHasOptionsMenu(true);
         return view;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            if (onSaveData()) {
+                getActivity().setResult(RESULT_OK);
+            }
+            getActivity().onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initView(View view) {
@@ -114,4 +130,3 @@ public class NewsChannelFragment extends Fragment {
         return true;
     }
 }
-

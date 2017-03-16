@@ -21,8 +21,10 @@ import java.util.List;
  * Created by Meiji on 2016/12/28.
  */
 
-public class JokeContentAdapter extends RecyclerView.Adapter<JokeContentAdapter.JokeContentViewHolder> {
+public class JokeContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final int TYPE_NORMAL = 0;
+    private static final int TYPE_FOOTER = 1;
     private List<JokeContentBean.DataBean.GroupBean> list = new ArrayList();
     private Context context;
     private IOnItemClickListener onItemClickListener;
@@ -37,38 +39,58 @@ public class JokeContentAdapter extends RecyclerView.Adapter<JokeContentAdapter.
     }
 
     @Override
-    public JokeContentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_other_joke, parent, false);
-        return new JokeContentViewHolder(view, onItemClickListener);
+    public int getItemViewType(int position) {
+        if (position == list.size()) {
+            return TYPE_FOOTER;
+        }
+        return TYPE_NORMAL;
     }
 
     @Override
-    public void onBindViewHolder(JokeContentViewHolder holder, int position) {
-        JokeContentBean.DataBean.GroupBean bean = list.get(position);
-
-        String avatar_url = bean.getUser().getAvatar_url();
-        String name = bean.getUser().getName();
-        String text = bean.getText();
-        String digg_count = bean.getDigg_count() + "";
-        String bury_count = bean.getBury_count() + "";
-        String comment_count = bean.getComment_count() + "评论";
-
-        if (!SettingsUtil.getInstance().getNoPhotoMode()) {
-            Glide.with(context).load(avatar_url).crossFade().centerCrop().into(holder.iv_avatar);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == TYPE_NORMAL) {
+            View view = LayoutInflater.from(context).inflate(R.layout.item_other_joke, parent, false);
+            return new JokeContentViewHolder(view, onItemClickListener);
         }
-        holder.tv_username.setText(name);
-        holder.tv_text.setText(text);
-        holder.tv_digg_count.setText(digg_count);
-        holder.tv_bury_count.setText(bury_count);
-        holder.tv_comment_count.setText(comment_count);
+        if (viewType == TYPE_FOOTER) {
+            View view = LayoutInflater.from(context).inflate(R.layout.list_footer, parent, false);
+            return new FooterViewHolder(view);
+        }
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+        if (holder instanceof JokeContentViewHolder) {
+            JokeContentViewHolder jokeViewHolder = (JokeContentViewHolder) holder;
+
+            JokeContentBean.DataBean.GroupBean bean = list.get(position);
+
+            String avatar_url = bean.getUser().getAvatar_url();
+            String name = bean.getUser().getName();
+            String text = bean.getText();
+            String digg_count = bean.getDigg_count() + "";
+            String bury_count = bean.getBury_count() + "";
+            String comment_count = bean.getComment_count() + "评论";
+
+            if (!SettingsUtil.getInstance().getNoPhotoMode()) {
+                Glide.with(context).load(avatar_url).crossFade().centerCrop().into(jokeViewHolder.iv_avatar);
+            }
+            jokeViewHolder.tv_username.setText(name);
+            jokeViewHolder.tv_text.setText(text);
+            jokeViewHolder.tv_digg_count.setText(digg_count);
+            jokeViewHolder.tv_bury_count.setText(bury_count);
+            jokeViewHolder.tv_comment_count.setText(comment_count);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return list != null ? list.size() : 0;
+        return list != null ? list.size() + 1 : 0;
     }
 
-    public class JokeContentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class JokeContentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private CircleImageView iv_avatar;
         private TextView tv_username;
@@ -78,7 +100,7 @@ public class JokeContentAdapter extends RecyclerView.Adapter<JokeContentAdapter.
         private TextView tv_comment_count;
         private IOnItemClickListener onItemClickListener;
 
-        public JokeContentViewHolder(View itemView, IOnItemClickListener onItemClickListener) {
+        JokeContentViewHolder(View itemView, IOnItemClickListener onItemClickListener) {
             super(itemView);
             this.iv_avatar = (CircleImageView) itemView.findViewById(R.id.iv_avatar);
             this.tv_username = (TextView) itemView.findViewById(R.id.tv_username);
@@ -95,6 +117,13 @@ public class JokeContentAdapter extends RecyclerView.Adapter<JokeContentAdapter.
             if (onItemClickListener != null) {
                 onItemClickListener.onClick(view, getLayoutPosition());
             }
+        }
+    }
+
+    private class FooterViewHolder extends RecyclerView.ViewHolder {
+
+        FooterViewHolder(View itemView) {
+            super(itemView);
         }
     }
 }

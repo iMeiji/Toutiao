@@ -76,7 +76,6 @@ class FunnyArticlePresenter implements IFunnyArticle.Presenter {
 
     @Override
     public void doRefresh() {
-        view.onShowRefreshing();
         String url = FunnyApi.getFunnyArticleUrl();
         doRequestData(url);
     }

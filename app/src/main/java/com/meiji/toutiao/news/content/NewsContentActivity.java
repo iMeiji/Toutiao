@@ -2,15 +2,15 @@ package com.meiji.toutiao.news.content;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 
-import com.meiji.toutiao.BaseActivity;
 import com.meiji.toutiao.R;
 
 /**
  * Created by Meiji on 2017/2/28.
  */
 
-public class NewsContentActivity extends BaseActivity {
+public class NewsContentActivity extends AppCompatActivity {
 
     public static final String TAG = "NewsContentActivity";
 
@@ -20,7 +20,7 @@ public class NewsContentActivity extends BaseActivity {
         setContentView(R.layout.container);
         NewsContentFragment newsContentFragment = NewsContentFragment.newInstance(getIntent().getParcelableExtra(TAG));
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, newsContentFragment, newsContentFragment.getClass().getName())
+                .replace(R.id.container, newsContentFragment)
                 .commit();
     }
 }

@@ -78,7 +78,6 @@ class NewsCommentPresenter implements INewsComment.Presenter {
 
     @Override
     public void doRefresh() {
-        view.onShowRefreshing();
         offset += 20;
         String url = NewsApi.getNewsCommentUrl(group_id, item_id, offset, 20);
         doRequestData(url);

@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -35,7 +36,6 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
     public static final String GROUP_ID = "group_id";
     public static final String ITEM_ID = "item_id";
     private static final String TAG = "NewsCommentFragment";
-    private static NewsCommentFragment instance;
     private String groupId;
     private String itemId;
     private NewsCommentAdapter adapter;
@@ -46,7 +46,7 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
     private boolean canLoading;
 
     public static NewsCommentFragment newInstance(String groupId, String itemId) {
-        instance = new NewsCommentFragment();
+        NewsCommentFragment instance = new NewsCommentFragment();
         Bundle bundle = new Bundle();
         bundle.putString(GROUP_ID, groupId);
         bundle.putString(ITEM_ID, itemId);
@@ -62,6 +62,7 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
         initView(view);
         initData();
         onRequestData();
+        setHasOptionsMenu(true);
         return view;
     }
 
@@ -176,16 +177,35 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
 
     @Override
     public void onShowRefreshing() {
-        refresh_layout.setRefreshing(true);
+        refresh_layout.post(new Runnable() {
+            @Override
+            public void run() {
+                refresh_layout.setRefreshing(true);
+            }
+        });
     }
 
     @Override
     public void onHideRefreshing() {
-        refresh_layout.setRefreshing(false);
+        refresh_layout.post(new Runnable() {
+            @Override
+            public void run() {
+                refresh_layout.setRefreshing(false);
+            }
+        });
     }
 
     @Override
     public void onFail() {
         Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            getActivity().onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

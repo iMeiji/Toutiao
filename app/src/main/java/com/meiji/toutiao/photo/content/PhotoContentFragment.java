@@ -50,9 +50,6 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
     private String item_id;
     private PhotoContentAdapter adapter;
 
-    public PhotoContentFragment() {
-    }
-
     public static PhotoContentFragment newInstance(Parcelable dataBean) {
         PhotoContentFragment instance = new PhotoContentFragment();
         Bundle bundle = new Bundle();

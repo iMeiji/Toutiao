@@ -121,12 +121,22 @@ public class FunnyArticleView extends BasePageFragment implements IFunnyArticle.
 
     @Override
     public void onShowRefreshing() {
-        refresh_layout.setRefreshing(true);
+        refresh_layout.post(new Runnable() {
+            @Override
+            public void run() {
+                refresh_layout.setRefreshing(true);
+            }
+        });
     }
 
     @Override
     public void onHideRefreshing() {
-        refresh_layout.setRefreshing(false);
+        refresh_layout.post(new Runnable() {
+            @Override
+            public void run() {
+                refresh_layout.setRefreshing(false);
+            }
+        });
     }
 
     @Override

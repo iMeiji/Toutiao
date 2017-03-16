@@ -7,7 +7,7 @@ import android.os.Message;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.api.JokeApi;
 import com.meiji.toutiao.bean.other.joke.JokeContentBean;
-import com.meiji.toutiao.other.joke.comment.JokeCommentView;
+import com.meiji.toutiao.other.joke.comment.JokeCommentActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +78,6 @@ class JokeContentPresenter implements IJokeContent.Presenter {
 
     @Override
     public void doRefresh() {
-        view.onShowRefreshing();
         //offset += 20;
         String url = JokeApi.getJokeContentUrl();
         doRequestData(url);
@@ -94,8 +93,8 @@ class JokeContentPresenter implements IJokeContent.Presenter {
     public void doOnClickItem(int position) {
         JokeContentBean.DataBean.GroupBean bean = groupList.get(position);
         // 转跳到评论页面
-        Intent intent = new Intent(InitApp.AppContext, JokeCommentView.class);
-        intent.putExtra(JokeCommentView.TAG, bean);
+        Intent intent = new Intent(InitApp.AppContext, JokeCommentActivity.class);
+        intent.putExtra(JokeCommentActivity.TAG, bean);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         InitApp.AppContext.startActivity(intent);
     }

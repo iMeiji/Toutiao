@@ -21,14 +21,16 @@ import java.util.List;
  * Created by Meiji on 2016/12/20.
  */
 
-public class NewsCommentAdapter extends RecyclerView.Adapter<NewsCommentAdapter.NewsCommentsViewHolder> {
+public class NewsCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<NewsCommentBean.DataBean.CommentsBean> commentsBeanList = new ArrayList<>();
+    private static final int TYPE_NORMAL = 0;
+    private static final int TYPE_FOOTER = 1;
+    private List<NewsCommentBean.DataBean.CommentsBean> list = new ArrayList<>();
     private Context context;
     private IOnItemClickListener onItemClickListener;
 
-    public NewsCommentAdapter(List<NewsCommentBean.DataBean.CommentsBean> commentsBeanList, Context context) {
-        this.commentsBeanList = commentsBeanList;
+    public NewsCommentAdapter(List<NewsCommentBean.DataBean.CommentsBean> list, Context context) {
+        this.list = list;
         this.context = context;
     }
 
@@ -37,40 +39,58 @@ public class NewsCommentAdapter extends RecyclerView.Adapter<NewsCommentAdapter.
     }
 
     @Override
-    public NewsCommentsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_news_comment, parent, false);
-        return new NewsCommentsViewHolder(view, onItemClickListener);
+    public int getItemViewType(int position) {
+        if (position == list.size()) {
+            return TYPE_FOOTER;
+        }
+        return TYPE_NORMAL;
     }
 
     @Override
-    public void onBindViewHolder(NewsCommentsViewHolder holder, int position) {
-        NewsCommentBean.DataBean.CommentsBean commentsBean = commentsBeanList.get(position);
-        String iv_avatar = commentsBean.getUser().getAvatar_url();
-        String tv_username = commentsBean.getUser().getName();
-        String tv_text = commentsBean.getText();
-        int tv_likes = commentsBean.getDigg_count();
-
-        if (!SettingsUtil.getInstance().getNoPhotoMode()) {
-            Glide.with(context).load(iv_avatar).crossFade().centerCrop().into(holder.iv_avatar);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == TYPE_NORMAL) {
+            View view = LayoutInflater.from(context).inflate(R.layout.item_news_comment, parent, false);
+            return new NewsCommentsViewHolder(view, onItemClickListener);
         }
-        holder.tv_username.setText(tv_username);
-        holder.tv_text.setText(tv_text);
-        holder.tv_likes.setText(tv_likes + "赞");
+        if (viewType == TYPE_FOOTER) {
+            View view = LayoutInflater.from(context).inflate(R.layout.list_footer, parent, false);
+            return new FooterViewHolder(view);
+        }
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof NewsCommentsViewHolder) {
+            NewsCommentsViewHolder commentHolder = (NewsCommentsViewHolder) holder;
+            NewsCommentBean.DataBean.CommentsBean commentsBean = list.get(position);
+            String iv_avatar = commentsBean.getUser().getAvatar_url();
+            String tv_username = commentsBean.getUser().getName();
+            String tv_text = commentsBean.getText();
+            int tv_likes = commentsBean.getDigg_count();
+
+            if (!SettingsUtil.getInstance().getNoPhotoMode()) {
+                Glide.with(context).load(iv_avatar).crossFade().centerCrop().into(commentHolder.iv_avatar);
+            }
+            commentHolder.tv_username.setText(tv_username);
+            commentHolder.tv_text.setText(tv_text);
+            commentHolder.tv_likes.setText(tv_likes + "赞");
+        }
     }
 
     @Override
     public int getItemCount() {
-        return commentsBeanList != null ? commentsBeanList.size() : 0;
+        return list != null ? list.size() : 0;
     }
 
-    public class NewsCommentsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class NewsCommentsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView iv_avatar;
         private TextView tv_username;
         private TextView tv_text;
         private TextView tv_likes;
         private IOnItemClickListener onItemClickListener;
 
-        public NewsCommentsViewHolder(View itemView, IOnItemClickListener onItemClickListener) {
+        NewsCommentsViewHolder(View itemView, IOnItemClickListener onItemClickListener) {
             super(itemView);
             this.iv_avatar = (ImageView) itemView.findViewById(R.id.iv_avatar);
             this.tv_username = (TextView) itemView.findViewById(R.id.tv_username);
@@ -85,6 +105,13 @@ public class NewsCommentAdapter extends RecyclerView.Adapter<NewsCommentAdapter.
             if (onItemClickListener != null) {
                 onItemClickListener.onClick(view, getLayoutPosition());
             }
+        }
+    }
+
+    private class FooterViewHolder extends RecyclerView.ViewHolder {
+
+        FooterViewHolder(View itemView) {
+            super(itemView);
         }
     }
 }

@@ -37,7 +37,7 @@
                     android:layout_height="match_parent"
                     android:padding="4dp"
                     android:textColor="@color/dkgray"
-                    android:textSize="12sp"/>
+                    android:textSize="14sp"/>
             </android.support.v7.widget.CardView>
 
             <include layout="@layout/toolbar"/>

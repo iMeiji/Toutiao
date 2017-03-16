@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
@@ -44,11 +45,6 @@ public class FunnyContentFragment extends Fragment implements IFunnyContent.View
     private ActionBar actionBar;
     private MaterialDialog dialog;
     private NestedScrollView scrollView;
-
-
-    public FunnyContentFragment() {
-
-    }
 
     public static FunnyContentFragment newInstance(Parcelable dataBean) {
         FunnyContentFragment instance = new FunnyContentFragment();
@@ -188,7 +184,7 @@ public class FunnyContentFragment extends Fragment implements IFunnyContent.View
 
     @Override
     public void onFail() {
-
+        Snackbar.make(scrollView, R.string.network_error, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -220,6 +216,9 @@ public class FunnyContentFragment extends Fragment implements IFunnyContent.View
                         .setType("text/plain")
                         .putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + source_url);
                 startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
+                break;
+            case android.R.id.home:
+                getActivity().onBackPressed();
                 break;
         }
         return super.onOptionsItemSelected(item);

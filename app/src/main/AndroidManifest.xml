@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
+            android:configChanges="orientation|screenSize|uiMode"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -33,21 +33,21 @@
 
         <activity
             android:name=".news.content.NewsContentActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
+            android:configChanges="orientation|screenSize|uiMode"
             android:label="新闻内容"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
-            android:name=".other.joke.comment.JokeCommentView"
-            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
+            android:name=".other.joke.comment.JokeCommentActivity"
+            android:configChanges="orientation|screenSize|uiMode"
             android:label="段子评论"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
             android:name=".search.SearchView"
-            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
+            android:configChanges="orientation|screenSize|uiMode"
             android:label="搜索结果"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
@@ -61,28 +61,28 @@
 
         <activity
             android:name=".SettingsActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
+            android:configChanges="orientation|screenSize|uiMode"
             android:label="@string/title_activity_settings">
         </activity>
 
 
         <activity
             android:name=".other.funny.content.FunnyContentActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
+            android:configChanges="orientation|screenSize|uiMode"
             android:label="搞笑内容"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
             android:name=".photo.content.PhotoContentActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
+            android:configChanges="orientation|screenSize|uiMode"
             android:label="图片浏览"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
             android:name=".news.channel.NewsChannelActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
+            android:configChanges="orientation|screenSize|uiMode"
             android:label="拖拽排序"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

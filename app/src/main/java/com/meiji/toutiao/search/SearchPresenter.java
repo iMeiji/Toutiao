@@ -80,7 +80,6 @@ class SearchPresenter implements ISearch.Presenter {
 
     @Override
     public void doRefresh() {
-        view.onShowRefreshing();
         offset += 20;
         String url = SearchApi.getSearchUrl(query, offset);
         doRequestData(url);

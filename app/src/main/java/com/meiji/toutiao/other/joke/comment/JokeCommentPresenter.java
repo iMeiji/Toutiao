@@ -77,7 +77,6 @@ class JokeCommentPresenter implements IJokeComment.Presenter {
 
     @Override
     public void doRefresh() {
-        view.onShowRefreshing();
         if (offset < Integer.parseInt(jokeCommentCount)) {
             offset += 20;
             String url = JokeApi.getJokeCommentUrl(jokeId, 20, offset);

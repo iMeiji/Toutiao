@@ -21,8 +21,10 @@ import java.util.List;
  * Created by Meiji on 2017/1/2.
  */
 
-public class JokeCommentAdapter extends RecyclerView.Adapter<JokeCommentAdapter.JokeCommentViewHolder> {
+public class JokeCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final int TYPE_NORMAL = 0;
+    private static final int TYPE_FOOTER = 1;
     private List<JokeCommentBean.DataBean.RecentCommentsBean> list = new ArrayList<>();
     private Context context;
     private IOnItemClickListener onItemClickListener;
@@ -37,33 +39,54 @@ public class JokeCommentAdapter extends RecyclerView.Adapter<JokeCommentAdapter.
     }
 
     @Override
-    public JokeCommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_other_joke_comment, parent, false);
-        return new JokeCommentViewHolder(view, onItemClickListener);
+    public int getItemViewType(int position) {
+        if (position == list.size()) {
+            return TYPE_FOOTER;
+        }
+        return TYPE_NORMAL;
     }
 
     @Override
-    public void onBindViewHolder(JokeCommentViewHolder holder, int position) {
-        JokeCommentBean.DataBean.RecentCommentsBean bean = list.get(position);
-        String iv_avatar = bean.getUser_profile_image_url();
-        String tv_username = bean.getUser_name();
-        String tv_text = bean.getText();
-        String tv_likes = bean.getDigg_count() + "赞";
-
-        if (!SettingsUtil.getInstance().getNoPhotoMode()) {
-            Glide.with(context).load(iv_avatar).crossFade().centerCrop().into(holder.iv_avatar);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == TYPE_NORMAL) {
+            View view = LayoutInflater.from(context).inflate(R.layout.item_other_joke_comment, parent, false);
+            return new JokeCommentViewHolder(view, onItemClickListener);
         }
-        holder.tv_username.setText(tv_username);
-        holder.tv_text.setText(tv_text);
-        holder.tv_likes.setText(tv_likes);
+        if (viewType == TYPE_FOOTER) {
+            View view = LayoutInflater.from(context).inflate(R.layout.list_footer, parent, false);
+            return new FooterViewHolder(view);
+        }
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+        if (holder instanceof JokeCommentViewHolder) {
+
+            JokeCommentViewHolder jokeViewHolder = (JokeCommentViewHolder) holder;
+
+            JokeCommentBean.DataBean.RecentCommentsBean bean = list.get(position);
+            String iv_avatar = bean.getUser_profile_image_url();
+            String tv_username = bean.getUser_name();
+            String tv_text = bean.getText();
+            String tv_likes = bean.getDigg_count() + "赞";
+
+            if (!SettingsUtil.getInstance().getNoPhotoMode()) {
+                Glide.with(context).load(iv_avatar).crossFade().centerCrop().into(jokeViewHolder.iv_avatar);
+            }
+            jokeViewHolder.tv_username.setText(tv_username);
+            jokeViewHolder.tv_text.setText(tv_text);
+            jokeViewHolder.tv_likes.setText(tv_likes);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return list != null ? list.size() : 0;
+        return list != null ? list.size() + 1 : 0;
     }
 
-    public class JokeCommentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class JokeCommentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private CircleImageView iv_avatar;
         private TextView tv_username;
@@ -71,7 +94,7 @@ public class JokeCommentAdapter extends RecyclerView.Adapter<JokeCommentAdapter.
         private TextView tv_likes;
         private IOnItemClickListener onItemClickListener;
 
-        public JokeCommentViewHolder(View itemView, IOnItemClickListener onItemClickListener) {
+        JokeCommentViewHolder(View itemView, IOnItemClickListener onItemClickListener) {
             super(itemView);
             this.iv_avatar = (CircleImageView) itemView.findViewById(R.id.iv_avatar);
             this.tv_username = (TextView) itemView.findViewById(R.id.tv_username);
@@ -86,6 +109,13 @@ public class JokeCommentAdapter extends RecyclerView.Adapter<JokeCommentAdapter.
             if (onItemClickListener != null) {
                 onItemClickListener.onClick(view, getLayoutPosition());
             }
+        }
+    }
+
+    private class FooterViewHolder extends RecyclerView.ViewHolder {
+
+        FooterViewHolder(View itemView) {
+            super(itemView);
         }
     }
 

@@ -77,7 +77,6 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
 
     @Override
     public void doRefresh() {
-        view.onShowRefreshing();
         offset += 20;
         String url = PhotoApi.getPhotoArticleUrl(category, offset, model.getmax_behot_time() + "");
         doRequestData(url);
