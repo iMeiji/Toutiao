@@ -1,11 +1,9 @@
 package com.meiji.toutiao.news.article;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.api.NewsApi;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.news.content.NewsContentActivity;
@@ -90,10 +88,7 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
     @Override
     public void doOnClickItem(int position) {
         NewsArticleBean.DataBean bean = dataList.get(position);
-        Intent intent = new Intent(InitApp.AppContext, NewsContentActivity.class);
-        intent.putExtra(NewsContentActivity.TAG, bean);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        InitApp.AppContext.startActivity(intent);
+        NewsContentActivity.startActivity(bean);
         // 打印下点击的标题和链接
         Log.d(TAG, "doOnClickItem: " + "点击的标题和链接---" + bean.getTitle() + "  " + bean.getDisplay_url());
     }

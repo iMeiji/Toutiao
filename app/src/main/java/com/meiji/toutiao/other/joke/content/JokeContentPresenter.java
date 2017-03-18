@@ -1,10 +1,8 @@
 package com.meiji.toutiao.other.joke.content;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 
-import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.api.JokeApi;
 import com.meiji.toutiao.bean.other.joke.JokeContentBean;
 import com.meiji.toutiao.other.joke.comment.JokeCommentActivity;
@@ -91,11 +89,6 @@ class JokeContentPresenter implements IJokeContent.Presenter {
 
     @Override
     public void doOnClickItem(int position) {
-        JokeContentBean.DataBean.GroupBean bean = groupList.get(position);
-        // 转跳到评论页面
-        Intent intent = new Intent(InitApp.AppContext, JokeCommentActivity.class);
-        intent.putExtra(JokeCommentActivity.TAG, bean);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        InitApp.AppContext.startActivity(intent);
+        JokeCommentActivity.startActivity(groupList.get(position));
     }
 }

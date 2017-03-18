@@ -1,10 +1,13 @@
 package com.meiji.toutiao.other.funny.content;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.meiji.toutiao.BaseActivity;
+import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.bean.other.funny.FunnyArticleBean;
 
 /**
  * Created by Meiji on 2017/3/1.
@@ -12,7 +15,13 @@ import com.meiji.toutiao.R;
 
 public class FunnyContentActivity extends BaseActivity {
 
-    public static final String TAG = "FunnyContentActivity";
+    private static final String TAG = "FunnyContentActivity";
+
+    public static void startActivity(FunnyArticleBean.DataBean bean) {
+        InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, FunnyContentActivity.class)
+                .putExtra(FunnyContentActivity.TAG, bean)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

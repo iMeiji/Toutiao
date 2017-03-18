@@ -1,10 +1,13 @@
 package com.meiji.toutiao.photo.content;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.meiji.toutiao.BaseActivity;
+import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 
 /**
  * Created by Meiji on 2017/3/1.
@@ -12,7 +15,13 @@ import com.meiji.toutiao.R;
 
 public class PhotoContentActivity extends BaseActivity {
 
-    public static final String TAG = "PhotoContentActivity";
+    private static final String TAG = "PhotoContentActivity";
+
+    public static void startActivity(PhotoArticleBean.DataBean bean) {
+        InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, PhotoContentActivity.class)
+                .putExtra(PhotoContentActivity.TAG, bean)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

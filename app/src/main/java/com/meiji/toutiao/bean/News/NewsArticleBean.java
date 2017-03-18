@@ -1036,7 +1036,6 @@ public class NewsArticleBean {
             this.large_image_list = large_image_list;
         }
 
-
         /**
          * Created by Meiji on 2016/12/15.
          */

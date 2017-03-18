@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.meiji.toutiao.BaseActivity;
+import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.other.joke.JokeCommentAdapter;
 import com.meiji.toutiao.bean.other.joke.JokeCommentBean;
@@ -38,7 +39,13 @@ import java.util.List;
 
 public class JokeCommentActivity extends BaseActivity {
 
-    public static final String TAG = "NewsCommentView";
+    private static final String TAG = "NewsCommentView";
+
+    public static void startActivity(JokeContentBean.DataBean.GroupBean bean) {
+        InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, JokeCommentActivity.class)
+                .putExtra(JokeCommentActivity.TAG, bean)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

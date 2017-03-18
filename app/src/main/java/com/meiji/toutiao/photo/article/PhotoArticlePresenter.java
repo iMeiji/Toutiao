@@ -1,11 +1,8 @@
 package com.meiji.toutiao.photo.article;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
-import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.api.PhotoApi;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.photo.content.PhotoContentActivity;
@@ -90,11 +87,6 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
 
     @Override
     public void doOnClickItem(int position) {
-        PhotoArticleBean.DataBean bean = dataList.get(position);
-        Intent intent = new Intent(InitApp.AppContext, PhotoContentActivity.class);
-        intent.putExtra(PhotoContentActivity.TAG, bean);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        InitApp.AppContext.startActivity(intent);
-        Log.d(TAG, "doOnClickItem: " + "点击的标题和链接---" + bean.getTitle() + "  " + bean.getDisplay_url());
+        PhotoContentActivity.startActivity(dataList.get(position));
     }
 }

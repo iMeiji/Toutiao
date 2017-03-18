@@ -2,6 +2,7 @@ package com.meiji.toutiao.adapter.news;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,11 +80,14 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             String tv_abstract = bean.getAbstractX();
             String tv_source = bean.getSource();
             String tv_comment_count = bean.getComment_count() + "评论";
-            String tv_datetime = bean.getDatetime();
-            System.out.println(tv_datetime);
-            // 处理下时间
-            if (tv_datetime != null) {
-                tv_datetime = TimeUtil.timeAgo(TimeUtil.stringConvertDate(tv_datetime));
+//            String tv_datetime = bean.getDatetime();
+////             处理下时间
+//            if (tv_datetime != null) {
+//                tv_datetime = TimeUtil.timeAgo(TimeUtil.stringConvertDate(tv_datetime));
+//            }
+            String tv_datetime = bean.getBehot_time() + "";
+            if (!TextUtils.isEmpty(tv_datetime)) {
+                tv_datetime = TimeUtil.getTimeStampAgo(tv_datetime);
             }
 
             newsHolder.tv_title.setText(tv_title);
