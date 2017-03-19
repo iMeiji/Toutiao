@@ -3,21 +3,26 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/news_content_comment"
+        android:id="@+id/action_open_comment"
         android:icon="@drawable/ic_comment"
-        android:title="@string/action_comment"
+        android:title="@string/action_open_comment"
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/news_content_follow"
+        android:id="@+id/action_follow_media"
         android:icon="@drawable/ic_favorite_white_24dp"
-        android:title="@string/action_follow"
+        android:title="@string/action_follow_media"
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/news_content_share"
+        android:id="@+id/action_share"
         android:icon="@drawable/ic_share"
         android:title="@string/action_share"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_open_in_browser"
+        android:title="@string/action_open_in_browser"
+        app:showAsAction="never"/>
 
 </menu>

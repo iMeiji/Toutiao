@@ -2,6 +2,7 @@ package com.meiji.toutiao.other.funny.content;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -189,7 +190,7 @@ public class FunnyContentFragment extends Fragment implements IFunnyContent.View
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.other_funny_content_main, menu);
+        inflater.inflate(R.menu.news_content_main, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -197,8 +198,7 @@ public class FunnyContentFragment extends Fragment implements IFunnyContent.View
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         switch (itemId) {
-            case R.id.other_funny_content_comment:
-//                presenter.doGetComment(group_id, item_id);
+            case R.id.action_open_comment:
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .add(R.id.container, FunnyCommentFragment.newInstance(group_id, item_id), FunnyCommentFragment.class.getName())
                         .addToBackStack(FunnyCommentFragment.class.getName())
@@ -206,17 +206,22 @@ public class FunnyContentFragment extends Fragment implements IFunnyContent.View
                         .commit();
                 break;
 
-            case R.id.other_funny_content_follow:
+            case R.id.action_follow_media:
 
                 break;
 
-            case R.id.other_funny_content_share:
+            case R.id.action_share:
                 Intent shareIntent = new Intent()
                         .setAction(Intent.ACTION_SEND)
                         .setType("text/plain")
                         .putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + source_url);
                 startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
                 break;
+
+            case R.id.action_open_in_browser:
+                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(source_url)));
+                break;
+
             case android.R.id.home:
                 getActivity().onBackPressed();
                 break;

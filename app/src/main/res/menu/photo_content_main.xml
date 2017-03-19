@@ -5,13 +5,13 @@
     <item
         android:id="@+id/photo_content_comment"
         android:icon="@drawable/ic_comment"
-        android:title="@string/action_comment"
+        android:title="@string/action_open_comment"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/photo_content_follow"
         android:icon="@drawable/ic_favorite_white_24dp"
-        android:title="@string/action_follow"
+        android:title="@string/action_follow_media"
         app:showAsAction="ifRoom"/>
 
     <item

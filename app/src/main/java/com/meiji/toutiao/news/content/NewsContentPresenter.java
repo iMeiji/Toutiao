@@ -2,6 +2,7 @@ package com.meiji.toutiao.news.content;
 
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
 import com.meiji.toutiao.R;
@@ -73,11 +74,11 @@ class NewsContentPresenter implements INewsContent.Presenter {
     }
 
     @Override
-    public void doGetComment(FragmentActivity context, NewsContentFragment newsContentFragment) {
+    public void doGetComment(FragmentActivity context, Fragment fragment) {
         context.getSupportFragmentManager().beginTransaction()
                 .add(R.id.container, NewsCommentFragment.newInstance(group_id, item_id), NewsCommentFragment.class.getName())
                 .addToBackStack(NewsCommentFragment.class.getName())
-                .hide(newsContentFragment)
+                .hide(fragment)
                 .commit();
     }
 }

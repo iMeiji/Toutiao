@@ -2,6 +2,7 @@ package com.meiji.toutiao.news.content;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -186,20 +187,25 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.news_content_comment:
+            case R.id.action_open_comment:
                 presenter.doGetComment(getActivity(), this);
                 break;
 
-            case R.id.news_content_follow:
+            case R.id.action_follow_media:
                 break;
 
-            case R.id.news_content_share:
+            case R.id.action_share:
                 Intent shareIntent = new Intent()
                         .setAction(Intent.ACTION_SEND)
                         .setType("text/plain")
                         .putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + shareUrl);
                 startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
                 break;
+
+            case R.id.action_open_in_browser:
+                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(shareUrl)));
+                break;
+
             case android.R.id.home:
                 getActivity().onBackPressed();
                 break;
