@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_open_comment"
-        android:icon="@drawable/ic_comment"
+        android:icon="@drawable/ic_comment_white_24dp"
         android:title="@string/action_open_comment"
         app:showAsAction="ifRoom"/>
 
@@ -16,7 +16,7 @@
 
     <item
         android:id="@+id/action_share"
-        android:icon="@drawable/ic_share"
+        android:icon="@drawable/ic_share_white_24dp"
         android:title="@string/action_share"
         app:showAsAction="ifRoom"/>
 

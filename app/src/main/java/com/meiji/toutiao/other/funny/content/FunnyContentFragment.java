@@ -22,8 +22,8 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.other.funny.FunnyArticleBean;
 import com.meiji.toutiao.other.funny.comment.FunnyCommentFragment;
@@ -44,8 +44,8 @@ public class FunnyContentFragment extends Fragment implements IFunnyContent.View
     private Toolbar toolbar;
     private WebView webView;
     private ActionBar actionBar;
-    private MaterialDialog dialog;
     private NestedScrollView scrollView;
+    private ProgressBar progressBar;
 
     public static FunnyContentFragment newInstance(Parcelable dataBean) {
         FunnyContentFragment instance = new FunnyContentFragment();
@@ -91,11 +91,6 @@ public class FunnyContentFragment extends Fragment implements IFunnyContent.View
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         webView = (WebView) view.findViewById(R.id.webview_content);
-        dialog = new MaterialDialog.Builder(getActivity())
-                .progress(true, 100)
-                .content(R.string.md_loading)
-                .cancelable(true)
-                .build();
         scrollView = (NestedScrollView) view.findViewById(R.id.scrollView);
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +98,8 @@ public class FunnyContentFragment extends Fragment implements IFunnyContent.View
                 scrollView.smoothScrollTo(0, 0);
             }
         });
+        progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -175,12 +172,12 @@ public class FunnyContentFragment extends Fragment implements IFunnyContent.View
 
     @Override
     public void onShowRefreshing() {
-        dialog.show();
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onHideRefreshing() {
-        dialog.dismiss();
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -190,7 +187,7 @@ public class FunnyContentFragment extends Fragment implements IFunnyContent.View
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.news_content_main, menu);
+        inflater.inflate(R.menu.menu_browser, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 

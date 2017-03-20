@@ -3,8 +3,8 @@ package com.meiji.toutiao.news.content;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
+import com.meiji.toutiao.BaseActivity;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
@@ -13,7 +13,7 @@ import com.meiji.toutiao.bean.news.NewsArticleBean;
  * Created by Meiji on 2017/2/28.
  */
 
-public class NewsContentActivity extends AppCompatActivity {
+public class NewsContentActivity extends BaseActivity {
 
     public static final String TAG = "NewsContentActivity";
 

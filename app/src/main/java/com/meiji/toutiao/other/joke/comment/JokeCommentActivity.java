@@ -127,21 +127,21 @@ public class JokeCommentActivity extends BaseActivity {
 
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            inflater.inflate(R.menu.other_joke_comment, menu);
+            inflater.inflate(R.menu.menu_joke_comment, menu);
             super.onCreateOptionsMenu(menu, inflater);
         }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.other_joke_comment_share:
+                case R.id.action_comment_share:
                     Intent shareIntent = new Intent()
                             .setAction(Intent.ACTION_SEND)
                             .setType("text/plain")
                             .putExtra(Intent.EXTRA_TEXT, jokeText);
                     startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
                     break;
-                case R.id.other_joke_comment_copy:
+                case R.id.action_comment_copy:
                     ClipboardManager copy = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clipData = ClipData.newPlainText("text", jokeText);
                     copy.setPrimaryClip(clipData);

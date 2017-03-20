@@ -106,7 +106,7 @@ public class MainActivity extends BaseActivity {
         position = index;
         switch (index) {
             case FRAGMENT_NEWS:
-                toolbar.setTitle(getResources().getString(R.string.text_news));
+                toolbar.setTitle(getResources().getString(R.string.title_news));
                 /**
                  * 如果Fragment为空，就新建一个实例
                  * 如果不为空，就将它从栈中显示出来
@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity {
                 break;
 
             case FRAGMENT_OTHER:
-                toolbar.setTitle(getResources().getString(R.string.text_other));
+                toolbar.setTitle(getResources().getString(R.string.title_other));
                 if (otherTabLayout == null) {
                     otherTabLayout = OtherTabLayout.getInstance();
                     ft.add(R.id.container, otherTabLayout, otherTabLayout.getClass().getName());
@@ -130,7 +130,7 @@ public class MainActivity extends BaseActivity {
                 break;
 
             case FRAGMENT_MEDIA:
-                toolbar.setTitle(getResources().getString(R.string.text_photo));
+                toolbar.setTitle(getResources().getString(R.string.title_photo));
                 if (photoTabLayout == null) {
                     photoTabLayout = PhotoTabLayout.getInstance();
                     ft.add(R.id.container, photoTabLayout, photoTabLayout.getClass().getName());
@@ -169,7 +169,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
+        getMenuInflater().inflate(R.menu.menu_activity_main, menu);
         setSearchView(menu);
 
         return true;

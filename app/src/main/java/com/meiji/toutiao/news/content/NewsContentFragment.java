@@ -22,8 +22,8 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.utils.SettingsUtil;
@@ -42,9 +42,9 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
     private Toolbar toolbar;
     private WebView webView;
     private ActionBar actionBar;
-    private MaterialDialog dialog;
     private NestedScrollView scrollView;
     private INewsContent.Presenter presenter;
+    private ProgressBar progressBar;
 
     public static NewsContentFragment newInstance(Parcelable dataBean) {
         NewsContentFragment instance = new NewsContentFragment();
@@ -85,11 +85,6 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         webView = (WebView) view.findViewById(R.id.webview_content);
-        dialog = new MaterialDialog.Builder(activity)
-                .progress(true, 100)
-                .content(R.string.md_loading)
-                .cancelable(true)
-                .build();
         scrollView = (NestedScrollView) view.findViewById(R.id.scrollView);
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +92,8 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
                 scrollView.smoothScrollTo(0, 0);
             }
         });
+        progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -169,17 +166,17 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
 
     @Override
     public void onShowRefreshing() {
-        dialog.show();
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onHideRefreshing() {
-        dialog.dismiss();
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.news_content_main, menu);
+        inflater.inflate(R.menu.menu_browser, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 

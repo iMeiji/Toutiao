@@ -33,7 +33,7 @@
             android:foreground="?attr/selectableItemBackground"
             android:maxHeight="?attr/actionBarSize"
             android:padding="8dp"
-            app:srcCompat="@drawable/ic_add"/>
+            app:srcCompat="@drawable/ic_add_white_24dp"/>
     </LinearLayout>
 
     <android.support.v4.view.ViewPager

@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_search"
-        android:icon="@drawable/ic_search"
+        android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/action_search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView"/>
@@ -16,7 +16,7 @@
 
     <item
         android:id="@+id/action_switch_night_mode"
-        android:title="@string/change_theme"
+        android:title="@string/action_change_theme"
         app:showAsAction="never"/>
 
 </menu>

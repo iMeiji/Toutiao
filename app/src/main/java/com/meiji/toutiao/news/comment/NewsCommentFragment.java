@@ -100,7 +100,7 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
                 recycler_view.smoothScrollToPosition(0);
             }
         });
-        toolbar.setTitle("评论");
+        toolbar.setTitle(R.string.title_comment);
     }
 
     @Override

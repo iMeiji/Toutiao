@@ -18,16 +18,26 @@
         android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <WebView
-            android:id="@+id/webview_content"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/White">
-        </WebView>
+            android:layout_height="match_parent">
+
+            <WebView
+                android:id="@+id/webview_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/White"/>
+
+            <ProgressBar
+                android:id="@+id/pb_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>
 

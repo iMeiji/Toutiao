@@ -34,21 +34,21 @@
         <activity
             android:name=".news.content.NewsContentActivity"
             android:configChanges="orientation|screenSize|uiMode"
-            android:label="新闻内容"
+            android:label="@string/title_news_content"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
             android:name=".other.joke.comment.JokeCommentActivity"
             android:configChanges="orientation|screenSize|uiMode"
-            android:label="段子评论"
+            android:label="@string/title_joke_comment"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
             android:name=".search.SearchView"
             android:configChanges="orientation|screenSize|uiMode"
-            android:label="搜索结果"
+            android:label="@string/title_search"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -62,28 +62,28 @@
         <activity
             android:name=".SettingsActivity"
             android:configChanges="orientation|screenSize|uiMode"
-            android:label="@string/title_activity_settings">
+            android:label="@string/title_settings">
         </activity>
 
 
         <activity
             android:name=".other.funny.content.FunnyContentActivity"
             android:configChanges="orientation|screenSize|uiMode"
-            android:label="搞笑内容"
+            android:label="@string/title_funny_content"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
             android:name=".photo.content.PhotoContentActivity"
             android:configChanges="orientation|screenSize|uiMode"
-            android:label="图片浏览"
+            android:label="@string/title_photo_content"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
         <activity
             android:name=".news.channel.NewsChannelActivity"
             android:configChanges="orientation|screenSize|uiMode"
-            android:label="拖拽排序"
+            android:label="@string/title_item_drag"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

@@ -55,7 +55,6 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'org.jsoup:jsoup:1.10.1'
-    compile 'com.afollestad.material-dialogs:commons:0.9.1.0'
     compile 'com.github.franmontiel:PersistentCookieJar:v1.0.0'
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
     compile 'com.facebook.stetho:stetho:1.4.2'

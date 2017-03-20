@@ -22,6 +22,6 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="8dp"
         android:gravity="center_vertical"
-        android:text="@string/md_loading"/>
+        android:text="@string/loading"/>
 
 </LinearLayout>

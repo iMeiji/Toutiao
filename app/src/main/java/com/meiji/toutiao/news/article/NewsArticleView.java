@@ -160,7 +160,7 @@ public class NewsArticleView extends BasePageFragment implements SwipeRefreshLay
     @Override
     public void onFail() {
         Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT)
-                .setAction("重试", new View.OnClickListener() {
+                .setAction(R.string.retry, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         presenter.doGetUrl(categoryId);

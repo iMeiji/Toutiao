@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -73,7 +74,7 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
         Bundle bundle = getArguments();
         PhotoArticleBean.DataBean dataBean = bundle.getParcelable(TAG);
         presenter.doRequestData(dataBean);
-        shareUrl = dataBean.getDisplay_url();
+        shareUrl = "http://toutiao.com" + dataBean.getSource_url();
         shareTitle = dataBean.getTitle();
         actionBar.setTitle(dataBean.getMedia_name());
         group_id = dataBean.getGroup_id() + "";
@@ -146,7 +147,7 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
 
     @Override
     public void onSaveImageSuccess() {
-        Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -157,7 +158,7 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
                 presenter.doSaveImage();
             } else {
                 // Permission Denied
-                Toast.makeText(getActivity(), "没有权限", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.permission_denied, Toast.LENGTH_SHORT).show();
             }
             return;
         }
@@ -166,7 +167,7 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.photo_content_main, menu);
+        inflater.inflate(R.menu.menu_browser, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -174,7 +175,7 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.photo_content_comment:
+            case R.id.action_open_comment:
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .add(R.id.container, PhotoCommentFragment.newInstance(group_id, item_id), PhotoCommentFragment.class.getName())
                         .addToBackStack(PhotoCommentFragment.class.getName())
@@ -182,10 +183,14 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
                         .commit();
                 break;
 
-            case R.id.photo_content_follow:
+            case R.id.action_follow_media:
                 break;
 
-            case R.id.photo_content_share:
+            case R.id.action_open_in_browser:
+                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(shareUrl)));
+                break;
+
+            case R.id.action_share:
                 Intent shareIntent = new Intent()
                         .setAction(Intent.ACTION_SEND)
                         .setType("text/plain")

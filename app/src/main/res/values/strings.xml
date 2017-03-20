@@ -1,39 +1,54 @@
 <resources>
     <string name="app_name">头条</string>
 
-    <string name="text_news">新闻</string>
-    <string name="text_other">其他</string>
-    <string name="text_photo">图片</string>
-    <string name="double_click_exit">再按一次退出程序</string>
-    <string name="network_error">网络不给力</string>
-    <string name="md_loading">加载中</string>
-    <string name="share_app_text">来瞧瞧这个：适配了质感设计的 今日头条！</string>
-    <string name="share_to">分享至</string>
-    <string name="no_more">没有更多了</string>
-    <string name="action_search">搜索</string>
-    <string name="search_hint">搜素...</string>
-    <string name="title_activity_settings">Settings</string>
-
-    <!-- Strings related to Settings -->
-
     <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
+    <string name="switch_photo_mode">无图模式</string>
+
+    <!-- Menu Action -->
+    <string name="action_search">搜索</string>
     <string name="action_setting">设置</string>
+    <string name="action_change_theme">切换主题</string>
     <string name="action_open_comment">查看评论</string>
     <string name="action_follow_media">关注此头条号</string>
     <string name="action_share">分享至</string>
     <string name="action_open_in_browser">在浏览器中打开</string>
-    <string name="switch_photo_mode">无图模式</string>
+    <string name="action_copy_content">复制内容</string>
+
+    <!-- Title -->
+    <string name="title_news">新闻</string>
+    <string name="title_other">其他</string>
+    <string name="title_photo">图片</string>
+    <string name="title_settings">设置</string>
+    <string name="title_news_content">新闻内容</string>
+    <string name="title_joke_comment">段子评论</string>
+    <string name="title_search">搜索结果</string>
+    <string name="title_funny_content">搞笑内容</string>
+    <string name="title_photo_content">图片浏览</string>
+    <string name="title_item_drag">拖拽排序</string>
+    <string name="title_comment">评论</string>
+
+    <!-- Bottom Sheet List -->
     <string name="copy_comment">复制评论</string>
     <string name="share_comment">分享评论</string>
-    <string name="action_switch_mode">切换主题</string>
-    <string name="copy_content">复制内容</string>
-    <string name="copied_to_clipboard">复制成功</string>
-    <string name="change_theme">切换主题</string>
 
+    <!-- Item Drag -->
     <string name="tip_drag">长按编辑,拖拽排序</string>
     <string name="my_cahnnel">我的频道</string>
     <string name="other_channel">其他频道</string>
     <string name="edit">编辑</string>
     <string name="finish">完成</string>
+
+    <!-- View Action -->
+    <string name="network_error">网络不给力</string>
+    <string name="retry">重试</string>
+    <string name="share_to">分享至</string>
+    <string name="loading">加载中</string>
+    <string name="copied_to_clipboard">复制成功</string>
+    <string name="no_more">没有更多了</string>
+    <string name="saved">保存成功</string>
+    <string name="permission_denied">没有权限</string>
+    <string name="double_click_exit">再按一次退出程序</string>
+    <string name="search_hint">搜素...</string>
+
+
 </resources>

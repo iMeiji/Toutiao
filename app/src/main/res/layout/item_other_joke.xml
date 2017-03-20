@@ -70,7 +70,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_like"/>
+                        android:src="@drawable/ic_like_gray_24dp"/>
 
                     <TextView
                         android:id="@+id/tv_bury_count"
@@ -82,7 +82,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_dislike"/>
+                        android:src="@drawable/ic_dislike_gray_24dp"/>
 
                     <TextView
                         android:id="@+id/tv_comment_count"

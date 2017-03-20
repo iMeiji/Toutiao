@@ -6,8 +6,6 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.afollestad.materialdialogs.color.CircleView;
-
 /**
  * Created by Meiji on 2016/12/12.
  */
@@ -22,8 +20,8 @@ public class BaseActivity extends AppCompatActivity {
         if (getSupportActionBar() != null)
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(color));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(CircleView.shiftColorDown(color));
-            getWindow().setNavigationBarColor(CircleView.shiftColorDown(color));
+            getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark, getTheme()));
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark, getTheme()));
         }
     }
 
