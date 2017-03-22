@@ -1,13 +1,38 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="switch_no_photo_mode"
-        android:title="@string/switch_photo_mode"/>
+    <PreferenceCategory
+        android:title="@string/basic_settings">
 
-    <!--    <SwitchPreference
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="switch_no_photo_mode"
+            android:summary="@string/switch_no_photo_mode_summary"
+            android:title="@string/switch_photo_mode"/>
+
+        <SwitchPreference
             android:defaultValue="false"
             android:key="switch_night_mode"
-            android:title="@string/switch_night_mode"/>-->
+            android:summary="@string/switch_night_mode_summary"
+            android:title="@string/switch_night_mode"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/other_settings">
+
+        <Preference
+            android:key="clear_image_cache"
+            android:title="@string/clear_image_cache"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/about_settings">
+
+        <Preference
+            android:key="about"
+            android:title="@string/about_settings"/>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

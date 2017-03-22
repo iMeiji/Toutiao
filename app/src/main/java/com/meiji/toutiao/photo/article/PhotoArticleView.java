@@ -56,6 +56,12 @@ public class PhotoArticleView extends BasePageFragment implements IPhotoArticle.
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        recycler_view.setBackgroundColor(getResources().getColor(R.color.viewBackground));
+    }
+
     private void initView(View view) {
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
         recycler_view.setHasFixedSize(true);

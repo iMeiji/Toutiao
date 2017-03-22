@@ -57,6 +57,4 @@ interface INewsContent {
          */
         String getHtml();
     }
-
-
 }

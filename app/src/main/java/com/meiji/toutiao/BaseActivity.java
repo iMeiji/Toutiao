@@ -6,6 +6,8 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import okhttp3.Call;
+
 /**
  * Created by Meiji on 2016/12/12.
  */
@@ -33,5 +35,16 @@ public class BaseActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        for (Call call : InitApp.getOkHttpClient().dispatcher().queuedCalls()) {
+            call.cancel();
+        }
+        for (Call call : InitApp.getOkHttpClient().dispatcher().runningCalls()) {
+            call.cancel();
+        }
+        super.onDestroy();
     }
 }

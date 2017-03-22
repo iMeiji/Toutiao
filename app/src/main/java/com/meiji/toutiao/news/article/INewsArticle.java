@@ -41,6 +41,6 @@ interface INewsArticle {
 
         List<NewsArticleBean.DataBean> getDataList();
 
-        int getmax_behot_time();
+        int getMaxBehotTime();
     }
 }

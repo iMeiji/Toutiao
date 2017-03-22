@@ -24,10 +24,6 @@ class NewsArticleModel implements INewsArticle.Model {
     private Gson gson = new Gson();
     private List<NewsArticleBean> newsList = new ArrayList<>();
     private List<NewsArticleBean.DataBean> dataList = new ArrayList<>();
-    private List<NewsArticleBean.NextBean> nextList = new ArrayList<>();
-
-    NewsArticleModel() {
-    }
 
     @Override
     public boolean requestData(String url) {
@@ -78,7 +74,7 @@ class NewsArticleModel implements INewsArticle.Model {
     }
 
     @Override
-    public int getmax_behot_time() {
+    public int getMaxBehotTime() {
         int max_behot_time = 0;
         for (NewsArticleBean bean : newsList) {
             max_behot_time = bean.getNext().getMax_behot_time();

@@ -69,10 +69,9 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        // 屏幕恢复时取出位置
-//        showFragment(savedInstanceState.getInt(POSITION));
+    protected void onResume() {
+        super.onResume();
+        bottom_navigation.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
     }
 
     private void initView() {

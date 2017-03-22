@@ -49,6 +49,12 @@ public class OtherTabLayout extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        tab_layout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+    }
+
     private void initView(View view) {
         tab_layout = (TabLayout) view.findViewById(R.id.tab_layout_other);
         view_pager = (ViewPager) view.findViewById(R.id.view_pager_other);

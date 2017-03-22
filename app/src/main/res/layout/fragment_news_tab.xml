@@ -27,7 +27,7 @@
         <ImageView
             android:id="@+id/add_channel_iv"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="?attr/selectableItemBackground"
             android:foreground="?attr/selectableItemBackground"

@@ -3,6 +3,14 @@
 
     <!-- Example General settings -->
     <string name="switch_photo_mode">无图模式</string>
+    <string name="basic_settings">基本设置</string>
+    <string name="switch_no_photo_mode_summary">不加载图片, 节省流量</string>
+    <string name="switch_night_mode">夜间模式</string>
+    <string name="switch_night_mode_summary">切换夜间皮肤</string>
+    <string name="clear_image_cache">清除图片缓存</string>
+    <string name="clear_image_cache_successfully">清理成功</string>
+    <string name="other_settings">其他设置</string>
+    <string name="about_settings">关于</string>
 
     <!-- Menu Action -->
     <string name="action_search">搜索</string>

@@ -35,6 +35,8 @@ public class NewsTabLayout extends Fragment {
     //    private static int pageSize = InitApp.AppContext.getResources().getStringArray(R.array.news_id).length;
     private final int REQUEST_CODE = 1;
     private ViewPager view_pager;
+    private TabLayout tab_layout;
+    private ImageView add_channel_iv;
     private List<Fragment> list = new ArrayList<>();
     private BasePagerAdapter adapter;
 
@@ -54,13 +56,20 @@ public class NewsTabLayout extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        tab_layout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        add_channel_iv.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+    }
+
     private void initView(View view) {
-        TabLayout tab_layout = (TabLayout) view.findViewById(R.id.tab_layout_news);
+        tab_layout = (TabLayout) view.findViewById(R.id.tab_layout_news);
         view_pager = (ViewPager) view.findViewById(R.id.view_pager_news);
 
         tab_layout.setupWithViewPager(view_pager);
         tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        ImageView add_channel_iv = (ImageView) view.findViewById(R.id.add_channel_iv);
+        add_channel_iv = (ImageView) view.findViewById(R.id.add_channel_iv);
         add_channel_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
