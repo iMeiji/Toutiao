@@ -3,32 +3,32 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference
-        android:icon="@drawable/ic_info"
+        android:icon="@drawable/ic_info_gray_24dp"
         android:key="version"
         android:title="@string/version"/>
 
     <Preference
-        android:icon="@drawable/ic_history"
+        android:icon="@drawable/ic_history_gray_24dp"
         android:key="changelog"
         android:title="@string/changelog"/>
 
     <Preference
-        android:icon="@drawable/ic_person"
+        android:icon="@drawable/ic_person_gray_24dp"
         android:key="developers"
         android:title="@string/about_developers_label"/>
 
     <Preference
-        android:icon="@drawable/ic_description"
+        android:icon="@drawable/ic_description_gray_24dp"
         android:key="licenses"
         android:title="@string/about_libraries_label"/>
 
     <Preference
-        android:icon="@drawable/ic_github"
+        android:icon="@drawable/ic_github_gray_24dp"
         android:key="sourceCode"
         android:title="@string/source_code"/>
 
     <Preference
-        android:icon="@drawable/ic_copyright"
+        android:icon="@drawable/ic_copyright_gray_24dp"
         android:key="copyRight"
         android:title="@string/copyright"/>
 

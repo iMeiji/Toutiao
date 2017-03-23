@@ -24,6 +24,7 @@ import com.meiji.toutiao.news.NewsTabLayout;
 import com.meiji.toutiao.other.OtherTabLayout;
 import com.meiji.toutiao.photo.PhotoTabLayout;
 import com.meiji.toutiao.search.SearchView;
+import com.meiji.toutiao.settings.SettingsActivity;
 import com.meiji.toutiao.utils.SettingsUtil;
 
 public class MainActivity extends BaseActivity {
@@ -184,10 +185,10 @@ public class MainActivity extends BaseActivity {
             case R.id.action_switch_night_mode:
                 int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
                 if (mode == Configuration.UI_MODE_NIGHT_YES) {
-                    SettingsUtil.getInstance().setIsNightMode(true);
+                    SettingsUtil.getInstance().setIsNightMode(false);
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 } else {
-                    SettingsUtil.getInstance().setIsNightMode(false);
+                    SettingsUtil.getInstance().setIsNightMode(true);
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 }
                 getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);

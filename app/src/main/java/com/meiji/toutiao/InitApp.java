@@ -39,9 +39,9 @@ public class InitApp extends Application {
         super.onCreate();
         AppContext = getApplicationContext();
         if (SettingsUtil.getInstance().getIsNightMode()) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
         Stetho.initializeWithDefaults(this);
     }

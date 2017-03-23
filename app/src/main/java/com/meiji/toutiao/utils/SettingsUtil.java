@@ -14,6 +14,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class SettingsUtil {
 
     SharedPreferences prefs = InitApp.AppContext.getSharedPreferences(InitApp.AppContext.getPackageName(), MODE_PRIVATE);
+    SharedPreferences settings = InitApp.AppContext.getSharedPreferences(InitApp.AppContext.getPackageName() + "_preferences", MODE_PRIVATE);
 
     private SettingsUtil() {
 
@@ -37,11 +38,11 @@ public class SettingsUtil {
     }
 
     public boolean getIsNightMode() {
-        return prefs.getBoolean("switch_night_mode", false);
+        return settings.getBoolean("switch_night_mode", false);
     }
 
     public void setIsNightMode(boolean flag) {
-        prefs.edit().putBoolean("switch_night_mode", flag).apply();
+        settings.edit().putBoolean("switch_night_mode", flag).apply();
     }
 
     private static final class SettingsUtilInstance {
