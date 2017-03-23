@@ -50,6 +50,7 @@ dependencies {
     compile "com.android.support:customtabs:$SUPPORT_LIBRARY_VERSION"
     compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
     compile "com.android.support:recyclerview-v7:$SUPPORT_LIBRARY_VERSION"
+    compile "com.android.support:preference-v14:$SUPPORT_LIBRARY_VERSION"
 
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
@@ -58,4 +59,5 @@ dependencies {
     compile 'com.github.franmontiel:PersistentCookieJar:v1.0.0'
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
     compile 'com.facebook.stetho:stetho:1.4.2'
+    compile 'de.psdev.licensesdialog:licensesdialog:1.8.2'
 }

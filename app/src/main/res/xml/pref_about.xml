@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:icon="@drawable/ic_info"
+        android:key="version"
+        android:title="@string/version"/>
+
+    <Preference
+        android:icon="@drawable/ic_history"
+        android:key="changelog"
+        android:title="@string/changelog"/>
+
+    <Preference
+        android:icon="@drawable/ic_person"
+        android:key="developers"
+        android:title="@string/about_developers_label"/>
+
+    <Preference
+        android:icon="@drawable/ic_description"
+        android:key="licenses"
+        android:title="@string/about_libraries_label"/>
+
+    <Preference
+        android:icon="@drawable/ic_github"
+        android:key="sourceCode"
+        android:title="@string/source_code"/>
+
+    <Preference
+        android:icon="@drawable/ic_copyright"
+        android:key="copyRight"
+        android:title="@string/copyright"/>
+
+</PreferenceScreen>

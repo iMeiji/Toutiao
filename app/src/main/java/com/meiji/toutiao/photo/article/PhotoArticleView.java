@@ -151,12 +151,4 @@ public class PhotoArticleView extends BasePageFragment implements IPhotoArticle.
     public void onFail() {
         Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT).show();
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (adapter != null) {
-            adapter = null;
-        }
-    }
 }

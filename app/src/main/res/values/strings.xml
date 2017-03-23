@@ -58,5 +58,17 @@
     <string name="double_click_exit">再按一次退出程序</string>
     <string name="search_hint">搜素...</string>
 
+    <!-- About -->
+    <string name="changelog">更新日志</string>
+    <string name="changelog_url">https://github.com/iMeiji/Toutiao/releases</string>
+    <string name="about_developers_label">主要开发者</string>
+    <string name="about_developers">https://github.com/iMeiji</string>
+    <string name="share_app_text">来瞧瞧这个：适配了质感设计的 知乎专栏！</string>
+    <string name="source_code">源代码</string>
+    <string name="source_code_url">https://github.com/iMeiji/Daily</string>
+    <string name="about_libraries_label">开源许可</string>
+    <string name="copyright">版权声明</string>
+    <string name="copyright_content">本App所使用的所有API均由 今日头条 提供, 本人采取非正常手段获取. 获取与共享之行为或有侵犯 今日头条 权益的嫌疑.若被告知需停止共享与使用, 本人会及时删除此页面与整个项目.</string>
+    <string name="version">版本</string>
 
 </resources>

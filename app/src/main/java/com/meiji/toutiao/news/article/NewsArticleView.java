@@ -172,14 +172,5 @@ public class NewsArticleView extends BasePageFragment implements SwipeRefreshLay
                         presenter.doGetUrl(categoryId);
                     }
                 }).show();
-//        Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (adapter != null) {
-            adapter = null;
-        }
     }
 }

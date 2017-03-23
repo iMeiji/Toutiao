@@ -65,7 +65,6 @@
             android:label="@string/title_settings">
         </activity>
 
-
         <activity
             android:name=".other.funny.content.FunnyContentActivity"
             android:configChanges="orientation|screenSize|uiMode"
