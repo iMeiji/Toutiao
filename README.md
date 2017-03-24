@@ -9,6 +9,9 @@
 
 ## 截图
 <img src="/art/2.jpg"/>
+<img src="/art/news.gif" width="360" height="640"/>
+<img src="/art/other.gif" width="360" height="640"/>
+<img src="/art/photo.gif" width="360" height="640"/>
 
 ## 下载
 [GitHub Release](https://github.com/iMeiji/Toutiao/releases)
