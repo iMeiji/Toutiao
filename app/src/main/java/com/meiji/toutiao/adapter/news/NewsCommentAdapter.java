@@ -69,7 +69,7 @@ public class NewsCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             String tv_text = commentsBean.getText();
             int tv_likes = commentsBean.getDigg_count();
 
-            if (!SettingsUtil.getInstance().getNoPhotoMode()) {
+            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
                 Glide.with(context).load(iv_avatar).crossFade().centerCrop().into(commentHolder.iv_avatar);
             }
             commentHolder.tv_username.setText(tv_username);

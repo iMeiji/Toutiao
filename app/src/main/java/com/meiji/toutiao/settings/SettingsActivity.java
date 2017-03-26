@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.bumptech.glide.Glide;
@@ -22,52 +22,44 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.container);
-//        setupActionBar();
+        setContentView(R.layout.activity_settings);
+        initView();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container, GeneralPreferenceFragment.newInstance())
                 .commit();
     }
 
-//    private void setupActionBar() {
-//        ActionBar actionBar = getSupportActionBar();
-//        if (actionBar != null) {
-//            actionBar.setDisplayHomeAsUpEnabled(true);
-//        }
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int itemId = item.getItemId();
-//        if (itemId == android.R.id.home) {
-//            onBackPressed();
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+    private void initView() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_about, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.share) {
+            Intent shareIntent = new Intent()
+                    .setAction(Intent.ACTION_SEND)
+                    .setType("text/plain")
+                    .putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_text) + getString(R.string.source_code_url));
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     public static class GeneralPreferenceFragment extends PreferenceFragmentCompat {
 
         public static GeneralPreferenceFragment newInstance() {
             return new GeneralPreferenceFragment();
-        }
-
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            AppCompatActivity activity = (AppCompatActivity) getActivity();
-            ActionBar actionBar = activity.getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setDisplayHomeAsUpEnabled(true);
-            }
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            int itemId = item.getItemId();
-            if (itemId == android.R.id.home) {
-                getActivity().onBackPressed();
-            }
-            return super.onOptionsItemSelected(item);
         }
 
         @Override
@@ -86,8 +78,7 @@ public class SettingsActivity extends BaseActivity {
                         SettingsUtil.getInstance().setIsNightMode(true);
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     }
-                    getActivity().getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
-                    getActivity().recreate();
+                    getActivity().setResult(RESULT_OK);
                     return false;
                 }
             });
@@ -110,7 +101,11 @@ public class SettingsActivity extends BaseActivity {
             findPreference("about").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    startActivity(new Intent(getActivity(), AboutActivity.class));
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .add(R.id.container, AboutFragment.newInstance())
+                            .addToBackStack(AboutFragment.class.getName())
+                            .hide(GeneralPreferenceFragment.this)
+                            .commit();
                     return false;
                 }
             });

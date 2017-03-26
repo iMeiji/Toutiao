@@ -68,7 +68,7 @@ public class PhotoContentAdapter extends PagerAdapter {
 
             //Glide.with(context).load(sub_images.get(position)).asBitmap().into(new MyTarget(photoViewAttacher));
             // 这个需要加个 在无图模式下 点击加载图片
-            if (!SettingsUtil.getInstance().getNoPhotoMode()) {
+            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
                 Glide.with(context).load(sub_images.get(position).getUrl()).centerCrop().listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {

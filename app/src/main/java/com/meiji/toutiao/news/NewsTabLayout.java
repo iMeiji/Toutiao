@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,7 +112,7 @@ public class NewsTabLayout extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                Log.d(TAG, "onActivityResult: ");
+                getActivity().getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
                 getActivity().recreate();
             }
         }

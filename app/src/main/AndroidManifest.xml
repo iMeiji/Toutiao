@@ -62,13 +62,7 @@
         <activity
             android:name="com.meiji.toutiao.settings.SettingsActivity"
             android:configChanges="orientation|screenSize|uiMode"
-            android:label="@string/title_settings">
-        </activity>
-
-        <activity
-            android:name=".settings.AboutActivity"
-            android:configChanges="orientation|screenSize|uiMode"
-            android:label="@string/title_about"
+            android:label="@string/title_settings"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 

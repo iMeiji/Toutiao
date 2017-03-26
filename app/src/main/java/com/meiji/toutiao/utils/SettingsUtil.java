@@ -5,36 +5,29 @@ import android.preference.PreferenceManager;
 
 import com.meiji.toutiao.InitApp;
 
-import static android.content.Context.MODE_PRIVATE;
-
 /**
  * Created by Meiji on 2017/2/20.
  */
 
 public class SettingsUtil {
 
-    SharedPreferences prefs = InitApp.AppContext.getSharedPreferences(InitApp.AppContext.getPackageName(), MODE_PRIVATE);
-    SharedPreferences settings = InitApp.AppContext.getSharedPreferences(InitApp.AppContext.getPackageName() + "_preferences", MODE_PRIVATE);
-
-    private SettingsUtil() {
-
-    }
+    private SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(InitApp.AppContext);
 
     public static SettingsUtil getInstance() {
         return SettingsUtilInstance.instance;
     }
 
-    public boolean getNoPhotoMode() {
-        return PreferenceManager.getDefaultSharedPreferences(InitApp.AppContext).getBoolean("switch_no_photo_mode", false);
+    public boolean getIsNoPhotoMode() {
+        return settings.getBoolean("switch_no_photo_mode", false);
     }
 
     public int getColor() {
         int defaultColor = -14776091;
-        return prefs.getInt("color", defaultColor);
+        return settings.getInt("color", defaultColor);
     }
 
     public void setColor(int color) {
-        prefs.edit().putInt("color", color).apply();
+        settings.edit().putInt("color", color).apply();
     }
 
     public boolean getIsNightMode() {

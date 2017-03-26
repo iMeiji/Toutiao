@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="video_name">
+        <item>全部</item>
+        <item>逗比剧</item>
+        <item>音乐台</item>
+        <item>看天下</item>
+        <item>相声小品</item>
+        <item>中国新唱将</item>
+        <item>最娱乐</item>
+    </string-array>
+
+    <string-array name="video_id">
+        <item>video</item>
+        <item>subv_funny</item>
+        <item>subv_voice</item>
+        <item>subv_society</item>
+        <item>subv_comedy</item>
+        <item>subv_haoshengyin</item>
+        <item>subv_entertainment</item>
+    </string-array>
+
+</resources>

@@ -47,4 +47,15 @@ public class BaseActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
+
+    @Override
+    public void onBackPressed() {
+        // Fragment 逐个出栈
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        if (count == 0) {
+            super.onBackPressed();
+        } else {
+            getSupportFragmentManager().popBackStack();
+        }
+    }
 }

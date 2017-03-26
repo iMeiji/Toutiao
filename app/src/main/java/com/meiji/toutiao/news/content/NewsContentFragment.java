@@ -109,7 +109,7 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
         // 开启application Cache功能
         settings.setAppCacheEnabled(false);
         // 判断是否为无图模式
-        settings.setBlockNetworkImage(SettingsUtil.getInstance().getNoPhotoMode());
+        settings.setBlockNetworkImage(SettingsUtil.getInstance().getIsNoPhotoMode());
         // 不调用第三方浏览器即可进行页面反应
         webView.setWebViewClient(new WebViewClient() {
             @Override

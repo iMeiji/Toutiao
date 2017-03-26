@@ -69,7 +69,7 @@ public class FunnyContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             FunnyArticleBean.DataBean bean = list.get(position);
             String tv_title = bean.getTitle();
-            if (!SettingsUtil.getInstance().getNoPhotoMode()) {
+            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
                 if (bean.getImage_list() != null) {
                     int size = bean.getImage_list().size();
                     String[] ivs = new String[size];

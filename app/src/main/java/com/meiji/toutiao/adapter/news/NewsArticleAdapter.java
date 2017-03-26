@@ -68,7 +68,7 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             NewsArticleBean.DataBean bean = list.get(position);
 
-            if (!SettingsUtil.getInstance().getNoPhotoMode()) {
+            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
                 List<NewsArticleBean.DataBean.ImageListBean> image_list = bean.getImage_list();
                 if (image_list != null && image_list.size() != 0) {
                     String url = image_list.get(0).getUrl();

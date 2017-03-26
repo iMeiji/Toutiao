@@ -74,7 +74,7 @@ public class JokeContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             String bury_count = bean.getBury_count() + "";
             String comment_count = bean.getComment_count() + "评论";
 
-            if (!SettingsUtil.getInstance().getNoPhotoMode()) {
+            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
                 Glide.with(context).load(avatar_url).crossFade().centerCrop().into(jokeViewHolder.iv_avatar);
             }
             jokeViewHolder.tv_username.setText(name);

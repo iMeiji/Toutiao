@@ -9,7 +9,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatDelegate;
@@ -34,16 +33,14 @@ public class MainActivity extends BaseActivity {
     private static final int FRAGMENT_NEWS = 0;
     private static final int FRAGMENT_OTHER = 1;
     private static final int FRAGMENT_MEDIA = 2;
-
+    private final int REQUEST_CODE = 1;
     private NewsTabLayout newsTabLayout;
     private OtherTabLayout otherTabLayout;
     private PhotoTabLayout photoTabLayout;
-
     private Toolbar toolbar;
     private BottomNavigationView bottom_navigation;
     private long exitTime;
     private int position;
-    private FragmentManager fragmentManager;
     private FrameLayout content_main;
 
     @Override
@@ -106,7 +103,7 @@ public class MainActivity extends BaseActivity {
         position = index;
         switch (index) {
             case FRAGMENT_NEWS:
-                toolbar.setTitle(getResources().getString(R.string.title_news));
+                toolbar.setTitle(R.string.title_news);
                 /**
                  * 如果Fragment为空，就新建一个实例
                  * 如果不为空，就将它从栈中显示出来
@@ -120,7 +117,7 @@ public class MainActivity extends BaseActivity {
                 break;
 
             case FRAGMENT_OTHER:
-                toolbar.setTitle(getResources().getString(R.string.title_other));
+                toolbar.setTitle(R.string.title_other);
                 if (otherTabLayout == null) {
                     otherTabLayout = OtherTabLayout.getInstance();
                     ft.add(R.id.container, otherTabLayout, otherTabLayout.getClass().getName());
@@ -130,7 +127,7 @@ public class MainActivity extends BaseActivity {
                 break;
 
             case FRAGMENT_MEDIA:
-                toolbar.setTitle(getResources().getString(R.string.title_photo));
+                toolbar.setTitle(R.string.title_photo);
                 if (photoTabLayout == null) {
                     photoTabLayout = PhotoTabLayout.getInstance();
                     ft.add(R.id.container, photoTabLayout, photoTabLayout.getClass().getName());
@@ -180,7 +177,7 @@ public class MainActivity extends BaseActivity {
         int itemId = item.getItemId();
         switch (itemId) {
             case R.id.aciton_setting:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_CODE);
                 break;
             case R.id.action_switch_night_mode:
                 int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
@@ -195,6 +192,17 @@ public class MainActivity extends BaseActivity {
                 recreate();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
+                recreate();
+            }
+        }
     }
 
     private void setSearchView(Menu menu) {
