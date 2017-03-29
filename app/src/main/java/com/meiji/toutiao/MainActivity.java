@@ -25,6 +25,7 @@ import com.meiji.toutiao.photo.PhotoTabLayout;
 import com.meiji.toutiao.search.SearchView;
 import com.meiji.toutiao.settings.SettingsActivity;
 import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.video.VideoTabLayout;
 
 public class MainActivity extends BaseActivity {
 
@@ -33,10 +34,12 @@ public class MainActivity extends BaseActivity {
     private static final int FRAGMENT_NEWS = 0;
     private static final int FRAGMENT_OTHER = 1;
     private static final int FRAGMENT_MEDIA = 2;
+    private static final int FRAGMENT_VIDEO = 3;
     private final int REQUEST_CODE = 1;
     private NewsTabLayout newsTabLayout;
     private OtherTabLayout otherTabLayout;
     private PhotoTabLayout photoTabLayout;
+    private VideoTabLayout videoTabLayout;
     private Toolbar toolbar;
     private BottomNavigationView bottom_navigation;
     private long exitTime;
@@ -53,6 +56,7 @@ public class MainActivity extends BaseActivity {
             newsTabLayout = (NewsTabLayout) getSupportFragmentManager().findFragmentByTag(NewsTabLayout.class.getName());
             otherTabLayout = (OtherTabLayout) getSupportFragmentManager().findFragmentByTag(OtherTabLayout.class.getName());
             photoTabLayout = (PhotoTabLayout) getSupportFragmentManager().findFragmentByTag(PhotoTabLayout.class.getName());
+            videoTabLayout = (VideoTabLayout) getSupportFragmentManager().findFragmentByTag(VideoTabLayout.class.getName());
             // 屏幕恢复时取出位置
             showFragment(savedInstanceState.getInt(POSITION));
         } else {
@@ -89,6 +93,9 @@ public class MainActivity extends BaseActivity {
                     case R.id.action_photo:
                         showFragment(FRAGMENT_MEDIA);
                         break;
+                    case R.id.action_video:
+                        showFragment(FRAGMENT_VIDEO);
+                        break;
                 }
                 return true;
             }
@@ -110,7 +117,7 @@ public class MainActivity extends BaseActivity {
                  */
                 if (newsTabLayout == null) {
                     newsTabLayout = NewsTabLayout.getInstance();
-                    ft.add(R.id.container, newsTabLayout, newsTabLayout.getClass().getName());
+                    ft.add(R.id.container, newsTabLayout, NewsTabLayout.class.getName());
                 } else {
                     ft.show(newsTabLayout);
                 }
@@ -120,7 +127,7 @@ public class MainActivity extends BaseActivity {
                 toolbar.setTitle(R.string.title_other);
                 if (otherTabLayout == null) {
                     otherTabLayout = OtherTabLayout.getInstance();
-                    ft.add(R.id.container, otherTabLayout, otherTabLayout.getClass().getName());
+                    ft.add(R.id.container, otherTabLayout, OtherTabLayout.class.getName());
                 } else {
                     ft.show(otherTabLayout);
                 }
@@ -130,9 +137,19 @@ public class MainActivity extends BaseActivity {
                 toolbar.setTitle(R.string.title_photo);
                 if (photoTabLayout == null) {
                     photoTabLayout = PhotoTabLayout.getInstance();
-                    ft.add(R.id.container, photoTabLayout, photoTabLayout.getClass().getName());
+                    ft.add(R.id.container, photoTabLayout, PhotoTabLayout.class.getName());
                 } else {
                     ft.show(photoTabLayout);
+                }
+                break;
+
+            case FRAGMENT_VIDEO:
+                toolbar.setTitle(getString(R.string.title_video));
+                if (videoTabLayout == null) {
+                    videoTabLayout = VideoTabLayout.getInstance();
+                    ft.add(R.id.container, videoTabLayout, VideoTabLayout.class.getName());
+                } else {
+                    ft.show(videoTabLayout);
                 }
                 break;
         }
@@ -150,6 +167,9 @@ public class MainActivity extends BaseActivity {
         }
         if (photoTabLayout != null) {
             ft.hide(photoTabLayout);
+        }
+        if (videoTabLayout != null) {
+            ft.hide(videoTabLayout);
         }
     }
 
