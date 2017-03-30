@@ -1,28 +1,25 @@
-package com.meiji.toutiao.news.comment;
+package com.meiji.toutiao.video.content;
 
 import com.meiji.toutiao.bean.news.NewsCommentBean;
+import com.meiji.toutiao.news.comment.INewsComment;
 
 import java.util.List;
 
 /**
- * Created by Meiji on 2016/12/20.
+ * Created by Meiji on 2017/3/30.
  */
 
-public interface INewsComment {
+public interface IVideoContent {
 
-    interface View {
+    interface View extends INewsComment.View {
         void onRequestData();
 
         void onSetAdapter(List<NewsCommentBean.DataBean.CommentsBean> list);
 
-        void onShowRefreshing();
-
-        void onHideRefreshing();
-
         void onFail();
     }
 
-    interface Presenter {
+    interface Presenter extends INewsComment.Presenter {
 
         void doGetUrl(String group_id, String item_id);
 
@@ -35,7 +32,7 @@ public interface INewsComment {
         void onFail();
     }
 
-    interface Model {
+    interface Model extends INewsComment.Model {
         boolean requestData(String url);
 
         List<NewsCommentBean.DataBean.CommentsBean> getDataList();

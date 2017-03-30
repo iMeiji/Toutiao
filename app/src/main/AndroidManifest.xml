@@ -86,6 +86,14 @@
             android:label="@string/title_item_drag"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
+        <activity
+            android:name=".video.content.VideoContentActivity"
+            android:configChanges="orientation|screenSize|uiMode"
+            android:label="@string/title_video_content"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
     </application>
 
 </manifest>

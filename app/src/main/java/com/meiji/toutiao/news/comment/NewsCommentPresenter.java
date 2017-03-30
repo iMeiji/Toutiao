@@ -13,7 +13,7 @@ import java.util.List;
  * Created by Meiji on 2016/12/20.
  */
 
-class NewsCommentPresenter implements INewsComment.Presenter {
+public class NewsCommentPresenter implements INewsComment.Presenter {
 
     private static final String TAG = "NewsCommentPresenter";
     private INewsComment.View view;
@@ -35,7 +35,7 @@ class NewsCommentPresenter implements INewsComment.Presenter {
         }
     });
 
-    NewsCommentPresenter(INewsComment.View view) {
+    public NewsCommentPresenter(INewsComment.View view) {
         this.view = view;
         this.model = new NewsCommentModel();
     }

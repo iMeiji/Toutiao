@@ -18,7 +18,7 @@ import okhttp3.Response;
  * Created by Meiji on 2016/12/20.
  */
 
-class NewsCommentModel implements INewsComment.Model {
+public class NewsCommentModel implements INewsComment.Model {
 
     private static final String TAG = "NewsCommentModel";
     private Gson gson = new Gson();
@@ -27,7 +27,7 @@ class NewsCommentModel implements INewsComment.Model {
     private List<NewsCommentBean.DataBean.CommentsBean> commentsBeanList = new ArrayList<>();
     private List<NewsCommentBean.DataBean.CommentsBean.UserBean> userBeanList = new ArrayList<>();
 
-    NewsCommentModel() {
+    public NewsCommentModel() {
     }
 
     @Override

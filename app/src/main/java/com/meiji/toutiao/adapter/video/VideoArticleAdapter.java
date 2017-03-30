@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -72,9 +73,13 @@ public class VideoArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
                 //String image_url = bean.getImage_url();
-                String url = bean.getVideo_detail_info().getVideo_detail_info().getDetail_video_large_image().getUrl();
-                if (!TextUtils.isEmpty(url)) {
-                    Glide.with(context).load(url).crossFade().centerCrop().error(R.mipmap.error_image).into(viewHolder.iv_image_url);
+                try {
+                    String url = bean.getVideo_detail_info().getVideo_detail_info().getDetail_video_large_image().getUrl();
+                    if (!TextUtils.isEmpty(url)) {
+                        Glide.with(context).load(url).crossFade().centerCrop().error(R.mipmap.error_image).into(viewHolder.iv_image_url);
+                    }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                 }
 
                 String media_avatar_url = bean.getMedia_avatar_url();
@@ -84,18 +89,23 @@ public class VideoArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
 
             String title = bean.getTitle();
-            String video_duration_str = bean.getVideo_duration_str();
             String source = bean.getSource();
+            String video_duration_str = bean.getVideo_duration_str();
             String external_visit_count = bean.getExternal_visit_count() + "次观看";
             String tv_datetime = bean.getBehot_time() + "";
             if (!TextUtils.isEmpty(tv_datetime)) {
                 tv_datetime = TimeUtil.getTimeStampAgo(tv_datetime);
             }
-            viewHolder.tv_video_duration_str.setText(video_duration_str);
+            String tv_description = source + " - " + external_visit_count + " - " + tv_datetime;
             viewHolder.tv_title.setText(title);
-            viewHolder.tv_source.setText(source);
-            viewHolder.tv_external_visit_count.setText(external_visit_count);
-            viewHolder.tv_datetime.setText(tv_datetime);
+            viewHolder.tv_description.setText(tv_description);
+            viewHolder.tv_video_duration_str.setText(video_duration_str);
+            viewHolder.iv_menu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
     }
 
@@ -110,20 +120,18 @@ public class VideoArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         private CircleImageView iv_media_avatar_url;
         private TextView tv_video_duration_str;
         private TextView tv_title;
-        private TextView tv_source;
-        private TextView tv_external_visit_count;
-        private TextView tv_datetime;
+        private TextView tv_description;
+        private ImageButton iv_menu;
         private IOnItemClickListener onItemClickListener;
 
         private VideoArticleViewHolder(View view, IOnItemClickListener onItemClickListener) {
             super(view);
             this.iv_image_url = (ImageView) view.findViewById(R.id.iv_image_url);
+            this.iv_menu = (ImageButton) view.findViewById(R.id.iv_menu);
             this.tv_video_duration_str = (TextView) view.findViewById(R.id.tv_video_duration_str);
             this.iv_media_avatar_url = (CircleImageView) view.findViewById(R.id.iv_media_avatar_url);
             this.tv_title = (TextView) view.findViewById(R.id.tv_title);
-            this.tv_source = (TextView) view.findViewById(R.id.tv_source);
-            this.tv_external_visit_count = (TextView) view.findViewById(R.id.tv_external_visit_count);
-            this.tv_datetime = (TextView) view.findViewById(R.id.tv_datetime);
+            this.tv_description = (TextView) view.findViewById(R.id.tv_description);
             this.onItemClickListener = onItemClickListener;
             view.setOnClickListener(this);
         }

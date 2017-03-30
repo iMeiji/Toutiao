@@ -72,5 +72,6 @@
     <string name="copyright">版权声明</string>
     <string name="copyright_content">本App所使用的所有API均由 今日头条 提供, 本人采取非正常手段获取. 获取与共享之行为或有侵犯 今日头条 权益的嫌疑.若被告知需停止共享与使用, 本人会及时删除此页面与整个项目.</string>
     <string name="version">版本</string>
+    <string name="title_video_content">视频播放</string>
 
 </resources>

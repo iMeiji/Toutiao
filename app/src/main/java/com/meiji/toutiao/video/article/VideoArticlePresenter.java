@@ -5,6 +5,7 @@ import android.os.Message;
 
 import com.meiji.toutiao.api.VideoApi;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
+import com.meiji.toutiao.video.content.VideoContentActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,8 +84,9 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
 
     @Override
     public void doOnClickItem(int position) {
-//        NewsArticleBean.DataBean bean = dataList.get(position);
-//        NewsContentActivity.startActivity(bean);
+        VideoArticleBean.DataBean bean = dataList.get(position);
+        String url = bean.getVideo_detail_info().getVideo_detail_info().getDetail_video_large_image().getUrl();
+        VideoContentActivity.startActivity(bean, url);
 //        // 打印下点击的标题和链接
 //        Log.d(TAG, "doOnClickItem: " + "点击的标题和链接---" + bean.getTitle() + "  " + bean.getDisplay_url());
     }
