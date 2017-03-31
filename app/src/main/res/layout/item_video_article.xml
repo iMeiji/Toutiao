@@ -71,8 +71,10 @@
 
                         <TextView
                             android:id="@+id/tv_title"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_toLeftOf="@+id/iv_menu"
+                            android:layout_toStartOf="@+id/iv_menu"
                             android:ellipsize="end"
                             android:maxLines="2"
                             android:text="实拍钓友钓上300公斤巨型鲶鱼"

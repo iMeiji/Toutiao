@@ -17,6 +17,8 @@ public interface IVideoContent {
         void onSetAdapter(List<NewsCommentBean.DataBean.CommentsBean> list);
 
         void onFail();
+
+        void onSetVideoPlay(String url);
     }
 
     interface Presenter extends INewsComment.Presenter {
@@ -30,11 +32,19 @@ public interface IVideoContent {
         void doRefresh();
 
         void onFail();
+
+        void doRequestVideoData(String videoid);
+
+        void doSetVideoPlay();
     }
 
     interface Model extends INewsComment.Model {
         boolean requestData(String url);
 
         List<NewsCommentBean.DataBean.CommentsBean> getDataList();
+
+        boolean requestVideoData(String videoid);
+
+        String getVideoUrl();
     }
 }

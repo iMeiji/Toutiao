@@ -14,7 +14,7 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.meiji.toutiao"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.1"
@@ -60,4 +60,5 @@ dependencies {
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'de.psdev.licensesdialog:licensesdialog:1.8.2'
+    compile 'fm.jiecao:jiecaovideoplayer:5.5.2'
 }

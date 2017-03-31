@@ -2,6 +2,7 @@ package com.meiji.toutiao.adapter.video;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsCommentBean;
+import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.view.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,15 +29,18 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_NORMAL = 1;
     private static final int TYPE_FOOTER = 2;
-    private List<NewsCommentBean.DataBean.CommentsBean> list = new ArrayList<>();
+    private List<NewsCommentBean.DataBean.CommentsBean> commentsBeanList = new ArrayList<>();
+    private VideoArticleBean.DataBean articleBean;
     private Context context;
     private IOnItemClickListener onItemClickListener;
     private View rv_header;
 
-    public VideoContentAdapter(List<NewsCommentBean.DataBean.CommentsBean> list, Context context, View rv_header) {
-        this.list = list;
+    public VideoContentAdapter(List<NewsCommentBean.DataBean.CommentsBean> commentsList,
+                               Context context,
+                               VideoArticleBean.DataBean articleBean) {
+        this.commentsBeanList = commentsList;
         this.context = context;
-        this.rv_header = rv_header;
+        this.articleBean = articleBean;
     }
 
     public void setOnItemClickListener(IOnItemClickListener onItemClickListener) {
@@ -46,7 +52,7 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (position == 0) {
             return TYPE_HEADER;
         }
-//        if (position == list.size()) {
+//        if (position == commentsBeanList.size()) {
 //            return TYPE_FOOTER;
 //        }
         return TYPE_NORMAL;
@@ -55,7 +61,9 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_HEADER) {
-            return new SimpleViewHolder(rv_header);
+//            return new SimpleViewHolder(rv_header);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_video_content_header, parent, false);
+            return new VideoDescHeader(view);
         }
         if (viewType == TYPE_NORMAL) {
             View view = LayoutInflater.from(context).inflate(R.layout.item_news_comment, parent, false);
@@ -72,7 +80,8 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof NewsCommentsViewHolder) {
             NewsCommentsViewHolder commentHolder = (NewsCommentsViewHolder) holder;
-            NewsCommentBean.DataBean.CommentsBean commentsBean = list.get(position);
+            NewsCommentBean.DataBean.CommentsBean commentsBean = commentsBeanList.get(position);
+
             String iv_avatar = commentsBean.getUser().getAvatar_url();
             String tv_username = commentsBean.getUser().getName();
             String tv_text = commentsBean.getText();
@@ -85,15 +94,33 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             commentHolder.tv_text.setText(tv_text);
             commentHolder.tv_likes.setText(tv_likes + "赞");
         }
+
+        if (holder instanceof VideoDescHeader) {
+            VideoDescHeader videoDescHeader = (VideoDescHeader) holder;
+
+            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
+
+                String media_avatar_url = articleBean.getMedia_avatar_url();
+                if (!TextUtils.isEmpty(media_avatar_url)) {
+                    Glide.with(context).load(media_avatar_url).crossFade().centerCrop().error(R.mipmap.error_image).into(videoDescHeader.iv_media_avatar_url);
+                }
+            }
+
+            videoDescHeader.tv_title.setText(articleBean.getTitle());
+            videoDescHeader.tv_tv_video_duration_str.setText("时长 " + articleBean.getVideo_duration_str() + " | " + articleBean.getComments_count() + "评论");
+            videoDescHeader.tv_abstract.setText(articleBean.getAbstractX());
+            videoDescHeader.tv_source.setText(articleBean.getSource());
+
+        }
     }
 
     @Override
     public int getItemCount() {
-//        if (list.size() > 0) {
+//        if (commentsBeanList.size() > 0) {
 //            int count = 1;
-//            count = list.size() + 1;
+//            count = commentsBeanList.size() + 1;
 //        }
-        return list != null ? list.size() : 0;
+        return commentsBeanList != null ? commentsBeanList.size() : 0;
     }
 
     private class NewsCommentsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -132,6 +159,24 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         public SimpleViewHolder(View itemView) {
             super(itemView);
+        }
+    }
+
+    private class VideoDescHeader extends RecyclerView.ViewHolder {
+
+        private TextView tv_title;
+        private TextView tv_tv_video_duration_str;
+        private TextView tv_abstract;
+        private TextView tv_source;
+        private CircleImageView iv_media_avatar_url;
+
+        public VideoDescHeader(View itemView) {
+            super(itemView);
+            this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
+            this.tv_tv_video_duration_str = (TextView) itemView.findViewById(R.id.tv_tv_video_duration_str);
+            this.tv_abstract = (TextView) itemView.findViewById(R.id.tv_abstract);
+            this.tv_source = (TextView) itemView.findViewById(R.id.tv_source);
+            this.iv_media_avatar_url = (CircleImageView) itemView.findViewById(R.id.iv_media_avatar_url);
         }
     }
 }

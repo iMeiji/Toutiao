@@ -8,13 +8,13 @@
 
     <android.support.v4.widget.Space
         android:layout_width="match_parent"
-        android:layout_height="225dp"/>
+        android:layout_height="192dp"/>
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="24dp"
+        android:paddingBottom="8dp"
         android:paddingEnd="16dp"
         android:paddingStart="16dp"
         android:paddingTop="24dp"
@@ -25,7 +25,10 @@
         android:id="@+id/tv_tv_video_duration_str"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
         android:text="时长 3:35"/>
 
     <TextView
@@ -42,8 +45,6 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_gravity="end"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         tools:visibility="visible">
@@ -52,7 +53,6 @@
             android:id="@+id/tv_source"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:gravity="center_vertical"
             android:textStyle="bold"
             tools:text="龙猫公社"/>
