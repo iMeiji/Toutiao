@@ -20,3 +20,7 @@
 -dontwarn okio.**
 -dontwarn com.google.gson.stream**
 -ignorewarnings
+
+-keepclassmembers class android.support.design.internal.BottomNavigationMenuView {
+    boolean mShiftingMode;
+}

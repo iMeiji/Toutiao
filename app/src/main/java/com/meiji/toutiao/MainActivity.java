@@ -26,6 +26,7 @@ import com.meiji.toutiao.search.SearchView;
 import com.meiji.toutiao.settings.SettingsActivity;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.video.VideoTabLayout;
+import com.meiji.toutiao.view.BottomNavigationViewHelper;
 
 public class MainActivity extends BaseActivity {
 
@@ -79,6 +80,7 @@ public class MainActivity extends BaseActivity {
     private void initView() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         bottom_navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationViewHelper.disableShiftMode(bottom_navigation);
         setSupportActionBar(toolbar);
         bottom_navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

@@ -1,12 +1,15 @@
 package com.meiji.toutiao.adapter.video;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -69,7 +72,7 @@ public class VideoArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof VideoArticleViewHolder) {
 
             VideoArticleViewHolder viewHolder = (VideoArticleViewHolder) holder;
-            VideoArticleBean.DataBean bean = list.get(position);
+            final VideoArticleBean.DataBean bean = list.get(position);
 
             if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
                 //String image_url = bean.getImage_url();
@@ -97,13 +100,40 @@ public class VideoArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 tv_datetime = TimeUtil.getTimeStampAgo(tv_datetime);
             }
             String tv_description = source + " - " + external_visit_count + " - " + tv_datetime;
+
             viewHolder.tv_title.setText(title);
             viewHolder.tv_description.setText(tv_description);
             viewHolder.tv_video_duration_str.setText(video_duration_str);
             viewHolder.iv_menu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    PopupMenu popupMenu = new PopupMenu(context, v);
+                    popupMenu.inflate(R.menu.menu_video);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            String shareTitle = bean.getTitle();
+                            String shareUrl = bean.getDisplay_url();
+                            switch (item.getItemId()) {
+                                case R.id.action_follow_media:
+                                    break;
 
+                                case R.id.action_share:
+                                    Intent shareIntent = new Intent()
+                                            .setAction(Intent.ACTION_SEND)
+                                            .setType("text/plain")
+                                            .putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + shareUrl);
+                                    context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_to)));
+                                    break;
+
+                                case R.id.action_open_in_browser:
+                                    context.startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(shareUrl)));
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
                 }
             });
         }
@@ -121,13 +151,13 @@ public class VideoArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         private TextView tv_video_duration_str;
         private TextView tv_title;
         private TextView tv_description;
-        private ImageButton iv_menu;
+        private ImageView iv_menu;
         private IOnItemClickListener onItemClickListener;
 
         private VideoArticleViewHolder(View view, IOnItemClickListener onItemClickListener) {
             super(view);
             this.iv_image_url = (ImageView) view.findViewById(R.id.iv_image_url);
-            this.iv_menu = (ImageButton) view.findViewById(R.id.iv_menu);
+            this.iv_menu = (ImageView) view.findViewById(R.id.iv_menu);
             this.tv_video_duration_str = (TextView) view.findViewById(R.id.tv_video_duration_str);
             this.iv_media_avatar_url = (CircleImageView) view.findViewById(R.id.iv_media_avatar_url);
             this.tv_title = (TextView) view.findViewById(R.id.tv_title);

@@ -2,7 +2,6 @@ package com.meiji.toutiao.search;
 
 import android.app.SearchManager;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -54,12 +53,6 @@ public class SearchView extends BaseActivity implements SwipeRefreshLayout.OnRef
         refresh_layout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
         refresh_layout.setColorSchemeResources(R.color.colorPrimary);
-        // 设置手指在屏幕上下拉多少距离开始刷新
-        refresh_layout.setDistanceToTriggerSync(300);
-        // 设置下拉刷新按钮的背景颜色
-        refresh_layout.setProgressBackgroundColorSchemeColor(Color.WHITE);
-        // 设置下拉刷新按钮的大小
-        refresh_layout.setSize(SwipeRefreshLayout.DEFAULT);
         refresh_layout.setOnRefreshListener(this);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);

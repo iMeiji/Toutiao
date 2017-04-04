@@ -1,6 +1,5 @@
 package com.meiji.toutiao.photo.article;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -70,12 +69,6 @@ public class PhotoArticleView extends BasePageFragment implements IPhotoArticle.
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
         refresh_layout.setColorSchemeResources(R.color.colorPrimary);
-        // 设置手指在屏幕上下拉多少距离开始刷新
-        refresh_layout.setDistanceToTriggerSync(300);
-        // 设置下拉刷新按钮的背景颜色
-        refresh_layout.setProgressBackgroundColorSchemeColor(Color.WHITE);
-        // 设置下拉刷新按钮的大小
-        refresh_layout.setSize(SwipeRefreshLayout.DEFAULT);
         refresh_layout.setOnRefreshListener(this);
     }
 

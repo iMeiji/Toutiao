@@ -60,34 +60,20 @@
                     android:src="@mipmap/error_image"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:orientation="vertical"
                     android:paddingLeft="8dp">
 
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/tv_title"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_toLeftOf="@+id/iv_menu"
-                            android:layout_toStartOf="@+id/iv_menu"
-                            android:ellipsize="end"
-                            android:maxLines="2"
-                            android:text="实拍钓友钓上300公斤巨型鲶鱼"
-                            android:textStyle="bold"/>
-
-                        <ImageButton
-                            android:id="@+id/iv_menu"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_gravity="center"
-                            android:background="@drawable/ic_dots_vertical_gray_24dp"/>
-                    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="实拍钓友钓上300公斤巨型鲶鱼"
+                        android:textStyle="bold"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -102,29 +88,21 @@
                             android:maxLines="2"
                             android:text="龙猫公社 - 108197次观看 - 1小时前"/>
 
-                        <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text=""/>-->
-
-                        <!--<TextView-->
-                        <!--android:id="@+id/tv_external_visit_count"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text=""/>-->
-
-                        <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text=""/>-->
-
-                        <!--<TextView-->
-                        <!--android:id="@+id/tv_datetime"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text=""/>-->
                     </LinearLayout>
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/iv_menu"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="top"
+                        android:background="@drawable/ic_dots_vertical_gray_24dp"/>
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
