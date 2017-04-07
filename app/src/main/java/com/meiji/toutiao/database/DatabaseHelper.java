@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.meiji.toutiao.InitApp;
+import com.meiji.toutiao.database.table.MediaChannelTable;
 import com.meiji.toutiao.database.table.NewsChannelTable;
 
 /**
@@ -47,6 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(NewsChannelTable.CREATE_TABLE);
+        db.execSQL(MediaChannelTable.CREATE_TABLE);
     }
 
     @Override
