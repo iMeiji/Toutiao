@@ -25,4 +25,10 @@
         android:icon="@drawable/ic_youtube_white_24dp"
         android:title="@string/title_video"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_media"
+        android:enabled="true"
+        android:icon="@drawable/ic_library_books_white_24dp"
+        android:title="@string/title_media"
+        app:showAsAction="ifRoom"/>
 </menu>

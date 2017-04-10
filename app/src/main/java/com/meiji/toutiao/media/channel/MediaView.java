@@ -1,6 +1,5 @@
-package com.meiji.toutiao.media;
+package com.meiji.toutiao.media.channel;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.adapter.media.MediaChannelAdapter;
+import com.meiji.toutiao.bean.media.MediaChannelBean;
+import com.meiji.toutiao.database.dao.MediaChannelDao;
+
+import java.util.List;
 
 /**
  * Created by Meiji on 2016/12/24.
@@ -22,6 +26,7 @@ public class MediaView extends Fragment implements SwipeRefreshLayout.OnRefreshL
     private static MediaView instance = null;
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
+    private MediaChannelAdapter adapter;
 
     public static MediaView getInstance() {
         if (instance == null) {
@@ -33,15 +38,19 @@ public class MediaView extends Fragment implements SwipeRefreshLayout.OnRefreshL
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_media, container, false);
+        View view = inflater.inflate(R.layout.fragment_base_main, container, false);
         initView(view);
         initData();
         return view;
     }
 
     private void initData() {
-        // 获得头条号 ID
-
+        if (adapter == null) {
+            MediaChannelDao dao = new MediaChannelDao();
+            List<MediaChannelBean> list = dao.queryAll();
+            adapter = new MediaChannelAdapter(list, getActivity());
+            recycler_view.setAdapter(adapter);
+        }
     }
 
     private void initView(View view) {
@@ -51,18 +60,19 @@ public class MediaView extends Fragment implements SwipeRefreshLayout.OnRefreshL
 
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
-        refresh_layout.setColorSchemeResources(R.color.colorPrimary);
-        // 设置手指在屏幕上下拉多少距离开始刷新
-        refresh_layout.setDistanceToTriggerSync(300);
-        // 设置下拉刷新按钮的背景颜色
-        refresh_layout.setProgressBackgroundColorSchemeColor(Color.WHITE);
-        // 设置下拉刷新按钮的大小
-        refresh_layout.setSize(SwipeRefreshLayout.DEFAULT);
         refresh_layout.setOnRefreshListener(this);
     }
 
     @Override
     public void onRefresh() {
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (instance != null) {
+            instance = null;
+        }
     }
 }

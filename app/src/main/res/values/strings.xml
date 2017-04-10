@@ -27,6 +27,7 @@
     <string name="title_other">其他</string>
     <string name="title_photo">图片</string>
     <string name="title_video">视频</string>
+    <string name="title_video_content">视频播放</string>
     <string name="title_settings">设置</string>
     <string name="title_news_content">新闻内容</string>
     <string name="title_joke_comment">段子评论</string>
@@ -36,6 +37,7 @@
     <string name="title_item_drag">拖拽排序</string>
     <string name="title_comment">评论</string>
     <string name="title_about">关于</string>
+    <string name="title_media">头条号</string>
 
     <!-- Bottom Sheet List -->
     <string name="copy_comment">复制评论</string>
@@ -72,6 +74,13 @@
     <string name="copyright">版权声明</string>
     <string name="copyright_content">本App所使用的所有API均由 今日头条 提供, 本人采取非正常手段获取. 获取与共享之行为或有侵犯 今日头条 权益的嫌疑.若被告知需停止共享与使用, 本人会及时删除此页面与整个项目.</string>
     <string name="version">版本</string>
-    <string name="title_video_content">视频播放</string>
+
+
+    <!-- Add Activity -->
+    <string name="has_been_added">已近添加过了</string>
+    <string name="add_success">添加成功</string>
+    <string name="add_fail">添加失败</string>
+    <string name="formal_incorrect">格式不正确</string>
+    <string name="incorrect_link">链接不正确</string>
 
 </resources>

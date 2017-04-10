@@ -35,23 +35,23 @@ public class NewsChannelDao {
 
     public boolean add(String channelId, String channelName, int isEnable, int position) {
         ContentValues values = new ContentValues();
-        values.put(NewsChannelTable.CHANNEL_ID, channelId);
-        values.put(NewsChannelTable.CHANNEL_NAME, channelName);
-        values.put(NewsChannelTable.CHANNEL_ISENABLE, isEnable);
-        values.put(NewsChannelTable.CHANNEL_POSITION, position);
+        values.put(NewsChannelTable.ID, channelId);
+        values.put(NewsChannelTable.NAME, channelName);
+        values.put(NewsChannelTable.IS_ENABLE, isEnable);
+        values.put(NewsChannelTable.POSITION, position);
         long result = db.insert(NewsChannelTable.TABLENAME, null, values);
         return result != -1;
     }
 
     public List<NewsChannelBean> query(int isEnable) {
-        Cursor cursor = db.query(NewsChannelTable.TABLENAME, null, NewsChannelTable.CHANNEL_ISENABLE + "=?", new String[]{isEnable + ""}, null, null, null);
+        Cursor cursor = db.query(NewsChannelTable.TABLENAME, null, NewsChannelTable.IS_ENABLE + "=?", new String[]{isEnable + ""}, null, null, null);
         List<NewsChannelBean> list = new ArrayList<>();
         while (cursor.moveToNext()) {
             NewsChannelBean bean = new NewsChannelBean();
-            bean.setChannelId(cursor.getString(NewsChannelTable.ID_CHANNELID));
-            bean.setChannelName(cursor.getString(NewsChannelTable.ID_CHANNELNAME));
-            bean.setIsEnable(cursor.getInt(NewsChannelTable.ID_CHANNELISENABLE));
-            bean.setPosition(cursor.getInt(NewsChannelTable.ID_CHANNELPOSITION));
+            bean.setChannelId(cursor.getString(NewsChannelTable.ID_ID));
+            bean.setChannelName(cursor.getString(NewsChannelTable.ID_NAME));
+            bean.setIsEnable(cursor.getInt(NewsChannelTable.ID_ISENABLE));
+            bean.setPosition(cursor.getInt(NewsChannelTable.ID_POSITION));
             list.add(bean);
         }
         cursor.close();
@@ -63,10 +63,10 @@ public class NewsChannelDao {
         List<NewsChannelBean> list = new ArrayList<>();
         while (cursor.moveToNext()) {
             NewsChannelBean bean = new NewsChannelBean();
-            bean.setChannelId(cursor.getString(NewsChannelTable.ID_CHANNELID));
-            bean.setChannelName(cursor.getString(NewsChannelTable.ID_CHANNELNAME));
-            bean.setIsEnable(cursor.getInt(NewsChannelTable.ID_CHANNELISENABLE));
-            bean.setPosition(cursor.getInt(NewsChannelTable.ID_CHANNELPOSITION));
+            bean.setChannelId(cursor.getString(NewsChannelTable.ID_ID));
+            bean.setChannelName(cursor.getString(NewsChannelTable.ID_NAME));
+            bean.setIsEnable(cursor.getInt(NewsChannelTable.ID_ISENABLE));
+            bean.setPosition(cursor.getInt(NewsChannelTable.ID_POSITION));
             list.add(bean);
         }
         cursor.close();

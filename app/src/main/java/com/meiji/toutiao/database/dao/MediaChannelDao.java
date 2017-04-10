@@ -23,11 +23,14 @@ public class MediaChannelDao {
         this.db = DatabaseHelper.getDatabase();
     }
 
-    public boolean add(String mediaId, String mediaName, String mediaType) {
+    public boolean add(String id, String name, String avatar, String type, String followCount, String descText) {
         ContentValues values = new ContentValues();
-        values.put(MediaChannelTable.MEDIA_ID, mediaId);
-        values.put(MediaChannelTable.MEDIA_NAME, mediaName);
-        values.put(MediaChannelTable.MEDIA_TYPE, mediaType);
+        values.put(MediaChannelTable.ID, id);
+        values.put(MediaChannelTable.NAME, name);
+        values.put(MediaChannelTable.AVATAR, avatar);
+        values.put(MediaChannelTable.TYPE, type);
+        values.put(MediaChannelTable.FOLLOWCOUNT, followCount);
+        values.put(MediaChannelTable.DESCTEXT, descText);
         long result = db.insert(MediaChannelTable.TABLENAME, null, values);
         return result != -1;
     }
@@ -37,9 +40,29 @@ public class MediaChannelDao {
         List<MediaChannelBean> list = new ArrayList<>();
         while (cursor.moveToNext()) {
             MediaChannelBean bean = new MediaChannelBean();
-            bean.setMediaId(cursor.getString(MediaChannelTable.ID_MEDIAID));
-            bean.setMediaName(cursor.getString(MediaChannelTable.ID_MEDIANAME));
-            bean.setMediaType(cursor.getString(MediaChannelTable.ID_MEDIATYPE));
+            bean.setId(cursor.getString(MediaChannelTable.ID_ID));
+            bean.setName(cursor.getString(MediaChannelTable.ID_NAME));
+            bean.setAvatar(cursor.getString(MediaChannelTable.ID_AVATAR));
+            bean.setType(cursor.getString(MediaChannelTable.ID_TYPE));
+            bean.setFollowCount(cursor.getString(MediaChannelTable.ID_FOLLOWCOUNT));
+            bean.setDescText(cursor.getString(MediaChannelTable.ID_DESCTEXT));
+            list.add(bean);
+        }
+        cursor.close();
+        return list;
+    }
+
+    public List<MediaChannelBean> queryId(String id) {
+        Cursor cursor = db.query(MediaChannelTable.TABLENAME, null, MediaChannelTable.ID + "=?", new String[]{id}, null, null, null);
+        List<MediaChannelBean> list = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            MediaChannelBean bean = new MediaChannelBean();
+            bean.setId(cursor.getString(MediaChannelTable.ID_ID));
+            bean.setName(cursor.getString(MediaChannelTable.ID_NAME));
+            bean.setAvatar(cursor.getString(MediaChannelTable.ID_AVATAR));
+            bean.setType(cursor.getString(MediaChannelTable.ID_TYPE));
+            bean.setFollowCount(cursor.getString(MediaChannelTable.ID_FOLLOWCOUNT));
+            bean.setDescText(cursor.getString(MediaChannelTable.ID_DESCTEXT));
             list.add(bean);
         }
         cursor.close();

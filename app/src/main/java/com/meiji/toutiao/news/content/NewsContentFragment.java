@@ -26,6 +26,7 @@ import android.widget.ProgressBar;
 
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
+import com.meiji.toutiao.media.MediaAddActivity;
 import com.meiji.toutiao.utils.SettingsUtil;
 
 /**
@@ -38,6 +39,7 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
     // 新闻链接 标题 头条号 文章号 媒体名
     private String shareUrl;
     private String shareTitle;
+    private String mediaUrl;
 
     private Toolbar toolbar;
     private WebView webView;
@@ -73,6 +75,7 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
         shareUrl = dataBean.getDisplay_url();
         shareTitle = dataBean.getTitle();
         actionBar.setTitle(dataBean.getMedia_name());
+        mediaUrl = dataBean.getMedia_url();
         presenter.doRequestData(dataBean);
     }
 
@@ -189,6 +192,7 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
                 break;
 
             case R.id.action_follow_media:
+                MediaAddActivity.startActivity(mediaUrl, "news");
                 break;
 
             case R.id.action_share:

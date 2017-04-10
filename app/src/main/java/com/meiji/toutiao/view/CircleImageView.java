@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -27,7 +28,7 @@ import com.meiji.toutiao.R;
  * Created by Meiji on 2016/12/21.
  */
 
-public class CircleImageView extends ImageView {
+public class CircleImageView extends AppCompatImageView {
 
     private static final ImageView.ScaleType SCALE_TYPE = ImageView.ScaleType.CENTER_CROP;
 

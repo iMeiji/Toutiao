@@ -6,31 +6,58 @@ package com.meiji.toutiao.bean.media;
 
 public class MediaChannelBean {
 
-    private String mediaId;
-    private String mediaName;
-    private String mediaType;
+    private String id;
+    private String name;
+    private String avatar;
+    private String type;
+    private String followCount;
+    private String descText;
 
-    public String getMediaId() {
-        return mediaId;
+    public String getId() {
+        return id;
     }
 
-    public void setMediaId(String mediaId) {
-        this.mediaId = mediaId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getMediaName() {
-        return mediaName;
+    public String getName() {
+        return name;
     }
 
-    public void setMediaName(String mediaName) {
-        this.mediaName = mediaName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getMediaType() {
-        return mediaType;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setMediaType(String mediaType) {
-        this.mediaType = mediaType;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getFollowCount() {
+        return followCount;
+    }
+
+    public void setFollowCount(String followCount) {
+        this.followCount = followCount;
+    }
+
+    public String getDescText() {
+        return descText;
+    }
+
+    public void setDescText(String descText) {
+        this.descText = descText;
     }
 }

@@ -94,6 +94,8 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <activity android:name=".media.MediaAddActivity"/>
+
     </application>
 
 </manifest>

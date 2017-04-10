@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.meiji.toutiao.media.channel.MediaView;
 import com.meiji.toutiao.news.NewsTabLayout;
 import com.meiji.toutiao.other.OtherTabLayout;
 import com.meiji.toutiao.photo.PhotoTabLayout;
@@ -34,13 +35,15 @@ public class MainActivity extends BaseActivity {
     private static final String POSITION = "position";
     private static final int FRAGMENT_NEWS = 0;
     private static final int FRAGMENT_OTHER = 1;
-    private static final int FRAGMENT_MEDIA = 2;
+    private static final int FRAGMENT_PHOTO = 2;
     private static final int FRAGMENT_VIDEO = 3;
+    private static final int FRAGMENT_MEDIA = 4;
     private final int REQUEST_CODE = 1;
     private NewsTabLayout newsTabLayout;
     private OtherTabLayout otherTabLayout;
     private PhotoTabLayout photoTabLayout;
     private VideoTabLayout videoTabLayout;
+    private MediaView mediaView;
     private Toolbar toolbar;
     private BottomNavigationView bottom_navigation;
     private long exitTime;
@@ -58,6 +61,7 @@ public class MainActivity extends BaseActivity {
             otherTabLayout = (OtherTabLayout) getSupportFragmentManager().findFragmentByTag(OtherTabLayout.class.getName());
             photoTabLayout = (PhotoTabLayout) getSupportFragmentManager().findFragmentByTag(PhotoTabLayout.class.getName());
             videoTabLayout = (VideoTabLayout) getSupportFragmentManager().findFragmentByTag(VideoTabLayout.class.getName());
+            mediaView = (MediaView) getSupportFragmentManager().findFragmentByTag(MediaView.class.getName());
             // 屏幕恢复时取出位置
             showFragment(savedInstanceState.getInt(POSITION));
         } else {
@@ -93,10 +97,13 @@ public class MainActivity extends BaseActivity {
                         showFragment(FRAGMENT_OTHER);
                         break;
                     case R.id.action_photo:
-                        showFragment(FRAGMENT_MEDIA);
+                        showFragment(FRAGMENT_PHOTO);
                         break;
                     case R.id.action_video:
                         showFragment(FRAGMENT_VIDEO);
+                        break;
+                    case R.id.action_media:
+                        showFragment(FRAGMENT_MEDIA);
                         break;
                 }
                 return true;
@@ -135,7 +142,7 @@ public class MainActivity extends BaseActivity {
                 }
                 break;
 
-            case FRAGMENT_MEDIA:
+            case FRAGMENT_PHOTO:
                 toolbar.setTitle(R.string.title_photo);
                 if (photoTabLayout == null) {
                     photoTabLayout = PhotoTabLayout.getInstance();
@@ -154,6 +161,15 @@ public class MainActivity extends BaseActivity {
                     ft.show(videoTabLayout);
                 }
                 break;
+
+            case FRAGMENT_MEDIA:
+                toolbar.setTitle(getString(R.string.title_media));
+                if (mediaView == null) {
+                    mediaView = MediaView.getInstance();
+                    ft.add(R.id.container, mediaView, MediaView.class.getName());
+                } else {
+                    ft.show(mediaView);
+                }
         }
 
         ft.commit();
@@ -172,6 +188,9 @@ public class MainActivity extends BaseActivity {
         }
         if (videoTabLayout != null) {
             ft.hide(videoTabLayout);
+        }
+        if (mediaView != null) {
+            ft.hide(mediaView);
         }
     }
 
