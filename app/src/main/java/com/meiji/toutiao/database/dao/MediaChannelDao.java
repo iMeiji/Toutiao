@@ -68,4 +68,9 @@ public class MediaChannelDao {
         cursor.close();
         return list;
     }
+
+    public boolean delete(String mediaId) {
+        int id = db.delete(MediaChannelTable.TABLENAME, MediaChannelTable.ID + "=?", new String[]{mediaId});
+        return id != -1;
+    }
 }

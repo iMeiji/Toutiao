@@ -33,8 +33,8 @@ import java.util.regex.Pattern;
 public class MediaAddActivity extends BaseActivity {
 
     private static final String TAG = "MediaAddActivity";
-    private static String URLEXTRA = "url";
-    private static String TYPEEXTRA = "type";
+    private static final String URLEXTRA = "url";
+    private static final String TYPEEXTRA = "type";
     private ProgressDialog dialog;
     private MediaChannelDao dao = new MediaChannelDao();
     private Handler handler = new Handler(new Handler.Callback() {

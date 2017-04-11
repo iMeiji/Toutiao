@@ -14,6 +14,8 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.media.MediaChannelAdapter;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
 import com.meiji.toutiao.database.dao.MediaChannelDao;
+import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.media.article.MediaArticleActivity;
 
 import java.util.List;
 
@@ -21,16 +23,17 @@ import java.util.List;
  * Created by Meiji on 2016/12/24.
  */
 
-public class MediaView extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class MediaChannelView extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private static MediaView instance = null;
+    private static MediaChannelView instance = null;
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
     private MediaChannelAdapter adapter;
+    private MediaChannelDao dao = new MediaChannelDao();
 
-    public static MediaView getInstance() {
+    public static MediaChannelView getInstance() {
         if (instance == null) {
-            instance = new MediaView();
+            instance = new MediaChannelView();
         }
         return instance;
     }
@@ -40,17 +43,25 @@ public class MediaView extends Fragment implements SwipeRefreshLayout.OnRefreshL
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_base_main, container, false);
         initView(view);
-        initData();
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
+    }
+
     private void initData() {
-        if (adapter == null) {
-            MediaChannelDao dao = new MediaChannelDao();
-            List<MediaChannelBean> list = dao.queryAll();
-            adapter = new MediaChannelAdapter(list, getActivity());
-            recycler_view.setAdapter(adapter);
-        }
+        final List<MediaChannelBean> list = dao.queryAll();
+        adapter = new MediaChannelAdapter(list, getActivity());
+        recycler_view.setAdapter(adapter);
+        adapter.setOnItemClickListener(new IOnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                MediaArticleActivity.startActivity(list.get(position));
+            }
+        });
     }
 
     private void initView(View view) {
@@ -65,7 +76,9 @@ public class MediaView extends Fragment implements SwipeRefreshLayout.OnRefreshL
 
     @Override
     public void onRefresh() {
-
+        refresh_layout.setRefreshing(true);
+        initData();
+        refresh_layout.setRefreshing(false);
     }
 
     @Override

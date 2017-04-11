@@ -46,7 +46,7 @@ public class SettingsActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.share) {
+        if (itemId == R.id.action_share) {
             Intent shareIntent = new Intent()
                     .setAction(Intent.ACTION_SEND)
                     .setType("text/plain")

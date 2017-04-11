@@ -21,6 +21,7 @@
     <string name="action_share">分享至</string>
     <string name="action_open_in_browser">在浏览器中打开</string>
     <string name="action_copy_content">复制内容</string>
+    <string name="action_unfollow_media">取消关注</string>
 
     <!-- Title -->
     <string name="title_news">新闻</string>
@@ -61,6 +62,10 @@
     <string name="permission_denied">没有权限</string>
     <string name="double_click_exit">再按一次退出程序</string>
     <string name="search_hint">搜素...</string>
+    <string name="anymore_unfollow">不再关注</string>
+    <string name="action_unfollow_media_success">取消关注成功</string>
+    <string name="undo">撤回</string>
+    <string name="cancel">取消</string>
 
     <!-- About -->
     <string name="changelog">更新日志</string>

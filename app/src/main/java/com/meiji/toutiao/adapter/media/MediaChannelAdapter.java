@@ -32,6 +32,10 @@ public class MediaChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.context = context;
     }
 
+    public void setOnItemClickListener(IOnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_media_channel, parent, false);

@@ -10,6 +10,7 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -84,8 +85,10 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
-        if (activity.getSupportActionBar() != null) {
-            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = activity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(R.string.title_comment);
         }
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +96,6 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
                 recycler_view.smoothScrollToPosition(0);
             }
         });
-        toolbar.setTitle(R.string.title_comment);
     }
 
     @Override

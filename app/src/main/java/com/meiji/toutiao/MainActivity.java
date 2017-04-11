@@ -19,7 +19,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.meiji.toutiao.media.channel.MediaView;
+import com.meiji.toutiao.media.channel.MediaChannelView;
 import com.meiji.toutiao.news.NewsTabLayout;
 import com.meiji.toutiao.other.OtherTabLayout;
 import com.meiji.toutiao.photo.PhotoTabLayout;
@@ -43,7 +43,7 @@ public class MainActivity extends BaseActivity {
     private OtherTabLayout otherTabLayout;
     private PhotoTabLayout photoTabLayout;
     private VideoTabLayout videoTabLayout;
-    private MediaView mediaView;
+    private MediaChannelView mediaChannelView;
     private Toolbar toolbar;
     private BottomNavigationView bottom_navigation;
     private long exitTime;
@@ -61,7 +61,7 @@ public class MainActivity extends BaseActivity {
             otherTabLayout = (OtherTabLayout) getSupportFragmentManager().findFragmentByTag(OtherTabLayout.class.getName());
             photoTabLayout = (PhotoTabLayout) getSupportFragmentManager().findFragmentByTag(PhotoTabLayout.class.getName());
             videoTabLayout = (VideoTabLayout) getSupportFragmentManager().findFragmentByTag(VideoTabLayout.class.getName());
-            mediaView = (MediaView) getSupportFragmentManager().findFragmentByTag(MediaView.class.getName());
+            mediaChannelView = (MediaChannelView) getSupportFragmentManager().findFragmentByTag(MediaChannelView.class.getName());
             // 屏幕恢复时取出位置
             showFragment(savedInstanceState.getInt(POSITION));
         } else {
@@ -164,11 +164,11 @@ public class MainActivity extends BaseActivity {
 
             case FRAGMENT_MEDIA:
                 toolbar.setTitle(getString(R.string.title_media));
-                if (mediaView == null) {
-                    mediaView = MediaView.getInstance();
-                    ft.add(R.id.container, mediaView, MediaView.class.getName());
+                if (mediaChannelView == null) {
+                    mediaChannelView = MediaChannelView.getInstance();
+                    ft.add(R.id.container, mediaChannelView, MediaChannelView.class.getName());
                 } else {
-                    ft.show(mediaView);
+                    ft.show(mediaChannelView);
                 }
         }
 
@@ -189,8 +189,8 @@ public class MainActivity extends BaseActivity {
         if (videoTabLayout != null) {
             ft.hide(videoTabLayout);
         }
-        if (mediaView != null) {
-            ft.hide(mediaView);
+        if (mediaChannelView != null) {
+            ft.hide(mediaChannelView);
         }
     }
 

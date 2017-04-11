@@ -18,7 +18,7 @@ import okhttp3.Response;
  * Created by Meiji on 2016/12/15.
  */
 
-class NewsArticleModel implements INewsArticle.Model {
+public class NewsArticleModel implements INewsArticle.Model {
 
     private static final String TAG = "NewsArticleModel";
     private Gson gson = new Gson();

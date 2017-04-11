@@ -1,19 +1,19 @@
-package com.meiji.toutiao.news.article;
+package com.meiji.toutiao.media.article;
 
-import com.meiji.toutiao.bean.news.NewsArticleBean;
+import com.meiji.toutiao.bean.media.MediaArticleBean;
 
 import java.util.List;
 
 /**
- * Created by Meiji on 2016/12/15.
+ * Created by Meiji on 2017/4/11.
  */
 
-public interface INewsArticle {
+public interface IMediaArticle {
 
     interface View {
         void onRequestData();
 
-        void onSetAdapter(List<NewsArticleBean.DataBean> list);
+        void onSetAdapter(List<MediaArticleBean.DataBean> list);
 
         void onShowRefreshing();
 
@@ -23,7 +23,7 @@ public interface INewsArticle {
     }
 
     interface Presenter {
-        void doGetUrl(String parameter);
+        void doGetUrl(String mediaId);
 
         void doRequestData(String url);
 
@@ -39,7 +39,7 @@ public interface INewsArticle {
     interface Model {
         boolean requestData(String url);
 
-        List<NewsArticleBean.DataBean> getDataList();
+        List<MediaArticleBean.DataBean> getDataList();
 
         int getMaxBehotTime();
     }
