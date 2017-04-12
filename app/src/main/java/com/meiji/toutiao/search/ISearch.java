@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Meiji on 2017/2/7.
  */
 
-public class ISearch {
+interface ISearch {
 
     interface View {
         void onRequestData();

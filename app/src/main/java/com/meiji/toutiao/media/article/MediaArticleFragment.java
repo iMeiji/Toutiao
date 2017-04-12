@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,13 +20,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.media.MediaArticleAdapter;
 import com.meiji.toutiao.bean.media.MediaArticleBean;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
 import com.meiji.toutiao.database.dao.MediaChannelDao;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.view.CircleImageView;
 
 import java.util.List;
 
@@ -37,6 +41,7 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
 
     private static final String TAG = "MediaArticleFragment";
     private Toolbar toolbar;
+    private CollapsingToolbarLayout collapsing_toolbar;
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
     private MediaArticleAdapter adapter;
@@ -44,6 +49,9 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
     private MediaChannelBean bean;
     private boolean canLoading = false;
     private boolean canDelete = false;
+    private CircleImageView cv_avatar;
+    private TextView tv_title;
+    private TextView tv_descText;
 
     public static MediaArticleFragment newInstance(Parcelable parcelable) {
         Bundle args = new Bundle();
@@ -89,7 +97,7 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
         ActionBar actionBar = activity.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(bean.getName());
+//            actionBar.setTitle(bean.getName());
         }
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +105,17 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
                 recycler_view.smoothScrollToPosition(0);
             }
         });
+
+        collapsing_toolbar = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
+        collapsing_toolbar.setTitle(bean.getName());
+        collapsing_toolbar.setExpandedTitleColor(getResources().getColor(R.color.NULL));
+
+        cv_avatar = (CircleImageView) view.findViewById(R.id.cv_avatar);
+        Glide.with(getActivity()).load(bean.getAvatar()).crossFade().centerCrop().into(cv_avatar);
+        tv_title = (TextView) view.findViewById(R.id.tv_title);
+        tv_title.setText(bean.getName());
+        tv_descText = (TextView) view.findViewById(R.id.tv_descText);
+        tv_descText.setText(bean.getDescText());
     }
 
     @Override
@@ -221,5 +240,10 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
             MediaChannelDao dao = new MediaChannelDao();
             dao.delete(bean.getId());
         }
+    }
+
+    @Override
+    public void onFinish() {
+        Snackbar.make(refresh_layout, R.string.no_more, Snackbar.LENGTH_SHORT).show();
     }
 }

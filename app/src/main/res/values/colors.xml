@@ -32,4 +32,5 @@
 
     <color name="gray">#9cffffff</color>
     <color name="dkgray">#8f8989</color>
+    <color name="NULL">#00FFFFFF</color>
 </resources>

@@ -20,6 +20,8 @@ public interface IMediaArticle {
         void onHideRefreshing();
 
         void onFail();
+
+        void onFinish();
     }
 
     interface Presenter {

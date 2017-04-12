@@ -63,10 +63,12 @@ class MediaArticlePresenter implements IMediaArticle.Presenter {
 
     @Override
     public void doSetAdapter() {
-        if (model.getDataList() != null) {
+        if (model.getDataList().size() != 0) {
             dataList.addAll(model.getDataList());
             view.onSetAdapter(dataList);
             view.onHideRefreshing();
+        } else if (model.getDataList() != null) {
+            view.onFinish();
         } else {
             onFail();
         }
