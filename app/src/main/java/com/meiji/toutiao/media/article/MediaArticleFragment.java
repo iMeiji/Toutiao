@@ -40,8 +40,6 @@ import java.util.List;
 public class MediaArticleFragment extends Fragment implements IMediaArticle.View, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "MediaArticleFragment";
-    private Toolbar toolbar;
-    private CollapsingToolbarLayout collapsing_toolbar;
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
     private MediaArticleAdapter adapter;
@@ -49,9 +47,6 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
     private MediaChannelBean bean;
     private boolean canLoading = false;
     private boolean canDelete = false;
-    private CircleImageView cv_avatar;
-    private TextView tv_title;
-    private TextView tv_descText;
 
     public static MediaArticleFragment newInstance(Parcelable parcelable) {
         Bundle args = new Bundle();
@@ -91,7 +86,7 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
         refresh_layout.setColorSchemeResources(R.color.colorPrimary);
         refresh_layout.setOnRefreshListener(this);
 
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
         ActionBar actionBar = activity.getSupportActionBar();
@@ -106,15 +101,17 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
             }
         });
 
-        collapsing_toolbar = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
+        // header view
+        CollapsingToolbarLayout collapsing_toolbar = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
         collapsing_toolbar.setTitle(bean.getName());
         collapsing_toolbar.setExpandedTitleColor(getResources().getColor(R.color.NULL));
 
-        cv_avatar = (CircleImageView) view.findViewById(R.id.cv_avatar);
+        CircleImageView cv_avatar = (CircleImageView) view.findViewById(R.id.cv_avatar);
         Glide.with(getActivity()).load(bean.getAvatar()).crossFade().centerCrop().into(cv_avatar);
-        tv_title = (TextView) view.findViewById(R.id.tv_title);
+
+        TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
         tv_title.setText(bean.getName());
-        tv_descText = (TextView) view.findViewById(R.id.tv_descText);
+        TextView tv_descText = (TextView) view.findViewById(R.id.tv_descText);
         tv_descText.setText(bean.getDescText());
     }
 
@@ -124,14 +121,14 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
     }
 
     @Override
-    public void onSetAdapter(List<MediaArticleBean.DataBean> list) {
+    public void onSetAdapter(final List<MediaArticleBean.DataBean> list) {
         if (adapter == null) {
             adapter = new MediaArticleAdapter(getActivity(), list);
             recycler_view.setAdapter(adapter);
             adapter.setOnItemClickListener(new IOnItemClickListener() {
                 @Override
                 public void onClick(View view, int position) {
-                    presenter.doOnClickItem(position);
+                    presenter.doOnClickItem(list.get(position), bean);
                 }
             });
         } else {

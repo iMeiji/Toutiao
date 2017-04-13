@@ -23,7 +23,13 @@ public class MediaChannelDao {
         this.db = DatabaseHelper.getDatabase();
     }
 
-    public boolean add(String id, String name, String avatar, String type, String followCount, String descText) {
+    public boolean add(String id,
+                       String name,
+                       String avatar,
+                       String type,
+                       String followCount,
+                       String descText,
+                       String url) {
         ContentValues values = new ContentValues();
         values.put(MediaChannelTable.ID, id);
         values.put(MediaChannelTable.NAME, name);
@@ -31,6 +37,7 @@ public class MediaChannelDao {
         values.put(MediaChannelTable.TYPE, type);
         values.put(MediaChannelTable.FOLLOWCOUNT, followCount);
         values.put(MediaChannelTable.DESCTEXT, descText);
+        values.put(MediaChannelTable.URL, url);
         long result = db.insert(MediaChannelTable.TABLENAME, null, values);
         return result != -1;
     }
@@ -46,6 +53,7 @@ public class MediaChannelDao {
             bean.setType(cursor.getString(MediaChannelTable.ID_TYPE));
             bean.setFollowCount(cursor.getString(MediaChannelTable.ID_FOLLOWCOUNT));
             bean.setDescText(cursor.getString(MediaChannelTable.ID_DESCTEXT));
+            bean.setUrl(cursor.getString(MediaChannelTable.ID_URL));
             list.add(bean);
         }
         cursor.close();
@@ -63,6 +71,7 @@ public class MediaChannelDao {
             bean.setType(cursor.getString(MediaChannelTable.ID_TYPE));
             bean.setFollowCount(cursor.getString(MediaChannelTable.ID_FOLLOWCOUNT));
             bean.setDescText(cursor.getString(MediaChannelTable.ID_DESCTEXT));
+            bean.setUrl(cursor.getString(MediaChannelTable.ID_URL));
             list.add(bean);
         }
         cursor.close();

@@ -5,6 +5,9 @@ import android.os.Message;
 
 import com.meiji.toutiao.api.MediaApi;
 import com.meiji.toutiao.bean.media.MediaArticleBean;
+import com.meiji.toutiao.bean.media.MediaChannelBean;
+import com.meiji.toutiao.bean.news.NewsArticleBean;
+import com.meiji.toutiao.news.content.NewsContentActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +90,21 @@ class MediaArticlePresenter implements IMediaArticle.Presenter {
     }
 
     @Override
-    public void doOnClickItem(int position) {
+    public void doOnClickItem(final MediaArticleBean.DataBean dataBeanan, final MediaChannelBean mediaChannelBean) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                model.getCommentRequestData(dataBeanan.getSource_url());
 
+                NewsArticleBean.DataBean bean = new NewsArticleBean.DataBean();
+                bean.setTitle(dataBeanan.getTitle());
+                bean.setDisplay_url(dataBeanan.getSource_url());
+                bean.setMedia_name(mediaChannelBean.getName());
+                bean.setMedia_url(mediaChannelBean.getUrl());
+                bean.setGroup_id(model.getGroupId());
+                bean.setItem_id(model.getItemId());
+                NewsContentActivity.startActivity(bean);
+            }
+        }).start();
     }
 }

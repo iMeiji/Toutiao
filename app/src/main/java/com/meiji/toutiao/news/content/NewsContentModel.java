@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.bean.news.NewsContentBean;
 import com.meiji.toutiao.utils.SettingsUtil;
@@ -38,7 +39,7 @@ class NewsContentModel implements INewsContent.Model {
             Request request = new Request.Builder()
                     .get()
                     .url(url)
-                    .addHeader("User-Agent", "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Mobile Safari/537.36")
+                    .addHeader("User-Agent", Constant.USER_AGENT_PHONE)
                     .build();
             Response response = InitApp.getOkHttpClient().newCall(request).execute();
             if (response.isSuccessful()) {

@@ -20,6 +20,7 @@ public class MediaChannelTable {
     public static final String TYPE = "type";
     public static final String FOLLOWCOUNT = "followCount";
     public static final String DESCTEXT = "descText";
+    public static final String URL = "url";
 
     /**
      * 字段ID 数据库操作建立字段对应关系 从0开始
@@ -30,6 +31,7 @@ public class MediaChannelTable {
     public static final int ID_TYPE = 3;
     public static final int ID_FOLLOWCOUNT = 4;
     public static final int ID_DESCTEXT = 5;
+    public static final int ID_URL = 6;
 
     /**
      * 创建表
@@ -40,5 +42,6 @@ public class MediaChannelTable {
             AVATAR + " text, " +
             TYPE + " text, " +
             FOLLOWCOUNT + " text, " +
-            DESCTEXT + " text) ";
+            DESCTEXT + " text, " +
+            URL + " text) ";
 }

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.meiji.toutiao.BaseActivity;
+import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
@@ -111,7 +112,7 @@ public class MediaAddActivity extends BaseActivity {
                         String descText;
                         Document doc = Jsoup
                                 .connect(mediaUrl)
-                                .userAgent("Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Mobile Safari/537.36")
+                                .userAgent(Constant.USER_AGENT_PHONE)
                                 .get();
 
                         Elements imgs = doc.getElementsByClass("avatar round");
@@ -122,7 +123,7 @@ public class MediaAddActivity extends BaseActivity {
                         descText = doc.getElementsByClass("mpl-head-desc").text().trim();
 
                         if (!TextUtils.isEmpty(avatar) && !TextUtils.isEmpty(name)) {
-                            boolean result = dao.add(id, name, avatar, mediaType, "", descText);
+                            boolean result = dao.add(id, name, avatar, mediaType, "", descText, mediaUrl);
                             if (result) {
                                 handler.obtainMessage(1).sendToTarget();
                             }

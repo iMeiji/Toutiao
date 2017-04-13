@@ -26,6 +26,7 @@ public class MediaChannelBean implements Parcelable {
     private String type;
     private String followCount;
     private String descText;
+    private String url;
 
     public MediaChannelBean() {
     }
@@ -37,6 +38,7 @@ public class MediaChannelBean implements Parcelable {
         type = in.readString();
         followCount = in.readString();
         descText = in.readString();
+        url = in.readString();
     }
 
     @Override
@@ -47,6 +49,7 @@ public class MediaChannelBean implements Parcelable {
         dest.writeString(type);
         dest.writeString(followCount);
         dest.writeString(descText);
+        dest.writeString(url);
     }
 
     @Override
@@ -100,5 +103,13 @@ public class MediaChannelBean implements Parcelable {
 
     public void setDescText(String descText) {
         this.descText = descText;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

@@ -1,6 +1,7 @@
 package com.meiji.toutiao.media.article;
 
 import com.meiji.toutiao.bean.media.MediaArticleBean;
+import com.meiji.toutiao.bean.media.MediaChannelBean;
 
 import java.util.List;
 
@@ -35,14 +36,20 @@ public interface IMediaArticle {
 
         void onFail();
 
-        void doOnClickItem(int position);
+        void doOnClickItem(MediaArticleBean.DataBean bean, MediaChannelBean mediaChannelBean);
     }
 
     interface Model {
+        long getItemId();
+
+        long getGroupId();
+
         boolean requestData(String url);
 
         List<MediaArticleBean.DataBean> getDataList();
 
         int getMaxBehotTime();
+
+        void getCommentRequestData(String articleUrl);
     }
 }

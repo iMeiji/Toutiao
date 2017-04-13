@@ -13,6 +13,7 @@ import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
+import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
 
@@ -47,7 +48,7 @@ class PhotoContentModel implements IPhotoContent.Model {
         try {
             Document doc = Jsoup
                     .connect(url)
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36")
+                    .userAgent(Constant.USER_AGENT_PC)
                     .get();
             // 取得所有的script tag
             Elements scripts = doc.getElementsByTag("script");

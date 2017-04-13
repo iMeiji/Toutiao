@@ -248,6 +248,10 @@ public class NewsArticleBean {
         private List<?> ad_click_track_url_list;
         private List<LargeImageListBean> large_image_list;
 
+        public DataBean() {
+
+        }
+
         protected DataBean(Parcel in) {
             media_name = in.readString();
             abstractX = in.readString();

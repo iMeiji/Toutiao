@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.bean.other.funny.FunnyContentBean;
 import com.meiji.toutiao.utils.SettingsUtil;
@@ -34,7 +35,7 @@ class FunnyContentModel implements IFunnyContent.Model {
         try {
             Document document = Jsoup
                     .connect(url)
-                    .userAgent("Mozilla/5.0 (Linux; Android 5.1.1; Nexus 6 Build/LYZ28E) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Mobile Safari/537.36")
+                    .userAgent(Constant.USER_AGENT_PHONE)
                     .get();
             Elements select = document.select("link[href~=^.*http.*://www.toutiao.com/(.*)$]");
             // http://www.toutiao.com/i6371213132714476034
