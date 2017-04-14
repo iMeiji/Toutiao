@@ -17,6 +17,7 @@ import com.meiji.toutiao.bean.news.NewsChannelBean;
 import com.meiji.toutiao.database.dao.NewsChannelDao;
 import com.meiji.toutiao.news.article.NewsArticleView;
 import com.meiji.toutiao.news.channel.NewsChannelActivity;
+import com.meiji.toutiao.news.joke.content.JokeContentView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,8 +91,13 @@ public class NewsTabLayout extends Fragment {
         }
         String[] categoryName = new String[tabList.size()];
         for (int i = 0; i < tabList.size(); i++) {
-            Fragment fragment = NewsArticleView.newInstance(tabList.get(i).getChannelId());
-            list.add(fragment);
+            if (!tabList.get(i).getChannelId().equals("essay_joke")) {
+                Fragment fragment = NewsArticleView.newInstance(tabList.get(i).getChannelId());
+                list.add(fragment);
+            } else {
+                Fragment jokeContentView = JokeContentView.newInstance(tabList.get(i).getChannelId());
+                list.add(jokeContentView);
+            }
             categoryName[i] = tabList.get(i).getChannelName();
         }
         adapter = new BasePagerAdapter(getChildFragmentManager(), list, categoryName);

@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.meiji.toutiao.media.channel.MediaChannelView;
 import com.meiji.toutiao.news.NewsTabLayout;
-import com.meiji.toutiao.other.OtherTabLayout;
 import com.meiji.toutiao.photo.PhotoTabLayout;
 import com.meiji.toutiao.search.SearchView;
 import com.meiji.toutiao.settings.SettingsActivity;
@@ -34,13 +33,11 @@ public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
     private static final String POSITION = "position";
     private static final int FRAGMENT_NEWS = 0;
-    private static final int FRAGMENT_OTHER = 1;
-    private static final int FRAGMENT_PHOTO = 2;
-    private static final int FRAGMENT_VIDEO = 3;
-    private static final int FRAGMENT_MEDIA = 4;
+    private static final int FRAGMENT_PHOTO = 1;
+    private static final int FRAGMENT_VIDEO = 2;
+    private static final int FRAGMENT_MEDIA = 3;
     private final int REQUEST_CODE = 1;
     private NewsTabLayout newsTabLayout;
-    private OtherTabLayout otherTabLayout;
     private PhotoTabLayout photoTabLayout;
     private VideoTabLayout videoTabLayout;
     private MediaChannelView mediaChannelView;
@@ -58,7 +55,6 @@ public class MainActivity extends BaseActivity {
 
         if (savedInstanceState != null) {
             newsTabLayout = (NewsTabLayout) getSupportFragmentManager().findFragmentByTag(NewsTabLayout.class.getName());
-            otherTabLayout = (OtherTabLayout) getSupportFragmentManager().findFragmentByTag(OtherTabLayout.class.getName());
             photoTabLayout = (PhotoTabLayout) getSupportFragmentManager().findFragmentByTag(PhotoTabLayout.class.getName());
             videoTabLayout = (VideoTabLayout) getSupportFragmentManager().findFragmentByTag(VideoTabLayout.class.getName());
             mediaChannelView = (MediaChannelView) getSupportFragmentManager().findFragmentByTag(MediaChannelView.class.getName());
@@ -93,9 +89,6 @@ public class MainActivity extends BaseActivity {
                     case R.id.action_news:
                         showFragment(FRAGMENT_NEWS);
                         break;
-                    case R.id.action_other:
-                        showFragment(FRAGMENT_OTHER);
-                        break;
                     case R.id.action_photo:
                         showFragment(FRAGMENT_PHOTO);
                         break;
@@ -129,16 +122,6 @@ public class MainActivity extends BaseActivity {
                     ft.add(R.id.container, newsTabLayout, NewsTabLayout.class.getName());
                 } else {
                     ft.show(newsTabLayout);
-                }
-                break;
-
-            case FRAGMENT_OTHER:
-                toolbar.setTitle(R.string.title_other);
-                if (otherTabLayout == null) {
-                    otherTabLayout = OtherTabLayout.getInstance();
-                    ft.add(R.id.container, otherTabLayout, OtherTabLayout.class.getName());
-                } else {
-                    ft.show(otherTabLayout);
                 }
                 break;
 
@@ -179,9 +162,6 @@ public class MainActivity extends BaseActivity {
         // 如果不为空，就先隐藏起来
         if (newsTabLayout != null) {
             ft.hide(newsTabLayout);
-        }
-        if (otherTabLayout != null) {
-            ft.hide(otherTabLayout);
         }
         if (photoTabLayout != null) {
             ft.hide(photoTabLayout);

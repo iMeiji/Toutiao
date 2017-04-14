@@ -7,12 +7,12 @@
         android:icon="@drawable/ic_newspaper_white_24dp"
         android:title="@string/title_news"
         app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/action_other"
-        android:enabled="true"
-        android:icon="@drawable/ic_function_white_24dp"
-        android:title="@string/title_other"
-        app:showAsAction="ifRoom"/>
+    <!--<item-->
+    <!--android:id="@+id/action_other"-->
+    <!--android:enabled="true"-->
+    <!--android:icon="@drawable/ic_function_white_24dp"-->
+    <!--android:title="@string/title_other"-->
+    <!--app:showAsAction="ifRoom"/>-->
     <item
         android:id="@+id/action_photo"
         android:enabled="true"

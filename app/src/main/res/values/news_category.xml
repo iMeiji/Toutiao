@@ -18,6 +18,8 @@
         <item>探索</item>
         <item>育儿</item>
         <item>故事</item>
+        <item>搞笑</item>
+        <item>段子</item>
     </string-array>
 
     <string-array name="news_id">
@@ -37,8 +39,9 @@
         <item>news_discovery</item>
         <item>news_baby</item>
         <item>news_story</item>
+        <item>funny</item>
+        <item>essay_joke</item>
     </string-array>
-
 
 
     <!--'推荐': '__all__',-->

@@ -1,4 +1,4 @@
-package com.meiji.toutiao.other.joke.comment;
+package com.meiji.toutiao.news.joke.comment;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -25,9 +25,9 @@ import android.widget.TextView;
 import com.meiji.toutiao.BaseActivity;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.adapter.other.joke.JokeCommentAdapter;
-import com.meiji.toutiao.bean.other.joke.JokeCommentBean;
-import com.meiji.toutiao.bean.other.joke.JokeContentBean;
+import com.meiji.toutiao.adapter.news.joke.JokeCommentAdapter;
+import com.meiji.toutiao.bean.news.joke.JokeCommentBean;
+import com.meiji.toutiao.bean.news.joke.JokeContentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 
 import java.util.List;
@@ -73,7 +73,7 @@ public class JokeCommentActivity extends BaseActivity {
         @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_other_joke_comment, container, false);
+            View view = inflater.inflate(R.layout.fragment_news_joke_comment, container, false);
             presenter = new JokeCommentPresenter(this);
             initView(view);
             initData();

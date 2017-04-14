@@ -1,6 +1,6 @@
-package com.meiji.toutiao.other.joke.content;
+package com.meiji.toutiao.news.joke.content;
 
-import com.meiji.toutiao.bean.other.joke.JokeContentBean;
+import com.meiji.toutiao.bean.news.joke.JokeContentBean;
 
 import java.util.List;
 

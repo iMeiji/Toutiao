@@ -1,11 +1,11 @@
-package com.meiji.toutiao.other.joke.content;
+package com.meiji.toutiao.news.joke.content;
 
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.meiji.toutiao.InitApp;
-import com.meiji.toutiao.bean.other.joke.JokeContentBean;
+import com.meiji.toutiao.bean.news.joke.JokeContentBean;
 
 import java.io.IOException;
 import java.util.ArrayList;

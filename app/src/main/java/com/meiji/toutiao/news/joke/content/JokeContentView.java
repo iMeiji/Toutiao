@@ -1,4 +1,4 @@
-package com.meiji.toutiao.other.joke.content;
+package com.meiji.toutiao.news.joke.content;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.adapter.other.joke.JokeContentAdapter;
-import com.meiji.toutiao.bean.other.joke.JokeContentBean;
+import com.meiji.toutiao.adapter.news.joke.JokeContentAdapter;
+import com.meiji.toutiao.bean.news.joke.JokeContentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.view.BasePageFragment;
 

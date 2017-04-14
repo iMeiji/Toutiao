@@ -38,7 +38,7 @@
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
-            android:name=".other.joke.comment.JokeCommentActivity"
+            android:name=".news.joke.comment.JokeCommentActivity"
             android:configChanges="orientation|screenSize|uiMode"
             android:label="@string/title_joke_comment"
             android:theme="@style/AppTheme.NoActionBar"/>

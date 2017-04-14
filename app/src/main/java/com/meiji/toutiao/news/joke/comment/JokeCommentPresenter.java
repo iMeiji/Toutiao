@@ -1,25 +1,26 @@
-package com.meiji.toutiao.other.funny.article;
+package com.meiji.toutiao.news.joke.comment;
 
 import android.os.Handler;
 import android.os.Message;
 
-import com.meiji.toutiao.api.FunnyApi;
-import com.meiji.toutiao.bean.other.funny.FunnyArticleBean;
-import com.meiji.toutiao.other.funny.content.FunnyContentActivity;
+import com.meiji.toutiao.api.JokeApi;
+import com.meiji.toutiao.bean.news.joke.JokeCommentBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Meiji on 2017/1/2.
+ * Created by Meiji on 2017/1/1.
  */
 
-class FunnyArticlePresenter implements IFunnyArticle.Presenter {
+class JokeCommentPresenter implements IJokeComment.Presenter {
 
-    private IFunnyArticle.View view;
-    private IFunnyArticle.Model model;
-    private String categoryId;
-    private List<FunnyArticleBean.DataBean> dataList = new ArrayList<>();
+    private IJokeComment.View view;
+    private IJokeComment.Model model;
+    private String jokeId;
+    private String jokeCommentCount;
+    private int offset = 0;
+    private List<JokeCommentBean.DataBean.RecentCommentsBean> commentsList = new ArrayList<>();
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -33,15 +34,17 @@ class FunnyArticlePresenter implements IFunnyArticle.Presenter {
         }
     });
 
-    FunnyArticlePresenter(IFunnyArticle.View view) {
+    JokeCommentPresenter(IJokeComment.View view) {
         this.view = view;
-        this.model = new FunnyArticleModel();
+        this.model = new JokeCommentModel();
     }
 
-    public void doGetUrl(String parameter) {
+    @Override
+    public void doGetUrl(String jokeId, String jokeCommentCount) {
         view.onShowRefreshing();
-        this.categoryId = parameter;
-        String url = FunnyApi.getFunnyArticleUrl();
+        this.jokeId = jokeId;
+        this.jokeCommentCount = jokeCommentCount;
+        String url = JokeApi.getJokeCommentUrl(jokeId, 20, 0);
         doRequestData(url);
     }
 
@@ -64,28 +67,29 @@ class FunnyArticlePresenter implements IFunnyArticle.Presenter {
 
     @Override
     public void doSetAdapter() {
-        if (dataList.size() != 0) {
-            dataList.clear();
+        if (commentsList.size() != 0) {
+            commentsList.clear();
         }
-        dataList.addAll(model.getDataList());
-        view.onSetAdapter(model.getDataList());
+        commentsList.addAll(model.getDataList());
+        view.onSetAdapter(commentsList);
         view.onHideRefreshing();
     }
 
     @Override
     public void doRefresh() {
-        String url = FunnyApi.getFunnyArticleUrl();
-        doRequestData(url);
+        if (offset < Integer.parseInt(jokeCommentCount)) {
+            offset += 20;
+            String url = JokeApi.getJokeCommentUrl(jokeId, 20, offset);
+            doRequestData(url);
+        } else {
+            view.onFinish();
+            view.onHideRefreshing();
+        }
     }
 
     @Override
     public void onFail() {
         view.onHideRefreshing();
         view.onFail();
-    }
-
-    @Override
-    public void doOnClickItem(int position) {
-        FunnyContentActivity.startActivity(dataList.get(position));
     }
 }

@@ -1,4 +1,4 @@
-package com.meiji.toutiao.bean.other.joke;
+package com.meiji.toutiao.bean.news.joke;
 
 import java.util.List;
 

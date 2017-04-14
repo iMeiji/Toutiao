@@ -1,26 +1,26 @@
-package com.meiji.toutiao.other.joke.comment;
+package com.meiji.toutiao.news.joke.content;
 
 import android.os.Handler;
 import android.os.Message;
 
 import com.meiji.toutiao.api.JokeApi;
-import com.meiji.toutiao.bean.other.joke.JokeCommentBean;
+import com.meiji.toutiao.bean.news.joke.JokeContentBean;
+import com.meiji.toutiao.news.joke.comment.JokeCommentActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Meiji on 2017/1/1.
+ * Created by Meiji on 2016/12/28.
  */
 
-class JokeCommentPresenter implements IJokeComment.Presenter {
+class JokeContentPresenter implements IJokeContent.Presenter {
 
-    private IJokeComment.View view;
-    private IJokeComment.Model model;
-    private String jokeId;
-    private String jokeCommentCount;
+    private IJokeContent.View view;
+    private IJokeContent.Model model;
+    private String category;
     private int offset = 0;
-    private List<JokeCommentBean.DataBean.RecentCommentsBean> commentsList = new ArrayList<>();
+    private List<JokeContentBean.DataBean.GroupBean> groupList = new ArrayList<>();
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -34,17 +34,16 @@ class JokeCommentPresenter implements IJokeComment.Presenter {
         }
     });
 
-    JokeCommentPresenter(IJokeComment.View view) {
+    public JokeContentPresenter(IJokeContent.View view) {
         this.view = view;
-        this.model = new JokeCommentModel();
+        model = new JokeContentModel();
     }
 
     @Override
-    public void doGetUrl(String jokeId, String jokeCommentCount) {
+    public void doGetUrl(String parameter) {
         view.onShowRefreshing();
-        this.jokeId = jokeId;
-        this.jokeCommentCount = jokeCommentCount;
-        String url = JokeApi.getJokeCommentUrl(jokeId, 20, 0);
+        this.category = parameter;
+        String url = JokeApi.getJokeContentUrl();
         doRequestData(url);
     }
 
@@ -67,29 +66,29 @@ class JokeCommentPresenter implements IJokeComment.Presenter {
 
     @Override
     public void doSetAdapter() {
-        if (commentsList.size() != 0) {
-            commentsList.clear();
+        if (groupList.size() != 0) {
+            groupList.clear();
         }
-        commentsList.addAll(model.getDataList());
-        view.onSetAdapter(commentsList);
+        groupList.addAll(model.getDataList());
+        view.onSetAdapter(groupList);
         view.onHideRefreshing();
     }
 
     @Override
     public void doRefresh() {
-        if (offset < Integer.parseInt(jokeCommentCount)) {
-            offset += 20;
-            String url = JokeApi.getJokeCommentUrl(jokeId, 20, offset);
-            doRequestData(url);
-        } else {
-            view.onFinish();
-            view.onHideRefreshing();
-        }
+        //offset += 20;
+        String url = JokeApi.getJokeContentUrl();
+        doRequestData(url);
     }
 
     @Override
     public void onFail() {
         view.onHideRefreshing();
         view.onFail();
+    }
+
+    @Override
+    public void doOnClickItem(int position) {
+        JokeCommentActivity.startActivity(groupList.get(position));
     }
 }
