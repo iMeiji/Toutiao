@@ -64,12 +64,6 @@
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
-            android:name=".other.funny.content.FunnyContentActivity"
-            android:configChanges="orientation|screenSize|uiMode"
-            android:label="@string/title_funny_content"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity
             android:name=".photo.content.PhotoContentActivity"
             android:configChanges="orientation|screenSize|uiMode"
             android:label="@string/title_photo_content"

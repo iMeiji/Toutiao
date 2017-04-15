@@ -29,6 +29,7 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.photo.PhotoContentAdapter;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
+import com.meiji.toutiao.media.MediaAddActivity;
 import com.meiji.toutiao.photo.comment.PhotoCommentFragment;
 import com.meiji.toutiao.view.ViewPagerFixed;
 
@@ -50,6 +51,7 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
     private String group_id;
     private String item_id;
     private PhotoContentAdapter adapter;
+    private String mediaUrl;
 
     public static PhotoContentFragment newInstance(Parcelable dataBean) {
         PhotoContentFragment instance = new PhotoContentFragment();
@@ -74,11 +76,12 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
         Bundle bundle = getArguments();
         PhotoArticleBean.DataBean dataBean = bundle.getParcelable(TAG);
         presenter.doRequestData(dataBean);
-        shareUrl = "http://toutiao.com" + dataBean.getSource_url();
+        shareUrl = dataBean.getShare_url();
         shareTitle = dataBean.getTitle();
         actionBar.setTitle(dataBean.getMedia_name());
         group_id = dataBean.getGroup_id() + "";
         item_id = dataBean.getItem_id() + "";
+        mediaUrl = dataBean.getMedia_url();
     }
 
     private void initView(View view) {
@@ -184,6 +187,7 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
                 break;
 
             case R.id.action_follow_media:
+                MediaAddActivity.startActivity(mediaUrl, "photo");
                 break;
 
             case R.id.action_open_in_browser:

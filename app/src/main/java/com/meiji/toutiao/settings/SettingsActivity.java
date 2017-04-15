@@ -12,9 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.bumptech.glide.Glide;
 import com.meiji.toutiao.BaseActivity;
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.utils.CacheDataManager;
 import com.meiji.toutiao.utils.SettingsUtil;
 
 public class SettingsActivity extends BaseActivity {
@@ -83,17 +83,24 @@ public class SettingsActivity extends BaseActivity {
                 }
             });
 
-            findPreference("clear_image_cache").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            try {
+                findPreference("clear_cache").setSummary(CacheDataManager.getTotalCacheSize(getActivity()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            findPreference("clear_cache").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Glide.get(getActivity()).clearDiskCache();
-                        }
-                    }).start();
-                    Glide.get(getActivity()).clearMemory();
-                    Snackbar.make(getView(), R.string.clear_image_cache_successfully, Snackbar.LENGTH_SHORT).show();
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Glide.get(getActivity()).clearDiskCache();
+//                        }
+//                    }).start();
+//                    Glide.get(getActivity()).clearMemory();
+                    CacheDataManager.clearAllCache(getActivity());
+                    Snackbar.make(getView(), R.string.clear_cache_successfully, Snackbar.LENGTH_SHORT).show();
                     return false;
                 }
             });

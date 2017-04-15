@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.media.MediaChannelAdapter;
@@ -30,6 +31,7 @@ public class MediaChannelView extends Fragment implements SwipeRefreshLayout.OnR
     private SwipeRefreshLayout refresh_layout;
     private MediaChannelAdapter adapter;
     private MediaChannelDao dao = new MediaChannelDao();
+    private TextView tv_desc;
 
     public static MediaChannelView getInstance() {
         if (instance == null) {
@@ -41,7 +43,7 @@ public class MediaChannelView extends Fragment implements SwipeRefreshLayout.OnR
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_base_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_media, container, false);
         initView(view);
         return view;
     }
@@ -62,6 +64,11 @@ public class MediaChannelView extends Fragment implements SwipeRefreshLayout.OnR
                 MediaArticleActivity.startActivity(list.get(position));
             }
         });
+        if (list.size() == 0) {
+            tv_desc.setVisibility(View.VISIBLE);
+        } else {
+            tv_desc.setVisibility(View.GONE);
+        }
     }
 
     private void initView(View view) {
@@ -72,6 +79,7 @@ public class MediaChannelView extends Fragment implements SwipeRefreshLayout.OnR
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
         refresh_layout.setOnRefreshListener(this);
+        tv_desc = (TextView) view.findViewById(R.id.tv_desc);
     }
 
     @Override

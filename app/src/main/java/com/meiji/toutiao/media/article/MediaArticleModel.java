@@ -111,7 +111,6 @@ class MediaArticleModel implements IMediaArticle.Model {
                             int start = var.indexOf("\"");
                             int end = var.lastIndexOf("\"");
                             groupId = Long.parseLong(var.substring(start + 1, end));
-                            System.out.println(groupId);
                             Log.d(TAG, "getCommentRequestData: groupId" + groupId);
                         }
                         if (var.contains("item_id")) {

@@ -130,7 +130,6 @@ public class MediaAddActivity extends BaseActivity {
                         } else {
                             handler.obtainMessage(0).sendToTarget();
                         }
-
                     } catch (IOException e) {
                         e.printStackTrace();
                         handler.obtainMessage(0).sendToTarget();

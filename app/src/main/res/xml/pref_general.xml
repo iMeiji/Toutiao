@@ -22,8 +22,8 @@
         android:title="@string/other_settings">
 
         <Preference
-            android:key="clear_image_cache"
-            android:title="@string/clear_image_cache"/>
+            android:key="clear_cache"
+            android:title="@string/clear_cache"/>
     </PreferenceCategory>
 
     <PreferenceCategory

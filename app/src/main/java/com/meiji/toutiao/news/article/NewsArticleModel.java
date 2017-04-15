@@ -62,7 +62,10 @@ public class NewsArticleModel implements INewsArticle.Model {
                 // 移除头条问答 和 广告
                 for (int i = 0; i < dataList.size(); i++) {
                     NewsArticleBean.DataBean dataBean = dataList.get(i);
-                    if (dataBean.getSource().contains("头条问答") || dataBean.getTag().contains("ad") || dataBean.isHas_video()) {
+                    if (dataBean.getSource().contains("头条问答")
+                            || dataBean.getTag().contains("ad")
+                            || dataBean.isHas_video()
+                            || dataBean.getSource().contains("话题")) {
                         dataList.remove(i);
                     }
                 }

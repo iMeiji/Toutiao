@@ -30,7 +30,7 @@ public class PhotoContentActivity extends BaseActivity {
         PhotoContentFragment photoContentFragment =
                 PhotoContentFragment.newInstance(getIntent().getParcelableExtra(TAG));
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, photoContentFragment, photoContentFragment.getClass().getName())
+                .replace(R.id.container, photoContentFragment)
                 .commit();
     }
 }

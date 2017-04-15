@@ -40,7 +40,6 @@ class PhotoContentModel implements IPhotoContent.Model {
     private Gson gson = new Gson();
     private PhotoGalleryBean bean;
 
-
     @Override
     public boolean getRequestData(String url) {
         boolean flag = false;

@@ -7,8 +7,8 @@
     <string name="switch_no_photo_mode_summary">不加载图片, 节省流量</string>
     <string name="switch_night_mode">夜间模式</string>
     <string name="switch_night_mode_summary">切换夜间皮肤</string>
-    <string name="clear_image_cache">清除图片缓存</string>
-    <string name="clear_image_cache_successfully">清理成功</string>
+    <string name="clear_cache">清除缓存</string>
+    <string name="clear_cache_successfully">清理成功</string>
     <string name="other_settings">其他设置</string>
     <string name="about_settings">关于</string>
 
@@ -87,5 +87,6 @@
     <string name="add_fail">添加失败</string>
     <string name="formal_incorrect">格式不正确</string>
     <string name="incorrect_link">链接不正确</string>
+    <string name="media_hint_desc">头条号订阅为空</string>
 
 </resources>
