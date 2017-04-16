@@ -28,6 +28,11 @@ public class NewsArticleModel implements INewsArticle.Model {
     @Override
     public boolean requestData(String url) {
         Log.d(TAG, "requestData: " + url);
+
+        if (newsList.size() != 0) {
+            newsList.clear();
+        }
+
         boolean flag = false;
         Request request = new Request.Builder()
                 .url(url)
@@ -57,7 +62,6 @@ public class NewsArticleModel implements INewsArticle.Model {
                 // 移除最后一项 数据有重复
                 if (dataList.size() != 0) {
                     dataList.remove(dataList.size() - 1);
-//                    dataList.remove(0);
                 }
                 // 移除头条问答 和 广告
                 for (int i = 0; i < dataList.size(); i++) {

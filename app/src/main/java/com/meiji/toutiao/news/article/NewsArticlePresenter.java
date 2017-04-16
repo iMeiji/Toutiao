@@ -44,7 +44,7 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
     public void doGetUrl(String parameter) {
         view.onShowRefreshing();
         this.category = parameter;
-        String url = NewsApi.getNewsArticle_PCUrl(category, model.getMaxBehotTime() + "");
+        String url = NewsApi.getNewsArticle_PCUrl(category);
         doRequestData(url);
     }
 
@@ -75,7 +75,7 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
 
     @Override
     public void doRefresh() {
-        String url = NewsApi.getNewsArticle_PCUrl(category, model.getMaxBehotTime() + "");
+        String url = NewsApi.getNewsArticle_PCUrl(category);
         doRequestData(url);
     }
 

@@ -2,14 +2,13 @@ package com.meiji.toutiao.news.channel;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-
-import com.meiji.toutiao.BaseActivity;
+import android.support.v7.app.AppCompatActivity;
 
 /**
  * Created by Meiji on 2017/3/10.
  */
 
-public class NewsChannelActivity extends BaseActivity {
+public class NewsChannelActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

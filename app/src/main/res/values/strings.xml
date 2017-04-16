@@ -47,7 +47,7 @@
     <!-- Item Drag -->
     <string name="tip_drag">长按编辑,拖拽排序</string>
     <string name="my_cahnnel">我的频道</string>
-    <string name="other_channel">其他频道</string>
+    <string name="other_channel">隐藏频道</string>
     <string name="edit">编辑</string>
     <string name="finish">完成</string>
 

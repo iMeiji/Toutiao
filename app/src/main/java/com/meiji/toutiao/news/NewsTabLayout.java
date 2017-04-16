@@ -87,7 +87,7 @@ public class NewsTabLayout extends Fragment {
         List<NewsChannelBean> tabList = dao.query(1);
         if (tabList.size() == 0) {
             dao.addInitData();
-            tabList = dao.queryAll();
+            tabList = dao.query(1);
         }
         String[] categoryName = new String[tabList.size()];
         for (int i = 0; i < tabList.size(); i++) {
