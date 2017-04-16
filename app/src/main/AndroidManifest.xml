@@ -26,9 +26,6 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".SearchActivity"/>
         </activity>
 
         <activity
@@ -44,7 +41,7 @@
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
-            android:name=".search.SearchView"
+            android:name=".search.SearchActivity"
             android:configChanges="orientation|screenSize|uiMode"
             android:label="@string/title_search"
             android:launchMode="singleTop"
@@ -58,7 +55,7 @@
         </activity>
 
         <activity
-            android:name="com.meiji.toutiao.settings.SettingsActivity"
+            android:name="com.meiji.toutiao.SettingsActivity"
             android:configChanges="orientation|screenSize|uiMode"
             android:label="@string/title_settings"
             android:theme="@style/AppTheme.NoActionBar"/>

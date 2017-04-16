@@ -18,7 +18,7 @@ public class SettingsUtil {
     }
 
     public boolean getIsNoPhotoMode() {
-        return settings.getBoolean("switch_no_photo_mode", false);
+        return settings.getBoolean("switch_noPhotoMode", false);
     }
 
     public int getColor() {
@@ -31,11 +31,11 @@ public class SettingsUtil {
     }
 
     public boolean getIsNightMode() {
-        return settings.getBoolean("switch_night_mode", false);
+        return settings.getBoolean("switch_nightMode", false);
     }
 
     public void setIsNightMode(boolean flag) {
-        settings.edit().putBoolean("switch_night_mode", flag).apply();
+        settings.edit().putBoolean("switch_nightMode", flag).apply();
     }
 
     private static final class SettingsUtilInstance {

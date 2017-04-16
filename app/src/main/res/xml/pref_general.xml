@@ -6,13 +6,13 @@
 
         <SwitchPreference
             android:defaultValue="false"
-            android:key="switch_no_photo_mode"
+            android:key="switch_noPhotoMode"
             android:summary="@string/switch_no_photo_mode_summary"
             android:title="@string/switch_photo_mode"/>
 
         <SwitchPreference
             android:defaultValue="false"
-            android:key="switch_night_mode"
+            android:key="switch_nightMode"
             android:summary="@string/switch_night_mode_summary"
             android:title="@string/switch_night_mode"/>
 
@@ -22,7 +22,7 @@
         android:title="@string/other_settings">
 
         <Preference
-            android:key="clear_cache"
+            android:key="clearCache"
             android:title="@string/clear_cache"/>
     </PreferenceCategory>
 
@@ -30,8 +30,28 @@
         android:title="@string/about_settings">
 
         <Preference
-            android:key="about"
-            android:title="@string/about_settings"/>
+            android:key="version"
+            android:title="@string/version"/>
+
+        <Preference
+            android:key="changelog"
+            android:summary="@string/changelog_url"
+            android:title="@string/changelog"/>
+
+        <Preference
+            android:key="licenses"
+            android:summary="@string/about_libraries_summary"
+            android:title="@string/about_libraries_label"/>
+
+        <Preference
+            android:key="sourceCode"
+            android:summary="@string/source_code_url"
+            android:title="@string/source_code"/>
+
+        <Preference
+            android:key="copyRight"
+            android:summary="@string/copyright_summary"
+            android:title="@string/copyright"/>
 
     </PreferenceCategory>
 

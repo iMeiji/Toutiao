@@ -85,7 +85,12 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
     @Override
     public void doOnClickItem(int position) {
         VideoArticleBean.DataBean bean = dataList.get(position);
-        String url = bean.getVideo_detail_info().getVideo_detail_info().getDetail_video_large_image().getUrl();
+        String url = null;
+        try {
+            url = bean.getVideo_detail_info().getVideo_detail_info().getDetail_video_large_image().getUrl();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
         VideoContentActivity.startActivity(bean, url);
 //        // 打印下点击的标题和链接
 //        Log.d(TAG, "doOnClickItem: " + "点击的标题和链接---" + bean.getTitle() + "  " + bean.getDisplay_url());

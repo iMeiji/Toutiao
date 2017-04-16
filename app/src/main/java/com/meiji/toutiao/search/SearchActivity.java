@@ -19,9 +19,9 @@ import com.meiji.toutiao.interfaces.IOnItemClickListener;
 
 import java.util.List;
 
-public class SearchView extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, ISearch.View {
+public class SearchActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, ISearch.View {
 
-    private static final String TAG = "SearchView";
+    private static final String TAG = "SearchActivity";
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
     private Toolbar toolbar;

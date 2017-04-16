@@ -12,6 +12,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,8 +23,7 @@ import android.widget.Toast;
 import com.meiji.toutiao.media.channel.MediaChannelView;
 import com.meiji.toutiao.news.NewsTabLayout;
 import com.meiji.toutiao.photo.PhotoTabLayout;
-import com.meiji.toutiao.search.SearchView;
-import com.meiji.toutiao.settings.SettingsActivity;
+import com.meiji.toutiao.search.SearchActivity;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.video.VideoTabLayout;
 import com.meiji.toutiao.view.BottomNavigationViewHelper;
@@ -46,6 +46,7 @@ public class MainActivity extends BaseActivity {
     private long exitTime;
     private int position;
     private FrameLayout content_main;
+    private MenuItem searchItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,9 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         bottom_navigation.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        if (searchItem != null) {
+            searchItem.collapseActionView();
+        }
     }
 
     private void initView() {
@@ -226,13 +230,13 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void setSearchView(Menu menu) {
-        final MenuItem searchItem = menu.findItem(R.id.action_search);
-        // 关联检索配置与 SearchView
+    private void setSearchView(final Menu menu) {
+        searchItem = menu.findItem(R.id.action_search);
+        // 关联检索配置与 SearchActivity
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) menu.findItem(R.id.action_search).getActionView();
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         SearchableInfo searchableInfo = searchManager.getSearchableInfo(
-                new ComponentName(getApplicationContext(), SearchView.class));
+                new ComponentName(getApplicationContext(), SearchActivity.class));
         searchView.setSearchableInfo(searchableInfo);
         searchView.setQueryHint(getString(R.string.search_hint));
         //searchItem.setActionView(searchView);
@@ -253,6 +257,8 @@ public class MainActivity extends BaseActivity {
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 // Do something when action item collapses
                 content_main.setVisibility(View.VISIBLE);
+                menu.findItem(R.id.aciton_setting).setVisible(true);
+                menu.findItem(R.id.action_switch_night_mode).setVisible(true);
                 return true;     //Return true to collapse action view
             }
 
@@ -260,6 +266,8 @@ public class MainActivity extends BaseActivity {
             public boolean onMenuItemActionExpand(MenuItem item) {
                 // Do something when expanded
                 content_main.setVisibility(View.GONE);
+                menu.findItem(R.id.aciton_setting).setVisible(false);
+                menu.findItem(R.id.action_switch_night_mode).setVisible(false);
                 return true;      // Return true to expand action view
             }
         });
