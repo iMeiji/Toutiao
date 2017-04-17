@@ -24,6 +24,7 @@ public class NewsArticleModel implements INewsArticle.Model {
     private Gson gson = new Gson();
     private List<NewsArticleBean> newsList = new ArrayList<>();
     private List<NewsArticleBean.DataBean> dataList = new ArrayList<>();
+    private List<NewsArticleBean.DataBean> resultList = new ArrayList<>();
 
     @Override
     public boolean requestData(String url) {
@@ -43,7 +44,6 @@ public class NewsArticleModel implements INewsArticle.Model {
             if (response.isSuccessful()) {
                 flag = true;
                 String responseJson = response.body().string();
-                //String result = ChineseUtil.UnicodeToChs(responseJson);
                 Log.d(TAG, "requestData: " + responseJson);
                 NewsArticleBean bean = gson.fromJson(responseJson, NewsArticleBean.class);
                 newsList.add(bean);
@@ -77,7 +77,9 @@ public class NewsArticleModel implements INewsArticle.Model {
                 e.printStackTrace();
             }
         }
-        return dataList;
+        resultList.addAll(dataList);
+//        resultList = removeDuplicate(resultList);
+        return resultList;
     }
 
     @Override
@@ -87,5 +89,19 @@ public class NewsArticleModel implements INewsArticle.Model {
             max_behot_time = bean.getNext().getMax_behot_time();
         }
         return max_behot_time;
+    }
+
+    /**
+     * 移除重复数据
+     */
+    private List<NewsArticleBean.DataBean> removeDuplicate(List<NewsArticleBean.DataBean> list) {
+        for (int i = 0; i < list.size() - 1; i++) {
+            for (int j = list.size() - 1; j > i; j--) {
+                if (list.get(j).getTitle().equals(list.get(i).getTitle())) {
+                    list.remove(j);
+                }
+            }
+        }
+        return list;
     }
 }

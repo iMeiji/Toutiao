@@ -10,6 +10,7 @@ import com.meiji.toutiao.news.content.NewsContentActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Meiji on 2016/12/15.
@@ -40,11 +41,21 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
         this.model = new NewsArticleModel();
     }
 
+    private static int getRandom() {
+        Random random = new Random();
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            result.append(random.nextInt(10));
+        }
+        Log.d(TAG, "getRandom: " + result);
+        return Integer.parseInt(result.toString());
+    }
+
     @Override
     public void doGetUrl(String parameter) {
         view.onShowRefreshing();
         this.category = parameter;
-        String url = NewsApi.getNewsArticle_PCUrl(category);
+        String url = NewsApi.getNewsArticle_PCUrl(category, model.getMaxBehotTime() + "");
         doRequestData(url);
     }
 
@@ -67,15 +78,14 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
 
     @Override
     public void doSetAdapter() {
-        Log.d(TAG, "doSetAdapter: " + "刷新新闻数量 " + model.getDataList().size());
-        dataList.addAll(model.getDataList());
+        dataList = model.getDataList();
         view.onSetAdapter(dataList);
         view.onHideRefreshing();
     }
 
     @Override
     public void doRefresh() {
-        String url = NewsApi.getNewsArticle_PCUrl(category);
+        String url = NewsApi.getNewsArticle_PCUrl(category, model.getMaxBehotTime() - getRandom() + "");
         doRequestData(url);
     }
 

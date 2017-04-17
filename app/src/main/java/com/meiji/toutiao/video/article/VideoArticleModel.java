@@ -28,6 +28,11 @@ public class VideoArticleModel implements IVideoArticle.Model {
     @Override
     public boolean requestData(String url) {
         Log.d(TAG, "requestData: " + url);
+
+        if (newsList.size() != 0) {
+            newsList.clear();
+        }
+
         boolean flag = false;
         Request request = new Request.Builder()
                 .url(url)

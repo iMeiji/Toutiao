@@ -2,11 +2,12 @@
 <resources>
 
     <string-array name="news_name">
-        <item>社会</item>
         <item>热点</item>
         <item>推荐</item>
+        <item>社会</item>
         <item>娱乐</item>
         <item>科技</item>
+        <item>段子</item>
         <item>军事</item>
         <item>体育</item>
         <item>汽车</item>
@@ -19,15 +20,15 @@
         <item>育儿</item>
         <item>故事</item>
         <item>搞笑</item>
-        <item>段子</item>
     </string-array>
 
     <string-array name="news_id">
-        <item>news_society</item>
         <item>news_hot</item>
         <item>__all__</item>
+        <item>news_society</item>
         <item>news_entertainment</item>
         <item>news_tech</item>
+        <item>essay_joke</item>
         <item>news_military</item>
         <item>news_sports</item>
         <item>news_car</item>
@@ -40,7 +41,6 @@
         <item>news_baby</item>
         <item>news_story</item>
         <item>funny</item>
-        <item>essay_joke</item>
     </string-array>
 
 

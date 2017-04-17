@@ -59,11 +59,6 @@ class SearchModel implements ISearch.Model {
         for (NewsArticleBean searchBean : searchBeanList) {
             dataBeanList = searchBean.getData();
             try {
-                // 移除最后一项 数据有重复
-                if (dataBeanList.size() != 0) {
-                    dataBeanList.remove(dataBeanList.size() - 1);
-//                    dataList.remove(0);
-                }
                 // 移除无图片的 Item 和 source 为 "ad"
                 for (int i = 0; i < dataBeanList.size(); i++) {
                     NewsArticleBean.DataBean dataBean = dataBeanList.get(i);
