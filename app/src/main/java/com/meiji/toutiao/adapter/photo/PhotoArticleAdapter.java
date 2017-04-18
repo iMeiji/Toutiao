@@ -25,13 +25,20 @@ public class PhotoArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_FOOTER = 1;
-    private List<PhotoArticleBean.DataBean> list = new ArrayList();
+    private List<PhotoArticleBean.DataBean> list;
     private Context context;
     private IOnItemClickListener onItemClickListener;
 
-    public PhotoArticleAdapter(List list, Context context) {
-        this.list = list;
+    public PhotoArticleAdapter(Context context) {
         this.context = context;
+    }
+
+    public List<PhotoArticleBean.DataBean> getList() {
+        return list;
+    }
+
+    public void setList(List<PhotoArticleBean.DataBean> list) {
+        this.list = new ArrayList<>(list);
     }
 
     public void setOnItemClickListener(IOnItemClickListener onItemClickListener) {

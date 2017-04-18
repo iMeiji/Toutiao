@@ -26,7 +26,6 @@ public class PhotoArticleModel implements IPhotoArticle.Model {
     private List<PhotoArticleBean.DataBean> dataList = new ArrayList<>();
     private List<PhotoArticleBean.NextBean> nextList = new ArrayList<>();
 
-
     @Override
     public boolean requestData(String url) {
         Log.d(TAG, "requestData: " + url);

@@ -27,13 +27,20 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_FOOTER = 1;
-    private List<NewsArticleBean.DataBean> list = new ArrayList<>();
+    private List<NewsArticleBean.DataBean> list;
     private IOnItemClickListener onItemClickListener;
     private Context context;
 
-    public NewsArticleAdapter(Context context, List<NewsArticleBean.DataBean> list) {
-        this.list = list;
+    public NewsArticleAdapter(Context context) {
         this.context = context;
+    }
+
+    public List<NewsArticleBean.DataBean> getList() {
+        return list;
+    }
+
+    public void setList(List<NewsArticleBean.DataBean> list) {
+        this.list = new ArrayList<>(list);
     }
 
     public void setOnItemClickListener(IOnItemClickListener listener) {
@@ -73,6 +80,8 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 if (image_list != null && image_list.size() != 0) {
                     String url = image_list.get(0).getUrl();
                     Glide.with(context).load(url).crossFade().centerCrop().error(R.mipmap.error_image).into(newsHolder.iv_image_url);
+                } else if (!TextUtils.isEmpty(bean.getMedia_avatar_url())) {
+                    Glide.with(context).load(bean.getMedia_avatar_url()).crossFade().centerCrop().error(R.mipmap.error_image).into(newsHolder.iv_image_url);
                 }
             }
 

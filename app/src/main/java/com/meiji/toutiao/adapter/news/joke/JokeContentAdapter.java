@@ -25,13 +25,20 @@ public class JokeContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_FOOTER = 1;
-    private List<JokeContentBean.DataBean.GroupBean> list = new ArrayList();
+    private List<JokeContentBean.DataBean.GroupBean> list;
     private Context context;
     private IOnItemClickListener onItemClickListener;
 
-    public JokeContentAdapter(List list, Context context) {
-        this.list = list;
+    public JokeContentAdapter(Context context) {
         this.context = context;
+    }
+
+    public List<JokeContentBean.DataBean.GroupBean> getList() {
+        return list;
+    }
+
+    public void setList(List<JokeContentBean.DataBean.GroupBean> list) {
+        this.list = new ArrayList<>(list);
     }
 
     public void setOnItemClickListener(IOnItemClickListener onItemClickListener) {

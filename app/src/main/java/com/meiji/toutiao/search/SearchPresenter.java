@@ -70,10 +70,6 @@ class SearchPresenter implements ISearch.Presenter {
     @Override
     public void doSetAdapter() {
         list.addAll(model.getDataList());
-        for (NewsArticleBean.DataBean dataBean : list) {
-            dataBean.getTitle();
-        }
-
         view.onSetAdapter(list);
         view.onHideRefreshing();
     }

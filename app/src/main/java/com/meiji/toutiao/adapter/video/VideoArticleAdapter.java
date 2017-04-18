@@ -32,13 +32,20 @@ public class VideoArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_FOOTER = 1;
-    private List<VideoArticleBean.DataBean> list = new ArrayList<>();
+    private List<VideoArticleBean.DataBean> list;
     private IOnItemClickListener onItemClickListener;
     private Context context;
 
-    public VideoArticleAdapter(Context context, List<VideoArticleBean.DataBean> list) {
-        this.list = list;
+    public VideoArticleAdapter(Context context) {
         this.context = context;
+    }
+
+    public List<VideoArticleBean.DataBean> getList() {
+        return list;
+    }
+
+    public void setList(List<VideoArticleBean.DataBean> list) {
+        this.list = new ArrayList<>(list);
     }
 
     public void setOnItemClickListener(IOnItemClickListener listener) {

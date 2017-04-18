@@ -11,6 +11,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.adapter.media.MediaArticleAdapter;
 import com.meiji.toutiao.bean.media.MediaArticleBean;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
@@ -123,7 +125,8 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
     @Override
     public void onSetAdapter(final List<MediaArticleBean.DataBean> list) {
         if (adapter == null) {
-            adapter = new MediaArticleAdapter(getActivity(), list);
+            adapter = new MediaArticleAdapter(getActivity());
+            adapter.setList(list);
             recycler_view.setAdapter(adapter);
             adapter.setOnItemClickListener(new IOnItemClickListener() {
                 @Override
@@ -132,7 +135,11 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
                 }
             });
         } else {
-            adapter.notifyItemInserted(list.size());
+//            adapter.notifyItemInserted(list.size());
+            List<MediaArticleBean.DataBean> oldList = adapter.getList();
+            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.MEDIA), true);
+            result.dispatchUpdatesTo(adapter);
+            adapter.setList(list);
         }
 
         canLoading = true;

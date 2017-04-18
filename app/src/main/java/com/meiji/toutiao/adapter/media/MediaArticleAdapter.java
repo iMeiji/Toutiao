@@ -17,6 +17,7 @@ import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.utils.TimeUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,9 +32,16 @@ public class MediaArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<MediaArticleBean.DataBean> list;
     private IOnItemClickListener onItemClickListener;
 
-    public MediaArticleAdapter(Context context, List<MediaArticleBean.DataBean> list) {
+    public MediaArticleAdapter(Context context) {
         this.context = context;
-        this.list = list;
+    }
+
+    public List<MediaArticleBean.DataBean> getList() {
+        return list;
+    }
+
+    public void setList(List<MediaArticleBean.DataBean> list) {
+        this.list = new ArrayList<>(list);
     }
 
     public void setOnItemClickListener(IOnItemClickListener onItemClickListener) {

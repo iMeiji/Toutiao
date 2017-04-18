@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.adapter.news.NewsArticleAdapter;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
@@ -95,7 +97,8 @@ public class NewsArticleView extends BasePageFragment implements SwipeRefreshLay
     @Override
     public void onSetAdapter(final List<NewsArticleBean.DataBean> list) {
         if (adapter == null) {
-            adapter = new NewsArticleAdapter(getActivity(), list);
+            adapter = new NewsArticleAdapter(getActivity());
+            adapter.setList(list);
             recycler_view.setAdapter(adapter);
             adapter.setOnItemClickListener(new IOnItemClickListener() {
                 @Override
@@ -104,7 +107,11 @@ public class NewsArticleView extends BasePageFragment implements SwipeRefreshLay
                 }
             });
         } else {
-            adapter.notifyItemInserted(list.size());
+//            adapter.notifyItemInserted(list.size());
+            List<NewsArticleBean.DataBean> oldList = adapter.getList();
+            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEW), true);
+            result.dispatchUpdatesTo(adapter);
+            adapter.setList(list);
         }
 
         canLoading = true;

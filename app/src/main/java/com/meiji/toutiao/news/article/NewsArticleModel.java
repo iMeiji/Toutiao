@@ -78,7 +78,6 @@ public class NewsArticleModel implements INewsArticle.Model {
             }
         }
         resultList.addAll(dataList);
-//        resultList = removeDuplicate(resultList);
         return resultList;
     }
 
@@ -89,19 +88,5 @@ public class NewsArticleModel implements INewsArticle.Model {
             max_behot_time = bean.getNext().getMax_behot_time();
         }
         return max_behot_time;
-    }
-
-    /**
-     * 移除重复数据
-     */
-    private List<NewsArticleBean.DataBean> removeDuplicate(List<NewsArticleBean.DataBean> list) {
-        for (int i = 0; i < list.size() - 1; i++) {
-            for (int j = list.size() - 1; j > i; j--) {
-                if (list.get(j).getTitle().equals(list.get(i).getTitle())) {
-                    list.remove(j);
-                }
-            }
-        }
-        return list;
     }
 }
