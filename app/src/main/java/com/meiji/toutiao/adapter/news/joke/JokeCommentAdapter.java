@@ -12,7 +12,7 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.joke.JokeCommentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.utils.SettingsUtil;
-import com.meiji.toutiao.view.CircleImageView;
+import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.List;

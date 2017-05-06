@@ -29,7 +29,7 @@
         android:text="保存"
         android:textColor="@android:color/white"/>
 
-    <com.meiji.toutiao.view.ViewPagerFixed
+    <com.meiji.toutiao.widget.ViewPagerFixed
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,5 +39,5 @@
         android:layout_marginBottom="48dp"
         android:layout_marginTop="?attr/actionBarSize">
 
-    </com.meiji.toutiao.view.ViewPagerFixed>
+    </com.meiji.toutiao.widget.ViewPagerFixed>
 </RelativeLayout>

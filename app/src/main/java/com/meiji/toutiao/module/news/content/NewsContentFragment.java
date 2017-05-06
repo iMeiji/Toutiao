@@ -1,0 +1,203 @@
+package com.meiji.toutiao.module.news.content;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
+
+import com.meiji.toutiao.R;
+import com.meiji.toutiao.bean.news.NewsArticleBean;
+import com.meiji.toutiao.module.media.MediaAddActivity;
+import com.meiji.toutiao.utils.SettingsUtil;
+
+/**
+ * Created by Meiji on 2017/2/28.
+ */
+
+public class NewsContentFragment extends Fragment implements INewsContent.View {
+
+    private static final String TAG = "NewsContentFragment";
+    // 新闻链接 标题 头条号 文章号 媒体名
+    private String shareUrl;
+    private String shareTitle;
+    private String mediaUrl;
+
+    private Toolbar toolbar;
+    private WebView webView;
+    private ActionBar actionBar;
+    private NestedScrollView scrollView;
+    private INewsContent.Presenter presenter;
+    private ProgressBar progressBar;
+
+    public static NewsContentFragment newInstance(Parcelable dataBean) {
+        NewsContentFragment instance = new NewsContentFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(TAG, dataBean);
+        instance.setArguments(bundle);
+        return instance;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_news_content, container, false);
+        presenter = new NewsContentPresenter(this);
+        initView(view);
+        initWebClient();
+        initData();
+        setHasOptionsMenu(true);
+        return view;
+    }
+
+    private void initData() {
+        Bundle bundle = getArguments();
+        NewsArticleBean.DataBean dataBean = bundle.getParcelable(TAG);
+        shareUrl = dataBean.getDisplay_url();
+        shareTitle = dataBean.getTitle();
+        actionBar.setTitle(dataBean.getMedia_name());
+        mediaUrl = dataBean.getMedia_url();
+        presenter.doLoadData(dataBean);
+    }
+
+    private void initView(View view) {
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+        actionBar = activity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        webView = (WebView) view.findViewById(R.id.webview_content);
+        scrollView = (NestedScrollView) view.findViewById(R.id.scrollView);
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scrollView.smoothScrollTo(0, 0);
+            }
+        });
+        progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private void initWebClient() {
+        WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        // 缩放,设置为不能缩放可以防止页面上出现放大和缩小的图标
+        settings.setBuiltInZoomControls(false);
+        // 缓存
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        // 开启DOM storage API功能
+        settings.setDomStorageEnabled(true);
+        // 开启application Cache功能
+        settings.setAppCacheEnabled(false);
+        // 判断是否为无图模式
+        settings.setBlockNetworkImage(SettingsUtil.getInstance().getIsNoPhotoMode());
+        // 不调用第三方浏览器即可进行页面反应
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                onHideLoading();
+                super.onPageFinished(view, url);
+            }
+        });
+
+        webView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if ((keyEvent.getKeyCode() == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
+                    webView.goBack();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public void onSetWebView(String url, boolean flag) {
+        // 是否为头条的网站
+        if (flag) {
+            webView.loadDataWithBaseURL(null, url, "text/html", "utf-8", null);
+        } else {
+            webView.loadUrl(shareUrl);
+        }
+    }
+
+    @Override
+    public void onShowNetError() {
+        Snackbar.make(scrollView, R.string.network_error, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onShowLoading() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onHideLoading() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_browser, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_open_comment:
+                presenter.doShowComment(getActivity(), this);
+                break;
+
+            case R.id.action_follow_media:
+                MediaAddActivity.startActivity(mediaUrl, "news");
+                break;
+
+            case R.id.action_share:
+                Intent shareIntent = new Intent()
+                        .setAction(Intent.ACTION_SEND)
+                        .setType("text/plain")
+                        .putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + shareUrl);
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
+                break;
+
+            case R.id.action_open_in_browser:
+                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse(shareUrl)));
+                break;
+
+            case android.R.id.home:
+                getActivity().onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+}

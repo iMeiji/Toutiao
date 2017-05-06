@@ -15,7 +15,7 @@
         android:foreground="?attr/selectableItemBackground"
         android:padding="8dp">
 
-        <com.meiji.toutiao.view.CircleImageView
+        <com.meiji.toutiao.widget.CircleImageView
             android:id="@+id/cv_avatar"
             android:layout_width="52dp"
             android:layout_height="52dp"

@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.utils.CacheDataManager;
 import com.meiji.toutiao.utils.SettingsUtil;
 
@@ -194,7 +195,7 @@ public class SettingsActivity extends BaseActivity {
 //        public boolean onOptionsItemSelected(MenuItem item) {
 //            int id = item.getItemId();
 //            if (id == android.R.id.home) {
-//                startActivity(new Intent(getActivity(), SettingsActivity.class));
+//                launch(new Intent(getActivity(), SettingsActivity.class));
 //                return true;
 //            }
 //            return super.onOptionsItemSelected(item);

@@ -20,13 +20,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.meiji.toutiao.media.channel.MediaChannelView;
-import com.meiji.toutiao.news.NewsTabLayout;
-import com.meiji.toutiao.photo.PhotoTabLayout;
-import com.meiji.toutiao.search.SearchActivity;
+import com.meiji.toutiao.module.base.BaseActivity;
+import com.meiji.toutiao.module.media.channel.MediaChannelView;
+import com.meiji.toutiao.module.news.NewsTabLayout;
+import com.meiji.toutiao.module.photo.PhotoTabLayout;
+import com.meiji.toutiao.module.search.SearchActivity;
+import com.meiji.toutiao.module.video.VideoTabLayout;
 import com.meiji.toutiao.utils.SettingsUtil;
-import com.meiji.toutiao.video.VideoTabLayout;
-import com.meiji.toutiao.view.BottomNavigationViewHelper;
+import com.meiji.toutiao.widget.helper.BottomNavigationViewHelper;
 
 public class MainActivity extends BaseActivity {
 

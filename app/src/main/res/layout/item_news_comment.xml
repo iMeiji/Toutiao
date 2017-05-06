@@ -25,7 +25,7 @@
                 android:layout_height="36dp"
                 android:orientation="horizontal">
 
-                <com.meiji.toutiao.view.CircleImageView
+                <com.meiji.toutiao.widget.CircleImageView
                     android:id="@+id/iv_avatar"
                     android:layout_width="36dp"
                     android:layout_height="36dp"

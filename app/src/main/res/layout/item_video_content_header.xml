@@ -57,7 +57,7 @@
             android:textStyle="bold"
             tools:text="龙猫公社"/>
 
-        <com.meiji.toutiao.view.CircleImageView
+        <com.meiji.toutiao.widget.CircleImageView
             android:id="@+id/iv_media_avatar_url"
             android:layout_width="40dp"
             android:layout_height="40dp"
