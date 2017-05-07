@@ -25,13 +25,20 @@ public class NewsCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_FOOTER = 1;
-    private List<NewsCommentBean.DataBean.CommentsBean> list = new ArrayList<>();
+    private List<NewsCommentBean.DataBean.CommentsBean> list;
     private Context context;
     private IOnItemClickListener onItemClickListener;
 
-    public NewsCommentAdapter(List<NewsCommentBean.DataBean.CommentsBean> list, Context context) {
-        this.list = list;
+    public NewsCommentAdapter(Context context) {
         this.context = context;
+    }
+
+    public List<NewsCommentBean.DataBean.CommentsBean> getList() {
+        return list;
+    }
+
+    public void setList(List<NewsCommentBean.DataBean.CommentsBean> list) {
+        this.list = new ArrayList<>(list);
     }
 
     public void setOnItemClickListener(IOnItemClickListener onItemClickListener) {

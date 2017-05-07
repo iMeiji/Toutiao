@@ -11,6 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.adapter.news.joke.JokeCommentAdapter;
 import com.meiji.toutiao.bean.news.joke.JokeCommentBean;
 import com.meiji.toutiao.bean.news.joke.JokeContentBean;
@@ -40,7 +42,7 @@ public class JokeCommentActivity extends BaseActivity {
 
     private static final String TAG = "NewsCommentView";
 
-    public static void startActivity(JokeContentBean.DataBean.GroupBean bean) {
+    public static void launch(JokeContentBean.DataBean.GroupBean bean) {
         InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, JokeCommentActivity.class)
                 .putExtra(JokeCommentActivity.TAG, bean)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -77,7 +79,7 @@ public class JokeCommentActivity extends BaseActivity {
             presenter = new JokeCommentPresenter(this);
             initView(view);
             initData();
-            onRequestData();
+            onLoadData();
             setHasOptionsMenu(true);
             return view;
         }
@@ -150,24 +152,27 @@ public class JokeCommentActivity extends BaseActivity {
         }
 
         @Override
-        public void onRequestData() {
-            presenter.doGetUrl(jokeId, jokeCommentCount);
+        public void onLoadData() {
+            presenter.doLoadData(jokeId, jokeCommentCount);
         }
 
         @Override
         public void onSetAdapter(final List<JokeCommentBean.DataBean.RecentCommentsBean> list) {
             if (adapter == null) {
-                adapter = new JokeCommentAdapter(list, getActivity());
+                adapter = new JokeCommentAdapter(getActivity());
+                adapter.setList(list);
                 recycler_view.setAdapter(adapter);
                 adapter.setOnItemClickListener(new IOnItemClickListener() {
                     @Override
                     public void onClick(View view, int position) {
-                        //JokeCommentBean.DataBean.RecentCommentsBean bean = (JokeCommentBean.DataBean.RecentCommentsBean) list.get(position);
                         showCopyDialog(list.get(position).getText());
                     }
                 });
             } else {
-                adapter.notifyItemInserted(list.size());
+                List<JokeCommentBean.DataBean.RecentCommentsBean> oldList = adapter.getList();
+                DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.JOKE_COMMENT), true);
+                result.dispatchUpdatesTo(adapter);
+                adapter.setList(list);
             }
 
             canLoading = true;
@@ -179,7 +184,7 @@ public class JokeCommentActivity extends BaseActivity {
                     if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                         if (!recyclerView.canScrollVertically(1)) {
                             if (canLoading) {
-                                presenter.doRefresh();
+                                presenter.doLoadMoreData();
                                 canLoading = false;
                             }
                         }
@@ -218,7 +223,7 @@ public class JokeCommentActivity extends BaseActivity {
         }
 
         @Override
-        public void onShowRefreshing() {
+        public void onShowLoading() {
             refresh_layout.post(new Runnable() {
                 @Override
                 public void run() {
@@ -228,7 +233,7 @@ public class JokeCommentActivity extends BaseActivity {
         }
 
         @Override
-        public void onHideRefreshing() {
+        public void onHideLoading() {
             refresh_layout.post(new Runnable() {
                 @Override
                 public void run() {
@@ -238,12 +243,12 @@ public class JokeCommentActivity extends BaseActivity {
         }
 
         @Override
-        public void onFail() {
+        public void onShowNetError() {
             Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT).show();
         }
 
         @Override
-        public void onFinish() {
+        public void onShowNoMore() {
             Snackbar.make(refresh_layout, R.string.no_more, Snackbar.LENGTH_SHORT).show();
         }
     }

@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.adapter.news.NewsCommentAdapter;
 import com.meiji.toutiao.bean.news.NewsCommentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
@@ -61,7 +63,7 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
         presenter = new NewsCommentPresenter(this);
         initView(view);
         initData();
-        onRequestData();
+        onLoadData();
         setHasOptionsMenu(true);
         return view;
     }
@@ -104,14 +106,15 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     @Override
-    public void onRequestData() {
-        presenter.doGetUrl(groupId, itemId);
+    public void onLoadData() {
+        presenter.doLoadData(groupId, itemId);
     }
 
     @Override
     public void onSetAdapter(final List<NewsCommentBean.DataBean.CommentsBean> list) {
         if (adapter == null) {
-            adapter = new NewsCommentAdapter(list, getActivity());
+            adapter = new NewsCommentAdapter(getActivity());
+            adapter.setList(list);
             recycler_view.setAdapter(adapter);
             adapter.setOnItemClickListener(new IOnItemClickListener() {
                 @Override
@@ -120,7 +123,11 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
                 }
             });
         } else {
-            adapter.notifyItemInserted(list.size());
+//            adapter.notifyItemInserted(list.size());
+            List<NewsCommentBean.DataBean.CommentsBean> oldList = adapter.getList();
+            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWS_COMMENT), true);
+            result.dispatchUpdatesTo(adapter);
+            adapter.setList(list);
         }
 
         canLoading = true;
@@ -132,7 +139,7 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!recyclerView.canScrollVertically(1)) {
                         if (canLoading) {
-                            presenter.doRefresh();
+                            presenter.doLoadMoreData();
                             canLoading = false;
                         }
                     }
@@ -171,7 +178,7 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     @Override
-    public void onShowRefreshing() {
+    public void onShowLoading() {
         refresh_layout.post(new Runnable() {
             @Override
             public void run() {
@@ -181,7 +188,7 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     @Override
-    public void onHideRefreshing() {
+    public void onHideLoading() {
         refresh_layout.post(new Runnable() {
             @Override
             public void run() {
@@ -191,7 +198,7 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     @Override
-    public void onFail() {
+    public void onShowNetError() {
         Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT).show();
     }
 
@@ -202,5 +209,10 @@ public class NewsCommentFragment extends Fragment implements SwipeRefreshLayout.
             getActivity().onBackPressed();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onShowNoMore() {
+        Snackbar.make(refresh_layout, R.string.no_more, Snackbar.LENGTH_SHORT).show();
     }
 }

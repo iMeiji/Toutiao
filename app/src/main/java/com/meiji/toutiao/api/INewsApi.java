@@ -2,6 +2,7 @@ package com.meiji.toutiao.api;
 
 import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
+import com.meiji.toutiao.bean.news.NewsCommentBean;
 import com.meiji.toutiao.bean.news.NewsContentBean;
 
 import io.reactivex.Observable;
@@ -45,7 +46,7 @@ public interface INewsApi {
      * 获取新闻内容的API
      */
     @GET
-    @Headers("User-Agent:" + Constant.USER_AGENT_PHONE)
+    @Headers("User-Agent:" + Constant.USER_AGENT_MOBILE)
     Call<ResponseBody> getNewsContentRedirectUrl(@Url String url);
 
     /**
@@ -54,4 +55,15 @@ public interface INewsApi {
      */
     @GET
     Observable<NewsContentBean> getNewsContent(@Url String url);
+
+    /**
+     * 获取新闻评论
+     * http://www.toutiao.com/api/comment/list/?group_id=头条号&item_id=文章号&offset=偏移量&count=数量
+     */
+    @GET("api/comment/list/?count=10")
+    Observable<NewsCommentBean> getNewsComment(
+            @Query("group_id") String groupId,
+            @Query("item_id") String itemId,
+            @Query("offset") int offset);
+
 }

@@ -18,6 +18,7 @@ import okhttp3.Response;
  * Created by Meiji on 2016/12/28.
  */
 
+@Deprecated
 class JokeContentModel implements IJokeContent.Model {
 
     private static final String TAG = "JokeContentModel";

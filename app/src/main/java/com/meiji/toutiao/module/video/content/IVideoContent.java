@@ -12,18 +12,15 @@ import java.util.List;
 public interface IVideoContent {
 
     interface View extends INewsComment.View {
-        void onRequestData();
 
         void onSetAdapter(List<NewsCommentBean.DataBean.CommentsBean> list);
-
-        void onFail();
 
         void onSetVideoPlay(String url);
     }
 
     interface Presenter extends INewsComment.Presenter {
 
-        void doGetUrl(String group_id, String item_id);
+        void doLoadData(String group_id, String item_id);
 
         void doRequestData(String url);
 
@@ -31,7 +28,7 @@ public interface IVideoContent {
 
         void doRefresh();
 
-        void onFail();
+        void doShowNetError();
 
         void doRequestVideoData(String videoid);
 

@@ -65,7 +65,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
         presenter = new VideoContentPresenter(this);
         initView();
         initData();
-        onRequestData();
+        onLoadData();
     }
 
     private void initData() {
@@ -108,8 +108,8 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    public void onRequestData() {
-        presenter.doGetUrl(groupId, itemId);
+    public void onLoadData() {
+        presenter.doLoadData(groupId, itemId);
         presenter.doRequestVideoData(videoId);
     }
 
@@ -153,17 +153,22 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    public void onShowRefreshing() {
+    public void onShowLoading() {
 
     }
 
     @Override
-    public void onHideRefreshing() {
+    public void onHideLoading() {
 
     }
 
     @Override
-    public void onFail() {
+    public void onShowNetError() {
+
+    }
+
+    @Override
+    public void onShowNoMore() {
 
     }
 

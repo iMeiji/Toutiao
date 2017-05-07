@@ -45,15 +45,19 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
 //    }
 
     @Override
-    public void doLoadData(String parameter) {
+    public void doLoadData(String... category) {
 
-        if (this.category == null) {
-            this.category = parameter;
+        try {
+            if (this.category == null) {
+                this.category = category[0];
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
         }
 
         // 因为删除了部分新闻 故使用2个请求
-        Observable<NewsArticleBean> ob1 = RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsArticle1(category, time);
-        Observable<NewsArticleBean> ob2 = RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsArticle2(category);
+        Observable<NewsArticleBean> ob1 = RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsArticle1(this.category, time);
+        Observable<NewsArticleBean> ob2 = RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsArticle2(this.category);
 
         Observable.merge(ob1, ob2)
                 .subscribeOn(Schedulers.io())
@@ -110,7 +114,7 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
 
     @Override
     public void doLoadMoreData() {
-        doLoadData(this.category);
+        doLoadData();
     }
 
     @Override
@@ -129,7 +133,7 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
         if (dataList.size() != 0) {
             dataList.clear();
         }
-        doLoadData(this.category);
+        doLoadData();
     }
 
     @Override

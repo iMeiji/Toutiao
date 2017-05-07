@@ -36,8 +36,14 @@ interface INewsContent {
 
     interface Presenter {
 
+        /**
+         * 请求数据
+         */
         void doLoadData(NewsArticleBean.DataBean dataBean);
 
+        /**
+         * 查看评论
+         */
         void doShowComment(FragmentActivity context, Fragment fragment);
     }
 

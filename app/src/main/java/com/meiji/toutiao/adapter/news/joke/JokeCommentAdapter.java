@@ -25,13 +25,20 @@ public class JokeCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_FOOTER = 1;
-    private List<JokeCommentBean.DataBean.RecentCommentsBean> list = new ArrayList<>();
+    private List<JokeCommentBean.DataBean.RecentCommentsBean> list;
     private Context context;
     private IOnItemClickListener onItemClickListener;
 
-    public JokeCommentAdapter(List list, Context context) {
-        this.list = list;
+    public JokeCommentAdapter(Context context) {
         this.context = context;
+    }
+
+    public List<JokeCommentBean.DataBean.RecentCommentsBean> getList() {
+        return list;
+    }
+
+    public void setList(List<JokeCommentBean.DataBean.RecentCommentsBean> list) {
+        this.list = new ArrayList<>(list);
     }
 
     public void setOnItemClickListener(IOnItemClickListener onItemClickListener) {

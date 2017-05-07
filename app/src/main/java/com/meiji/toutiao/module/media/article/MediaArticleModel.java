@@ -93,7 +93,7 @@ class MediaArticleModel implements IMediaArticle.Model {
         try {
             Document doc = Jsoup
                     .connect(articleUrl)
-                    .userAgent(Constant.USER_AGENT_PHONE)
+                    .userAgent(Constant.USER_AGENT_MOBILE)
                     .get();
             // 取得所有的script tag
             Elements scripts = doc.getElementsByTag("script");

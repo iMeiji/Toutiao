@@ -17,7 +17,7 @@ import okhttp3.Response;
 /**
  * Created by Meiji on 2016/12/20.
  */
-
+@Deprecated
 public class NewsCommentModel implements INewsComment.Model {
 
     private static final String TAG = "NewsCommentModel";

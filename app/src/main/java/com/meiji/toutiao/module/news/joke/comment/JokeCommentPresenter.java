@@ -1,13 +1,18 @@
 package com.meiji.toutiao.module.news.joke.comment;
 
-import android.os.Handler;
-import android.os.Message;
-
-import com.meiji.toutiao.api.JokeApi;
+import com.meiji.toutiao.RetrofitFactory;
+import com.meiji.toutiao.api.IJokeApi;
 import com.meiji.toutiao.bean.news.joke.JokeCommentBean;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Meiji on 2017/1/1.
@@ -16,80 +21,97 @@ import java.util.List;
 class JokeCommentPresenter implements IJokeComment.Presenter {
 
     private IJokeComment.View view;
-    private IJokeComment.Model model;
     private String jokeId;
-    private String jokeCommentCount;
+    private int count = -1;
     private int offset = 0;
     private List<JokeCommentBean.DataBean.RecentCommentsBean> commentsList = new ArrayList<>();
-    private Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message message) {
-            if (message.what == 1) {
-                doSetAdapter();
-            }
-            if (message.what == 0) {
-                onFail();
-            }
-            return false;
-        }
-    });
 
     JokeCommentPresenter(IJokeComment.View view) {
         this.view = view;
-        this.model = new JokeCommentModel();
     }
 
     @Override
-    public void doGetUrl(String jokeId, String jokeCommentCount) {
-        view.onShowRefreshing();
-        this.jokeId = jokeId;
-        this.jokeCommentCount = jokeCommentCount;
-        String url = JokeApi.getJokeCommentUrl(jokeId, 20, 0);
-        doRequestData(url);
-    }
+    public void doLoadData(String... jokeId_Count) {
 
-    @Override
-    public void doRequestData(final String url) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                boolean result = model.requestData(url);
-                if (result) {
-                    Message message = handler.obtainMessage(1);
-                    message.sendToTarget();
-                } else {
-                    Message message = handler.obtainMessage(0);
-                    message.sendToTarget();
-                }
+        try {
+            if (null == this.jokeId) {
+                this.jokeId = jokeId_Count[0];
             }
-        }).start();
+            if (-1 == this.count) {
+                this.count = Integer.parseInt(jokeId_Count[1]);
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+
+        RetrofitFactory.getRetrofit().create(IJokeApi.class).getJokeComment(jokeId, offset)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .map(new Function<JokeCommentBean, List<JokeCommentBean.DataBean.RecentCommentsBean>>() {
+                    @Override
+                    public List<JokeCommentBean.DataBean.RecentCommentsBean> apply(@NonNull JokeCommentBean jokeCommentBean) throws Exception {
+                        return jokeCommentBean.getData().getRecent_comments();
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<JokeCommentBean.DataBean.RecentCommentsBean>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        view.onShowLoading();
+                    }
+
+                    @Override
+                    public void onNext(@NonNull List<JokeCommentBean.DataBean.RecentCommentsBean> recentCommentsBeen) {
+                        if (recentCommentsBeen.size() > 0) {
+                            doSetAdapter(recentCommentsBeen);
+                        } else {
+                            doShowNoMore();
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        doShowNetError();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override
-    public void doSetAdapter() {
-        if (commentsList.size() != 0) {
-            commentsList.clear();
-        }
-        commentsList.addAll(model.getDataList());
+    public void doLoadMoreData() {
+        offset += 10;
+        doLoadData();
+    }
+
+    @Override
+    public void doSetAdapter(List<JokeCommentBean.DataBean.RecentCommentsBean> commentsBeanList) {
+        commentsList.addAll(commentsBeanList);
         view.onSetAdapter(commentsList);
-        view.onHideRefreshing();
+        view.onHideLoading();
     }
 
     @Override
     public void doRefresh() {
-        if (offset < Integer.parseInt(jokeCommentCount)) {
-            offset += 20;
-            String url = JokeApi.getJokeCommentUrl(jokeId, 20, offset);
-            doRequestData(url);
-        } else {
-            view.onFinish();
-            view.onHideRefreshing();
+        if (commentsList.size() != 0) {
+            commentsList.clear();
+            offset = 0;
         }
+        doLoadData();
     }
 
     @Override
-    public void onFail() {
-        view.onHideRefreshing();
-        view.onFail();
+    public void doShowNetError() {
+        view.onHideLoading();
+        view.onShowNetError();
+    }
+
+    @Override
+    public void doShowNoMore() {
+        view.onHideLoading();
+        view.onShowNoMore();
     }
 }

@@ -112,7 +112,7 @@ public class MediaAddActivity extends BaseActivity {
                         String descText;
                         Document doc = Jsoup
                                 .connect(mediaUrl)
-                                .userAgent(Constant.USER_AGENT_PHONE)
+                                .userAgent(Constant.USER_AGENT_MOBILE)
                                 .get();
 
                         Elements imgs = doc.getElementsByClass("avatar round");

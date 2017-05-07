@@ -107,7 +107,7 @@ public class NewsArticleView extends LazyLoadFragment implements SwipeRefreshLay
             });
         } else {
             List<NewsArticleBean.DataBean> oldList = adapter.getList();
-            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEW), true);
+            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWs), true);
             result.dispatchUpdatesTo(adapter);
             adapter.setList(list);
         }

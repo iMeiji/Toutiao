@@ -43,7 +43,7 @@ public interface INewsArticle {
         /**
          * 请求数据
          */
-        void doLoadData(String parameter);
+        void doLoadData(String... category);
 
         /**
          * 再起请求数据

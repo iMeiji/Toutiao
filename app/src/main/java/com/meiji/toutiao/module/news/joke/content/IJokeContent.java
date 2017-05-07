@@ -11,31 +11,68 @@ import java.util.List;
 interface IJokeContent {
 
     interface View {
-        void onRequestData();
 
+        /**
+         * 设置适配器
+         */
         void onSetAdapter(List<JokeContentBean.DataBean.GroupBean> list);
 
-        void onShowRefreshing();
+        /**
+         * 请求数据
+         */
+        void onLoadData();
 
-        void onHideRefreshing();
+        /**
+         * 显示加载动画
+         */
+        void onShowLoading();
 
-        void onFail();
+        /**
+         * 隐藏加载
+         */
+        void onHideLoading();
+
+        /**
+         * 显示网络错误
+         */
+        void onShowNetError();
+
     }
 
     interface Presenter {
-        void doGetUrl(String parameter);
 
-        void doRequestData(final String url);
+        /**
+         * 请求数据
+         */
+        void doLoadData();
 
+        /**
+         * 再起请求数据
+         */
+        void doLoadMoreData();
+
+        /**
+         * 设置适配器
+         */
         void doSetAdapter();
 
+        /**
+         * 刷新数据
+         */
         void doRefresh();
 
-        void onFail();
+        /**
+         * 显示网络错误
+         */
+        void doShowNetError();
 
+        /**
+         * 点击事件跳转
+         */
         void doOnClickItem(int position);
     }
 
+    @Deprecated
     interface Model {
         boolean requestData(String url);
 

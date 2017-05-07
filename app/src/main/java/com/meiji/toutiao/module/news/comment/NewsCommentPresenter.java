@@ -1,13 +1,18 @@
 package com.meiji.toutiao.module.news.comment;
 
-import android.os.Handler;
-import android.os.Message;
-
-import com.meiji.toutiao.api.NewsApi;
+import com.meiji.toutiao.RetrofitFactory;
+import com.meiji.toutiao.api.INewsApi;
 import com.meiji.toutiao.bean.news.NewsCommentBean;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Meiji on 2016/12/20.
@@ -17,75 +22,98 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
 
     private static final String TAG = "NewsCommentPresenter";
     private INewsComment.View view;
-    private INewsComment.Model model;
-    private String group_id;
-    private String item_id;
+    private String groupId;
+    private String itemId;
     private int offset = 0;
     private List<NewsCommentBean.DataBean.CommentsBean> commentsBeanList = new ArrayList<>();
-    private Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message message) {
-            if (message.what == 1) {
-                doSetAdapter();
-            }
-            if (message.what == 0) {
-                onFail();
-            }
-            return false;
-        }
-    });
 
     public NewsCommentPresenter(INewsComment.View view) {
         this.view = view;
-        this.model = new NewsCommentModel();
     }
 
     @Override
-    public void doGetUrl(String group_id, String item_id) {
-        view.onShowRefreshing();
-        this.group_id = group_id;
-        this.item_id = item_id;
-        String url = NewsApi.getNewsCommentUrl(group_id, item_id, 0, 20);
-        doRequestData(url);
-    }
+    public void doLoadData(String... groupId_ItemId) {
 
-    @Override
-    public void doRequestData(final String url) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                boolean result = model.requestData(url);
-                if (result) {
-                    Message message = handler.obtainMessage(1);
-                    message.sendToTarget();
-                } else {
-                    Message message = handler.obtainMessage(0);
-                    message.sendToTarget();
-                }
+        try {
+            if (null == this.groupId) {
+                this.groupId = groupId_ItemId[0];
             }
-        }).start();
+            if (null == this.itemId) {
+                this.itemId = groupId_ItemId[1];
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+
+        RetrofitFactory.getRetrofit().create(INewsApi.class)
+                .getNewsComment(groupId, itemId, offset)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .map(new Function<NewsCommentBean, List<NewsCommentBean.DataBean.CommentsBean>>() {
+                    @Override
+                    public List<NewsCommentBean.DataBean.CommentsBean> apply(@NonNull NewsCommentBean newsCommentBean) throws Exception {
+                        return newsCommentBean.getData().getComments();
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<NewsCommentBean.DataBean.CommentsBean>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        view.onShowLoading();
+                    }
+
+                    @Override
+                    public void onNext(@NonNull List<NewsCommentBean.DataBean.CommentsBean> commentsBeen) {
+                        if (commentsBeen.size() > 0) {
+                            doSetAdapter(commentsBeen);
+                        } else {
+                            doShowNoMore();
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        doShowNetError();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override
-    public void doSetAdapter() {
-        if (commentsBeanList.size() != 0) {
-            commentsBeanList.clear();
-        }
-        commentsBeanList.addAll(model.getDataList());
+    public void doLoadMoreData() {
+        offset += 10;
+        doLoadData();
+    }
+
+    @Override
+    public void doSetAdapter(List<NewsCommentBean.DataBean.CommentsBean> commentsBeen) {
+        commentsBeanList.addAll(commentsBeen);
         view.onSetAdapter(commentsBeanList);
-        view.onHideRefreshing();
+        view.onHideLoading();
     }
 
     @Override
     public void doRefresh() {
-        offset += 20;
-        String url = NewsApi.getNewsCommentUrl(group_id, item_id, offset, 20);
-        doRequestData(url);
+        if (commentsBeanList.size() != 0) {
+            commentsBeanList.clear();
+            offset = 0;
+        }
+        doLoadData();
     }
 
     @Override
-    public void onFail() {
-        view.onHideRefreshing();
-        view.onFail();
+    public void doShowNetError() {
+        view.onHideLoading();
+        view.onShowNetError();
+    }
+
+    @Override
+    public void doShowNoMore() {
+        view.onHideLoading();
+        view.onShowNoMore();
     }
 }

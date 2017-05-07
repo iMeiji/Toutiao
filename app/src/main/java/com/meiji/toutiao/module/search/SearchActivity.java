@@ -104,7 +104,7 @@ public class SearchActivity extends BaseActivity implements SwipeRefreshLayout.O
         } else {
 //            adapter.notifyItemInserted(list.size());
             List<NewsArticleBean.DataBean> oldList = adapter.getList();
-            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEW));
+            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWs));
             result.dispatchUpdatesTo(adapter);
             adapter.setList(list);
         }

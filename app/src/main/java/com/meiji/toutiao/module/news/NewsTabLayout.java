@@ -95,7 +95,7 @@ public class NewsTabLayout extends Fragment {
                 Fragment fragment = NewsArticleView.newInstance(tabList.get(i).getChannelId());
                 list.add(fragment);
             } else {
-                Fragment jokeContentView = JokeContentView.newInstance(tabList.get(i).getChannelId());
+                Fragment jokeContentView = JokeContentView.newInstance();
                 list.add(jokeContentView);
             }
             categoryName[i] = tabList.get(i).getChannelName();

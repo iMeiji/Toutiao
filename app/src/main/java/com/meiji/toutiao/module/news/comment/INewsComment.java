@@ -11,30 +11,72 @@ import java.util.List;
 public interface INewsComment {
 
     interface View {
-        void onRequestData();
 
+        /**
+         * 请求数据
+         */
+        void onLoadData();
+
+        /**
+         * 设置适配器
+         */
         void onSetAdapter(List<NewsCommentBean.DataBean.CommentsBean> list);
 
-        void onShowRefreshing();
+        /**
+         * 显示加载动画
+         */
+        void onShowLoading();
 
-        void onHideRefreshing();
+        /**
+         * 隐藏加载
+         */
+        void onHideLoading();
 
-        void onFail();
+        /**
+         * 显示网络错误
+         */
+        void onShowNetError();
+
+        /**
+         * 加载完毕
+         */
+        void onShowNoMore();
     }
 
     interface Presenter {
 
-        void doGetUrl(String group_id, String item_id);
+        /**
+         * 请求数据
+         */
+        void doLoadData(String... groupId_ItemId);
 
-        void doRequestData(String url);
+        /**
+         * 再起请求数据
+         */
+        void doLoadMoreData();
 
-        void doSetAdapter();
+        /**
+         * 设置适配器
+         */
+        void doSetAdapter(List<NewsCommentBean.DataBean.CommentsBean> commentsBeen);
 
+        /**
+         * 刷新
+         */
         void doRefresh();
 
-        void onFail();
+        /**
+         * 显示网络错误
+         */
+        void doShowNetError();
+
+        /**
+         * 加载完毕
+         */
+        void doShowNoMore();
     }
 
+    @Deprecated
     interface Model {
         boolean requestData(String url);
 

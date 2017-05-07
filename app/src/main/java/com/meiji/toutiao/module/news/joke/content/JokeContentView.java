@@ -26,30 +26,15 @@ import java.util.List;
 
 public class JokeContentView extends LazyLoadFragment implements SwipeRefreshLayout.OnRefreshListener, IJokeContent.View {
 
-    private static final String CATEGORY = "CATEGORY";
     private static final String TAG = "JokeContentView";
-    private String categoryId;
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
     private IJokeContent.Presenter presenter;
     private JokeContentAdapter adapter;
     private boolean canLoading;
 
-    public static JokeContentView newInstance(String categoryId) {
-        Bundle bundle = new Bundle();
-        bundle.putString(CATEGORY, categoryId);
-        JokeContentView jokeContentView = new JokeContentView();
-        jokeContentView.setArguments(bundle);
-        return jokeContentView;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            categoryId = bundle.getString(CATEGORY);
-        }
+    public static JokeContentView newInstance() {
+        return new JokeContentView();
     }
 
     @Nullable
@@ -58,7 +43,6 @@ public class JokeContentView extends LazyLoadFragment implements SwipeRefreshLay
         View view = inflater.inflate(R.layout.fragment_base_main, container, false);
         presenter = new JokeContentPresenter(this);
         initView(view);
-//        onLoadData();
         return view;
     }
 
@@ -81,7 +65,7 @@ public class JokeContentView extends LazyLoadFragment implements SwipeRefreshLay
 
     @Override
     public void fetchData() {
-        onRequestData();
+        onLoadData();
     }
 
     @Override
@@ -90,8 +74,8 @@ public class JokeContentView extends LazyLoadFragment implements SwipeRefreshLay
     }
 
     @Override
-    public void onRequestData() {
-        presenter.doGetUrl(categoryId);
+    public void onLoadData() {
+        presenter.doLoadData();
     }
 
     @Override
@@ -107,7 +91,6 @@ public class JokeContentView extends LazyLoadFragment implements SwipeRefreshLay
                 }
             });
         } else {
-//            adapter.notifyItemInserted(list.size());
             List<JokeContentBean.DataBean.GroupBean> oldList = adapter.getList();
             DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.JOKE), true);
             result.dispatchUpdatesTo(adapter);
@@ -123,7 +106,7 @@ public class JokeContentView extends LazyLoadFragment implements SwipeRefreshLay
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!recyclerView.canScrollVertically(1)) {
                         if (canLoading) {
-                            presenter.doRefresh();
+                            presenter.doLoadMoreData();
                             canLoading = false;
                         }
                     }
@@ -133,7 +116,7 @@ public class JokeContentView extends LazyLoadFragment implements SwipeRefreshLay
     }
 
     @Override
-    public void onShowRefreshing() {
+    public void onShowLoading() {
         refresh_layout.post(new Runnable() {
             @Override
             public void run() {
@@ -143,7 +126,7 @@ public class JokeContentView extends LazyLoadFragment implements SwipeRefreshLay
     }
 
     @Override
-    public void onHideRefreshing() {
+    public void onHideLoading() {
         refresh_layout.post(new Runnable() {
             @Override
             public void run() {
@@ -153,7 +136,7 @@ public class JokeContentView extends LazyLoadFragment implements SwipeRefreshLay
     }
 
     @Override
-    public void onFail() {
+    public void onShowNetError() {
         Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT).show();
     }
 }

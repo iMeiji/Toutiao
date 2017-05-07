@@ -30,6 +30,21 @@ public class VideoContentPresenter extends NewsCommentPresenter implements IVide
     }
 
     @Override
+    public void doLoadData(String group_id, String item_id) {
+
+    }
+
+    @Override
+    public void doRequestData(String url) {
+
+    }
+
+    @Override
+    public void doSetAdapter() {
+
+    }
+
+    @Override
     public void doRequestVideoData(final String videoid) {
         new Thread(new Runnable() {
             @Override

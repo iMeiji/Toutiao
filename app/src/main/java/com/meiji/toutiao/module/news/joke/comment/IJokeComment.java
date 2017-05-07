@@ -11,32 +11,74 @@ import java.util.List;
 interface IJokeComment {
 
     interface View {
-        void onRequestData();
 
+        /**
+         * 设置适配器
+         */
         void onSetAdapter(List<JokeCommentBean.DataBean.RecentCommentsBean> list);
 
-        void onShowRefreshing();
+        /**
+         * 请求数据
+         */
+        void onLoadData();
 
-        void onHideRefreshing();
+        /**
+         * 显示加载动画
+         */
+        void onShowLoading();
 
-        void onFail();
+        /**
+         * 隐藏加载
+         */
+        void onHideLoading();
 
-        void onFinish();
+        /**
+         * 显示网络错误
+         */
+        void onShowNetError();
+
+        /**
+         * 加载完毕
+         */
+        void onShowNoMore();
+
     }
 
     interface Presenter {
 
-        void doGetUrl(String jokeId, String jokeCommentCount);
+        /**
+         * 请求数据
+         */
+        void doLoadData(String... jokeId_Count);
 
-        void doRequestData(String url);
+        /**
+         * 再起请求数据
+         */
+        void doLoadMoreData();
 
-        void doSetAdapter();
+        /**
+         * 设置适配器
+         */
+        void doSetAdapter(List<JokeCommentBean.DataBean.RecentCommentsBean> commentsBeanList);
 
+        /**
+         * 刷新
+         */
         void doRefresh();
 
-        void onFail();
+        /**
+         * 显示网络错误
+         */
+        void doShowNetError();
+
+        /**
+         * 加载完毕
+         */
+        void doShowNoMore();
+
     }
 
+    @Deprecated
     interface Model {
         boolean requestData(String url);
 

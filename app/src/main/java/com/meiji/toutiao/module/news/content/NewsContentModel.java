@@ -40,7 +40,7 @@ class NewsContentModel implements INewsContent.Model {
             Request request = new Request.Builder()
                     .get()
                     .url(url)
-                    .addHeader("User-Agent", Constant.USER_AGENT_PHONE)
+                    .addHeader("User-Agent", Constant.USER_AGENT_MOBILE)
                     .build();
             Response response = InitApp.getOkHttpClient().newCall(request).execute();
             if (response.isSuccessful()) {
