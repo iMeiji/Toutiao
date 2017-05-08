@@ -1,14 +1,21 @@
 package com.meiji.toutiao.module.photo.article;
 
-import android.os.Handler;
-import android.os.Message;
-
-import com.meiji.toutiao.api.PhotoApi;
+import com.meiji.toutiao.RetrofitFactory;
+import com.meiji.toutiao.api.IPhotoApi;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.module.photo.content.PhotoContentActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Meiji on 2017/2/16.
@@ -18,75 +25,104 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
 
     private static final String TAG = "PhotoArticlePresenter";
     private IPhotoArticle.View view;
-    private IPhotoArticle.Model model;
     private List<PhotoArticleBean.DataBean> dataList = new ArrayList<>();
-    private Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message message) {
-            if (message.what == 1) {
-                doSetAdapter();
-            }
-            if (message.what == 0) {
-                onFail();
-            }
-            return false;
-        }
-    });
     private String category;
-    private int offset = 0;
+    private int time;
 
     PhotoArticlePresenter(IPhotoArticle.View view) {
         this.view = view;
-        this.model = new PhotoArticleModel();
     }
 
     @Override
-    public void doGetUrl(String parameter) {
-        view.onShowRefreshing();
-        this.category = parameter;
-        String url = PhotoApi.getPhotoArticleUrl(category, 0, model.getmax_behot_time() + "");
-        doRequestData(url);
-    }
+    public void doLoadData(String... category) {
 
-    @Override
-    public void doRequestData(final String url) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                boolean result = model.requestData(url);
-                if (result) {
-                    Message message = handler.obtainMessage(1);
-                    message.sendToTarget();
-                } else {
-                    Message message = handler.obtainMessage(0);
-                    message.sendToTarget();
-                }
+        try {
+            if (null == this.category) {
+                this.category = category[0];
             }
-        }).start();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+
+        RetrofitFactory.getRetrofit().create(IPhotoApi.class).getPhotoArticle(this.category, time)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .flatMap(new Function<PhotoArticleBean, Observable<PhotoArticleBean.DataBean>>() {
+                    @Override
+                    public Observable<PhotoArticleBean.DataBean> apply(@NonNull PhotoArticleBean photoArticleBean) throws Exception {
+                        List<PhotoArticleBean.DataBean> data = photoArticleBean.getData();
+                        // 移除最后一项 数据有重复
+                        if (data.size() > 0)
+                            data.remove(data.size() - 1);
+                        time = photoArticleBean.getNext().getMax_behot_time();
+                        return Observable.fromIterable(data);
+                    }
+                })
+                .filter(new Predicate<PhotoArticleBean.DataBean>() {
+                    @Override
+                    public boolean test(@NonNull PhotoArticleBean.DataBean dataBean) throws Exception {
+                        // 去除重复新闻
+                        for (PhotoArticleBean.DataBean bean : dataList) {
+                            if (dataBean.getTitle().equals(bean.getTitle())) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                })
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<PhotoArticleBean.DataBean>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull List<PhotoArticleBean.DataBean> dataBeen) {
+                        doSetAdapter(dataBeen);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        doShowNetError();
+                    }
+                });
+
     }
 
     @Override
-    public void doSetAdapter() {
-        dataList.addAll(model.getDataList());
+    public void doLoadMoreData() {
+        doLoadData();
+    }
+
+    @Override
+    public void doSetAdapter(List<PhotoArticleBean.DataBean> dataBeen) {
+        dataList.addAll(dataBeen);
         view.onSetAdapter(dataList);
-        view.onHideRefreshing();
+        view.onHideLoading();
+        // 释放内存
+        if (dataList.size() > 100) {
+            dataList.clear();
+        }
     }
 
     @Override
     public void doRefresh() {
-        offset += 20;
-        String url = PhotoApi.getPhotoArticleUrl(category, offset, model.getmax_behot_time() + "");
-        doRequestData(url);
+        if (dataList.size() != 0) {
+            dataList.clear();
+        }
+        doLoadData();
     }
 
     @Override
-    public void onFail() {
-        view.onHideRefreshing();
-        view.onFail();
+    public void doShowNetError() {
+        view.onHideLoading();
+        view.onShowNetError();
     }
 
     @Override
     public void doOnClickItem(int position) {
-        PhotoContentActivity.startActivity(dataList.get(position));
+        PhotoContentActivity.launch(dataList.get(position));
     }
 }

@@ -17,7 +17,7 @@ import okhttp3.Response;
 /**
  * Created by Meiji on 2017/2/16.
  */
-
+@Deprecated
 public class PhotoArticleModel implements IPhotoArticle.Model {
 
     private static final String TAG = "NewsArticleModel";

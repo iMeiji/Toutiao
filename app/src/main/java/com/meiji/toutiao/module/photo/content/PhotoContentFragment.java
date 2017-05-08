@@ -110,7 +110,17 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
     }
 
     @Override
-    public void onFail() {
+    public void onShowLoading() {
+
+    }
+
+    @Override
+    public void onHideLoading() {
+
+    }
+
+    @Override
+    public void onShowNetError() {
         Snackbar.make(viewPager, R.string.network_error, Snackbar.LENGTH_SHORT).show();
     }
 
@@ -135,16 +145,15 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        switch (id) {
-            case R.id.tv_save:
-                // 运行时权限处理
-                if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
+        if (id == R.id.tv_save) {
+            // 运行时权限处理
+            if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
 
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                } else {
-                    presenter.doSaveImage();
-                }
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            } else {
+                presenter.doSaveImage();
+            }
         }
     }
 

@@ -1,6 +1,8 @@
 package com.meiji.toutiao.module.news.article;
 
 import com.meiji.toutiao.bean.news.NewsArticleBean;
+import com.meiji.toutiao.module.base.IBasePresenter;
+import com.meiji.toutiao.module.base.IBaseView;
 
 import java.util.List;
 
@@ -10,7 +12,7 @@ import java.util.List;
 
 public interface INewsArticle {
 
-    interface View {
+    interface View extends IBaseView {
 
         /**
          * 请求数据
@@ -21,24 +23,9 @@ public interface INewsArticle {
          * 设置适配器
          */
         void onSetAdapter(List<NewsArticleBean.DataBean> list);
-
-        /**
-         * 显示加载动画
-         */
-        void onShowLoading();
-
-        /**
-         * 隐藏加载
-         */
-        void onHideLoading();
-
-        /**
-         * 显示网络错误
-         */
-        void onShowNetError();
     }
 
-    interface Presenter {
+    interface Presenter extends IBasePresenter {
 
         /**
          * 请求数据
@@ -54,16 +41,6 @@ public interface INewsArticle {
          * 设置适配器
          */
         void doSetAdapter(List<NewsArticleBean.DataBean> dataBeen);
-
-        /**
-         * 刷新数据
-         */
-        void doRefresh();
-
-        /**
-         * 显示网络错误
-         */
-        void doShowNetError();
 
         /**
          * 点击事件跳转

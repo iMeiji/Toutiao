@@ -34,7 +34,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                 view.onSaveImageSuccess();
             }
             if (message.what == SAVE_IMAGE_FAIL || message.what == HTTP_REQUEST_FAIL) {
-                view.onFail();
+                view.onShowNetError();
             }
             return false;
         }
@@ -56,7 +56,12 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
     }
 
     @Override
-    public void onFail() {
+    public void doRefresh() {
+
+    }
+
+    @Override
+    public void doShowNetError() {
 
     }
 
@@ -110,16 +115,4 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
             }
         }).start();
     }
-
-    @Override
-    public void doGetComment() {
-//        Intent intent = new Intent(InitApp.AppContext, PhotoCommentFragment.class);
-//        intent.putExtra(PhotoCommentFragment.GROUP_ID, group_id);
-//        intent.putExtra(PhotoCommentFragment.ITEM_ID, item_id);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        InitApp.AppContext.launch(intent);
-//        // 打印下点击的标题和链接
-//        Log.d(TAG, "doShowComment: " + group_id + "  " + item_id);
-    }
-
 }

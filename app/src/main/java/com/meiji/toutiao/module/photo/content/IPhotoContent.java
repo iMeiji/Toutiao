@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
+import com.meiji.toutiao.module.base.IBasePresenter;
+import com.meiji.toutiao.module.base.IBaseView;
 
 /**
  * Created by Meiji on 2017/2/16.
@@ -11,30 +13,18 @@ import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
 
 interface IPhotoContent {
 
-    interface View {
+    interface View extends IBaseView {
 
         void onSetImageBrowser(PhotoGalleryBean bean, int position);
-
-        /**
-         * 请求数据失败
-         */
-        void onFail();
 
         void onSaveImageSuccess();
     }
 
-    interface Presenter {
+    interface Presenter extends IBasePresenter {
 
         void doSetImageBrowser();
 
-        /**
-         * 请求数据失败
-         */
-        void onFail();
-
         void doRequestData(PhotoArticleBean.DataBean dataBean);
-
-        void doGetComment();
 
         int doGetImageCount();
 

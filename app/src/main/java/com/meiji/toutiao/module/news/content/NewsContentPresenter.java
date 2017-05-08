@@ -95,7 +95,7 @@ class NewsContentPresenter implements INewsContent.Presenter {
 
                     @Override
                     public void onComplete() {
-                        view.onShowNetError();
+                        doShowNetError();
                     }
                 });
     }
@@ -140,5 +140,15 @@ class NewsContentPresenter implements INewsContent.Presenter {
                 .addToBackStack(NewsCommentFragment.class.getName())
                 .hide(fragment)
                 .commit();
+    }
+
+    @Override
+    public void doRefresh() {
+
+    }
+
+    @Override
+    public void doShowNetError() {
+        view.onShowNetError();
     }
 }

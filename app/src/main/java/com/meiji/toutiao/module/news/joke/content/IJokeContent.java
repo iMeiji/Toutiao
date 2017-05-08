@@ -1,6 +1,8 @@
 package com.meiji.toutiao.module.news.joke.content;
 
 import com.meiji.toutiao.bean.news.joke.JokeContentBean;
+import com.meiji.toutiao.module.base.IBasePresenter;
+import com.meiji.toutiao.module.base.IBaseView;
 
 import java.util.List;
 
@@ -10,7 +12,7 @@ import java.util.List;
 
 interface IJokeContent {
 
-    interface View {
+    interface View extends IBaseView {
 
         /**
          * 设置适配器
@@ -21,25 +23,9 @@ interface IJokeContent {
          * 请求数据
          */
         void onLoadData();
-
-        /**
-         * 显示加载动画
-         */
-        void onShowLoading();
-
-        /**
-         * 隐藏加载
-         */
-        void onHideLoading();
-
-        /**
-         * 显示网络错误
-         */
-        void onShowNetError();
-
     }
 
-    interface Presenter {
+    interface Presenter extends IBasePresenter {
 
         /**
          * 请求数据
@@ -55,16 +41,6 @@ interface IJokeContent {
          * 设置适配器
          */
         void doSetAdapter();
-
-        /**
-         * 刷新数据
-         */
-        void doRefresh();
-
-        /**
-         * 显示网络错误
-         */
-        void doShowNetError();
 
         /**
          * 点击事件跳转

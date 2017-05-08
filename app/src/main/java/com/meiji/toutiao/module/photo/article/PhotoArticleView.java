@@ -22,7 +22,6 @@ import java.util.List;
 
 public class PhotoArticleView extends LazyLoadFragment implements IPhotoArticle.View, SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String CATEGORY = "CATEGORY";
     private static final String TAG = "PhotoArticleView";
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
@@ -33,7 +32,7 @@ public class PhotoArticleView extends LazyLoadFragment implements IPhotoArticle.
 
     public static PhotoArticleView newInstance(String categoryId) {
         Bundle bundle = new Bundle();
-        bundle.putString(CATEGORY, categoryId);
+        bundle.putString("categoryId", categoryId);
         PhotoArticleView instance = new PhotoArticleView();
         instance.setArguments(bundle);
         return instance;
@@ -44,7 +43,7 @@ public class PhotoArticleView extends LazyLoadFragment implements IPhotoArticle.
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            categoryId = bundle.getString(CATEGORY);
+            categoryId = bundle.getString("categoryId");
         }
     }
 
@@ -76,7 +75,7 @@ public class PhotoArticleView extends LazyLoadFragment implements IPhotoArticle.
 
     @Override
     public void fetchData() {
-        onRequestData();
+        onLoadData();
     }
 
     @Override
@@ -85,8 +84,9 @@ public class PhotoArticleView extends LazyLoadFragment implements IPhotoArticle.
     }
 
     @Override
-    public void onRequestData() {
-        presenter.doGetUrl(categoryId);
+    public void onLoadData() {
+        onShowLoading();
+        presenter.doLoadData(categoryId);
     }
 
     @Override
@@ -102,7 +102,6 @@ public class PhotoArticleView extends LazyLoadFragment implements IPhotoArticle.
                 }
             });
         } else {
-//            adapter.notifyItemInserted(list.size());
             List<PhotoArticleBean.DataBean> oldList = adapter.getList();
             DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.PHOTO), true);
             result.dispatchUpdatesTo(adapter);
@@ -118,7 +117,7 @@ public class PhotoArticleView extends LazyLoadFragment implements IPhotoArticle.
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!recyclerView.canScrollVertically(1)) {
                         if (canLoading) {
-                            presenter.doRefresh();
+                            presenter.doLoadMoreData();
                             canLoading = false;
                         }
                     }
@@ -128,7 +127,7 @@ public class PhotoArticleView extends LazyLoadFragment implements IPhotoArticle.
     }
 
     @Override
-    public void onShowRefreshing() {
+    public void onShowLoading() {
         refresh_layout.post(new Runnable() {
             @Override
             public void run() {
@@ -138,7 +137,7 @@ public class PhotoArticleView extends LazyLoadFragment implements IPhotoArticle.
     }
 
     @Override
-    public void onHideRefreshing() {
+    public void onHideLoading() {
         refresh_layout.post(new Runnable() {
             @Override
             public void run() {
@@ -148,7 +147,7 @@ public class PhotoArticleView extends LazyLoadFragment implements IPhotoArticle.
     }
 
     @Override
-    public void onFail() {
+    public void onShowNetError() {
         Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT).show();
     }
 }

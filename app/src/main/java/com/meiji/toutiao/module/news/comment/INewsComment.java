@@ -1,6 +1,8 @@
 package com.meiji.toutiao.module.news.comment;
 
 import com.meiji.toutiao.bean.news.NewsCommentBean;
+import com.meiji.toutiao.module.base.IBasePresenter;
+import com.meiji.toutiao.module.base.IBaseView;
 
 import java.util.List;
 
@@ -10,7 +12,7 @@ import java.util.List;
 
 public interface INewsComment {
 
-    interface View {
+    interface View extends IBaseView {
 
         /**
          * 请求数据
@@ -23,27 +25,12 @@ public interface INewsComment {
         void onSetAdapter(List<NewsCommentBean.DataBean.CommentsBean> list);
 
         /**
-         * 显示加载动画
-         */
-        void onShowLoading();
-
-        /**
-         * 隐藏加载
-         */
-        void onHideLoading();
-
-        /**
-         * 显示网络错误
-         */
-        void onShowNetError();
-
-        /**
          * 加载完毕
          */
         void onShowNoMore();
     }
 
-    interface Presenter {
+    interface Presenter extends IBasePresenter {
 
         /**
          * 请求数据
@@ -59,16 +46,6 @@ public interface INewsComment {
          * 设置适配器
          */
         void doSetAdapter(List<NewsCommentBean.DataBean.CommentsBean> commentsBeen);
-
-        /**
-         * 刷新
-         */
-        void doRefresh();
-
-        /**
-         * 显示网络错误
-         */
-        void doShowNetError();
 
         /**
          * 加载完毕
