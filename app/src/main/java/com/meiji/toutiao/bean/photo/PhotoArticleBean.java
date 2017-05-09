@@ -3,8 +3,6 @@ package com.meiji.toutiao.bean.photo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 /**
@@ -16,8 +14,8 @@ public class PhotoArticleBean {
     /**
      * has_more : true
      * message : success
-     * data : [{"media_name":"这里的热点不热","abstract":"","impression_count":1369085,"image_list":[{"url":"http://p3.pstatp.com/list/640x360/12de00006ef5ced3796a","width":640,"url_list":[{"url":"http://p3.pstatp.com/list/640x360/12de00006ef5ced3796a"},{"url":"http://pb2.pstatp.com/list/640x360/12de00006ef5ced3796a"},{"url":"http://pb3.pstatp.com/list/640x360/12de00006ef5ced3796a"}],"uri":"list/640x360/12de00006ef5ced3796a","height":360},{"url":"http://p1.pstatp.com/list/12de00006f2d4d29dda3","width":640,"url_list":[{"url":"http://p1.pstatp.com/list/12de00006f2d4d29dda3"},{"url":"http://pb3.pstatp.com/list/12de00006f2d4d29dda3"},{"url":"http://pb3.pstatp.com/list/12de00006f2d4d29dda3"}],"uri":"list/12de00006f2d4d29dda3","height":360},{"url":"http://p3.pstatp.com/list/12de00007b336b90f014","width":640,"url_list":[{"url":"http://p3.pstatp.com/list/12de00007b336b90f014"},{"url":"http://pb2.pstatp.com/list/12de00007b336b90f014"},{"url":"http://pb3.pstatp.com/list/12de00007b336b90f014"}],"uri":"list/12de00007b336b90f014","height":360}],"gallary_flag":1,"external_visit_count":4813,"article_type":0,"more_mode":true,"tag":"news","is_favorite":0,"has_m3u8_video":0,"keywords":"G650,湾流G550,公务机,王健林,私人飞机","has_mp4_video":0,"favorite_count":570,"display_url":"http://toutiao.com/group/6363765770279289090/","media_avatar_url":"http://p1.pstatp.com/large/e580017fa88196856b1","article_sub_type":0,"bury_count":2,"title":"看完王健林的私人飞机，再看刘强东的，刚好相差1个小目标的钱","datetime":"2017-02-16 00:14","has_video":false,"share_url":"http://toutiao.com/group/6363765770279289090/?iid=53942131955&app=news_article","id":6363765770279289090,"source":"这里的热点不热","comment_count":147,"article_url":"http://toutiao.com/group/6363765770279289090/","create_time":1481680311,"recommend":0,"has_gallery":true,"tips":0,"aggr_type":1,"item_source_url":"/item/6363586734910865922/","media_url":"http://toutiao.com/m52004496401/","display_time":1481680296,"publish_time":1481680296,"go_detail_count":206863,"group_flags":131074,"middle_mode":false,"display_title":" ","gallary_image_count":14,"item_seo_url":"/item/6363586734910865922/","tag_id":6363765770279289090,"source_url":"/group/6363765770279289090/","article_genre":"gallery","large_mode":false,"item_id":6363586734910865922,"natant_level":0,"is_digg":0,"seo_url":"/group/6363765770279289090/","repin_count":570,"url":"http://toutiao.com/group/6363765770279289090/","level":0,"digg_count":7,"behot_time":1487175286,"hot":1,"preload_web":2,"comments_count":147,"has_image":true,"is_bury":0,"group_id":6363765770279289090,"middle_image":{"url":"http://p3.pstatp.com/list/12de00006ef5ced3796a","width":640,"url_list":[{"url":"http://p3.pstatp.com/list/12de00006ef5ced3796a"},{"url":"http://pb2.pstatp.com/list/12de00006ef5ced3796a"},{"url":"http://pb3.pstatp.com/list/12de00006ef5ced3796a"}],"uri":"list/12de00006ef5ced3796a","height":360}},{"media_name":"有趣的事实","abstract":"","impression_count":162302,"image_list":[{"url":"http://p3.pstatp.com/list/364x360/16c50003bbad4eefcf81","width":982,"url_list":[{"url":"http://p3.pstatp.com/list/364x360/16c50003bbad4eefcf81"},{"url":"http://pb2.pstatp.com/list/364x360/16c50003bbad4eefcf81"},{"url":"http://pb3.pstatp.com/list/364x360/16c50003bbad4eefcf81"}],"uri":"list/364x360/16c50003bbad4eefcf81","height":667},{"url":"http://p1.pstatp.com/list/272x178/16830005ef7c28fcc98b","width":982,"url_list":[{"url":"http://p1.pstatp.com/list/272x178/16830005ef7c28fcc98b"},{"url":"http://pb3.pstatp.com/list/272x178/16830005ef7c28fcc98b"},{"url":"http://pb3.pstatp.com/list/272x178/16830005ef7c28fcc98b"}],"uri":"list/272x178/16830005ef7c28fcc98b","height":655},{"url":"http://p3.pstatp.com/list/272x178/16ca0000767d81a323ec","width":757,"url_list":[{"url":"http://p3.pstatp.com/list/272x178/16ca0000767d81a323ec"},{"url":"http://pb2.pstatp.com/list/272x178/16ca0000767d81a323ec"},{"url":"http://pb3.pstatp.com/list/272x178/16ca0000767d81a323ec"}],"uri":"list/272x178/16ca0000767d81a323ec","height":570}],"gallary_flag":2,"external_visit_count":307,"article_type":0,"more_mode":true,"tag":"news_world","is_favorite":0,"has_m3u8_video":0,"keywords":"朝鲜,地铁,百货商场,百姓生活,平壤","has_mp4_video":0,"favorite_count":30,"display_url":"http://toutiao.com/group/6387198713152798978/","media_avatar_url":"http://p1.pstatp.com/large/150c0009a6a73be2163b","article_sub_type":0,"bury_count":0,"title":"走进朝鲜百姓生活，实拍朝鲜百货商场、地铁、公寓都长什么样？","datetime":"2017-02-16 00:13","has_video":false,"share_url":"http://toutiao.com/group/6387198713152798978/?iid=53942131955&app=news_article","id":6387198713152798978,"source":"有趣的事实","comment_count":4,"article_url":"http://toutiao.com/group/6387198713152798978/","create_time":1487136323,"recommend":0,"has_gallery":true,"tips":0,"aggr_type":1,"item_source_url":"/item/6387201773441909250/","media_url":"http://toutiao.com/m1554927299234818/","display_time":1487136300,"publish_time":1487136300,"go_detail_count":13971,"group_flags":131074,"middle_mode":false,"display_title":" ","gallary_image_count":17,"item_seo_url":"/item/6387201773441909250/","tag_id":6387198713152798978,"source_url":"/group/6387198713152798978/","article_genre":"gallery","large_mode":false,"item_id":6387201773441909250,"natant_level":0,"is_digg":0,"seo_url":"/group/6387198713152798978/","repin_count":30,"url":"http://toutiao.com/group/6387198713152798978/","level":0,"digg_count":0,"behot_time":1487175227,"hot":1,"preload_web":2,"comments_count":4,"has_image":true,"is_bury":0,"group_id":6387198713152798978,"middle_image":{"url":"http://p3.pstatp.com/list/16aa0006a176423d4779","width":447,"url_list":[{"url":"http://p3.pstatp.com/list/16aa0006a176423d4779"},{"url":"http://pb2.pstatp.com/list/16aa0006a176423d4779"},{"url":"http://pb3.pstatp.com/list/16aa0006a176423d4779"}],"uri":"list/16aa0006a176423d4779","height":312}},{"is_digg":0,"media_name":"有趣的事实","repin_count":30,"abstract":"","impression_count":162302,"image_list":[{"url":"http://p3.pstatp.com/list/364x360/16c50003bbad4eefcf81","width":982,"url_list":[{"url":"http://p3.pstatp.com/list/364x360/16c50003bbad4eefcf81"},{"url":"http://pb2.pstatp.com/list/364x360/16c50003bbad4eefcf81"},{"url":"http://pb3.pstatp.com/list/364x360/16c50003bbad4eefcf81"}],"uri":"list/364x360/16c50003bbad4eefcf81","height":667},{"url":"http://p1.pstatp.com/list/272x178/16830005ef7c28fcc98b","width":982,"url_list":[{"url":"http://p1.pstatp.com/list/272x178/16830005ef7c28fcc98b"},{"url":"http://pb3.pstatp.com/list/272x178/16830005ef7c28fcc98b"},{"url":"http://pb3.pstatp.com/list/272x178/16830005ef7c28fcc98b"}],"uri":"list/272x178/16830005ef7c28fcc98b","height":655},{"url":"http://p3.pstatp.com/list/272x178/16ca0000767d81a323ec","width":757,"url_list":[{"url":"http://p3.pstatp.com/list/272x178/16ca0000767d81a323ec"},{"url":"http://pb2.pstatp.com/list/272x178/16ca0000767d81a323ec"},{"url":"http://pb3.pstatp.com/list/272x178/16ca0000767d81a323ec"}],"uri":"list/272x178/16ca0000767d81a323ec","height":570}],"display_time":1487136300,"datetime":"2017-02-16 00:13","honey":true,"article_type":0,"more_mode":true,"tag":"news_world","is_favorite":0,"has_m3u8_video":0,"keywords":"朝鲜,地铁,百货商场,百姓生活,平壤","has_mp4_video":0,"favorite_count":30,"aggr_type":1,"article_sub_type":0,"level":0,"bury_count":0,"title":"走进朝鲜百姓生活，实拍朝鲜百货商场、地铁、公寓都长什么样？","preload_web":2,"has_video":false,"share_url":"http://toutiao.com/group/6387198713152798978/?iid=53942131955&app=news_article","id":6387198713152798978,"source":"有趣的事实","comment_count":4,"article_url":"http://toutiao.com/group/6387349920323928321/?_as_=1487175346","recommend":0,"comments_count":4,"tips":0,"large_mode":false,"item_source_url":"/item/6387352931808576001/?_as_=1487175346","media_url":"http://toutiao.com/m1554927299234818/","media_avatar_url":"http://p1.pstatp.com/large/150c0009a6a73be2163b","publish_time":1487136300,"go_detail_count":13971,"group_flags":131074,"middle_mode":false,"gallary_image_count":17,"item_seo_url":"/item/6387352931808576001/?_as_=1487175346","tag_id":6387198713152798978,"source_url":"/group/6387349920323928321/?_as_1487175346","item_id":6387352931808576001,"natant_level":0,"digg_count":0,"display_title":" ","article_genre":"gallery","seo_url":"/group/6387349920323928321/?_as_1487175346","gallary_flag":2,"url":"http://toutiao.com/group/6387349920323928321/?_as_=1487175346","display_url":"http://toutiao.com/group/6387349920323928321/?_as_=1487175346","external_visit_count":307,"behot_time":1487175227,"hot":1,"create_time":1487136323,"has_gallery":true,"has_image":true,"is_bury":0,"group_id":6387349920323928321,"middle_image":{"url":"http://p3.pstatp.com/list/16aa0006a176423d4779","width":447,"url_list":[{"url":"http://p3.pstatp.com/list/16aa0006a176423d4779"},{"url":"http://pb2.pstatp.com/list/16aa0006a176423d4779"},{"url":"http://pb3.pstatp.com/list/16aa0006a176423d4779"}],"uri":"list/16aa0006a176423d4779","height":312}}]
-     * next : {"max_behot_time":1487175227}
+     * data : [{"image_url":"http://p9.pstatp.com/list/640x360/1b820001767b34813c82","media_avatar_url":"http://p1.pstatp.com/large/d2a0011291a5cfef5c3","article_genre":"gallery","is_diversion_page":false,"title":"我拍少女签约模特王纯粹少女视觉","middle_mode":false,"gallary_image_count":41,"image_list":[{"url":"http://p3.pstatp.com/list/640x360/1b820001767b34813c82","width":620,"url_list":[{"url":"http://p9.pstatp.com/list/640x360/1b820001767b34813c82"},{"url":"http://pb1.pstatp.com/list/640x360/1b820001767b34813c82"},{"url":"http://pb3.pstatp.com/list/640x360/1b820001767b34813c82"}],"uri":"list/640x360/1b820001767b34813c82","height":855},{"url":"http://p3.pstatp.com/list/640x360/1b8700015c172e7de742","width":1280,"url_list":[{"url":"http://p3.pstatp.com/list/1b8700015c172e7de742"},{"url":"http://pb9.pstatp.com/list/1b8700015c172e7de742"},{"url":"http://pb1.pstatp.com/list/1b8700015c172e7de742"}],"uri":"list/1b8700015c172e7de742","height":720},{"url":"http://p9.pstatp.com/list/640x360/1b8500015b6a1c897705","width":1656,"url_list":[{"url":"http://p9.pstatp.com/list/1b8500015b6a1c897705"},{"url":"http://pb1.pstatp.com/list/1b8500015b6a1c897705"},{"url":"http://pb3.pstatp.com/list/1b8500015b6a1c897705"}],"uri":"list/1b8500015b6a1c897705","height":2415}],"more_mode":true,"behot_time":1494158550,"source_url":"/group/6408674663173767426/","source":"我拍少女","hot":1,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":1,"group_id":"6408674663173767426","media_url":"http://toutiao.com/m4439122761/"},{"comments_count":2,"media_avatar_url":"http://p1.pstatp.com/large/18a20008daa53b84fe98","article_genre":"gallery","is_diversion_page":false,"title":"看看这些历史照片，还是那么励志","middle_mode":true,"gallary_image_count":10,"image_list":[{"url":"http://p3.pstatp.com/list/640x360/19fe0000618b19608396","width":550,"url_list":[{"url":"http://p3.pstatp.com/list/640x360/19fe0000618b19608396"},{"url":"http://pb9.pstatp.com/list/640x360/19fe0000618b19608396"},{"url":"http://pb1.pstatp.com/list/640x360/19fe0000618b19608396"}],"uri":"list/640x360/19fe0000618b19608396","height":540},{"url":"http://p3.pstatp.com/list/640x360/19fc000059723dbde042","width":629,"url_list":[{"url":"http://p3.pstatp.com/list/19fc000059723dbde042"},{"url":"http://pb9.pstatp.com/list/19fc000059723dbde042"},{"url":"http://pb1.pstatp.com/list/19fc000059723dbde042"}],"uri":"list/19fc000059723dbde042","height":422},{"url":"http://p1.pstatp.com/list/640x360/19fb00022dc831724f76","width":613,"url_list":[{"url":"http://p1.pstatp.com/list/19fb00022dc831724f76"},{"url":"http://pb3.pstatp.com/list/19fb00022dc831724f76"},{"url":"http://pb9.pstatp.com/list/19fb00022dc831724f76"}],"uri":"list/19fb00022dc831724f76","height":358}],"behot_time":1494158506,"source_url":"/group/6403298206289658114/","source":"旦卫观史","more_mode":false,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"image_url":"http://p3.pstatp.com/list/1a6b000430bd1a20139d","group_id":"6403298206289658114","media_url":"http://toutiao.com/m1561991836845057/"},{"image_url":"http://p3.pstatp.com/list/640x360/1db90003249e4d363240","media_avatar_url":"http://p9.pstatp.com/large/1a6d000af5e76a959f98","article_genre":"gallery","is_diversion_page":false,"title":"百家企业强强联手进驻河南某高校，展开一场盛大的招聘会","middle_mode":false,"gallary_image_count":12,"image_list":[{"url":"http://p9.pstatp.com/list/640x360/1db90003249e4d363240","width":2449,"url_list":[{"url":"http://p3.pstatp.com/list/640x360/1db90003249e4d363240"},{"url":"http://pb9.pstatp.com/list/640x360/1db90003249e4d363240"},{"url":"http://pb1.pstatp.com/list/640x360/1db90003249e4d363240"}],"uri":"list/640x360/1db90003249e4d363240","height":1632},{"url":"http://p3.pstatp.com/list/640x360/1db8000194e2150e0937","width":2449,"url_list":[{"url":"http://p3.pstatp.com/list/1db8000194e2150e0937"},{"url":"http://pb9.pstatp.com/list/1db8000194e2150e0937"},{"url":"http://pb1.pstatp.com/list/1db8000194e2150e0937"}],"uri":"list/1db8000194e2150e0937","height":1632},{"url":"http://p1.pstatp.com/list/640x360/1dbc00003d3ed8e56434","width":2449,"url_list":[{"url":"http://p1.pstatp.com/list/1dbc00003d3ed8e56434"},{"url":"http://pb3.pstatp.com/list/1dbc00003d3ed8e56434"},{"url":"http://pb9.pstatp.com/list/1dbc00003d3ed8e56434"}],"uri":"list/1dbc00003d3ed8e56434","height":1632}],"more_mode":true,"behot_time":1494158462,"source_url":"/group/6413267133846176001/","source":"程大川","hot":1,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":2,"group_id":"6413267133846176001","media_url":"http://toutiao.com/m1564936770259970/"},{"image_url":"http://p3.pstatp.com/list/272x178/16830001fd8410b86945","media_avatar_url":"http://p3.pstatp.com/large/ef30009e459ecbd6982","article_genre":"gallery","is_diversion_page":false,"title":"九年后：探访地震灾区农民的春节，看着最后四张好心酸！","middle_mode":false,"gallary_image_count":11,"image_list":[{"url":"http://p3.pstatp.com/list/640x360/16830001fd8410b86945","width":1196,"url_list":[{"url":"http://p3.pstatp.com/list/272x178/16830001fd8410b86945"},{"url":"http://pb9.pstatp.com/list/272x178/16830001fd8410b86945"},{"url":"http://pb1.pstatp.com/list/272x178/16830001fd8410b86945"}],"uri":"list/272x178/16830001fd8410b86945","height":807},{"url":"http://p1.pstatp.com/list/640x360/16880003d8573a90d1c7","width":1196,"url_list":[{"url":"http://p1.pstatp.com/list/364x360/16880003d8573a90d1c7"},{"url":"http://pb3.pstatp.com/list/364x360/16880003d8573a90d1c7"},{"url":"http://pb9.pstatp.com/list/364x360/16880003d8573a90d1c7"}],"uri":"list/364x360/16880003d8573a90d1c7","height":807},{"url":"http://p3.pstatp.com/list/640x360/16830001fdb7c05a1404","width":1196,"url_list":[{"url":"http://p1.pstatp.com/list/272x178/16830001fdb7c05a1404"},{"url":"http://pb3.pstatp.com/list/272x178/16830001fdb7c05a1404"},{"url":"http://pb9.pstatp.com/list/272x178/16830001fdb7c05a1404"}],"uri":"list/272x178/16830001fdb7c05a1404","height":807}],"more_mode":true,"behot_time":1494158418,"source_url":"/group/6386166331998191873/","source":"田间小农","hot":1,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":2,"group_id":"6386166331998191873","media_url":"http://toutiao.com/m51900412499/"},{"image_url":"http://p3.pstatp.com/list/640x360/1c5c000460e529cccab3","media_avatar_url":"http://p3.pstatp.com/large/1a6a000645fa501f7685","article_genre":"gallery","is_diversion_page":false,"title":"这位老爷爷几十年如一日照顾残疾狗狗，行动令人钦佩不已","middle_mode":false,"gallary_image_count":15,"image_list":[{"url":"http://p9.pstatp.com/list/640x360/1c5c000460e529cccab3","width":609,"url_list":[{"url":"http://p3.pstatp.com/list/640x360/1c5c000460e529cccab3"},{"url":"http://pb9.pstatp.com/list/640x360/1c5c000460e529cccab3"},{"url":"http://pb1.pstatp.com/list/640x360/1c5c000460e529cccab3"}],"uri":"list/640x360/1c5c000460e529cccab3","height":345},{"url":"http://p1.pstatp.com/list/640x360/1b830005c16744ef48a1","width":605,"url_list":[{"url":"http://p1.pstatp.com/list/1b830005c16744ef48a1"},{"url":"http://pb3.pstatp.com/list/1b830005c16744ef48a1"},{"url":"http://pb9.pstatp.com/list/1b830005c16744ef48a1"}],"uri":"list/1b830005c16744ef48a1","height":344},{"url":"http://p1.pstatp.com/list/640x360/1b860003240972ec8c67","width":607,"url_list":[{"url":"http://p1.pstatp.com/list/1b860003240972ec8c67"},{"url":"http://pb3.pstatp.com/list/1b860003240972ec8c67"},{"url":"http://pb9.pstatp.com/list/1b860003240972ec8c67"}],"uri":"list/1b860003240972ec8c67","height":344}],"more_mode":true,"behot_time":1494158374,"source_url":"/group/6410261596723642626/","source":"飘琳曦","hot":1,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":5,"group_id":"6410261596723642626","media_url":"http://toutiao.com/m1563190723175426/"},{"image_url":"http://p1.pstatp.com/list/272x178/16330001d6d531348286","media_avatar_url":"http://p3.pstatp.com/large/16aa0000bf3f0af34aed","article_genre":"gallery","is_diversion_page":false,"title":"这脑洞开的简直逆天啊","middle_mode":false,"gallary_image_count":15,"image_list":[{"url":"http://p3.pstatp.com/list/640x360/16330001d6d531348286","width":550,"url_list":[{"url":"http://p1.pstatp.com/list/272x178/16330001d6d531348286"},{"url":"http://pb3.pstatp.com/list/272x178/16330001d6d531348286"},{"url":"http://pb9.pstatp.com/list/272x178/16330001d6d531348286"}],"uri":"list/272x178/16330001d6d531348286","height":547},{"url":"http://p9.pstatp.com/list/640x360/1631000667541aa25fa1","width":550,"url_list":[{"url":"http://p1.pstatp.com/list/364x360/1631000667541aa25fa1"},{"url":"http://pb3.pstatp.com/list/364x360/1631000667541aa25fa1"},{"url":"http://pb9.pstatp.com/list/364x360/1631000667541aa25fa1"}],"uri":"list/364x360/1631000667541aa25fa1","height":550},{"url":"http://p1.pstatp.com/list/640x360/16330001d7a1c21192da","width":550,"url_list":[{"url":"http://p9.pstatp.com/list/272x178/16330001d7a1c21192da"},{"url":"http://pb1.pstatp.com/list/272x178/16330001d7a1c21192da"},{"url":"http://pb3.pstatp.com/list/272x178/16330001d7a1c21192da"}],"uri":"list/272x178/16330001d7a1c21192da","height":544}],"behot_time":1494158330,"source_url":"/group/6384540426833854721/","source":"就懂个球","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":1,"group_id":"6384540426833854721","media_url":"http://toutiao.com/m1558652994054146/"},{"media_avatar_url":"http://p3.pstatp.com/large/150c000f10647e1014a5","article_genre":"gallery","is_diversion_page":false,"title":"十里桃花林（河北科技大学版）","middle_mode":false,"gallary_image_count":29,"image_list":[{"url":"http://p3.pstatp.com/list/640x360/18b200024ff786577613","width":2449,"url_list":[{"url":"http://p3.pstatp.com/list/640x360/18b200024ff786577613"},{"url":"http://pb9.pstatp.com/list/640x360/18b200024ff786577613"},{"url":"http://pb1.pstatp.com/list/640x360/18b200024ff786577613"}],"uri":"list/640x360/18b200024ff786577613","height":1632},{"url":"http://p3.pstatp.com/list/640x360/18a900053bbcb21a74ca","width":2449,"url_list":[{"url":"http://p3.pstatp.com/list/18a900053bbcb21a74ca"},{"url":"http://pb9.pstatp.com/list/18a900053bbcb21a74ca"},{"url":"http://pb1.pstatp.com/list/18a900053bbcb21a74ca"}],"uri":"list/18a900053bbcb21a74ca","height":1632},{"url":"http://p9.pstatp.com/list/640x360/18b20002502ef4517456","width":2449,"url_list":[{"url":"http://p9.pstatp.com/list/18b20002502ef4517456"},{"url":"http://pb1.pstatp.com/list/18b20002502ef4517456"},{"url":"http://pb3.pstatp.com/list/18b20002502ef4517456"}],"uri":"list/18b20002502ef4517456","height":1632}],"more_mode":true,"behot_time":1494158286,"source_url":"/group/6395860041644032257/","source":"鬼神之力","hot":1,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"image_url":"http://p3.pstatp.com/list/640x360/18b200024ff786577613","group_id":"6395860041644032257","media_url":"http://toutiao.com/m1559477915084801/"},{"comments_count":2,"media_avatar_url":"http://p1.pstatp.com/large/1a6a000afe6c3e9f1059","article_genre":"gallery","is_diversion_page":false,"title":"带你领略中国大学之湖南大学","middle_mode":true,"gallary_image_count":10,"image_list":[{"url":"http://p9.pstatp.com/list/640x360/1c5e0005460e49fd92c1","width":600,"url_list":[{"url":"http://p3.pstatp.com/list/640x360/1c5e0005460e49fd92c1"},{"url":"http://pb9.pstatp.com/list/640x360/1c5e0005460e49fd92c1"},{"url":"http://pb1.pstatp.com/list/640x360/1c5e0005460e49fd92c1"}],"uri":"list/640x360/1c5e0005460e49fd92c1","height":417},{"url":"http://p3.pstatp.com/list/640x360/1c62000234acba876c44","width":600,"url_list":[{"url":"http://p3.pstatp.com/list/1c62000234acba876c44"},{"url":"http://pb9.pstatp.com/list/1c62000234acba876c44"},{"url":"http://pb1.pstatp.com/list/1c62000234acba876c44"}],"uri":"list/1c62000234acba876c44","height":417},{"url":"http://p3.pstatp.com/list/640x360/1c6600022d03acde617f","width":600,"url_list":[{"url":"http://p3.pstatp.com/list/1c6600022d03acde617f"},{"url":"http://pb9.pstatp.com/list/1c6600022d03acde617f"},{"url":"http://pb1.pstatp.com/list/1c6600022d03acde617f"}],"uri":"list/1c6600022d03acde617f","height":417}],"behot_time":1494158242,"source_url":"/group/6411612819162185985/","source":"干掉熊猫我就是国宝","more_mode":false,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"image_url":"http://p9.pstatp.com/list/1bf40013bd8209cf87f1","group_id":"6411612819162185985","media_url":"http://toutiao.com/m1563547819881474/"},{"image_url":"http://p1.pstatp.com/list/364x360/191e00028796b22ca84a","media_avatar_url":"http://p3.pstatp.com/large/2b60016cc3c68733099","article_genre":"gallery","is_diversion_page":false,"title":"直击深夜列车美女乘务员的双面人生","middle_mode":false,"gallary_image_count":10,"image_list":[{"url":"http://p3.pstatp.com/list/640x360/191e00028796b22ca84a","width":948,"url_list":[{"url":"http://p1.pstatp.com/list/364x360/191e00028796b22ca84a"},{"url":"http://pb3.pstatp.com/list/364x360/191e00028796b22ca84a"},{"url":"http://pb9.pstatp.com/list/364x360/191e00028796b22ca84a"}],"uri":"list/364x360/191e00028796b22ca84a","height":628},{"url":"http://p3.pstatp.com/list/640x360/1914000469193ff0b978","width":947,"url_list":[{"url":"http://p3.pstatp.com/list/272x178/1914000469193ff0b978"},{"url":"http://pb9.pstatp.com/list/272x178/1914000469193ff0b978"},{"url":"http://pb1.pstatp.com/list/272x178/1914000469193ff0b978"}],"uri":"list/272x178/1914000469193ff0b978","height":607},{"url":"http://p3.pstatp.com/list/640x360/191f0002757eff6c3907","width":949,"url_list":[{"url":"http://p3.pstatp.com/list/272x178/191f0002757eff6c3907"},{"url":"http://pb9.pstatp.com/list/272x178/191f0002757eff6c3907"},{"url":"http://pb1.pstatp.com/list/272x178/191f0002757eff6c3907"}],"uri":"list/272x178/191f0002757eff6c3907","height":604}],"behot_time":1494158195,"source_url":"/group/6398861108576387329/","source":"宠之家","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":13,"group_id":"6398861108576387329","media_url":"http://toutiao.com/m6147604731/"},{"image_url":"http://p3.pstatp.com/list/640x360/1b76000302f3310235ad","media_avatar_url":"http://p3.pstatp.com/large/e5900061dff68d771a1","article_genre":"gallery","is_diversion_page":false,"title":"半夜爬泰山，刚好见天明，我的天，原来我这么有才","middle_mode":false,"gallary_image_count":15,"image_list":[{"url":"http://p1.pstatp.com/list/640x360/1b76000302f3310235ad","width":1732,"url_list":[{"url":"http://p3.pstatp.com/list/640x360/1b76000302f3310235ad"},{"url":"http://pb9.pstatp.com/list/640x360/1b76000302f3310235ad"},{"url":"http://pb1.pstatp.com/list/640x360/1b76000302f3310235ad"}],"uri":"list/640x360/1b76000302f3310235ad","height":2309},{"url":"http://p9.pstatp.com/list/640x360/1b740002fc7785c6ccdc","width":2309,"url_list":[{"url":"http://p9.pstatp.com/list/1b740002fc7785c6ccdc"},{"url":"http://pb1.pstatp.com/list/1b740002fc7785c6ccdc"},{"url":"http://pb3.pstatp.com/list/1b740002fc7785c6ccdc"}],"uri":"list/1b740002fc7785c6ccdc","height":1732},{"url":"http://p1.pstatp.com/list/640x360/1af7000640729680a8c5","width":1732,"url_list":[{"url":"http://p1.pstatp.com/list/1af7000640729680a8c5"},{"url":"http://pb3.pstatp.com/list/1af7000640729680a8c5"},{"url":"http://pb9.pstatp.com/list/1af7000640729680a8c5"}],"uri":"list/1af7000640729680a8c5","height":2309}],"behot_time":1494158167,"source_url":"/group/6406512912181985538/","source":"年方十八小书生","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":6,"group_id":"6406512912181985538","media_url":"http://toutiao.com/m51696913629/"},{"media_avatar_url":"http://p3.pstatp.com/large/16ab0009029934d0fdb0","article_genre":"gallery","is_diversion_page":false,"title":"镜头下的抢镜高手，不经意戳中你的笑点","middle_mode":false,"gallary_image_count":12,"image_list":[{"url":"http://p9.pstatp.com/list/640x360/1b8400058e273f6b15b4","width":640,"url_list":[{"url":"http://p1.pstatp.com/list/364x360/1b8400058e273f6b15b4"},{"url":"http://pb3.pstatp.com/list/364x360/1b8400058e273f6b15b4"},{"url":"http://pb9.pstatp.com/list/364x360/1b8400058e273f6b15b4"}],"uri":"list/364x360/1b8400058e273f6b15b4","height":480},{"url":"http://p3.pstatp.com/list/640x360/1b8400058df0b8948f96","width":640,"url_list":[{"url":"http://p1.pstatp.com/list/272x178/1b8400058df0b8948f96"},{"url":"http://pb3.pstatp.com/list/272x178/1b8400058df0b8948f96"},{"url":"http://pb9.pstatp.com/list/272x178/1b8400058df0b8948f96"}],"uri":"list/272x178/1b8400058df0b8948f96","height":853},{"url":"http://p1.pstatp.com/list/640x360/1b8300016aeaa462ec0d","width":640,"url_list":[{"url":"http://p3.pstatp.com/list/272x178/1b8300016aeaa462ec0d"},{"url":"http://pb9.pstatp.com/list/272x178/1b8300016aeaa462ec0d"},{"url":"http://pb1.pstatp.com/list/272x178/1b8300016aeaa462ec0d"}],"uri":"list/272x178/1b8300016aeaa462ec0d","height":480}],"behot_time":1494158139,"source_url":"/group/6409481585536680193/","source":"宠物橘子","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"image_url":"http://p1.pstatp.com/list/364x360/1b8400058e273f6b15b4","group_id":"6409481585536680193","media_url":"http://toutiao.com/m1559541906990081/"},{"media_avatar_url":"http://p1.pstatp.com/large/ef500169ce2f07ca4bd","article_genre":"gallery","is_diversion_page":false,"title":"一组摄影图：诉说关于海洋的秘密","middle_mode":true,"gallary_image_count":13,"image_list":[{"url":"http://p1.pstatp.com/list/640x360/16c6000663d85cca2272","width":600,"url_list":[{"url":"http://p1.pstatp.com/list/640x360/16c6000663d85cca2272"},{"url":"http://pb3.pstatp.com/list/640x360/16c6000663d85cca2272"},{"url":"http://pb9.pstatp.com/list/640x360/16c6000663d85cca2272"}],"uri":"list/640x360/16c6000663d85cca2272","height":400},{"url":"http://p3.pstatp.com/list/640x360/16cc00078be5df6552b7","width":600,"url_list":[{"url":"http://p3.pstatp.com/list/16cc00078be5df6552b7"},{"url":"http://pb9.pstatp.com/list/16cc00078be5df6552b7"},{"url":"http://pb1.pstatp.com/list/16cc00078be5df6552b7"}],"uri":"list/16cc00078be5df6552b7","height":413},{"url":"http://p1.pstatp.com/list/640x360/16d00005ad1909ae6d52","width":600,"url_list":[{"url":"http://p1.pstatp.com/list/16d00005ad1909ae6d52"},{"url":"http://pb3.pstatp.com/list/16d00005ad1909ae6d52"},{"url":"http://pb9.pstatp.com/list/16d00005ad1909ae6d52"}],"uri":"list/16d00005ad1909ae6d52","height":399}],"behot_time":1494158111,"source_url":"/group/6389443753236873474/","source":"我创你乐","more_mode":false,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"image_url":"http://p3.pstatp.com/list/17820002a2a13cbe5c42","group_id":"6389443753236873474","media_url":"http://toutiao.com/m52521682094/"},{"media_avatar_url":"http://p3.pstatp.com/large/ef4000c73bb52d8eeee","article_genre":"gallery","is_diversion_page":false,"title":"婚礼上那些感动至深的瞬间","middle_mode":true,"gallary_image_count":16,"image_list":[{"url":"http://p1.pstatp.com/list/640x360/1686000614aa69ee82c4","width":450,"url_list":[{"url":"http://p3.pstatp.com/list/640x360/1686000614aa69ee82c4"},{"url":"http://pb9.pstatp.com/list/640x360/1686000614aa69ee82c4"},{"url":"http://pb1.pstatp.com/list/640x360/1686000614aa69ee82c4"}],"uri":"list/640x360/1686000614aa69ee82c4","height":301},{"url":"http://p1.pstatp.com/list/640x360/1682000795c8c851bebd","width":450,"url_list":[{"url":"http://p1.pstatp.com/list/1682000795c8c851bebd"},{"url":"http://pb3.pstatp.com/list/1682000795c8c851bebd"},{"url":"http://pb9.pstatp.com/list/1682000795c8c851bebd"}],"uri":"list/1682000795c8c851bebd","height":285},{"url":"http://p9.pstatp.com/list/640x360/168600061635c9d6f5c5","width":490,"url_list":[{"url":"http://p9.pstatp.com/list/168600061635c9d6f5c5"},{"url":"http://pb1.pstatp.com/list/168600061635c9d6f5c5"},{"url":"http://pb3.pstatp.com/list/168600061635c9d6f5c5"}],"uri":"list/168600061635c9d6f5c5","height":386}],"behot_time":1494158083,"source_url":"/group/6386884738384494849/","source":"西乙阿夏","more_mode":false,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"image_url":"http://p9.pstatp.com/list/150c000ce54845665ac4","group_id":"6386884738384494849","media_url":"http://toutiao.com/m52044112128/"},{"comments_count":1,"media_avatar_url":"http://p1.pstatp.com/large/78f00106d2727d331d0","article_genre":"gallery","is_diversion_page":false,"title":"生亦何欢 死亦何苦","middle_mode":true,"gallary_image_count":22,"image_list":[{"url":"http://p9.pstatp.com/list/640x360/1c5b0004ffa297114b4e","width":640,"url_list":[{"url":"http://p3.pstatp.com/list/364x360/1c5b0004ffa297114b4e"},{"url":"http://pb9.pstatp.com/list/364x360/1c5b0004ffa297114b4e"},{"url":"http://pb1.pstatp.com/list/364x360/1c5b0004ffa297114b4e"}],"uri":"list/364x360/1c5b0004ffa297114b4e","height":1138},{"url":"http://p1.pstatp.com/list/640x360/1c6000026721ab16063e","width":640,"url_list":[{"url":"http://p1.pstatp.com/list/272x178/1c6000026721ab16063e"},{"url":"http://pb3.pstatp.com/list/272x178/1c6000026721ab16063e"},{"url":"http://pb9.pstatp.com/list/272x178/1c6000026721ab16063e"}],"uri":"list/272x178/1c6000026721ab16063e","height":1138},{"url":"http://p3.pstatp.com/list/640x360/1c600002673f914b061f","width":640,"url_list":[{"url":"http://p3.pstatp.com/list/272x178/1c600002673f914b061f"},{"url":"http://pb9.pstatp.com/list/272x178/1c600002673f914b061f"},{"url":"http://pb1.pstatp.com/list/272x178/1c600002673f914b061f"}],"uri":"list/272x178/1c600002673f914b061f","height":1138}],"behot_time":1494158055,"source_url":"/group/6410163623817576706/","source":"洛苏","more_mode":false,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"image_url":"http://p1.pstatp.com/list/1bf3000dc1e86f8522b6","group_id":"6410163623817576706","media_url":"http://toutiao.com/m6934297542/"},{"media_avatar_url":"http://p3.pstatp.com/large/17800002a1bed0f2599e","article_genre":"gallery","is_diversion_page":false,"title":"铁丝还能这样玩，真是服了","middle_mode":false,"gallary_image_count":12,"image_list":[{"url":"http://p9.pstatp.com/list/640x360/1b7e000710aca737b86a","width":880,"url_list":[{"url":"http://p3.pstatp.com/list/640x360/1b7e000710aca737b86a"},{"url":"http://pb9.pstatp.com/list/640x360/1b7e000710aca737b86a"},{"url":"http://pb1.pstatp.com/list/640x360/1b7e000710aca737b86a"}],"uri":"list/640x360/1b7e000710aca737b86a","height":587},{"url":"http://p3.pstatp.com/list/640x360/1b7b000721d6bbbfd0c3","width":880,"url_list":[{"url":"http://p3.pstatp.com/list/1b7b000721d6bbbfd0c3"},{"url":"http://pb9.pstatp.com/list/1b7b000721d6bbbfd0c3"},{"url":"http://pb1.pstatp.com/list/1b7b000721d6bbbfd0c3"}],"uri":"list/1b7b000721d6bbbfd0c3","height":600},{"url":"http://p3.pstatp.com/list/640x360/1b8100011f0c811fca02","width":880,"url_list":[{"url":"http://p3.pstatp.com/list/1b8100011f0c811fca02"},{"url":"http://pb9.pstatp.com/list/1b8100011f0c811fca02"},{"url":"http://pb1.pstatp.com/list/1b8100011f0c811fca02"}],"uri":"list/1b8100011f0c811fca02","height":773}],"behot_time":1494158027,"source_url":"/group/6408357577524232449/","source":"潮人不会飞","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"image_url":"http://p3.pstatp.com/list/640x360/1b7e000710aca737b86a","group_id":"6408357577524232449","media_url":"http://toutiao.com/m1559923886627842/"},{"image_url":"http://p1.pstatp.com/list/364x360/19fa00063b5d493ec042","media_avatar_url":"http://p3.pstatp.com/large/178200165af250e7acd0","article_genre":"gallery","is_diversion_page":false,"title":"那些暴露你的年龄的零食，还记得吗","middle_mode":false,"gallary_image_count":11,"image_list":[{"url":"http://p3.pstatp.com/list/640x360/19fa00063b5d493ec042","width":311,"url_list":[{"url":"http://p1.pstatp.com/list/364x360/19fa00063b5d493ec042"},{"url":"http://pb3.pstatp.com/list/364x360/19fa00063b5d493ec042"},{"url":"http://pb9.pstatp.com/list/364x360/19fa00063b5d493ec042"}],"uri":"list/364x360/19fa00063b5d493ec042","height":306},{"url":"http://p3.pstatp.com/list/640x360/19f6000473a023a09151","width":450,"url_list":[{"url":"http://p9.pstatp.com/list/272x178/19f6000473a023a09151"},{"url":"http://pb1.pstatp.com/list/272x178/19f6000473a023a09151"},{"url":"http://pb3.pstatp.com/list/272x178/19f6000473a023a09151"}],"uri":"list/272x178/19f6000473a023a09151","height":394},{"url":"http://p3.pstatp.com/list/640x360/19ff000464cf6284ca98","width":405,"url_list":[{"url":"http://p1.pstatp.com/list/272x178/19ff000464cf6284ca98"},{"url":"http://pb3.pstatp.com/list/272x178/19ff000464cf6284ca98"},{"url":"http://pb9.pstatp.com/list/272x178/19ff000464cf6284ca98"}],"uri":"list/272x178/19ff000464cf6284ca98","height":540}],"behot_time":1494157999,"source_url":"/group/6404333242211860738/","source":"榆钱","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":21,"group_id":"6404333242211860738","media_url":"http://toutiao.com/m1562024840469506/"},{"image_url":"http://p3.pstatp.com/list/640x360/1b7900037f017544ce81","media_avatar_url":"http://p3.pstatp.com/large/150e0012fed1f1cd89df","article_genre":"gallery","is_diversion_page":false,"title":"河南大姐在铁板上烤出来冷面，两名外国美女专程找到她买来吃","middle_mode":false,"gallary_image_count":9,"image_list":[{"url":"http://p9.pstatp.com/list/640x360/1b7900037f017544ce81","width":2666,"url_list":[{"url":"http://p3.pstatp.com/list/640x360/1b7900037f017544ce81"},{"url":"http://pb9.pstatp.com/list/640x360/1b7900037f017544ce81"},{"url":"http://pb1.pstatp.com/list/640x360/1b7900037f017544ce81"}],"uri":"list/640x360/1b7900037f017544ce81","height":1500},{"url":"http://p9.pstatp.com/list/640x360/1b790003812e04c89c71","width":2666,"url_list":[{"url":"http://p9.pstatp.com/list/1b790003812e04c89c71"},{"url":"http://pb1.pstatp.com/list/1b790003812e04c89c71"},{"url":"http://pb3.pstatp.com/list/1b790003812e04c89c71"}],"uri":"list/1b790003812e04c89c71","height":1500},{"url":"http://p9.pstatp.com/list/640x360/1b7a00020710c4e46cd6","width":2666,"url_list":[{"url":"http://p9.pstatp.com/list/1b7a00020710c4e46cd6"},{"url":"http://pb1.pstatp.com/list/1b7a00020710c4e46cd6"},{"url":"http://pb3.pstatp.com/list/1b7a00020710c4e46cd6"}],"uri":"list/1b7a00020710c4e46cd6","height":1500}],"behot_time":1494157963,"source_url":"/group/6407302917435851010/","source":"博影说事","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":9,"group_id":"6407302917435851010","media_url":"http://toutiao.com/m1558679364459522/"},{"image_url":"http://p1.pstatp.com/list/364x360/1db9000624cf946677f1","media_avatar_url":"http://p5a.pstatp.com/large/d290002be0b7c1b624f","article_genre":"gallery","is_diversion_page":false,"title":"90年代澳门赌场罕见实拍照","middle_mode":false,"gallary_image_count":7,"image_list":[{"url":"http://p3.pstatp.com/list/640x360/1db9000624cf946677f1","width":398,"url_list":[{"url":"http://p1.pstatp.com/list/364x360/1db9000624cf946677f1"},{"url":"http://pb3.pstatp.com/list/364x360/1db9000624cf946677f1"},{"url":"http://pb9.pstatp.com/list/364x360/1db9000624cf946677f1"}],"uri":"list/364x360/1db9000624cf946677f1","height":220},{"url":"http://p3.pstatp.com/list/640x360/1db700031eaeeec7333a","width":586,"url_list":[{"url":"http://p1.pstatp.com/list/272x178/1db700031eaeeec7333a"},{"url":"http://pb3.pstatp.com/list/272x178/1db700031eaeeec7333a"},{"url":"http://pb9.pstatp.com/list/272x178/1db700031eaeeec7333a"}],"uri":"list/272x178/1db700031eaeeec7333a","height":321},{"url":"http://p3.pstatp.com/list/640x360/1db700031eaf8b9ca5b3","width":660,"url_list":[{"url":"http://p3.pstatp.com/list/272x178/1db700031eaf8b9ca5b3"},{"url":"http://pb9.pstatp.com/list/272x178/1db700031eaf8b9ca5b3"},{"url":"http://pb1.pstatp.com/list/272x178/1db700031eaf8b9ca5b3"}],"uri":"list/272x178/1db700031eaf8b9ca5b3","height":397}],"behot_time":1494157871,"source_url":"/group/6413836039647330562/","source":"瑶苔吟夜","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":6,"group_id":"6413836039647330562","media_url":"http://toutiao.com/m50479926068/"},{"image_url":"http://p1.pstatp.com/list/640x360/14a100040e85893af82c","media_avatar_url":"http://p3.pstatp.com/large/78f0016f753887d03a3","article_genre":"gallery","is_diversion_page":false,"title":"甘肃平凉师傅西安开面馆 退休工程师岳父出手相助","middle_mode":false,"gallary_image_count":8,"image_list":[{"url":"http://p3.pstatp.com/list/640x360/14a100040e85893af82c","width":800,"url_list":[{"url":"http://p1.pstatp.com/list/640x360/14a100040e85893af82c"},{"url":"http://pb3.pstatp.com/list/640x360/14a100040e85893af82c"},{"url":"http://pb9.pstatp.com/list/640x360/14a100040e85893af82c"}],"uri":"list/640x360/14a100040e85893af82c","height":531},{"url":"http://p1.pstatp.com/list/640x360/14a100040e9ba5b2de98","width":800,"url_list":[{"url":"http://p1.pstatp.com/list/14a100040e9ba5b2de98"},{"url":"http://pb3.pstatp.com/list/14a100040e9ba5b2de98"},{"url":"http://pb9.pstatp.com/list/14a100040e9ba5b2de98"}],"uri":"list/14a100040e9ba5b2de98","height":626},{"url":"http://p3.pstatp.com/list/640x360/149d000636b31cc2c052","width":800,"url_list":[{"url":"http://p3.pstatp.com/list/149d000636b31cc2c052"},{"url":"http://pb9.pstatp.com/list/149d000636b31cc2c052"},{"url":"http://pb1.pstatp.com/list/149d000636b31cc2c052"}],"uri":"list/149d000636b31cc2c052","height":531}],"behot_time":1494157779,"source_url":"/group/6388161425621893377/","source":"陈荣摄影","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":7,"group_id":"6388161425621893377","media_url":"http://toutiao.com/m7007659563/"},{"image_url":"http://p1.pstatp.com/list/640x360/18af0002c1aeba35cfc0","media_avatar_url":"http://p1.pstatp.com/large/1234000c24d77023970c","article_genre":"gallery","is_diversion_page":false,"title":"香港某男子的偷窥记录","middle_mode":false,"gallary_image_count":9,"image_list":[{"url":"http://p3.pstatp.com/list/640x360/18af0002c1aeba35cfc0","width":636,"url_list":[{"url":"http://p1.pstatp.com/list/640x360/18af0002c1aeba35cfc0"},{"url":"http://pb3.pstatp.com/list/640x360/18af0002c1aeba35cfc0"},{"url":"http://pb9.pstatp.com/list/640x360/18af0002c1aeba35cfc0"}],"uri":"list/640x360/18af0002c1aeba35cfc0","height":506},{"url":"http://p3.pstatp.com/list/640x360/1856000743bc4c57de98","width":637,"url_list":[{"url":"http://p3.pstatp.com/list/1856000743bc4c57de98"},{"url":"http://pb9.pstatp.com/list/1856000743bc4c57de98"},{"url":"http://pb1.pstatp.com/list/1856000743bc4c57de98"}],"uri":"list/1856000743bc4c57de98","height":490},{"url":"http://p3.pstatp.com/list/640x360/18ae0000aab2b5c6dab8","width":637,"url_list":[{"url":"http://p3.pstatp.com/list/18ae0000aab2b5c6dab8"},{"url":"http://pb9.pstatp.com/list/18ae0000aab2b5c6dab8"},{"url":"http://pb1.pstatp.com/list/18ae0000aab2b5c6dab8"}],"uri":"list/18ae0000aab2b5c6dab8","height":483}],"behot_time":1494157687,"source_url":"/group/6379174997403599106/","source":"时光影像记","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":15,"group_id":"6379174997403599106","media_url":"http://toutiao.com/m1553624131072001/"},{"image_url":"http://p3.pstatp.com/list/640x360/16840002865831f9f548","media_avatar_url":"http://p2.pstatp.com/large/13530006a9e78758e3fb","article_genre":"gallery","is_diversion_page":false,"title":"山西万荣：集市上卖农产品的老人，看完让人泪奔的八张图片","middle_mode":false,"gallary_image_count":8,"image_list":[{"url":"http://p3.pstatp.com/list/640x360/16840002865831f9f548","width":1400,"url_list":[{"url":"http://p3.pstatp.com/list/640x360/16840002865831f9f548"},{"url":"http://pb9.pstatp.com/list/640x360/16840002865831f9f548"},{"url":"http://pb1.pstatp.com/list/640x360/16840002865831f9f548"}],"uri":"list/640x360/16840002865831f9f548","height":2379},{"url":"http://p3.pstatp.com/list/640x360/163100071b47f88a12af","width":1600,"url_list":[{"url":"http://p3.pstatp.com/list/163100071b47f88a12af"},{"url":"http://pb9.pstatp.com/list/163100071b47f88a12af"},{"url":"http://pb1.pstatp.com/list/163100071b47f88a12af"}],"uri":"list/163100071b47f88a12af","height":2303},{"url":"http://p1.pstatp.com/list/640x360/168000040aac5e23cd68","width":1600,"url_list":[{"url":"http://p1.pstatp.com/list/168000040aac5e23cd68"},{"url":"http://pb3.pstatp.com/list/168000040aac5e23cd68"},{"url":"http://pb9.pstatp.com/list/168000040aac5e23cd68"}],"uri":"list/168000040aac5e23cd68","height":2436}],"behot_time":1494157595,"source_url":"/group/6385194812619194625/","source":"解福昌123","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":213,"group_id":"6385194812619194625","media_url":"http://toutiao.com/m1554659858857985/"},{"image_url":"http://p1.pstatp.com/list/364x360/19f100002b7f97fdbe1f","media_avatar_url":"http://p3.pstatp.com/large/12320002ed67e71e0129","article_genre":"gallery","is_diversion_page":false,"title":"实拍：广西土家农村婚礼，娶媳妇进门过关真难","middle_mode":false,"gallary_image_count":7,"image_list":[{"url":"http://p1.pstatp.com/list/640x360/19f100002b7f97fdbe1f","width":427,"url_list":[{"url":"http://p1.pstatp.com/list/364x360/19f100002b7f97fdbe1f"},{"url":"http://pb3.pstatp.com/list/364x360/19f100002b7f97fdbe1f"},{"url":"http://pb9.pstatp.com/list/364x360/19f100002b7f97fdbe1f"}],"uri":"list/364x360/19f100002b7f97fdbe1f","height":317},{"url":"http://p9.pstatp.com/list/640x360/19f90001afe9840aa688","width":424,"url_list":[{"url":"http://p9.pstatp.com/list/272x178/19f90001afe9840aa688"},{"url":"http://pb1.pstatp.com/list/272x178/19f90001afe9840aa688"},{"url":"http://pb3.pstatp.com/list/272x178/19f90001afe9840aa688"}],"uri":"list/272x178/19f90001afe9840aa688","height":313},{"url":"http://p3.pstatp.com/list/640x360/19f800000f0798638773","width":422,"url_list":[{"url":"http://p9.pstatp.com/list/272x178/19f800000f0798638773"},{"url":"http://pb1.pstatp.com/list/272x178/19f800000f0798638773"},{"url":"http://pb3.pstatp.com/list/272x178/19f800000f0798638773"}],"uri":"list/272x178/19f800000f0798638773","height":312}],"behot_time":1494157503,"source_url":"/group/6402056413401055489/","source":"小余的农村","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":1,"group_id":"6402056413401055489","media_url":"http://toutiao.com/m52464106368/"},{"image_url":"http://p3.pstatp.com/list/272x178/1b7f00060b549aee0e69","media_avatar_url":"http://p1.pstatp.com/large/8715/3627403557","article_genre":"gallery","is_diversion_page":false,"title":"美媒评出20世纪十佳战斗机，声名远扬的苏-27没能上榜！","middle_mode":false,"gallary_image_count":14,"image_list":[{"url":"http://p9.pstatp.com/list/640x360/1b7f00060b549aee0e69","width":1920,"url_list":[{"url":"http://p3.pstatp.com/list/272x178/1b7f00060b549aee0e69"},{"url":"http://pb9.pstatp.com/list/272x178/1b7f00060b549aee0e69"},{"url":"http://pb1.pstatp.com/list/272x178/1b7f00060b549aee0e69"}],"uri":"list/272x178/1b7f00060b549aee0e69","height":1200},{"url":"http://p1.pstatp.com/list/640x360/1b840002eff2aa01f1ae","width":1680,"url_list":[{"url":"http://p3.pstatp.com/list/364x360/1b840002eff2aa01f1ae"},{"url":"http://pb9.pstatp.com/list/364x360/1b840002eff2aa01f1ae"},{"url":"http://pb1.pstatp.com/list/364x360/1b840002eff2aa01f1ae"}],"uri":"list/364x360/1b840002eff2aa01f1ae","height":1050},{"url":"http://p1.pstatp.com/list/640x360/1b840002eff6ca56f9a5","width":1680,"url_list":[{"url":"http://p1.pstatp.com/list/272x178/1b840002eff6ca56f9a5"},{"url":"http://pb3.pstatp.com/list/272x178/1b840002eff6ca56f9a5"},{"url":"http://pb9.pstatp.com/list/272x178/1b840002eff6ca56f9a5"}],"uri":"list/272x178/1b840002eff6ca56f9a5","height":1050}],"behot_time":1494157411,"source_url":"/group/6408825380911939841/","source":"武器知识","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":48,"group_id":"6408825380911939841","media_url":"http://toutiao.com/m5557472140/"},{"image_url":"http://p9.pstatp.com/list/364x360/168600001a3ba53fba29","media_avatar_url":"http://p1.pstatp.com/large/bc30008521050b1cc83","article_genre":"gallery","is_diversion_page":false,"title":"贵州黎平侗乡人民元宵佳节\u201c玩故事\u201d群众活动精彩剪影","middle_mode":false,"gallary_image_count":51,"image_list":[{"url":"http://p3.pstatp.com/list/640x360/168600001a3ba53fba29","width":1920,"url_list":[{"url":"http://p9.pstatp.com/list/364x360/168600001a3ba53fba29"},{"url":"http://pb1.pstatp.com/list/364x360/168600001a3ba53fba29"},{"url":"http://pb3.pstatp.com/list/364x360/168600001a3ba53fba29"}],"uri":"list/364x360/168600001a3ba53fba29","height":1280},{"url":"http://p3.pstatp.com/list/640x360/168600001a3ddbb81311","width":1920,"url_list":[{"url":"http://p3.pstatp.com/list/272x178/168600001a3ddbb81311"},{"url":"http://pb9.pstatp.com/list/272x178/168600001a3ddbb81311"},{"url":"http://pb1.pstatp.com/list/272x178/168600001a3ddbb81311"}],"uri":"list/272x178/168600001a3ddbb81311","height":1280},{"url":"http://p3.pstatp.com/list/640x360/1687000198f36219bb52","width":1920,"url_list":[{"url":"http://p1.pstatp.com/list/272x178/1687000198f36219bb52"},{"url":"http://pb3.pstatp.com/list/272x178/1687000198f36219bb52"},{"url":"http://pb9.pstatp.com/list/272x178/1687000198f36219bb52"}],"uri":"list/272x178/1687000198f36219bb52","height":1280}],"behot_time":1494157319,"source_url":"/group/6385749109696971010/","source":"仰望乌托邦","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":5,"group_id":"6385749109696971010","media_url":"http://toutiao.com/m50528048655/"},{"image_url":"http://p1.pstatp.com/list/640x360/16cd0002240607bcbcad","media_avatar_url":"http://p3.pstatp.com/large/78f001254a68db3b46c","article_genre":"gallery","is_diversion_page":false,"title":"李宏毅北电艺考复试现场！","middle_mode":false,"gallary_image_count":16,"image_list":[{"url":"http://p3.pstatp.com/list/640x360/16cd0002240607bcbcad","width":2449,"url_list":[{"url":"http://p1.pstatp.com/list/640x360/16cd0002240607bcbcad"},{"url":"http://pb3.pstatp.com/list/640x360/16cd0002240607bcbcad"},{"url":"http://pb9.pstatp.com/list/640x360/16cd0002240607bcbcad"}],"uri":"list/640x360/16cd0002240607bcbcad","height":1632},{"url":"http://p3.pstatp.com/list/640x360/16d000044ba298b67c41","width":2449,"url_list":[{"url":"http://p3.pstatp.com/list/16d000044ba298b67c41"},{"url":"http://pb9.pstatp.com/list/16d000044ba298b67c41"},{"url":"http://pb1.pstatp.com/list/16d000044ba298b67c41"}],"uri":"list/16d000044ba298b67c41","height":1632},{"url":"http://p1.pstatp.com/list/640x360/16cc00062ad88c814a6f","width":1632,"url_list":[{"url":"http://p1.pstatp.com/list/16cc00062ad88c814a6f"},{"url":"http://pb3.pstatp.com/list/16cc00062ad88c814a6f"},{"url":"http://pb9.pstatp.com/list/16cc00062ad88c814a6f"}],"uri":"list/16cc00062ad88c814a6f","height":2449}],"behot_time":1494157227,"source_url":"/group/6389182099975323906/","source":"萝莉进行时","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":6,"group_id":"6389182099975323906","media_url":"http://toutiao.com/m6954772349/"},{"image_url":"http://p3.pstatp.com/list/272x178/168200044788674617aa","media_avatar_url":"http://p1.pstatp.com/large/ef5000fb1cec0557d84","article_genre":"gallery","is_diversion_page":false,"title":"山西永济：摄影师历经三年跟踪拍摄，完美见证蒲州古城墙修复过程","middle_mode":false,"gallary_image_count":24,"image_list":[{"url":"http://p9.pstatp.com/list/640x360/168200044788674617aa","width":750,"url_list":[{"url":"http://p3.pstatp.com/list/272x178/168200044788674617aa"},{"url":"http://pb9.pstatp.com/list/272x178/168200044788674617aa"},{"url":"http://pb1.pstatp.com/list/272x178/168200044788674617aa"}],"uri":"list/272x178/168200044788674617aa","height":501},{"url":"http://p3.pstatp.com/list/640x360/1687000446a30d488efe","width":750,"url_list":[{"url":"http://p1.pstatp.com/list/364x360/1687000446a30d488efe"},{"url":"http://pb3.pstatp.com/list/364x360/1687000446a30d488efe"},{"url":"http://pb9.pstatp.com/list/364x360/1687000446a30d488efe"}],"uri":"list/364x360/1687000446a30d488efe","height":499},{"url":"http://p1.pstatp.com/list/640x360/1687000446b81d9d099c","width":750,"url_list":[{"url":"http://p1.pstatp.com/list/272x178/1687000446b81d9d099c"},{"url":"http://pb3.pstatp.com/list/272x178/1687000446b81d9d099c"},{"url":"http://pb9.pstatp.com/list/272x178/1687000446b81d9d099c"}],"uri":"list/272x178/1687000446b81d9d099c","height":1017}],"behot_time":1494156627,"source_url":"/group/6386412221576823041/","source":"盐水虫","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":18,"group_id":"6386412221576823041","media_url":"http://toutiao.com/m52195880634/"},{"image_url":"http://p1.pstatp.com/list/364x360/19ec0002715c0658dc37","media_avatar_url":"http://p1.pstatp.com/large/e590013d9be99dedaf1","article_genre":"gallery","is_diversion_page":false,"title":"教你如何在家里种植哈密瓜","middle_mode":false,"gallary_image_count":20,"image_list":[{"url":"http://p1.pstatp.com/list/640x360/19ec0002715c0658dc37","width":1600,"url_list":[{"url":"http://p1.pstatp.com/list/364x360/19ec0002715c0658dc37"},{"url":"http://pb3.pstatp.com/list/364x360/19ec0002715c0658dc37"},{"url":"http://pb9.pstatp.com/list/364x360/19ec0002715c0658dc37"}],"uri":"list/364x360/19ec0002715c0658dc37","height":1200},{"url":"http://p1.pstatp.com/list/640x360/19ee0003fd94dffc95d9","width":1477,"url_list":[{"url":"http://p1.pstatp.com/list/272x178/19ee0003fd94dffc95d9"},{"url":"http://pb3.pstatp.com/list/272x178/19ee0003fd94dffc95d9"},{"url":"http://pb9.pstatp.com/list/272x178/19ee0003fd94dffc95d9"}],"uri":"list/272x178/19ee0003fd94dffc95d9","height":1108},{"url":"http://p3.pstatp.com/list/640x360/19f300025657148bd234","width":1477,"url_list":[{"url":"http://p3.pstatp.com/list/272x178/19f300025657148bd234"},{"url":"http://pb9.pstatp.com/list/272x178/19f300025657148bd234"},{"url":"http://pb1.pstatp.com/list/272x178/19f300025657148bd234"}],"uri":"list/272x178/19f300025657148bd234","height":1108}],"behot_time":1494156027,"source_url":"/group/6400956154788184321/","source":"小农爸爸","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":20,"group_id":"6400956154788184321","media_url":"http://toutiao.com/m52393855776/"},{"image_url":"http://p3.pstatp.com/list/364x360/192000024fac25adda10","media_avatar_url":"http://p1.pstatp.com/large/e590004a800ad02470c","article_genre":"gallery","is_diversion_page":false,"title":"大妈自做豆芽机，开水烫出无公害豆芽，市场上绝对买不到！","middle_mode":false,"gallary_image_count":12,"image_list":[{"url":"http://p3.pstatp.com/list/640x360/192000024fac25adda10","width":1440,"url_list":[{"url":"http://p3.pstatp.com/list/364x360/192000024fac25adda10"},{"url":"http://pb9.pstatp.com/list/364x360/192000024fac25adda10"},{"url":"http://pb1.pstatp.com/list/364x360/192000024fac25adda10"}],"uri":"list/364x360/192000024fac25adda10","height":1080},{"url":"http://p3.pstatp.com/list/640x360/19140005b6af65184557","width":2309,"url_list":[{"url":"http://p3.pstatp.com/list/272x178/19140005b6af65184557"},{"url":"http://pb9.pstatp.com/list/272x178/19140005b6af65184557"},{"url":"http://pb1.pstatp.com/list/272x178/19140005b6af65184557"}],"uri":"list/272x178/19140005b6af65184557","height":1732},{"url":"http://p9.pstatp.com/list/640x360/191900024ac72df651a4","width":1440,"url_list":[{"url":"http://p9.pstatp.com/list/272x178/191900024ac72df651a4"},{"url":"http://pb1.pstatp.com/list/272x178/191900024ac72df651a4"},{"url":"http://pb3.pstatp.com/list/272x178/191900024ac72df651a4"}],"uri":"list/272x178/191900024ac72df651a4","height":1080}],"behot_time":1494155427,"source_url":"/group/6398768888104878337/","source":"大美乡土","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":6,"group_id":"6398768888104878337","media_url":"http://toutiao.com/m51370692693/"},{"image_url":"http://p3.pstatp.com/list/364x360/1c670000c478c262532a","media_avatar_url":"http://p3.pstatp.com/large/1782000086897951d501","article_genre":"gallery","is_diversion_page":false,"title":"浙江土豪嫁女儿，送钱送房送车送商铺，场面很震撼，不愧为土豪！","middle_mode":false,"gallary_image_count":8,"image_list":[{"url":"http://p3.pstatp.com/list/640x360/1c670000c478c262532a","width":515,"url_list":[{"url":"http://p3.pstatp.com/list/364x360/1c670000c478c262532a"},{"url":"http://pb9.pstatp.com/list/364x360/1c670000c478c262532a"},{"url":"http://pb1.pstatp.com/list/364x360/1c670000c478c262532a"}],"uri":"list/364x360/1c670000c478c262532a","height":625},{"url":"http://p1.pstatp.com/list/640x360/1c650004bbbd9da2f8a2","width":512,"url_list":[{"url":"http://p1.pstatp.com/list/272x178/1c650004bbbd9da2f8a2"},{"url":"http://pb3.pstatp.com/list/272x178/1c650004bbbd9da2f8a2"},{"url":"http://pb9.pstatp.com/list/272x178/1c650004bbbd9da2f8a2"}],"uri":"list/272x178/1c650004bbbd9da2f8a2","height":631},{"url":"http://p1.pstatp.com/list/640x360/1c650004bbbafe462183","width":749,"url_list":[{"url":"http://p3.pstatp.com/list/272x178/1c650004bbbafe462183"},{"url":"http://pb9.pstatp.com/list/272x178/1c650004bbbafe462183"},{"url":"http://pb1.pstatp.com/list/272x178/1c650004bbbafe462183"}],"uri":"list/272x178/1c650004bbbafe462183","height":501}],"behot_time":1494154827,"source_url":"/group/6411709793446363393/","source":"陪你看夕阳","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":49,"group_id":"6411709793446363393","media_url":"http://toutiao.com/m1559672807941122/"},{"image_url":"http://p9.pstatp.com/list/640x360/1b760004fde18b4e545f","media_avatar_url":"http://p3.pstatp.com/large/150c000e089c1d0af840","article_genre":"gallery","is_diversion_page":false,"title":"实拍2017款GL8 25S 舒适型，高性价比，抢占两本市场","middle_mode":false,"gallary_image_count":12,"image_list":[{"url":"http://p1.pstatp.com/list/640x360/1b760004fde18b4e545f","width":640,"url_list":[{"url":"http://p9.pstatp.com/list/640x360/1b760004fde18b4e545f"},{"url":"http://pb1.pstatp.com/list/640x360/1b760004fde18b4e545f"},{"url":"http://pb3.pstatp.com/list/640x360/1b760004fde18b4e545f"}],"uri":"list/640x360/1b760004fde18b4e545f","height":480},{"url":"http://p1.pstatp.com/list/640x360/1b780000c8e15c08b056","width":640,"url_list":[{"url":"http://p1.pstatp.com/list/1b780000c8e15c08b056"},{"url":"http://pb3.pstatp.com/list/1b780000c8e15c08b056"},{"url":"http://pb9.pstatp.com/list/1b780000c8e15c08b056"}],"uri":"list/1b780000c8e15c08b056","height":480},{"url":"http://p3.pstatp.com/list/640x360/1af800069cc1a05d9c9e","width":640,"url_list":[{"url":"http://p3.pstatp.com/list/1af800069cc1a05d9c9e"},{"url":"http://pb9.pstatp.com/list/1af800069cc1a05d9c9e"},{"url":"http://pb1.pstatp.com/list/1af800069cc1a05d9c9e"}],"uri":"list/1af800069cc1a05d9c9e","height":480}],"behot_time":1494154227,"source_url":"/group/6406858677643313409/","source":"车友来聚会","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":1,"group_id":"6406858677643313409","media_url":"http://toutiao.com/m1559404364925954/"},{"image_url":"http://p9.pstatp.com/list/640x360/1b760004fde18b4e545f","media_avatar_url":"http://p3.pstatp.com/large/150c000e089c1d0af840","article_genre":"gallery","is_diversion_page":false,"title":"实拍2017款GL8 25S 舒适型，高性价比，抢占两本市场","middle_mode":false,"gallary_image_count":12,"image_list":[{"url":"http://p1.pstatp.com/list/640x360/1b760004fde18b4e545f","width":640,"url_list":[{"url":"http://p9.pstatp.com/list/640x360/1b760004fde18b4e545f"},{"url":"http://pb1.pstatp.com/list/640x360/1b760004fde18b4e545f"},{"url":"http://pb3.pstatp.com/list/640x360/1b760004fde18b4e545f"}],"uri":"list/640x360/1b760004fde18b4e545f","height":480},{"url":"http://p1.pstatp.com/list/640x360/1b780000c8e15c08b056","width":640,"url_list":[{"url":"http://p1.pstatp.com/list/1b780000c8e15c08b056"},{"url":"http://pb3.pstatp.com/list/1b780000c8e15c08b056"},{"url":"http://pb9.pstatp.com/list/1b780000c8e15c08b056"}],"uri":"list/1b780000c8e15c08b056","height":480},{"url":"http://p3.pstatp.com/list/640x360/1af800069cc1a05d9c9e","width":640,"url_list":[{"url":"http://p3.pstatp.com/list/1af800069cc1a05d9c9e"},{"url":"http://pb9.pstatp.com/list/1af800069cc1a05d9c9e"},{"url":"http://pb1.pstatp.com/list/1af800069cc1a05d9c9e"}],"uri":"list/1af800069cc1a05d9c9e","height":480}],"behot_time":1494154227,"source_url":"/group/6417334853846876418/?_as_1494158594","honey":true,"source":"车友来聚会","more_mode":true,"is_feed_ad":false,"has_gallery":true,"single_mode":false,"comments_count":1,"group_id":"6417334853846876418","media_url":"http://toutiao.com/m1559404364925954/"}]
+     * next : {"max_behot_time":1494154227}
      */
 
     private boolean has_more;
@@ -59,7 +57,7 @@ public class PhotoArticleBean {
 
     public static class NextBean {
         /**
-         * max_behot_time : 1487175227
+         * max_behot_time : 1494154227
          */
 
         private int max_behot_time;
@@ -86,258 +84,91 @@ public class PhotoArticleBean {
             }
         };
         /**
-         * media_name : 这里的热点不热
-         * abstract :
-         * impression_count : 1369085
-         * image_list : [{"url":"http://p3.pstatp.com/list/640x360/12de00006ef5ced3796a","width":640,"url_list":[{"url":"http://p3.pstatp.com/list/640x360/12de00006ef5ced3796a"},{"url":"http://pb2.pstatp.com/list/640x360/12de00006ef5ced3796a"},{"url":"http://pb3.pstatp.com/list/640x360/12de00006ef5ced3796a"}],"uri":"list/640x360/12de00006ef5ced3796a","height":360},{"url":"http://p1.pstatp.com/list/12de00006f2d4d29dda3","width":640,"url_list":[{"url":"http://p1.pstatp.com/list/12de00006f2d4d29dda3"},{"url":"http://pb3.pstatp.com/list/12de00006f2d4d29dda3"},{"url":"http://pb3.pstatp.com/list/12de00006f2d4d29dda3"}],"uri":"list/12de00006f2d4d29dda3","height":360},{"url":"http://p3.pstatp.com/list/12de00007b336b90f014","width":640,"url_list":[{"url":"http://p3.pstatp.com/list/12de00007b336b90f014"},{"url":"http://pb2.pstatp.com/list/12de00007b336b90f014"},{"url":"http://pb3.pstatp.com/list/12de00007b336b90f014"}],"uri":"list/12de00007b336b90f014","height":360}]
-         * gallary_flag : 1
-         * external_visit_count : 4813
-         * article_type : 0
-         * more_mode : true
-         * tag : news
-         * is_favorite : 0
-         * has_m3u8_video : 0
-         * keywords : G650,湾流G550,公务机,王健林,私人飞机
-         * has_mp4_video : 0
-         * favorite_count : 570
-         * display_url : http://toutiao.com/group/6363765770279289090/
-         * media_avatar_url : http://p1.pstatp.com/large/e580017fa88196856b1
-         * article_sub_type : 0
-         * bury_count : 2
-         * title : 看完王健林的私人飞机，再看刘强东的，刚好相差1个小目标的钱
-         * datetime : 2017-02-16 00:14
-         * has_video : false
-         * share_url : http://toutiao.com/group/6363765770279289090/?iid=53942131955&app=news_article
-         * id : 6363765770279289090
-         * source : 这里的热点不热
-         * comment_count : 147
-         * article_url : http://toutiao.com/group/6363765770279289090/
-         * create_time : 1481680311
-         * recommend : 0
-         * has_gallery : true
-         * tips : 0
-         * aggr_type : 1
-         * item_source_url : /item/6363586734910865922/
-         * media_url : http://toutiao.com/m52004496401/
-         * display_time : 1481680296
-         * publish_time : 1481680296
-         * go_detail_count : 206863
-         * group_flags : 131074
-         * middle_mode : false
-         * display_title :
-         * gallary_image_count : 14
-         * item_seo_url : /item/6363586734910865922/
-         * tag_id : 6363765770279289090
-         * source_url : /group/6363765770279289090/
+         * image_url : http://p9.pstatp.com/list/640x360/1b820001767b34813c82
+         * media_avatar_url : http://p1.pstatp.com/large/d2a0011291a5cfef5c3
          * article_genre : gallery
-         * large_mode : false
-         * item_id : 6363586734910865922
-         * natant_level : 0
-         * is_digg : 0
-         * seo_url : /group/6363765770279289090/
-         * repin_count : 570
-         * url : http://toutiao.com/group/6363765770279289090/
-         * level : 0
-         * digg_count : 7
-         * behot_time : 1487175286
+         * is_diversion_page : false
+         * title : 我拍少女签约模特王纯粹少女视觉
+         * middle_mode : false
+         * gallary_image_count : 41
+         * image_list : [{"url":"http://p3.pstatp.com/list/640x360/1b820001767b34813c82","width":620,"url_list":[{"url":"http://p9.pstatp.com/list/640x360/1b820001767b34813c82"},{"url":"http://pb1.pstatp.com/list/640x360/1b820001767b34813c82"},{"url":"http://pb3.pstatp.com/list/640x360/1b820001767b34813c82"}],"uri":"list/640x360/1b820001767b34813c82","height":855},{"url":"http://p3.pstatp.com/list/640x360/1b8700015c172e7de742","width":1280,"url_list":[{"url":"http://p3.pstatp.com/list/1b8700015c172e7de742"},{"url":"http://pb9.pstatp.com/list/1b8700015c172e7de742"},{"url":"http://pb1.pstatp.com/list/1b8700015c172e7de742"}],"uri":"list/1b8700015c172e7de742","height":720},{"url":"http://p9.pstatp.com/list/640x360/1b8500015b6a1c897705","width":1656,"url_list":[{"url":"http://p9.pstatp.com/list/1b8500015b6a1c897705"},{"url":"http://pb1.pstatp.com/list/1b8500015b6a1c897705"},{"url":"http://pb3.pstatp.com/list/1b8500015b6a1c897705"}],"uri":"list/1b8500015b6a1c897705","height":2415}]
+         * more_mode : true
+         * behot_time : 1494158550
+         * source_url : /group/6408674663173767426/
+         * source : 我拍少女
          * hot : 1
-         * preload_web : 2
-         * comments_count : 147
-         * has_image : true
-         * is_bury : 0
-         * group_id : 6363765770279289090
-         * middle_image : {"url":"http://p3.pstatp.com/list/12de00006ef5ced3796a","width":640,"url_list":[{"url":"http://p3.pstatp.com/list/12de00006ef5ced3796a"},{"url":"http://pb2.pstatp.com/list/12de00006ef5ced3796a"},{"url":"http://pb3.pstatp.com/list/12de00006ef5ced3796a"}],"uri":"list/12de00006ef5ced3796a","height":360}
+         * is_feed_ad : false
+         * has_gallery : true
+         * single_mode : false
+         * comments_count : 1
+         * group_id : 6408674663173767426
+         * media_url : http://toutiao.com/m4439122761/
          * honey : true
          */
 
-        private String media_name;
-        @SerializedName("abstract")
-        private String abstractX;
-        private int impression_count;
-        private int gallary_flag;
-        private int external_visit_count;
-        private int article_type;
-        private boolean more_mode;
-        private String tag;
-        private int is_favorite;
-        private int has_m3u8_video;
-        private String keywords;
-        private int has_mp4_video;
-        private int favorite_count;
-        private String display_url;
+        private String image_url;
         private String media_avatar_url;
-        private int article_sub_type;
-        private int bury_count;
-        private String title;
-        private String datetime;
-        private boolean has_video;
-        private String share_url;
-        private long id;
-        private String source;
-        private int comment_count;
-        private String article_url;
-        private int create_time;
-        private int recommend;
-        private boolean has_gallery;
-        private int tips;
-        private int aggr_type;
-        private String item_source_url;
-        private String media_url;
-        private int display_time;
-        private int publish_time;
-        private int go_detail_count;
-        private int group_flags;
-        private boolean middle_mode;
-        private String display_title;
-        private int gallary_image_count;
-        private String item_seo_url;
-        private long tag_id;
-        private String source_url;
         private String article_genre;
-        private boolean large_mode;
-        private long item_id;
-        private int natant_level;
-        private int is_digg;
-        private String seo_url;
-        private int repin_count;
-        private String url;
-        private int level;
-        private int digg_count;
+        private boolean is_diversion_page;
+        private String title;
+        private boolean middle_mode;
+        private int gallary_image_count;
+        private boolean more_mode;
         private int behot_time;
+        private String source_url;
+        private String source;
         private int hot;
-        private int preload_web;
+        private boolean is_feed_ad;
+        private boolean has_gallery;
+        private boolean single_mode;
         private int comments_count;
-        private boolean has_image;
-        private int is_bury;
-        private long group_id;
-        //        private MiddleImageBean middle_image;
+        private String group_id;
+        private String media_url;
         private boolean honey;
         private List<ImageListBean> image_list;
 
         protected DataBean(Parcel in) {
-            media_name = in.readString();
-            abstractX = in.readString();
-            impression_count = in.readInt();
-            gallary_flag = in.readInt();
-            external_visit_count = in.readInt();
-            article_type = in.readInt();
-            more_mode = in.readByte() != 0;
-            tag = in.readString();
-            is_favorite = in.readInt();
-            has_m3u8_video = in.readInt();
-            keywords = in.readString();
-            has_mp4_video = in.readInt();
-            favorite_count = in.readInt();
-            display_url = in.readString();
+            image_url = in.readString();
             media_avatar_url = in.readString();
-            article_sub_type = in.readInt();
-            bury_count = in.readInt();
-            title = in.readString();
-            datetime = in.readString();
-            has_video = in.readByte() != 0;
-            share_url = in.readString();
-            id = in.readLong();
-            source = in.readString();
-            comment_count = in.readInt();
-            article_url = in.readString();
-            create_time = in.readInt();
-            recommend = in.readInt();
-            has_gallery = in.readByte() != 0;
-            tips = in.readInt();
-            aggr_type = in.readInt();
-            item_source_url = in.readString();
-            media_url = in.readString();
-            display_time = in.readInt();
-            publish_time = in.readInt();
-            go_detail_count = in.readInt();
-            group_flags = in.readInt();
-            middle_mode = in.readByte() != 0;
-            display_title = in.readString();
-            gallary_image_count = in.readInt();
-            item_seo_url = in.readString();
-            tag_id = in.readLong();
-            source_url = in.readString();
             article_genre = in.readString();
-            large_mode = in.readByte() != 0;
-            item_id = in.readLong();
-            natant_level = in.readInt();
-            is_digg = in.readInt();
-            seo_url = in.readString();
-            repin_count = in.readInt();
-            url = in.readString();
-            level = in.readInt();
-            digg_count = in.readInt();
+            is_diversion_page = in.readByte() != 0;
+            title = in.readString();
+            middle_mode = in.readByte() != 0;
+            gallary_image_count = in.readInt();
+            more_mode = in.readByte() != 0;
             behot_time = in.readInt();
+            source_url = in.readString();
+            source = in.readString();
             hot = in.readInt();
-            preload_web = in.readInt();
+            is_feed_ad = in.readByte() != 0;
+            has_gallery = in.readByte() != 0;
+            single_mode = in.readByte() != 0;
             comments_count = in.readInt();
-            has_image = in.readByte() != 0;
-            is_bury = in.readInt();
-            group_id = in.readLong();
+            group_id = in.readString();
+            media_url = in.readString();
             honey = in.readByte() != 0;
         }
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(media_name);
-            dest.writeString(abstractX);
-            dest.writeInt(impression_count);
-            dest.writeInt(gallary_flag);
-            dest.writeInt(external_visit_count);
-            dest.writeInt(article_type);
-            dest.writeByte((byte) (more_mode ? 1 : 0));
-            dest.writeString(tag);
-            dest.writeInt(is_favorite);
-            dest.writeInt(has_m3u8_video);
-            dest.writeString(keywords);
-            dest.writeInt(has_mp4_video);
-            dest.writeInt(favorite_count);
-            dest.writeString(display_url);
+            dest.writeString(image_url);
             dest.writeString(media_avatar_url);
-            dest.writeInt(article_sub_type);
-            dest.writeInt(bury_count);
-            dest.writeString(title);
-            dest.writeString(datetime);
-            dest.writeByte((byte) (has_video ? 1 : 0));
-            dest.writeString(share_url);
-            dest.writeLong(id);
-            dest.writeString(source);
-            dest.writeInt(comment_count);
-            dest.writeString(article_url);
-            dest.writeInt(create_time);
-            dest.writeInt(recommend);
-            dest.writeByte((byte) (has_gallery ? 1 : 0));
-            dest.writeInt(tips);
-            dest.writeInt(aggr_type);
-            dest.writeString(item_source_url);
-            dest.writeString(media_url);
-            dest.writeInt(display_time);
-            dest.writeInt(publish_time);
-            dest.writeInt(go_detail_count);
-            dest.writeInt(group_flags);
-            dest.writeByte((byte) (middle_mode ? 1 : 0));
-            dest.writeString(display_title);
-            dest.writeInt(gallary_image_count);
-            dest.writeString(item_seo_url);
-            dest.writeLong(tag_id);
-            dest.writeString(source_url);
             dest.writeString(article_genre);
-            dest.writeByte((byte) (large_mode ? 1 : 0));
-            dest.writeLong(item_id);
-            dest.writeInt(natant_level);
-            dest.writeInt(is_digg);
-            dest.writeString(seo_url);
-            dest.writeInt(repin_count);
-            dest.writeString(url);
-            dest.writeInt(level);
-            dest.writeInt(digg_count);
+            dest.writeByte((byte) (is_diversion_page ? 1 : 0));
+            dest.writeString(title);
+            dest.writeByte((byte) (middle_mode ? 1 : 0));
+            dest.writeInt(gallary_image_count);
+            dest.writeByte((byte) (more_mode ? 1 : 0));
             dest.writeInt(behot_time);
+            dest.writeString(source_url);
+            dest.writeString(source);
             dest.writeInt(hot);
-            dest.writeInt(preload_web);
+            dest.writeByte((byte) (is_feed_ad ? 1 : 0));
+            dest.writeByte((byte) (has_gallery ? 1 : 0));
+            dest.writeByte((byte) (single_mode ? 1 : 0));
             dest.writeInt(comments_count);
-            dest.writeByte((byte) (has_image ? 1 : 0));
-            dest.writeInt(is_bury);
-            dest.writeLong(group_id);
+            dest.writeString(group_id);
+            dest.writeString(media_url);
             dest.writeByte((byte) (honey ? 1 : 0));
         }
 
@@ -346,116 +177,12 @@ public class PhotoArticleBean {
             return 0;
         }
 
-        public String getMedia_name() {
-            return media_name;
+        public String getImage_url() {
+            return image_url;
         }
 
-        public void setMedia_name(String media_name) {
-            this.media_name = media_name;
-        }
-
-        public String getAbstractX() {
-            return abstractX;
-        }
-
-        public void setAbstractX(String abstractX) {
-            this.abstractX = abstractX;
-        }
-
-        public int getImpression_count() {
-            return impression_count;
-        }
-
-        public void setImpression_count(int impression_count) {
-            this.impression_count = impression_count;
-        }
-
-        public int getGallary_flag() {
-            return gallary_flag;
-        }
-
-        public void setGallary_flag(int gallary_flag) {
-            this.gallary_flag = gallary_flag;
-        }
-
-        public int getExternal_visit_count() {
-            return external_visit_count;
-        }
-
-        public void setExternal_visit_count(int external_visit_count) {
-            this.external_visit_count = external_visit_count;
-        }
-
-        public int getArticle_type() {
-            return article_type;
-        }
-
-        public void setArticle_type(int article_type) {
-            this.article_type = article_type;
-        }
-
-        public boolean isMore_mode() {
-            return more_mode;
-        }
-
-        public void setMore_mode(boolean more_mode) {
-            this.more_mode = more_mode;
-        }
-
-        public String getTag() {
-            return tag;
-        }
-
-        public void setTag(String tag) {
-            this.tag = tag;
-        }
-
-        public int getIs_favorite() {
-            return is_favorite;
-        }
-
-        public void setIs_favorite(int is_favorite) {
-            this.is_favorite = is_favorite;
-        }
-
-        public int getHas_m3u8_video() {
-            return has_m3u8_video;
-        }
-
-        public void setHas_m3u8_video(int has_m3u8_video) {
-            this.has_m3u8_video = has_m3u8_video;
-        }
-
-        public String getKeywords() {
-            return keywords;
-        }
-
-        public void setKeywords(String keywords) {
-            this.keywords = keywords;
-        }
-
-        public int getHas_mp4_video() {
-            return has_mp4_video;
-        }
-
-        public void setHas_mp4_video(int has_mp4_video) {
-            this.has_mp4_video = has_mp4_video;
-        }
-
-        public int getFavorite_count() {
-            return favorite_count;
-        }
-
-        public void setFavorite_count(int favorite_count) {
-            this.favorite_count = favorite_count;
-        }
-
-        public String getDisplay_url() {
-            return display_url;
-        }
-
-        public void setDisplay_url(String display_url) {
-            this.display_url = display_url;
+        public void setImage_url(String image_url) {
+            this.image_url = image_url;
         }
 
         public String getMedia_avatar_url() {
@@ -466,20 +193,20 @@ public class PhotoArticleBean {
             this.media_avatar_url = media_avatar_url;
         }
 
-        public int getArticle_sub_type() {
-            return article_sub_type;
+        public String getArticle_genre() {
+            return article_genre;
         }
 
-        public void setArticle_sub_type(int article_sub_type) {
-            this.article_sub_type = article_sub_type;
+        public void setArticle_genre(String article_genre) {
+            this.article_genre = article_genre;
         }
 
-        public int getBury_count() {
-            return bury_count;
+        public boolean isIs_diversion_page() {
+            return is_diversion_page;
         }
 
-        public void setBury_count(int bury_count) {
-            this.bury_count = bury_count;
+        public void setIs_diversion_page(boolean is_diversion_page) {
+            this.is_diversion_page = is_diversion_page;
         }
 
         public String getTitle() {
@@ -490,164 +217,12 @@ public class PhotoArticleBean {
             this.title = title;
         }
 
-        public String getDatetime() {
-            return datetime;
-        }
-
-        public void setDatetime(String datetime) {
-            this.datetime = datetime;
-        }
-
-        public boolean isHas_video() {
-            return has_video;
-        }
-
-        public void setHas_video(boolean has_video) {
-            this.has_video = has_video;
-        }
-
-        public String getShare_url() {
-            return share_url;
-        }
-
-        public void setShare_url(String share_url) {
-            this.share_url = share_url;
-        }
-
-        public long getId() {
-            return id;
-        }
-
-        public void setId(long id) {
-            this.id = id;
-        }
-
-        public String getSource() {
-            return source;
-        }
-
-        public void setSource(String source) {
-            this.source = source;
-        }
-
-        public int getComment_count() {
-            return comment_count;
-        }
-
-        public void setComment_count(int comment_count) {
-            this.comment_count = comment_count;
-        }
-
-        public String getArticle_url() {
-            return article_url;
-        }
-
-        public void setArticle_url(String article_url) {
-            this.article_url = article_url;
-        }
-
-        public int getCreate_time() {
-            return create_time;
-        }
-
-        public void setCreate_time(int create_time) {
-            this.create_time = create_time;
-        }
-
-        public int getRecommend() {
-            return recommend;
-        }
-
-        public void setRecommend(int recommend) {
-            this.recommend = recommend;
-        }
-
-        public boolean isHas_gallery() {
-            return has_gallery;
-        }
-
-        public void setHas_gallery(boolean has_gallery) {
-            this.has_gallery = has_gallery;
-        }
-
-        public int getTips() {
-            return tips;
-        }
-
-        public void setTips(int tips) {
-            this.tips = tips;
-        }
-
-        public int getAggr_type() {
-            return aggr_type;
-        }
-
-        public void setAggr_type(int aggr_type) {
-            this.aggr_type = aggr_type;
-        }
-
-        public String getItem_source_url() {
-            return item_source_url;
-        }
-
-        public void setItem_source_url(String item_source_url) {
-            this.item_source_url = item_source_url;
-        }
-
-        public String getMedia_url() {
-            return media_url;
-        }
-
-        public void setMedia_url(String media_url) {
-            this.media_url = media_url;
-        }
-
-        public int getDisplay_time() {
-            return display_time;
-        }
-
-        public void setDisplay_time(int display_time) {
-            this.display_time = display_time;
-        }
-
-        public int getPublish_time() {
-            return publish_time;
-        }
-
-        public void setPublish_time(int publish_time) {
-            this.publish_time = publish_time;
-        }
-
-        public int getGo_detail_count() {
-            return go_detail_count;
-        }
-
-        public void setGo_detail_count(int go_detail_count) {
-            this.go_detail_count = go_detail_count;
-        }
-
-        public int getGroup_flags() {
-            return group_flags;
-        }
-
-        public void setGroup_flags(int group_flags) {
-            this.group_flags = group_flags;
-        }
-
         public boolean isMiddle_mode() {
             return middle_mode;
         }
 
         public void setMiddle_mode(boolean middle_mode) {
             this.middle_mode = middle_mode;
-        }
-
-        public String getDisplay_title() {
-            return display_title;
-        }
-
-        public void setDisplay_title(String display_title) {
-            this.display_title = display_title;
         }
 
         public int getGallary_image_count() {
@@ -658,108 +233,12 @@ public class PhotoArticleBean {
             this.gallary_image_count = gallary_image_count;
         }
 
-        public String getItem_seo_url() {
-            return item_seo_url;
+        public boolean isMore_mode() {
+            return more_mode;
         }
 
-        public void setItem_seo_url(String item_seo_url) {
-            this.item_seo_url = item_seo_url;
-        }
-
-        public long getTag_id() {
-            return tag_id;
-        }
-
-        public void setTag_id(long tag_id) {
-            this.tag_id = tag_id;
-        }
-
-        public String getSource_url() {
-            return source_url;
-        }
-
-        public void setSource_url(String source_url) {
-            this.source_url = source_url;
-        }
-
-        public String getArticle_genre() {
-            return article_genre;
-        }
-
-        public void setArticle_genre(String article_genre) {
-            this.article_genre = article_genre;
-        }
-
-        public boolean isLarge_mode() {
-            return large_mode;
-        }
-
-        public void setLarge_mode(boolean large_mode) {
-            this.large_mode = large_mode;
-        }
-
-        public long getItem_id() {
-            return item_id;
-        }
-
-        public void setItem_id(long item_id) {
-            this.item_id = item_id;
-        }
-
-        public int getNatant_level() {
-            return natant_level;
-        }
-
-        public void setNatant_level(int natant_level) {
-            this.natant_level = natant_level;
-        }
-
-        public int getIs_digg() {
-            return is_digg;
-        }
-
-        public void setIs_digg(int is_digg) {
-            this.is_digg = is_digg;
-        }
-
-        public String getSeo_url() {
-            return seo_url;
-        }
-
-        public void setSeo_url(String seo_url) {
-            this.seo_url = seo_url;
-        }
-
-        public int getRepin_count() {
-            return repin_count;
-        }
-
-        public void setRepin_count(int repin_count) {
-            this.repin_count = repin_count;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
-        public int getLevel() {
-            return level;
-        }
-
-        public void setLevel(int level) {
-            this.level = level;
-        }
-
-        public int getDigg_count() {
-            return digg_count;
-        }
-
-        public void setDigg_count(int digg_count) {
-            this.digg_count = digg_count;
+        public void setMore_mode(boolean more_mode) {
+            this.more_mode = more_mode;
         }
 
         public int getBehot_time() {
@@ -770,6 +249,22 @@ public class PhotoArticleBean {
             this.behot_time = behot_time;
         }
 
+        public String getSource_url() {
+            return source_url;
+        }
+
+        public void setSource_url(String source_url) {
+            this.source_url = source_url;
+        }
+
+        public String getSource() {
+            return source;
+        }
+
+        public void setSource(String source) {
+            this.source = source;
+        }
+
         public int getHot() {
             return hot;
         }
@@ -778,12 +273,28 @@ public class PhotoArticleBean {
             this.hot = hot;
         }
 
-        public int getPreload_web() {
-            return preload_web;
+        public boolean isIs_feed_ad() {
+            return is_feed_ad;
         }
 
-        public void setPreload_web(int preload_web) {
-            this.preload_web = preload_web;
+        public void setIs_feed_ad(boolean is_feed_ad) {
+            this.is_feed_ad = is_feed_ad;
+        }
+
+        public boolean isHas_gallery() {
+            return has_gallery;
+        }
+
+        public void setHas_gallery(boolean has_gallery) {
+            this.has_gallery = has_gallery;
+        }
+
+        public boolean isSingle_mode() {
+            return single_mode;
+        }
+
+        public void setSingle_mode(boolean single_mode) {
+            this.single_mode = single_mode;
         }
 
         public int getComments_count() {
@@ -794,37 +305,21 @@ public class PhotoArticleBean {
             this.comments_count = comments_count;
         }
 
-        public boolean isHas_image() {
-            return has_image;
-        }
-
-        public void setHas_image(boolean has_image) {
-            this.has_image = has_image;
-        }
-
-        public int getIs_bury() {
-            return is_bury;
-        }
-
-        public void setIs_bury(int is_bury) {
-            this.is_bury = is_bury;
-        }
-
-        public long getGroup_id() {
+        public String getGroup_id() {
             return group_id;
         }
 
-        public void setGroup_id(long group_id) {
+        public void setGroup_id(String group_id) {
             this.group_id = group_id;
         }
 
-//        public MiddleImageBean getMiddle_image() {
-//            return middle_image;
-//        }
-//
-//        public void setMiddle_image(MiddleImageBean middle_image) {
-//            this.middle_image = middle_image;
-//        }
+        public String getMedia_url() {
+            return media_url;
+        }
+
+        public void setMedia_url(String media_url) {
+            this.media_url = media_url;
+        }
 
         public boolean isHoney() {
             return honey;
@@ -842,13 +337,13 @@ public class PhotoArticleBean {
             this.image_list = image_list;
         }
 
-        public static class MiddleImageBean {
+        public static class ImageListBean {
             /**
-             * url : http://p3.pstatp.com/list/12de00006ef5ced3796a
-             * width : 640
-             * url_list : [{"url":"http://p3.pstatp.com/list/12de00006ef5ced3796a"},{"url":"http://pb2.pstatp.com/list/12de00006ef5ced3796a"},{"url":"http://pb3.pstatp.com/list/12de00006ef5ced3796a"}]
-             * uri : list/12de00006ef5ced3796a
-             * height : 360
+             * url : http://p3.pstatp.com/list/640x360/1b820001767b34813c82
+             * width : 620
+             * url_list : [{"url":"http://p9.pstatp.com/list/640x360/1b820001767b34813c82"},{"url":"http://pb1.pstatp.com/list/640x360/1b820001767b34813c82"},{"url":"http://pb3.pstatp.com/list/640x360/1b820001767b34813c82"}]
+             * uri : list/640x360/1b820001767b34813c82
+             * height : 855
              */
 
             private String url;
@@ -899,79 +394,7 @@ public class PhotoArticleBean {
 
             public static class UrlListBean {
                 /**
-                 * url : http://p3.pstatp.com/list/12de00006ef5ced3796a
-                 */
-
-                private String url;
-
-                public String getUrl() {
-                    return url;
-                }
-
-                public void setUrl(String url) {
-                    this.url = url;
-                }
-            }
-        }
-
-        public static class ImageListBean {
-            /**
-             * url : http://p3.pstatp.com/list/640x360/12de00006ef5ced3796a
-             * width : 640
-             * url_list : [{"url":"http://p3.pstatp.com/list/640x360/12de00006ef5ced3796a"},{"url":"http://pb2.pstatp.com/list/640x360/12de00006ef5ced3796a"},{"url":"http://pb3.pstatp.com/list/640x360/12de00006ef5ced3796a"}]
-             * uri : list/640x360/12de00006ef5ced3796a
-             * height : 360
-             */
-
-            private String url;
-            private int width;
-            private String uri;
-            private int height;
-            private List<UrlListBeanX> url_list;
-
-            public String getUrl() {
-                return url;
-            }
-
-            public void setUrl(String url) {
-                this.url = url;
-            }
-
-            public int getWidth() {
-                return width;
-            }
-
-            public void setWidth(int width) {
-                this.width = width;
-            }
-
-            public String getUri() {
-                return uri;
-            }
-
-            public void setUri(String uri) {
-                this.uri = uri;
-            }
-
-            public int getHeight() {
-                return height;
-            }
-
-            public void setHeight(int height) {
-                this.height = height;
-            }
-
-            public List<UrlListBeanX> getUrl_list() {
-                return url_list;
-            }
-
-            public void setUrl_list(List<UrlListBeanX> url_list) {
-                this.url_list = url_list;
-            }
-
-            public static class UrlListBeanX {
-                /**
-                 * url : http://p3.pstatp.com/list/640x360/12de00006ef5ced3796a
+                 * url : http://p9.pstatp.com/list/640x360/1b820001767b34813c82
                  */
 
                 private String url;

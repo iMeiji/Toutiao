@@ -33,7 +33,7 @@ import static android.R.attr.path;
 /**
  * Created by Meiji on 2017/2/16.
  */
-
+@Deprecated
 class PhotoContentModel implements IPhotoContent.Model {
 
     private static final String TAG = "PhotoContentModel";

@@ -22,8 +22,8 @@ public interface INewsApi {
     String HOST = "http://toutiao.com/";
 
     /**
-     * "http://toutiao.com/api/article/recent/?source=2&category=类型&as=A105177907376A5&cp=5797C7865AD54E1&_=时间&count=30";
      * 获取新闻标题等信息
+     * "http://toutiao.com/api/article/recent/?source=2&category=类型&as=A105177907376A5&cp=5797C7865AD54E1&_=时间&count=30";
      */
     @GET("api/article/recent/?source=2&as=A105177907376A5&cp=5797C7865AD54E1&count=30")
     Observable<NewsArticleBean> getNewsArticle1(
@@ -31,8 +31,8 @@ public interface INewsApi {
             @Query("_") int max_behot_time);
 
     /**
-     * "http://toutiao.com/api/article/recent/?source=2&category=类型&as=A105177907376A5&cp=5797C7865AD54E1&_=时间&count=30";
      * 获取新闻标题等信息 部分请求参数不同上
+     * "http://toutiao.com/api/article/recent/?source=2&category=类型&as=A105177907376A5&cp=5797C7865AD54E1&_=时间&count=30";
      */
     @GET("api/article/recent/?source=2&as=A1F519007D6B4BB&cp=590D4B541BBB1E1")
     @Headers({

@@ -2,7 +2,6 @@ package com.meiji.toutiao.module.photo.content;
 
 import android.content.Context;
 
-import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
 import com.meiji.toutiao.module.base.IBasePresenter;
 import com.meiji.toutiao.module.base.IBaseView;
@@ -15,25 +14,47 @@ interface IPhotoContent {
 
     interface View extends IBaseView {
 
+        /**
+         * 设置图片浏览器
+         */
         void onSetImageBrowser(PhotoGalleryBean bean, int position);
 
-        void onSaveImageSuccess();
+        /**
+         * 解析 HTML 失败, 可以用 WebView 加载内容
+         */
+        void onSetWebView(String url, boolean flag);
+
+        /**
+         * 保存图片成功
+         */
+        void onShowSaveSuccess();
     }
 
     interface Presenter extends IBasePresenter {
 
-        void doSetImageBrowser();
+        /**
+         * 请求数据
+         */
+        void doLoadData(String... category);
 
-        void doRequestData(PhotoArticleBean.DataBean dataBean);
-
+        /**
+         * 返回图片数量
+         */
         int doGetImageCount();
 
+        /**
+         * 设置图片位置
+         */
         void doSetPosition(int position);
 
+        /**
+         * 保存图片
+         */
         void doSaveImage();
 
     }
 
+    @Deprecated
     interface Model {
 
         /**

@@ -1,14 +1,51 @@
 package com.meiji.toutiao.module.photo.content;
 
-import android.os.Handler;
-import android.os.Message;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import com.meiji.toutiao.InitApp;
-import com.meiji.toutiao.bean.photo.PhotoArticleBean;
+import com.meiji.toutiao.RetrofitFactory;
+import com.meiji.toutiao.api.INewsApi;
+import com.meiji.toutiao.api.IPhotoApi;
+import com.meiji.toutiao.bean.news.NewsContentBean;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
+import com.meiji.toutiao.utils.SettingsUtil;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.HttpUrl;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+
+import static android.R.attr.path;
 
 /**
  * Created by Meiji on 2017/2/16.
@@ -17,42 +54,13 @@ import java.util.List;
 class PhotoContentPresenter implements IPhotoContent.Presenter {
 
     private static final String TAG = "PhotoContentPresenter";
-    private static final int SAVE_IMAGE_SUCCESS = 0;
-    private static final int SAVE_IMAGE_FAIL = 1;
-    private static final int HTTP_REQUEST_SUCCESS = 2;
-    private static final int HTTP_REQUEST_FAIL = 3;
     private IPhotoContent.View view;
-    private IPhotoContent.Model model;
     private PhotoGalleryBean bean;
-    private Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message message) {
-            if (message.what == HTTP_REQUEST_SUCCESS) {
-                doSetImageBrowser();
-            }
-            if (message.what == SAVE_IMAGE_SUCCESS) {
-                view.onSaveImageSuccess();
-            }
-            if (message.what == SAVE_IMAGE_FAIL || message.what == HTTP_REQUEST_FAIL) {
-                view.onShowNetError();
-            }
-            return false;
-        }
-    });
     private int position;
-    private String group_id;
-    private String item_id;
-
+    private String shareUrl;
 
     PhotoContentPresenter(IPhotoContent.View view) {
         this.view = view;
-        this.model = new PhotoContentModel();
-    }
-
-    @Override
-    public void doSetImageBrowser() {
-        bean = model.getData();
-        view.onSetImageBrowser(bean, 0);
     }
 
     @Override
@@ -62,28 +70,126 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
 
     @Override
     public void doShowNetError() {
-
+        view.onHideLoading();
+        view.onShowNetError();
     }
 
     @Override
-    public void doRequestData(PhotoArticleBean.DataBean dataBean) {
-        group_id = dataBean.getGroup_id() + "";
-        item_id = dataBean.getItem_id() + "";
+    public void doLoadData(String... category) {
 
-        final String url = "http://www.toutiao.com/a" + dataBean.getGroup_id();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                boolean result = model.getRequestData(url);
-                if (result) {
-                    Message message = handler.obtainMessage(HTTP_REQUEST_SUCCESS);
-                    message.sendToTarget();
-                } else {
-                    Message message = handler.obtainMessage(HTTP_REQUEST_FAIL);
-                    message.sendToTarget();
-                }
-            }
-        }).start();
+        try {
+            this.shareUrl = category[0];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+
+        Observable
+                .create(new ObservableOnSubscribe<String>() {
+                    @Override
+                    public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
+                        Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(IPhotoApi.class)
+                                .getPhotoContentHTML(shareUrl).execute();
+                        if (response.isSuccessful()) {
+                            e.onNext(response.body().string());
+                        } else {
+                            e.onComplete();
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .map(new Function<String, Boolean>() {
+                    @Override
+                    public Boolean apply(@NonNull String s) throws Exception {
+                        return parseHTML(s);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        view.onShowLoading();
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Boolean b) {
+                        if (b) {
+                            view.onHideLoading();
+                            view.onSetImageBrowser(bean, 0);
+                        } else {
+                            // 解析 HTML 失败, 可以用 WebView 加载内容
+                            doLoadWebView();
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        // 解析 HTML 失败, 可以用 WebView 加载内容
+                        doLoadWebView();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        doShowNetError();
+                    }
+                });
+    }
+
+    private void doLoadWebView() {
+        Observable
+                .create(new ObservableOnSubscribe<String>() {
+                    @Override
+                    public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
+                        Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(INewsApi.class)
+                                .getNewsContentRedirectUrl(shareUrl).execute();
+                        // 获取重定向后的 URL 用于拼凑API
+                        if (response.isSuccessful()) {
+                            HttpUrl httpUrl = response.raw().request().url();
+                            String api = httpUrl + "info";
+                            e.onNext(api);
+                        } else {
+                            e.onComplete();
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .flatMap(new Function<String, ObservableSource<NewsContentBean>>() {
+                    @Override
+                    public ObservableSource<NewsContentBean> apply(@NonNull String s) throws Exception {
+                        return RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsContent(s);
+                    }
+                })
+                .map(new Function<NewsContentBean, String>() {
+                    @Override
+                    public String apply(@NonNull NewsContentBean bean) throws Exception {
+                        return getHTML(bean);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        view.onShowLoading();
+                    }
+
+                    @Override
+                    public void onNext(@NonNull String s) {
+                        view.onHideLoading();
+                        view.onSetWebView(s, true);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        view.onHideLoading();
+                        view.onSetWebView(null, false);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        doShowNetError();
+                    }
+                });
     }
 
     @Override
@@ -98,21 +204,133 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
 
     @Override
     public void doSaveImage() {
-        List<PhotoGalleryBean.SubImagesBean> sub_images = bean.getSub_images();
-        final String url = sub_images.get(position).getUrl();
-        Log.d(TAG, "doSaveImage: " + url);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                boolean result = model.SaveImage(url, InitApp.AppContext);
-                if (result) {
-                    Message message = handler.obtainMessage(SAVE_IMAGE_SUCCESS);
-                    message.sendToTarget();
-                } else {
-                    Message message = handler.obtainMessage(SAVE_IMAGE_FAIL);
-                    message.sendToTarget();
+
+        Observable
+                .create(new ObservableOnSubscribe<Boolean>() {
+                    @Override
+                    public void subscribe(@NonNull ObservableEmitter<Boolean> e) throws Exception {
+                        List<PhotoGalleryBean.SubImagesBean> sub_images = bean.getSub_images();
+                        final String url = sub_images.get(position).getUrl();
+                        Log.d(TAG, "doSaveImage: " + url);
+                        e.onNext(saveImage(url));
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(@NonNull Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            view.onShowSaveSuccess();
+                        } else {
+                            view.onShowNetError();
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        view.onShowNetError();
+                    }
+                });
+    }
+
+    private Boolean parseHTML(String HTML) {
+        boolean flag = false;
+        Document doc = Jsoup.parse(HTML);
+        // 取得所有的script tag
+        Elements scripts = doc.getElementsByTag("script");
+        for (Element e : scripts) {
+            // 过滤字符串
+            String script = e.toString();
+            if (script.contains("var gallery = {")) {
+                // 只取得script的內容
+                script = e.childNode(0).toString();
+                // 取得JS变量数组
+                String[] vars = script.split("var ");
+                // 取得单个JS变量
+                for (String var : vars) {
+                    // 取到满足条件的JS变量
+                    if (var.contains("gallery = ")) {
+                        int start = var.indexOf("=");
+                        int end = var.lastIndexOf(";");
+                        String json = var.substring(start + 1, end + 1);
+                        // 处理特殊符号
+                        JsonReader reader = new JsonReader(new StringReader(json));
+                        reader.setLenient(true);
+                        Log.d(TAG, "parseHTML: " + reader);
+                        bean = new Gson().fromJson(reader, PhotoGalleryBean.class);
+                        flag = true;
+                    }
                 }
             }
-        }).start();
+        }
+        return flag;
+    }
+
+    private Boolean saveImage(String url) {
+        boolean flag = false;
+        try {
+            // 获取 bitmap
+            Bitmap bitmap = Glide.with(InitApp.AppContext).load(url).asBitmap()
+                    .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                    .get();
+            // http://stormzhang.com/android/2014/07/24/android-save-image-to-gallery/
+            if (bitmap != null) {
+                // 首先保存图片
+                File appDir = new File(Environment.getExternalStorageDirectory(), "Toutiao");
+                if (!appDir.exists()) {
+                    appDir.mkdir();
+                }
+                String fileName = System.currentTimeMillis() + ".jpg";
+                File file = new File(appDir, fileName);
+                FileOutputStream fos = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                fos.flush();
+                fos.close();
+
+                // 其次把文件插入到系统图库
+//                MediaStore.Images.Media.insertImage(InitApp.AppContext.getContentResolver(), file.getAbsolutePath(), fileName, null);
+                // 最后通知图库更新
+                InitApp.AppContext.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + path)));
+
+                flag = true;
+            }
+        } catch (InterruptedException | ExecutionException | IOException e) {
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+    private String getHTML(NewsContentBean bean) {
+        String title = bean.getData().getTitle();
+        String content = bean.getData().getContent();
+        if (content != null) {
+
+            String css = "<link rel=\"stylesheet\" href=\"file:///android_asset/toutiao_light.css\" type=\"text/css\">";
+            if (SettingsUtil.getInstance().getIsNightMode()) {
+                css = css.replace("toutiao_light", "toutiao_dark");
+            }
+
+            String html = "<!DOCTYPE html>\n" +
+                    "<html lang=\"en\">\n" +
+                    "<head>\n" +
+                    "    <meta charset=\"UTF-8\">" +
+                    css +
+                    "<body>\n" +
+                    "<article class=\"article-container\">\n" +
+                    "    <div class=\"article__content article-content\">" +
+                    "<h1 class=\"article-title\">" +
+                    title +
+                    "</h1>" +
+                    content +
+                    "    </div>\n" +
+                    "</article>\n" +
+                    "</body>\n" +
+                    "</html>";
+
+            return html;
+        } else {
+            return null;
+        }
     }
 }

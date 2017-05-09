@@ -17,7 +17,7 @@ import okhttp3.Response;
 /**
  * Created by Meiji on 2017/2/7.
  */
-
+@Deprecated
 class SearchModel implements ISearch.Model {
 
     private static final String TAG = "SearchModel";
