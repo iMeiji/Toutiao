@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.adapter.video.VideoContentAdapter;
 import com.meiji.toutiao.bean.news.NewsCommentBean;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
@@ -110,13 +112,14 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onLoadData() {
         presenter.doLoadData(groupId, itemId);
-        presenter.doRequestVideoData(videoId);
+        presenter.doLoadVideoData(videoId);
     }
 
     @Override
     public void onSetAdapter(final List<NewsCommentBean.DataBean.CommentsBean> list) {
         if (adapter == null) {
-            adapter = new VideoContentAdapter(list, this, articleBean);
+            adapter = new VideoContentAdapter(this, articleBean);
+            adapter.setList(list);
             recycler_view.setAdapter(adapter);
             adapter.setOnItemClickListener(new IOnItemClickListener() {
                 @Override
@@ -125,7 +128,11 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
                 }
             });
         } else {
-            adapter.notifyItemInserted(list.size());
+//            adapter.notifyItemInserted(list.size());
+            List<NewsCommentBean.DataBean.CommentsBean> oldList = adapter.getList();
+            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWS_COMMENT), true);
+            result.dispatchUpdatesTo(adapter);
+            adapter.setList(list);
         }
 
         canLoading = true;
@@ -143,7 +150,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!recyclerView.canScrollVertically(1)) {
                         if (canLoading) {
-                            presenter.doRefresh();
+                            presenter.doLoadMoreData();
                             canLoading = false;
                         }
                     }

@@ -20,21 +20,10 @@ public interface IVideoContent {
 
     interface Presenter extends INewsComment.Presenter {
 
-        void doLoadData(String group_id, String item_id);
-
-        void doRequestData(String url);
-
-        void doSetAdapter();
-
-        void doRefresh();
-
-        void doShowNetError();
-
-        void doRequestVideoData(String videoid);
-
-        void doSetVideoPlay();
+        void doLoadVideoData(String videoid);
     }
 
+    @Deprecated
     interface Model extends INewsComment.Model {
         boolean requestData(String url);
 

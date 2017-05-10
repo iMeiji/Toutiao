@@ -59,7 +59,6 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
                 .subscribe(new Observer<List<NewsCommentBean.DataBean.CommentsBean>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-                        view.onShowLoading();
                     }
 
                     @Override

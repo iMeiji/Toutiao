@@ -29,18 +29,22 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_NORMAL = 1;
     private static final int TYPE_FOOTER = 2;
-    private List<NewsCommentBean.DataBean.CommentsBean> commentsBeanList = new ArrayList<>();
+    private List<NewsCommentBean.DataBean.CommentsBean> list = new ArrayList<>();
     private VideoArticleBean.DataBean articleBean;
     private Context context;
     private IOnItemClickListener onItemClickListener;
-    private View rv_header;
 
-    public VideoContentAdapter(List<NewsCommentBean.DataBean.CommentsBean> commentsList,
-                               Context context,
-                               VideoArticleBean.DataBean articleBean) {
-        this.commentsBeanList = commentsList;
+    public VideoContentAdapter(Context context, VideoArticleBean.DataBean articleBean) {
         this.context = context;
         this.articleBean = articleBean;
+    }
+
+    public List<NewsCommentBean.DataBean.CommentsBean> getList() {
+        return list;
+    }
+
+    public void setList(List<NewsCommentBean.DataBean.CommentsBean> list) {
+        this.list = new ArrayList<>(list);
     }
 
     public void setOnItemClickListener(IOnItemClickListener onItemClickListener) {
@@ -52,7 +56,7 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (position == 0) {
             return TYPE_HEADER;
         }
-//        if (position == commentsBeanList.size()) {
+//        if (position == list.size()) {
 //            return TYPE_FOOTER;
 //        }
         return TYPE_NORMAL;
@@ -61,7 +65,6 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_HEADER) {
-//            return new SimpleViewHolder(rv_header);
             View view = LayoutInflater.from(context).inflate(R.layout.item_video_content_header, parent, false);
             return new VideoDescHeader(view);
         }
@@ -80,7 +83,7 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof NewsCommentsViewHolder) {
             NewsCommentsViewHolder commentHolder = (NewsCommentsViewHolder) holder;
-            NewsCommentBean.DataBean.CommentsBean commentsBean = commentsBeanList.get(position);
+            NewsCommentBean.DataBean.CommentsBean commentsBean = list.get(position);
 
             String iv_avatar = commentsBean.getUser().getAvatar_url();
             String tv_username = commentsBean.getUser().getName();
@@ -116,11 +119,11 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-//        if (commentsBeanList.size() > 0) {
+//        if (list.size() > 0) {
 //            int count = 1;
-//            count = commentsBeanList.size() + 1;
+//            count = list.size() + 1;
 //        }
-        return commentsBeanList != null ? commentsBeanList.size() : 0;
+        return list != null ? list.size() : 0;
     }
 
     private class NewsCommentsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

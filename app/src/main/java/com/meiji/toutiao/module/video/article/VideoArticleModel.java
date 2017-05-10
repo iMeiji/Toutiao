@@ -17,7 +17,7 @@ import okhttp3.Response;
 /**
  * Created by Meiji on 2017/3/29.
  */
-
+@Deprecated
 public class VideoArticleModel implements IVideoArticle.Model {
 
     private static final String TAG = "VideoArticleModel";

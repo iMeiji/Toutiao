@@ -1,6 +1,8 @@
 package com.meiji.toutiao.module.video.article;
 
 import com.meiji.toutiao.bean.video.VideoArticleBean;
+import com.meiji.toutiao.module.base.IBasePresenter;
+import com.meiji.toutiao.module.base.IBaseView;
 
 import java.util.List;
 
@@ -10,32 +12,43 @@ import java.util.List;
 
 public interface IVideoArticle {
 
-    interface View {
-        void onRequestData();
+    interface View extends IBaseView {
 
+        /**
+         * 请求数据
+         */
+        void onLoadData();
+
+        /**
+         * 设置适配器
+         */
         void onSetAdapter(List<VideoArticleBean.DataBean> list);
-
-        void onShowRefreshing();
-
-        void onHideRefreshing();
-
-        void onFail();
     }
 
-    interface Presenter {
-        void doGetUrl(String parameter);
+    interface Presenter extends IBasePresenter {
 
-        void doRequestData(String url);
+        /**
+         * 请求数据
+         */
+        void doLoadData(String... category);
 
-        void doSetAdapter();
+        /**
+         * 再起请求数据
+         */
+        void doLoadMoreData();
 
-        void doRefresh();
+        /**
+         * 设置适配器
+         */
+        void doSetAdapter(List<VideoArticleBean.DataBean> dataBeen);
 
-        void onFail();
-
+        /**
+         * 点击事件跳转
+         */
         void doOnClickItem(int position);
     }
 
+    @Deprecated
     interface Model {
         boolean requestData(String url);
 

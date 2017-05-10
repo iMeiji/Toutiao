@@ -222,7 +222,6 @@ public class VideoArticleBean {
         private int is_bury;
         private String video_resulotion;
         private long group_id;
-        private String middle_image;
         private boolean honey;
 
         protected DataBean(Parcel in) {
@@ -290,7 +289,6 @@ public class VideoArticleBean {
             is_bury = in.readInt();
             video_resulotion = in.readString();
             group_id = in.readLong();
-            middle_image = in.readString();
             honey = in.readByte() != 0;
         }
 
@@ -360,7 +358,6 @@ public class VideoArticleBean {
             dest.writeInt(is_bury);
             dest.writeString(video_resulotion);
             dest.writeLong(group_id);
-            dest.writeString(middle_image);
             dest.writeByte((byte) (honey ? 1 : 0));
         }
 
@@ -887,14 +884,6 @@ public class VideoArticleBean {
 
         public void setGroup_id(long group_id) {
             this.group_id = group_id;
-        }
-
-        public String getMiddle_image() {
-            return middle_image;
-        }
-
-        public void setMiddle_image(String middle_image) {
-            this.middle_image = middle_image;
         }
 
         public boolean isHoney() {

@@ -23,7 +23,7 @@ import okhttp3.Response;
 /**
  * Created by Meiji on 2017/4/11.
  */
-
+@Deprecated
 class MediaArticleModel implements IMediaArticle.Model {
 
     private static final String TAG = "MediaArticleModel";

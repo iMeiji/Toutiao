@@ -1,9 +1,21 @@
 package com.meiji.toutiao.module.video.content;
 
-import android.os.Handler;
-import android.os.Message;
+import android.util.Base64;
+import android.util.Log;
 
+import com.meiji.toutiao.RetrofitFactory;
+import com.meiji.toutiao.api.IVideoApi;
+import com.meiji.toutiao.bean.video.VideoContentBean;
 import com.meiji.toutiao.module.news.comment.NewsCommentPresenter;
+
+import java.util.Random;
+import java.util.zip.CRC32;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Meiji on 2017/3/30.
@@ -11,58 +23,79 @@ import com.meiji.toutiao.module.news.comment.NewsCommentPresenter;
 
 public class VideoContentPresenter extends NewsCommentPresenter implements IVideoContent.Presenter {
 
+    private static final String TAG = "VideoContentPresenter";
     private IVideoContent.View view;
-    private IVideoContent.Model model;
-    private Handler vHandler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            if (msg.what == 3) {
-                doSetVideoPlay();
-            }
-            return false;
-        }
-    });
 
-    public VideoContentPresenter(IVideoContent.View view) {
+    VideoContentPresenter(IVideoContent.View view) {
         super(view);
         this.view = view;
-        this.model = new VideoContentModel();
+    }
+
+    private static String getVideoContentApi(String videoid) {
+        String VIDEO_HOST = "http://ib.365yg.com";
+        String VIDEO_URL = "/video/urls/v/1/toutiao/mp4/%s?r=%s";
+        String r = getRandom();
+        String s = String.format(VIDEO_URL, videoid, r);
+        // 将/video/urls/v/1/toutiao/mp4/{videoid}?r={Math.random()} 进行crc32加密
+        CRC32 crc32 = new CRC32();
+        crc32.update(s.getBytes());
+        String crcString = crc32.getValue() + "";
+        String url = VIDEO_HOST + s + "&s=" + crcString;
+        return url;
+    }
+
+    private static String getRandom() {
+        Random random = new Random();
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < 16; i++) {
+            result.append(random.nextInt(10));
+        }
+        return result.toString();
     }
 
     @Override
-    public void doLoadData(String group_id, String item_id) {
+    public void doLoadVideoData(String videoid) {
+        String url = getVideoContentApi(videoid);
+        RetrofitFactory.getRetrofit().create(IVideoApi.class).getVideoContent(url)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .map(new Function<VideoContentBean, String>() {
+                    @Override
+                    public String apply(@NonNull VideoContentBean videoContentBean) throws Exception {
+                        VideoContentBean.DataBean.VideoListBean videoList = videoContentBean.getData().getVideo_list();
+                        if (videoList.getVideo_3() != null) {
+                            String base64 = videoList.getVideo_3().getMain_url();
+                            String url = (new String(Base64.decode(base64.getBytes(), Base64.DEFAULT)));
+                            Log.d(TAG, "getVideoUrls: " + url);
+                            return url;
+                        }
 
-    }
+                        if (videoList.getVideo_2() != null) {
+                            String base64 = videoList.getVideo_2().getMain_url();
+                            String url = (new String(Base64.decode(base64.getBytes(), Base64.DEFAULT)));
+                            Log.d(TAG, "getVideoUrls: " + url);
+                            return url;
+                        }
 
-    @Override
-    public void doRequestData(String url) {
-
-    }
-
-    @Override
-    public void doSetAdapter() {
-
-    }
-
-    @Override
-    public void doRequestVideoData(final String videoid) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                boolean vResult = model.requestVideoData(videoid);
-                if (vResult) {
-                    Message message = vHandler.obtainMessage(3);
-                    message.sendToTarget();
-                } else {
-                    Message message = vHandler.obtainMessage(4);
-                    message.sendToTarget();
-                }
-            }
-        }).start();
-    }
-
-    @Override
-    public void doSetVideoPlay() {
-        view.onSetVideoPlay(model.getVideoUrl());
+                        if (videoList.getVideo_1() != null) {
+                            String base64 = videoList.getVideo_1().getMain_url();
+                            String url = (new String(Base64.decode(base64.getBytes(), Base64.DEFAULT)));
+                            Log.d(TAG, "getVideoUrls: " + url);
+                            return url;
+                        }
+                        return null;
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(@NonNull String s) throws Exception {
+                        view.onSetVideoPlay(s);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                    }
+                });
     }
 }

@@ -75,7 +75,7 @@ public class VideoArticleView extends LazyLoadFragment implements IVideoArticle.
 
     @Override
     public void fetchData() {
-        onRequestData();
+        onLoadData();
     }
 
     @Override
@@ -84,8 +84,9 @@ public class VideoArticleView extends LazyLoadFragment implements IVideoArticle.
     }
 
     @Override
-    public void onRequestData() {
-        presenter.doGetUrl(categoryId);
+    public void onLoadData() {
+        onShowLoading();
+        presenter.doLoadData(categoryId);
     }
 
     @Override
@@ -117,7 +118,7 @@ public class VideoArticleView extends LazyLoadFragment implements IVideoArticle.
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!recyclerView.canScrollVertically(1)) {
                         if (canLoading) {
-                            presenter.doRefresh();
+                            presenter.doLoadMoreData();
                             canLoading = false;
                         }
                     }
@@ -127,7 +128,7 @@ public class VideoArticleView extends LazyLoadFragment implements IVideoArticle.
     }
 
     @Override
-    public void onShowRefreshing() {
+    public void onShowLoading() {
         refresh_layout.post(new Runnable() {
             @Override
             public void run() {
@@ -137,7 +138,7 @@ public class VideoArticleView extends LazyLoadFragment implements IVideoArticle.
     }
 
     @Override
-    public void onHideRefreshing() {
+    public void onHideLoading() {
         refresh_layout.post(new Runnable() {
             @Override
             public void run() {
@@ -147,12 +148,12 @@ public class VideoArticleView extends LazyLoadFragment implements IVideoArticle.
     }
 
     @Override
-    public void onFail() {
+    public void onShowNetError() {
         Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT)
                 .setAction(R.string.retry, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        presenter.doGetUrl(categoryId);
+                        presenter.doLoadData(categoryId);
                     }
                 }).show();
     }

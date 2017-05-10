@@ -74,7 +74,7 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
         presenter = new MediaArticlePresenter(this);
         setHasOptionsMenu(true);
         initView(view);
-        onRequestData();
+        onLoadData();
         return view;
     }
 
@@ -118,8 +118,8 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
     }
 
     @Override
-    public void onRequestData() {
-        presenter.doGetUrl(bean.getId());
+    public void onLoadData() {
+        presenter.doLoadData(bean.getId());
     }
 
     @Override
@@ -151,7 +151,7 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!recyclerView.canScrollVertically(1)) {
                         if (canLoading) {
-                            presenter.doRefresh();
+                            presenter.doLoadMoreData();
                             canLoading = false;
                         }
                     }
@@ -161,7 +161,7 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
     }
 
     @Override
-    public void onShowRefreshing() {
+    public void onShowLoading() {
         refresh_layout.post(new Runnable() {
             @Override
             public void run() {
@@ -171,7 +171,7 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
     }
 
     @Override
-    public void onHideRefreshing() {
+    public void onHideLoading() {
         refresh_layout.post(new Runnable() {
             @Override
             public void run() {
@@ -181,12 +181,12 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
     }
 
     @Override
-    public void onFail() {
+    public void onShowNetError() {
         Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT)
                 .setAction(R.string.retry, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        presenter.doGetUrl(bean.getId());
+                        presenter.doLoadData(bean.getId());
                     }
                 }).show();
     }
@@ -247,7 +247,7 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
     }
 
     @Override
-    public void onFinish() {
+    public void onShowNoMore() {
         Snackbar.make(refresh_layout, R.string.no_more, Snackbar.LENGTH_SHORT).show();
     }
 }

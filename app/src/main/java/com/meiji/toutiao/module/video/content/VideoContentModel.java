@@ -20,7 +20,7 @@ import okhttp3.Response;
 /**
  * Created by Meiji on 2017/3/30.
  */
-
+@Deprecated
 public class VideoContentModel extends NewsCommentModel implements IVideoContent.Model {
 
     private static final String TAG = "VideoContentModel";

@@ -2,6 +2,8 @@ package com.meiji.toutiao.module.media.article;
 
 import com.meiji.toutiao.bean.media.MediaArticleBean;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
+import com.meiji.toutiao.module.base.IBasePresenter;
+import com.meiji.toutiao.module.base.IBaseView;
 
 import java.util.List;
 
@@ -11,34 +13,53 @@ import java.util.List;
 
 public interface IMediaArticle {
 
-    interface View {
-        void onRequestData();
+    interface View extends IBaseView {
 
+        /**
+         * 请求数据
+         */
+        void onLoadData();
+
+        /**
+         * 设置适配器
+         */
         void onSetAdapter(List<MediaArticleBean.DataBean> list);
 
-        void onShowRefreshing();
-
-        void onHideRefreshing();
-
-        void onFail();
-
-        void onFinish();
+        /**
+         * 加载完毕
+         */
+        void onShowNoMore();
     }
 
-    interface Presenter {
-        void doGetUrl(String mediaId);
+    interface Presenter extends IBasePresenter {
 
-        void doRequestData(String url);
+        /**
+         * 请求数据
+         */
+        void doLoadData(String... mediaId);
 
-        void doSetAdapter();
+        /**
+         * 再起请求数据
+         */
+        void doLoadMoreData();
 
-        void doRefresh();
+        /**
+         * 设置适配器
+         */
+        void doSetAdapter(List<MediaArticleBean.DataBean> dataBeen);
 
-        void onFail();
+        /**
+         * 加载完毕
+         */
+        void doShowNoMore();
 
+        /**
+         * 点击事件跳转
+         */
         void doOnClickItem(MediaArticleBean.DataBean bean, MediaChannelBean mediaChannelBean);
     }
 
+    @Deprecated
     interface Model {
         long getItemId();
 

@@ -1,14 +1,21 @@
 package com.meiji.toutiao.module.video.article;
 
-import android.os.Handler;
-import android.os.Message;
-
-import com.meiji.toutiao.api.VideoApi;
+import com.meiji.toutiao.RetrofitFactory;
+import com.meiji.toutiao.api.IVideoApi;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.module.video.content.VideoContentActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Meiji on 2017/3/29.
@@ -17,70 +24,102 @@ import java.util.List;
 public class VideoArticlePresenter implements IVideoArticle.Presenter {
 
     private IVideoArticle.View view;
-    private IVideoArticle.Model model;
+    //    private IVideoArticle.Model model;
     private String category;
+    private int time;
     private List<VideoArticleBean.DataBean> dataList = new ArrayList<>();
-    private Handler handler = new Handler(new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message message) {
-            if (message.what == 1) {
-                doSetAdapter();
-            }
-            if (message.what == 0) {
-                onFail();
-            }
-            return false;
-        }
-    });
 
     VideoArticlePresenter(IVideoArticle.View view) {
         this.view = view;
-        this.model = new VideoArticleModel();
     }
 
     @Override
-    public void doGetUrl(String parameter) {
-        view.onShowRefreshing();
-        this.category = parameter;
-        String url = VideoApi.getVideoArticleUrl(category);
-        doRequestData(url);
-    }
-
-    @Override
-    public void doRequestData(final String url) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                boolean result = model.requestData(url);
-                if (result) {
-                    Message message = handler.obtainMessage(1);
-                    message.sendToTarget();
-                } else {
-                    Message message = handler.obtainMessage(0);
-                    message.sendToTarget();
-                }
+    public void doLoadData(String... category) {
+        try {
+            if (null == this.category) {
+                this.category = category[0];
             }
-        }).start();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+
+        RetrofitFactory.getRetrofit().create(IVideoApi.class).getVideoArticle(this.category, time)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .flatMap(new Function<VideoArticleBean, Observable<VideoArticleBean.DataBean>>() {
+                    @Override
+                    public Observable<VideoArticleBean.DataBean> apply(@NonNull VideoArticleBean photoArticleBean) throws Exception {
+                        List<VideoArticleBean.DataBean> data = photoArticleBean.getData();
+                        // 移除最后一项 数据有重复
+                        if (data.size() > 0)
+                            data.remove(data.size() - 1);
+                        time = photoArticleBean.getNext().getMax_behot_time();
+                        return Observable.fromIterable(data);
+                    }
+                })
+                .filter(new Predicate<VideoArticleBean.DataBean>() {
+                    @Override
+                    public boolean test(@NonNull VideoArticleBean.DataBean dataBean) throws Exception {
+                        // 去除重复新闻
+                        for (VideoArticleBean.DataBean bean : dataList) {
+                            if (dataBean.getTitle().equals(bean.getTitle())) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                })
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<VideoArticleBean.DataBean>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull List<VideoArticleBean.DataBean> dataBeen) {
+                        doSetAdapter(dataBeen);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        e.printStackTrace();
+                        doShowNetError();
+                    }
+                });
     }
 
     @Override
-    public void doSetAdapter() {
-        dataList.addAll(model.getDataList());
+    public void doLoadMoreData() {
+        doLoadData();
+    }
+
+    @Override
+    public void doSetAdapter(List<VideoArticleBean.DataBean> dataBeen) {
+        dataList.addAll(dataBeen);
         view.onSetAdapter(dataList);
-        view.onHideRefreshing();
+        view.onHideLoading();
+        // 释放内存
+        if (dataList.size() > 100) {
+            dataList.clear();
+        }
     }
 
     @Override
     public void doRefresh() {
-        String url = VideoApi.getVideoArticleUrl(category);
-        doRequestData(url);
+        if (dataList.size() != 0) {
+            dataList.clear();
+        }
+        doLoadData();
     }
 
     @Override
-    public void onFail() {
-        view.onHideRefreshing();
-        view.onFail();
+    public void doShowNetError() {
+        view.onHideLoading();
+        view.onShowNetError();
     }
+
 
     @Override
     public void doOnClickItem(int position) {
