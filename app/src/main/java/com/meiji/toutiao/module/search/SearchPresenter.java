@@ -52,6 +52,7 @@ class SearchPresenter implements ISearch.Presenter {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(view.<List<NewsArticleBean.DataBean>>bindToLife())
                 .subscribe(new Consumer<List<NewsArticleBean.DataBean>>() {
                     @Override
                     public void accept(@NonNull List<NewsArticleBean.DataBean> dataBeen) throws Exception {
@@ -87,6 +88,7 @@ class SearchPresenter implements ISearch.Presenter {
     public void doRefresh() {
         if (list.size() != 0) {
             list.clear();
+            offset = 0;
         }
         doLoadData();
     }

@@ -19,7 +19,7 @@ public class NewsContentActivity extends BaseActivity {
 
     public static void launch(NewsArticleBean.DataBean bean) {
         InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, NewsContentActivity.class)
-                .putExtra(NewsContentActivity.TAG, bean)
+                .putExtra(TAG, bean)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 interface IPhotoArticle {
 
-    interface View extends IBaseView {
+    interface View extends IBaseView<Presenter> {
 
         /**
          * 请求数据
@@ -42,14 +42,5 @@ interface IPhotoArticle {
          * 点击事件跳转
          */
         void doOnClickItem(int position);
-    }
-
-    @Deprecated
-    interface Model {
-        boolean requestData(String url);
-
-        List<PhotoArticleBean.DataBean> getDataList();
-
-        int getmax_behot_time();
     }
 }

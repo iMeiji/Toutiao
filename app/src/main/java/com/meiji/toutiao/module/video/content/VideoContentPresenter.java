@@ -87,6 +87,7 @@ public class VideoContentPresenter extends NewsCommentPresenter implements IVide
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(view.<String>bindToLife())
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(@NonNull String s) throws Exception {

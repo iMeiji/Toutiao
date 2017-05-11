@@ -38,16 +38,13 @@ import static com.meiji.toutiao.module.video.content.VideoContentActivity.TAG;
 
 class MediaArticlePresenter implements IMediaArticle.Presenter {
 
-    //    private IMediaArticle.Model model;
     private IMediaArticle.View view;
-    private List<MediaArticleBean.DataBean> mediaList = new ArrayList<>();
     private String mediaId;
     private List<MediaArticleBean.DataBean> dataList = new ArrayList<>();
     private int time;
 
     MediaArticlePresenter(IMediaArticle.View view) {
         this.view = view;
-//        this.model = new MediaArticleModel();
     }
 
     @Override
@@ -71,6 +68,7 @@ class MediaArticlePresenter implements IMediaArticle.Presenter {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(view.<List<MediaArticleBean.DataBean>>bindToLife())
                 .subscribe(new Observer<List<MediaArticleBean.DataBean>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -115,6 +113,7 @@ class MediaArticlePresenter implements IMediaArticle.Presenter {
     public void doRefresh() {
         if (dataList.size() > 0) {
             dataList.clear();
+            time = 0;
         }
         doLoadData();
     }
@@ -132,22 +131,8 @@ class MediaArticlePresenter implements IMediaArticle.Presenter {
     }
 
     @Override
-    public void doOnClickItem(final MediaArticleBean.DataBean dataBean, final MediaChannelBean mediaChannelBean) {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                model.getCommentRequestData(dataBeanan.getSource_url());
-//
-//                NewsArticleBean.DataBean bean = new NewsArticleBean.DataBean();
-//                bean.setTitle(dataBeanan.getTitle());
-//                bean.setDisplay_url(dataBeanan.getSource_url());
-//                bean.setMedia_name(mediaChannelBean.getName());
-//                bean.setMedia_url(mediaChannelBean.getUrl());
-//                bean.setGroup_id(model.getGroupId());
-//                bean.setItem_id(model.getItemId());
-//                NewsContentActivity.launch(bean);
-//            }
-//        }).start();
+    public void doOnClickItem(final int position, final MediaChannelBean mediaChannelBean) {
+        final MediaArticleBean.DataBean dataBean = dataList.get(position);
         final String url = dataBean.getSource_url();
         Observable
                 .create(new ObservableOnSubscribe<String>() {
@@ -184,6 +169,7 @@ class MediaArticlePresenter implements IMediaArticle.Presenter {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(view.<NewsArticleBean.DataBean>bindToLife())
                 .subscribe(new Consumer<NewsArticleBean.DataBean>() {
                     @Override
                     public void accept(@NonNull NewsArticleBean.DataBean bean) throws Exception {

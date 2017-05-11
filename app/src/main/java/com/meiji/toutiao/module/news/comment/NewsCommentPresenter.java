@@ -56,6 +56,7 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(view.<List<NewsCommentBean.DataBean.CommentsBean>>bindToLife())
                 .subscribe(new Observer<List<NewsCommentBean.DataBean.CommentsBean>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -114,5 +115,10 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
     public void doShowNoMore() {
         view.onHideLoading();
         view.onShowNoMore();
+    }
+
+    @Override
+    public String doGetCopyContent(int position) {
+        return commentsBeanList.get(position).getText();
     }
 }

@@ -105,6 +105,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(view.<Boolean>bindToLife())
                 .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -167,6 +168,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(view.<String>bindToLife())
                 .subscribe(new Observer<String>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -217,6 +219,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(view.<Boolean>bindToLife())
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(@NonNull Boolean aBoolean) throws Exception {

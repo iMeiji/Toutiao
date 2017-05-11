@@ -19,7 +19,7 @@ public class MediaArticleActivity extends BaseActivity {
 
     public static void startActivity(MediaChannelBean bean) {
         InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, MediaArticleActivity.class)
-                .putExtra(MediaArticleActivity.TAG, bean)
+                .putExtra(TAG, bean)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 

@@ -5,20 +5,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -26,6 +20,8 @@ import android.widget.ProgressBar;
 
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
+import com.meiji.toutiao.module.base.BaseActivity;
+import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.module.media.MediaAddActivity;
 import com.meiji.toutiao.utils.SettingsUtil;
 
@@ -33,7 +29,7 @@ import com.meiji.toutiao.utils.SettingsUtil;
  * Created by Meiji on 2017/2/28.
  */
 
-public class NewsContentFragment extends Fragment implements INewsContent.View {
+public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> implements INewsContent.View {
 
     private static final String TAG = "NewsContentFragment";
     // 新闻链接 标题 头条号 文章号 媒体名
@@ -41,9 +37,7 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
     private String shareTitle;
     private String mediaUrl;
 
-    private Toolbar toolbar;
     private WebView webView;
-    private ActionBar actionBar;
     private NestedScrollView scrollView;
     private INewsContent.Presenter presenter;
     private ProgressBar progressBar;
@@ -56,36 +50,26 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
         return instance;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_news_content, container, false);
-        presenter = new NewsContentPresenter(this);
-        initView(view);
-        initWebClient();
-        initData();
-        setHasOptionsMenu(true);
-        return view;
+    protected int attachLayoutId() {
+        return R.layout.fragment_news_content;
     }
 
-    private void initData() {
+    @Override
+    protected void initData() {
         Bundle bundle = getArguments();
         NewsArticleBean.DataBean dataBean = bundle.getParcelable(TAG);
         shareUrl = dataBean.getDisplay_url();
         shareTitle = dataBean.getTitle();
-        actionBar.setTitle(dataBean.getMedia_name());
+        ((BaseActivity) getActivity()).getSupportActionBar().setTitle(dataBean.getMedia_name());
         mediaUrl = dataBean.getMedia_url();
         presenter.doLoadData(dataBean);
     }
 
-    private void initView(View view) {
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
-        actionBar = activity.getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+    @Override
+    protected void initViews(View view) {
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        initToolBar(toolbar, true, "");
         webView = (WebView) view.findViewById(R.id.webview_content);
         scrollView = (NestedScrollView) view.findViewById(R.id.scrollView);
         toolbar.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +80,8 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
         });
         progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
         progressBar.setVisibility(View.VISIBLE);
+        setHasOptionsMenu(true);
+        initWebClient();
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -155,6 +141,13 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
     }
 
     @Override
+    public void setPresenter(INewsContent.Presenter presenter) {
+        if (null == presenter) {
+            this.presenter = new NewsContentPresenter(this);
+        }
+    }
+
+    @Override
     public void onShowLoading() {
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -179,7 +172,7 @@ public class NewsContentFragment extends Fragment implements INewsContent.View {
                 break;
 
             case R.id.action_follow_media:
-                MediaAddActivity.startActivity(mediaUrl, "news");
+                MediaAddActivity.launch(mediaUrl, "news");
                 break;
 
             case R.id.action_share:

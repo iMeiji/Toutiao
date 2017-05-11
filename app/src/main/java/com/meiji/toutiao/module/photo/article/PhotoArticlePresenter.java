@@ -72,6 +72,7 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
                 })
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(view.<List<PhotoArticleBean.DataBean>>bindToLife())
                 .subscribe(new SingleObserver<List<PhotoArticleBean.DataBean>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -111,6 +112,7 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
     public void doRefresh() {
         if (dataList.size() != 0) {
             dataList.clear();
+            time = 0;
         }
         doLoadData();
     }

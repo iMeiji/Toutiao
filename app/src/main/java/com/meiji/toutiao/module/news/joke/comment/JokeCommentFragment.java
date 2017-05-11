@@ -1,10 +1,11 @@
-package com.meiji.toutiao.module.news.comment;
+package com.meiji.toutiao.module.news.joke.comment;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,71 +13,63 @@ import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.DiffCallback;
-import com.meiji.toutiao.adapter.news.NewsCommentAdapter;
-import com.meiji.toutiao.bean.news.NewsCommentBean;
+import com.meiji.toutiao.adapter.news.joke.JokeCommentAdapter;
+import com.meiji.toutiao.bean.news.joke.JokeCommentBean;
+import com.meiji.toutiao.bean.news.joke.JokeContentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.base.BaseFragment;
 
 import java.util.List;
 
 /**
- * Created by Meiji on 2017/2/28.
+ * Created by Meiji on 2017/5/11.
  */
 
-public class NewsCommentFragment extends BaseFragment<INewsComment.Presenter> implements SwipeRefreshLayout.OnRefreshListener, INewsComment.View {
+public class JokeCommentFragment extends BaseFragment<IJokeComment.Presenter> implements IJokeComment.View, SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String GROUP_ID = "groupId";
-    private static final String ITEM_ID = "itemId";
-    private static final String TAG = "NewsCommentFragment";
-    private String groupId;
-    private String itemId;
-    private NewsCommentAdapter adapter;
-    private RecyclerView recycler_view;
-    private SwipeRefreshLayout refresh_layout;
-    private Toolbar toolbar;
-    private INewsComment.Presenter presenter;
+    public static final String TAG = "JokeCommentFragment";
+    private String jokeId;
+    private String jokeCommentCount;
+    private String jokeText;
     private boolean canLoading;
 
-    public static NewsCommentFragment newInstance(String groupId, String itemId) {
-        NewsCommentFragment instance = new NewsCommentFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(GROUP_ID, groupId);
-        bundle.putString(ITEM_ID, itemId);
-        instance.setArguments(bundle);
-        return instance;
-    }
+    private TextView tv_content;
+    private RecyclerView recycler_view;
+    private SwipeRefreshLayout refresh_layout;
+    private JokeCommentAdapter adapter;
 
-    @Override
-    protected int attachLayoutId() {
-        return R.layout.fragment_news_comment;
-    }
+    private IJokeComment.Presenter presenter;
 
-    @Override
-    protected void initData() {
-        Bundle arguments = getArguments();
-        groupId = arguments.getString(GROUP_ID);
-        itemId = arguments.getString(ITEM_ID);
-        onLoadData();
+    public static JokeCommentFragment newInstance(Parcelable data) {
+        Bundle args = new Bundle();
+        args.putParcelable(TAG, data);
+        JokeCommentFragment fragment = new JokeCommentFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     protected void initViews(View view) {
-        recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view_comment);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        initToolBar(toolbar, true, "");
+        tv_content = (TextView) view.findViewById(R.id.tv_content);
+
+        recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
         recycler_view.setHasFixedSize(true);
         recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout_comment);
+        refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
         refresh_layout.setColorSchemeResources(R.color.colorPrimary);
         refresh_layout.setOnRefreshListener(this);
-
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        initToolBar(toolbar, true, getString(R.string.title_comment));
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,7 +77,7 @@ public class NewsCommentFragment extends BaseFragment<INewsComment.Presenter> im
             }
         });
 
-        adapter = new NewsCommentAdapter(getActivity());
+        adapter = new JokeCommentAdapter(getActivity());
         recycler_view.setAdapter(adapter);
         adapter.setOnItemClickListener(new IOnItemClickListener() {
             @Override
@@ -97,19 +90,61 @@ public class NewsCommentFragment extends BaseFragment<INewsComment.Presenter> im
     }
 
     @Override
+    protected int attachLayoutId() {
+        return R.layout.fragment_news_joke_comment;
+    }
+
+    @Override
+    protected void initData() {
+        Bundle bundle = getArguments();
+        JokeContentBean.DataBean.GroupBean bean = bundle.getParcelable(TAG);
+        jokeId = bean.getId() + "";
+        jokeCommentCount = bean.getComment_count() + "";
+        jokeText = bean.getText();
+        tv_content.setText(jokeText);
+        onLoadData();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_joke_comment, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_comment_share:
+                Intent shareIntent = new Intent()
+                        .setAction(Intent.ACTION_SEND)
+                        .setType("text/plain")
+                        .putExtra(Intent.EXTRA_TEXT, jokeText);
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
+                break;
+            case R.id.action_comment_copy:
+                ClipboardManager copy = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("text", jokeText);
+                copy.setPrimaryClip(clipData);
+                Snackbar.make(refresh_layout, R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onRefresh() {
         presenter.doRefresh();
     }
 
     @Override
     public void onLoadData() {
-        presenter.doLoadData(groupId, itemId);
+        presenter.doLoadData(jokeId, jokeCommentCount);
     }
 
     @Override
-    public void onSetAdapter(final List<NewsCommentBean.DataBean.CommentsBean> list) {
-        List<NewsCommentBean.DataBean.CommentsBean> oldList = adapter.getList();
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWS_COMMENT), true);
+    public void onSetAdapter(final List<JokeCommentBean.DataBean.RecentCommentsBean> list) {
+        List<JokeCommentBean.DataBean.RecentCommentsBean> oldList = adapter.getList();
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.JOKE_COMMENT), true);
         result.dispatchUpdatesTo(adapter);
         adapter.setList(list);
 
@@ -187,19 +222,10 @@ public class NewsCommentFragment extends BaseFragment<INewsComment.Presenter> im
     }
 
     @Override
-    public void setPresenter(INewsComment.Presenter presenter) {
+    public void setPresenter(IJokeComment.Presenter presenter) {
         if (null == presenter) {
-            this.presenter = new NewsCommentPresenter(this);
+            this.presenter = new JokeCommentPresenter(this);
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            getActivity().onBackPressed();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

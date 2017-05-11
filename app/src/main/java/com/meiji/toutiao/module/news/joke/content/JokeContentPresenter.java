@@ -44,10 +44,10 @@ class JokeContentPresenter implements IJokeContent.Presenter {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(view.<List<JokeContentBean.DataBean.GroupBean>>bindToLife())
                 .subscribe(new Observer<List<JokeContentBean.DataBean.GroupBean>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-                        view.onShowLoading();
                     }
 
                     @Override

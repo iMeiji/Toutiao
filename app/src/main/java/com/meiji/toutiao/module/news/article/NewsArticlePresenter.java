@@ -94,6 +94,7 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
                 })
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(view.<List<NewsArticleBean.DataBean>>bindToLife())
                 .subscribe(new SingleObserver<List<NewsArticleBean.DataBean>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -132,6 +133,7 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
     public void doRefresh() {
         if (dataList.size() != 0) {
             dataList.clear();
+            time = 0;
         }
         doLoadData();
     }

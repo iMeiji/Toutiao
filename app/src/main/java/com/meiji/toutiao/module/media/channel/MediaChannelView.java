@@ -1,5 +1,7 @@
 package com.meiji.toutiao.module.media.channel;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,12 +28,14 @@ import java.util.List;
 
 public class MediaChannelView extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
+    private static final String TAG = "MediaChannelView";
     private static MediaChannelView instance = null;
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
     private MediaChannelAdapter adapter;
     private MediaChannelDao dao = new MediaChannelDao();
     private TextView tv_desc;
+    private String isFirstTime = "isFirstTime";
 
     public static MediaChannelView getInstance() {
         if (instance == null) {
@@ -55,6 +59,13 @@ public class MediaChannelView extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     private void initData() {
+        SharedPreferences editor = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        boolean result = editor.getBoolean(isFirstTime, true);
+        if (result) {
+            dao.initData();
+            editor.edit().putBoolean(isFirstTime, false).apply();
+        }
+
         final List<MediaChannelBean> list = dao.queryAll();
         adapter = new MediaChannelAdapter(list, getActivity());
         recycler_view.setAdapter(adapter);
@@ -78,6 +89,7 @@ public class MediaChannelView extends Fragment implements SwipeRefreshLayout.OnR
 
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
+        refresh_layout.setColorSchemeResources(R.color.colorPrimary);
         refresh_layout.setOnRefreshListener(this);
         tv_desc = (TextView) view.findViewById(R.id.tv_desc);
     }

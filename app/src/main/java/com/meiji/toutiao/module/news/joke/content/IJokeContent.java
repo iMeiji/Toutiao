@@ -12,7 +12,7 @@ import java.util.List;
 
 interface IJokeContent {
 
-    interface View extends IBaseView {
+    interface View extends IBaseView<Presenter> {
 
         /**
          * 设置适配器
@@ -46,14 +46,5 @@ interface IJokeContent {
          * 点击事件跳转
          */
         void doOnClickItem(int position);
-    }
-
-    @Deprecated
-    interface Model {
-        boolean requestData(String url);
-
-        List<JokeContentBean.DataBean.GroupBean> getDataList();
-
-        int getmax_behot_time();
     }
 }

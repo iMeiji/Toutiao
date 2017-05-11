@@ -12,7 +12,7 @@ import java.util.List;
 
 interface IJokeComment {
 
-    interface View extends IBaseView {
+    interface View extends IBaseView<Presenter> {
 
         /**
          * 设置适配器
@@ -52,13 +52,10 @@ interface IJokeComment {
          * 加载完毕
          */
         void doShowNoMore();
-    }
 
-    @Deprecated
-    interface Model {
-        boolean requestData(String url);
-
-        List<JokeCommentBean.DataBean.RecentCommentsBean> getDataList();
-
+        /**
+         * 获取复制内容
+         */
+        String doGetCopyContent(int position);
     }
 }

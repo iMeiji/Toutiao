@@ -24,7 +24,6 @@ import io.reactivex.schedulers.Schedulers;
 public class VideoArticlePresenter implements IVideoArticle.Presenter {
 
     private IVideoArticle.View view;
-    //    private IVideoArticle.Model model;
     private String category;
     private int time;
     private List<VideoArticleBean.DataBean> dataList = new ArrayList<>();
@@ -71,6 +70,7 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
                 })
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(view.<List<VideoArticleBean.DataBean>>bindToLife())
                 .subscribe(new SingleObserver<List<VideoArticleBean.DataBean>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -110,6 +110,7 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
     public void doRefresh() {
         if (dataList.size() != 0) {
             dataList.clear();
+            time = 0;
         }
         doLoadData();
     }
@@ -120,7 +121,6 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
         view.onShowNetError();
     }
 
-
     @Override
     public void doOnClickItem(int position) {
         VideoArticleBean.DataBean bean = dataList.get(position);
@@ -130,8 +130,6 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        VideoContentActivity.startActivity(bean, url);
-//        // 打印下点击的标题和链接
-//        Log.d(TAG, "doOnClickItem: " + "点击的标题和链接---" + bean.getTitle() + "  " + bean.getDisplay_url());
+        VideoContentActivity.launch(bean, url);
     }
 }

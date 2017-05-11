@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface INewsArticle {
 
-    interface View extends IBaseView {
+    interface View extends IBaseView<Presenter> {
 
         /**
          * 请求数据
@@ -46,14 +46,5 @@ public interface INewsArticle {
          * 点击事件跳转
          */
         void doOnClickItem(int position);
-    }
-
-    @Deprecated
-    interface Model {
-        boolean requestData(String url);
-
-        List<NewsArticleBean.DataBean> getDataList();
-
-        int getMaxBehotTime();
     }
 }

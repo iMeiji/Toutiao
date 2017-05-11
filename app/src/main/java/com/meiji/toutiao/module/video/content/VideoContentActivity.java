@@ -25,7 +25,9 @@ import com.meiji.toutiao.bean.news.NewsCommentBean;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.base.BaseActivity;
+import com.meiji.toutiao.module.news.comment.INewsComment;
 import com.meiji.toutiao.utils.SettingsUtil;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 
 import java.util.List;
 
@@ -53,7 +55,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     private VideoContentAdapter adapter;
     private boolean canLoading;
 
-    public static void startActivity(VideoArticleBean.DataBean bean, String url) {
+    public static void launch(VideoArticleBean.DataBean bean, String url) {
         InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, VideoContentActivity.class)
                 .putExtra(VideoContentActivity.TAG, bean)
                 .putExtra("url", url)
@@ -124,11 +126,10 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
             adapter.setOnItemClickListener(new IOnItemClickListener() {
                 @Override
                 public void onClick(View view, int position) {
-                    showCopyDialog(list.get(position).getText());
+                    showCopyDialog(position);
                 }
             });
         } else {
-//            adapter.notifyItemInserted(list.size());
             List<NewsCommentBean.DataBean.CommentsBean> oldList = adapter.getList();
             DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWS_COMMENT), true);
             result.dispatchUpdatesTo(adapter);
@@ -138,11 +139,6 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
         canLoading = true;
 
         recycler_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -175,6 +171,16 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
+    public void setPresenter(INewsComment.Presenter presenter) {
+
+    }
+
+    @Override
+    public <T> LifecycleTransformer<T> bindToLife() {
+        return this.bindToLifecycle();
+    }
+
+    @Override
     public void onShowNoMore() {
 
     }
@@ -198,7 +204,8 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
         super.onBackPressed();
     }
 
-    private void showCopyDialog(final String content) {
+    private void showCopyDialog(final int position) {
+        final String content = presenter.doGetCopyContent(position);
 
         final BottomSheetDialog dialog = new BottomSheetDialog(this);
         View view = getLayoutInflater().inflate(R.layout.item_comment_action_sheet, null);

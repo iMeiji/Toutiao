@@ -1,13 +1,12 @@
 package com.meiji.toutiao.module.base;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
 /**
  * Created by Meiji on 2016/12/27.
  */
 
-public abstract class LazyLoadFragment extends Fragment {
+public abstract class LazyLoadFragment<T extends IBasePresenter> extends BaseFragment<T> {
 
     protected boolean isViewInitiated;
     protected boolean isVisibleToUser;

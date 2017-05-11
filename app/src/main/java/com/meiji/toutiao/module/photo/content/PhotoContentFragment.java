@@ -10,21 +10,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -38,6 +33,7 @@ import com.meiji.toutiao.adapter.photo.PhotoContentAdapter;
 import com.meiji.toutiao.api.INewsApi;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
+import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.module.media.MediaAddActivity;
 import com.meiji.toutiao.module.photo.comment.PhotoCommentFragment;
 import com.meiji.toutiao.utils.SettingsUtil;
@@ -47,7 +43,7 @@ import com.meiji.toutiao.widget.ViewPagerFixed;
  * Created by Meiji on 2017/3/1.
  */
 
-public class PhotoContentFragment extends Fragment implements IPhotoContent.View, ViewPager.OnPageChangeListener, View.OnClickListener {
+public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> implements IPhotoContent.View, ViewPager.OnPageChangeListener, View.OnClickListener {
 
     public static final String TAG = "PhotoContentFragment";
     private TextView tv_hint;
@@ -57,8 +53,6 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
     private WebView webView;
     private NestedScrollView scrollView;
     private ProgressBar progressBar;
-    private IPhotoContent.Presenter presenter;
-    private ActionBar actionBar;
     private String shareUrl;
     private String shareTitle;
     private String groupId;
@@ -74,37 +68,28 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
         return instance;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_photo_content, container, false);
-        presenter = new PhotoContentPresenter(this);
-        initView(view);
-        initData();
-        setHasOptionsMenu(true);
-        return view;
+    protected int attachLayoutId() {
+        return R.layout.fragment_photo_content;
     }
 
-    private void initData() {
+    @Override
+    protected void initData() {
         Bundle bundle = getArguments();
         PhotoArticleBean.DataBean dataBean = bundle.getParcelable(TAG);
         shareUrl = INewsApi.HOST + dataBean.getSource_url();
         shareTitle = dataBean.getTitle();
-        actionBar.setTitle(shareTitle);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(shareTitle);
         groupId = dataBean.getGroup_id() + "";
         itemId = dataBean.getGroup_id() + "";
         mediaUrl = dataBean.getMedia_url();
         presenter.doLoadData(shareUrl);
     }
 
-    private void initView(View view) {
+    @Override
+    protected void initViews(View view) {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
-        actionBar = activity.getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        initToolBar(toolbar, true, "");
         tv_hint = (TextView) view.findViewById(R.id.tv_hint);
         tv_save = (TextView) view.findViewById(R.id.tv_save);
         tv_save.setOnClickListener(this);
@@ -119,6 +104,7 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
                 scrollView.smoothScrollTo(0, 0);
             }
         });
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -161,6 +147,12 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
         Snackbar.make(viewPager, R.string.network_error, Snackbar.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void setPresenter(IPhotoContent.Presenter presenter) {
+        if (null == presenter) {
+            this.presenter = new PhotoContentPresenter(this);
+        }
+    }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -233,7 +225,7 @@ public class PhotoContentFragment extends Fragment implements IPhotoContent.View
                 break;
 
             case R.id.action_follow_media:
-                MediaAddActivity.startActivity(mediaUrl, "photo");
+                MediaAddActivity.launch(mediaUrl, "photo");
                 break;
 
             case R.id.action_open_in_browser:

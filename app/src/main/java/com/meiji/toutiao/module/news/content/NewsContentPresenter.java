@@ -77,6 +77,7 @@ class NewsContentPresenter implements INewsContent.Presenter {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(view.<String>bindToLife())
                 .subscribe(new Observer<String>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {

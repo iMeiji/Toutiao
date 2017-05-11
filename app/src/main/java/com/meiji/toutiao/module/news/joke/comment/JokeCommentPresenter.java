@@ -54,6 +54,7 @@ class JokeCommentPresenter implements IJokeComment.Presenter {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(view.<List<JokeCommentBean.DataBean.RecentCommentsBean>>bindToLife())
                 .subscribe(new Observer<List<JokeCommentBean.DataBean.RecentCommentsBean>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -113,5 +114,10 @@ class JokeCommentPresenter implements IJokeComment.Presenter {
     public void doShowNoMore() {
         view.onHideLoading();
         view.onShowNoMore();
+    }
+
+    @Override
+    public String doGetCopyContent(int position) {
+        return commentsList.get(position).getText();
     }
 }

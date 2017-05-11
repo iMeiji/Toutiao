@@ -3,24 +3,18 @@ package com.meiji.toutiao.module.media.article;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -31,6 +25,7 @@ import com.meiji.toutiao.bean.media.MediaArticleBean;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
 import com.meiji.toutiao.database.dao.MediaChannelDao;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.List;
@@ -39,13 +34,16 @@ import java.util.List;
  * Created by Meiji on 2017/4/11.
  */
 
-public class MediaArticleFragment extends Fragment implements IMediaArticle.View, SwipeRefreshLayout.OnRefreshListener {
+public class MediaArticleFragment extends BaseFragment<IMediaArticle.Presenter> implements IMediaArticle.View, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "MediaArticleFragment";
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
+    private CollapsingToolbarLayout collapsing_toolbar;
+    private TextView tv_title;
+    private TextView tv_descText;
+    private CircleImageView cv_avatar;
     private MediaArticleAdapter adapter;
-    private IMediaArticle.Presenter presenter;
     private MediaChannelBean bean;
     private boolean canLoading = false;
     private boolean canDelete = false;
@@ -59,26 +57,24 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            bean = arguments.getParcelable(TAG);
-        }
+    protected int attachLayoutId() {
+        return R.layout.fragment_media_article;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_media_article, container, false);
-        presenter = new MediaArticlePresenter(this);
-        setHasOptionsMenu(true);
-        initView(view);
+    protected void initData() {
+        bean = getArguments().getParcelable(TAG);
+
+        Glide.with(getActivity()).load(bean.getAvatar()).crossFade().centerCrop().into(cv_avatar);
+        collapsing_toolbar.setTitle(bean.getName());
+        tv_title.setText(bean.getName());
+        tv_descText.setText(bean.getDescText());
+
         onLoadData();
-        return view;
     }
 
-    private void initView(View view) {
+    @Override
+    protected void initViews(View view) {
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
         recycler_view.setHasFixedSize(true);
         recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -89,13 +85,7 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
         refresh_layout.setOnRefreshListener(this);
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
-        ActionBar actionBar = activity.getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-//            actionBar.setTitle(bean.getName());
-        }
+        initToolBar(toolbar, true, "");
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,17 +94,22 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
         });
 
         // header view
-        CollapsingToolbarLayout collapsing_toolbar = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
-        collapsing_toolbar.setTitle(bean.getName());
+        collapsing_toolbar = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
         collapsing_toolbar.setExpandedTitleColor(getResources().getColor(R.color.NULL));
+        cv_avatar = (CircleImageView) view.findViewById(R.id.cv_avatar);
+        tv_title = (TextView) view.findViewById(R.id.tv_title);
+        tv_descText = (TextView) view.findViewById(R.id.tv_descText);
 
-        CircleImageView cv_avatar = (CircleImageView) view.findViewById(R.id.cv_avatar);
-        Glide.with(getActivity()).load(bean.getAvatar()).crossFade().centerCrop().into(cv_avatar);
+        adapter = new MediaArticleAdapter(getActivity());
+        recycler_view.setAdapter(adapter);
+        adapter.setOnItemClickListener(new IOnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                presenter.doOnClickItem(position, bean);
+            }
+        });
 
-        TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
-        tv_title.setText(bean.getName());
-        TextView tv_descText = (TextView) view.findViewById(R.id.tv_descText);
-        tv_descText.setText(bean.getDescText());
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -124,23 +119,10 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
 
     @Override
     public void onSetAdapter(final List<MediaArticleBean.DataBean> list) {
-        if (adapter == null) {
-            adapter = new MediaArticleAdapter(getActivity());
-            adapter.setList(list);
-            recycler_view.setAdapter(adapter);
-            adapter.setOnItemClickListener(new IOnItemClickListener() {
-                @Override
-                public void onClick(View view, int position) {
-                    presenter.doOnClickItem(list.get(position), bean);
-                }
-            });
-        } else {
-//            adapter.notifyItemInserted(list.size());
-            List<MediaArticleBean.DataBean> oldList = adapter.getList();
-            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.MEDIA), true);
-            result.dispatchUpdatesTo(adapter);
-            adapter.setList(list);
-        }
+        List<MediaArticleBean.DataBean> oldList = adapter.getList();
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.MEDIA), true);
+        result.dispatchUpdatesTo(adapter);
+        adapter.setList(list);
 
         canLoading = true;
 
@@ -189,6 +171,13 @@ public class MediaArticleFragment extends Fragment implements IMediaArticle.View
                         presenter.doLoadData(bean.getId());
                     }
                 }).show();
+    }
+
+    @Override
+    public void setPresenter(IMediaArticle.Presenter presenter) {
+        if (null == presenter) {
+            this.presenter = new MediaArticlePresenter(this);
+        }
     }
 
     @Override

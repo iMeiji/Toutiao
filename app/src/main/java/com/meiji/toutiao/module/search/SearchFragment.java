@@ -1,24 +1,20 @@
 package com.meiji.toutiao.module.search;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.adapter.news.NewsArticleAdapter;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.module.base.BaseFragment;
 
 import java.util.List;
 
@@ -26,11 +22,10 @@ import java.util.List;
  * Created by Meiji on 2017/5/9.
  */
 
-public class SearchFragment extends Fragment implements ISearch.View, SwipeRefreshLayout.OnRefreshListener {
+public class SearchFragment extends BaseFragment<ISearch.Presenter> implements ISearch.View, SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
-    private Toolbar toolbar;
     private ISearch.Presenter presenter;
     private String query;
     private NewsArticleAdapter adapter;
@@ -45,31 +40,21 @@ public class SearchFragment extends Fragment implements ISearch.View, SwipeRefre
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            query = bundle.getString("query");
-        }
+    protected int attachLayoutId() {
+        return R.layout.fragment_search;
     }
 
-    @Nullable
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
-        presenter = new SearchPresenter(this);
-        initView(view);
+    protected void initData() {
+        query = getArguments().getString("query");
         onLoadData();
-        return view;
     }
 
-    private void initView(View view) {
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
-        if (activity.getSupportActionBar() != null) {
-            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+    @Override
+    protected void initViews(View view) {
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        initToolBar(toolbar, true, "");
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +70,15 @@ public class SearchFragment extends Fragment implements ISearch.View, SwipeRefre
         // 设置下拉刷新的按钮的颜色
         refresh_layout.setColorSchemeResources(R.color.colorPrimary);
         refresh_layout.setOnRefreshListener(this);
+
+        adapter = new NewsArticleAdapter(getActivity());
+        recycler_view.setAdapter(adapter);
+        adapter.setOnItemClickListener(new IOnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                presenter.doOnClickItem(position);
+            }
+        });
     }
 
     @Override
@@ -100,22 +94,10 @@ public class SearchFragment extends Fragment implements ISearch.View, SwipeRefre
 
     @Override
     public void onSetAdapter(final List<NewsArticleBean.DataBean> list) {
-        if (adapter == null) {
-            adapter = new NewsArticleAdapter(getActivity());
-            adapter.setList(list);
-            recycler_view.setAdapter(adapter);
-            adapter.setOnItemClickListener(new IOnItemClickListener() {
-                @Override
-                public void onClick(View view, int position) {
-                    presenter.doOnClickItem(position);
-                }
-            });
-        } else {
-            List<NewsArticleBean.DataBean> oldList = adapter.getList();
-            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWs), true);
-            result.dispatchUpdatesTo(adapter);
-            adapter.setList(list);
-        }
+        List<NewsArticleBean.DataBean> oldList = adapter.getList();
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWs), true);
+        result.dispatchUpdatesTo(adapter);
+        adapter.setList(list);
 
         canLoading = true;
 
@@ -164,5 +146,12 @@ public class SearchFragment extends Fragment implements ISearch.View, SwipeRefre
                         presenter.doLoadData(query);
                     }
                 }).show();
+    }
+
+    @Override
+    public void setPresenter(ISearch.Presenter presenter) {
+        if (null == presenter) {
+            this.presenter = new SearchPresenter(this);
+        }
     }
 }

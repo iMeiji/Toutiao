@@ -13,7 +13,7 @@ import com.meiji.toutiao.module.base.IBaseView;
 
 interface INewsContent {
 
-    interface View extends IBaseView {
+    interface View extends IBaseView<Presenter> {
 
         /**
          * 加载网页
@@ -32,19 +32,5 @@ interface INewsContent {
          * 查看评论
          */
         void doShowComment(FragmentActivity context, Fragment fragment);
-    }
-
-    @Deprecated
-    interface Model {
-
-        /**
-         * 请求数据
-         */
-        boolean getRequestData(String url);
-
-        /**
-         * 返回内容
-         */
-        String getHtml();
     }
 }

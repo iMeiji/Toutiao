@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface INewsComment {
 
-    interface View extends IBaseView {
+    interface View extends IBaseView<Presenter> {
 
         /**
          * 请求数据
@@ -51,12 +51,10 @@ public interface INewsComment {
          * 加载完毕
          */
         void doShowNoMore();
-    }
 
-    @Deprecated
-    interface Model {
-        boolean requestData(String url);
-
-        List<NewsCommentBean.DataBean.CommentsBean> getDataList();
+        /**
+         * 获取复制内容
+         */
+        String doGetCopyContent(int position);
     }
 }

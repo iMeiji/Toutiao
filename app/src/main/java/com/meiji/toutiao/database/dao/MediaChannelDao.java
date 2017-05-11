@@ -23,6 +23,13 @@ public class MediaChannelDao {
         this.db = DatabaseHelper.getDatabase();
     }
 
+    public void initData() {
+        add("4377795668", "新华网", "http://p2.pstatp.com/large/3658/7378365093", "news",
+                "", "传播中国，报道世界；权威声音，亲切表达。", "http://toutiao.com/m4377795668/");
+        add("52445544609", "互联网的这点事", "http://p3.pstatp.com/large/ef300164e786ff295da", "news",
+                "", "每天为你速递最新、最鲜、最有料的互联网科技资讯！", "http://toutiao.com/m52445544609/");
+    }
+
     public boolean add(String id,
                        String name,
                        String avatar,

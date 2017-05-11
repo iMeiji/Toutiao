@@ -12,7 +12,7 @@ import java.util.List;
 
 interface ISearch {
 
-    interface View extends IBaseView {
+    interface View extends IBaseView<Presenter> {
 
         /**
          * 请求数据
@@ -46,12 +46,5 @@ interface ISearch {
          * 点击事件跳转
          */
         void doOnClickItem(int position);
-    }
-
-    @Deprecated
-    interface Model {
-        boolean requestData(String url);
-
-        List<NewsArticleBean.DataBean> getDataList();
     }
 }

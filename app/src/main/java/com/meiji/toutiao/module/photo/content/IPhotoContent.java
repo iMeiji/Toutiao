@@ -1,7 +1,5 @@
 package com.meiji.toutiao.module.photo.content;
 
-import android.content.Context;
-
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
 import com.meiji.toutiao.module.base.IBasePresenter;
 import com.meiji.toutiao.module.base.IBaseView;
@@ -12,7 +10,7 @@ import com.meiji.toutiao.module.base.IBaseView;
 
 interface IPhotoContent {
 
-    interface View extends IBaseView {
+    interface View extends IBaseView<Presenter> {
 
         /**
          * 设置图片浏览器
@@ -53,21 +51,4 @@ interface IPhotoContent {
         void doSaveImage();
 
     }
-
-    @Deprecated
-    interface Model {
-
-        /**
-         * 请求数据
-         */
-        boolean getRequestData(String url);
-
-        /**
-         * 返回内容
-         */
-        PhotoGalleryBean getData();
-
-        boolean SaveImage(String url, Context context);
-    }
-
 }

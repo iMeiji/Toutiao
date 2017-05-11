@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface IMediaArticle {
 
-    interface View extends IBaseView {
+    interface View extends IBaseView<Presenter> {
 
         /**
          * 请求数据
@@ -56,21 +56,6 @@ public interface IMediaArticle {
         /**
          * 点击事件跳转
          */
-        void doOnClickItem(MediaArticleBean.DataBean bean, MediaChannelBean mediaChannelBean);
-    }
-
-    @Deprecated
-    interface Model {
-        long getItemId();
-
-        long getGroupId();
-
-        boolean requestData(String url);
-
-        List<MediaArticleBean.DataBean> getDataList();
-
-        int getMaxBehotTime();
-
-        void getCommentRequestData(String articleUrl);
+        void doOnClickItem(int position, MediaChannelBean mediaChannelBean);
     }
 }

@@ -19,7 +19,7 @@ public class PhotoContentActivity extends BaseActivity {
 
     public static void launch(PhotoArticleBean.DataBean bean) {
         InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, PhotoContentActivity.class)
-                .putExtra(PhotoContentActivity.TAG, bean)
+                .putExtra(TAG, bean)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 

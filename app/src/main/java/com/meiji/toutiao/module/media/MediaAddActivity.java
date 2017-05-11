@@ -51,7 +51,7 @@ public class MediaAddActivity extends BaseActivity {
         }
     });
 
-    public static void startActivity(String url, String type) {
+    public static void launch(String url, String type) {
         InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, MediaAddActivity.class).
                 putExtra(URLEXTRA, url)
                 .putExtra(TYPEEXTRA, type)
