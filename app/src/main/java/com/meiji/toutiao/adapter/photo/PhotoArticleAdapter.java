@@ -2,6 +2,7 @@ package com.meiji.toutiao.adapter.photo;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.utils.TimeUtil;
+import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +78,11 @@ public class PhotoArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             PhotoArticleBean.DataBean bean = list.get(position);
             String tv_title = bean.getTitle();
             if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
+
+                if (!TextUtils.isEmpty(bean.getMedia_avatar_url())) {
+                    Glide.with(context).load(bean.getMedia_avatar_url()).crossFade().centerCrop().into(photoViewHolder.iv_media);
+                }
+
                 if (bean.getImage_list() != null) {
                     int size = bean.getImage_list().size();
                     String[] ivs = new String[size];
@@ -97,8 +105,13 @@ public class PhotoArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     }
                 }
             }
-
+            String tv_source = bean.getSource();
+            String tv_datetime = bean.getBehot_time() + "";
+            if (!TextUtils.isEmpty(tv_datetime)) {
+                tv_datetime = TimeUtil.getTimeStampAgo(tv_datetime);
+            }
             photoViewHolder.tv_title.setText(tv_title);
+            photoViewHolder.tv_extra.setText(tv_source + " - " + tv_datetime);
         }
     }
 
@@ -108,6 +121,9 @@ public class PhotoArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     private class PhotoViewViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private CircleImageView iv_media;
+        private TextView tv_extra;
         private TextView tv_title;
         private ImageView iv_0;
         private ImageView iv_1;
@@ -116,6 +132,8 @@ public class PhotoArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         PhotoViewViewHolder(View itemView, IOnItemClickListener onItemClickListener) {
             super(itemView);
+            this.iv_media = (CircleImageView) itemView.findViewById(R.id.iv_media);
+            this.tv_extra = (TextView) itemView.findViewById(R.id.tv_extra);
             this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
             this.iv_0 = (ImageView) itemView.findViewById(R.id.iv_0);
             this.iv_1 = (ImageView) itemView.findViewById(R.id.iv_1);

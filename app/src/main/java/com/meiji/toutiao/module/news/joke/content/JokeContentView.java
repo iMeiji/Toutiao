@@ -13,6 +13,7 @@ import com.meiji.toutiao.adapter.news.joke.JokeContentAdapter;
 import com.meiji.toutiao.bean.news.joke.JokeContentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.base.LazyLoadFragment;
+import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class JokeContentView extends LazyLoadFragment<IJokeContent.Presenter> im
 
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
-        refresh_layout.setColorSchemeResources(R.color.colorPrimary);
+        refresh_layout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
         refresh_layout.setOnRefreshListener(this);
 
         adapter = new JokeContentAdapter(getActivity());
@@ -75,6 +76,7 @@ public class JokeContentView extends LazyLoadFragment<IJokeContent.Presenter> im
 
     @Override
     public void onLoadData() {
+        onShowLoading();
         presenter.doLoadData();
     }
 

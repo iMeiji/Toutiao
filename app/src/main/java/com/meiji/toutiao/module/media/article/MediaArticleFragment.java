@@ -26,6 +26,7 @@ import com.meiji.toutiao.bean.media.MediaChannelBean;
 import com.meiji.toutiao.database.dao.MediaChannelDao;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.base.BaseFragment;
+import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.List;
@@ -81,7 +82,7 @@ public class MediaArticleFragment extends BaseFragment<IMediaArticle.Presenter> 
 
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
-        refresh_layout.setColorSchemeResources(R.color.colorPrimary);
+        refresh_layout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
         refresh_layout.setOnRefreshListener(this);
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);

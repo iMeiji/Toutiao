@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.meiji.toutiao.InitApp;
+import com.meiji.toutiao.R;
 
 /**
  * Created by Meiji on 2017/2/20.
@@ -22,7 +23,7 @@ public class SettingsUtil {
     }
 
     public int getColor() {
-        int defaultColor = -14776091;
+        int defaultColor = InitApp.AppContext.getResources().getColor(R.color.colorPrimary);
         return settings.getInt("color", defaultColor);
     }
 

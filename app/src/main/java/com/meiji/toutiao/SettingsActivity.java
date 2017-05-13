@@ -1,11 +1,16 @@
 package com.meiji.toutiao;
 
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
@@ -15,6 +20,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.afollestad.materialdialogs.color.CircleView;
+import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.utils.CacheDataManager;
 import com.meiji.toutiao.utils.SettingsUtil;
@@ -26,7 +33,7 @@ import de.psdev.licensesdialog.licenses.MITLicense;
 import de.psdev.licensesdialog.model.Notice;
 import de.psdev.licensesdialog.model.Notices;
 
-public class SettingsActivity extends BaseActivity {
+public class SettingsActivity extends BaseActivity implements ColorChooserDialog.ColorCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +72,25 @@ public class SettingsActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(selectedColor));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(CircleView.shiftColorDown(selectedColor));
+            getWindow().setNavigationBarColor(CircleView.shiftColorDown(selectedColor));
+        }
+        if (!dialog.isAccentMode()) {
+            SettingsUtil.getInstance().setColor(selectedColor);
+        }
+    }
+
+    @Override
+    public void onColorChooserDismissed(@NonNull ColorChooserDialog dialog) {
+
+    }
+
     public static class GeneralPreferenceFragment extends PreferenceFragmentCompat {
 
         public static GeneralPreferenceFragment newInstance() {
@@ -89,6 +115,20 @@ public class SettingsActivity extends BaseActivity {
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     }
                     getActivity().setResult(RESULT_OK);
+                    return false;
+                }
+            });
+
+            findPreference("color").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    final SettingsActivity context = (SettingsActivity) getActivity();
+                    new ColorChooserDialog.Builder(context, R.string.choose_theme_color)
+                            .backButton(R.string.back)
+                            .cancelButton(R.string.cancel)
+                            .doneButton(R.string.done)
+                            .customButton(R.string.custom)
+                            .show();
                     return false;
                 }
             });

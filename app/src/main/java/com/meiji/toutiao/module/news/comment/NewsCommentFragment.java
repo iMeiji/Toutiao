@@ -21,6 +21,7 @@ import com.meiji.toutiao.adapter.news.NewsCommentAdapter;
 import com.meiji.toutiao.bean.news.NewsCommentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.base.BaseFragment;
+import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class NewsCommentFragment extends BaseFragment<INewsComment.Presenter> im
 
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout_comment);
         // 设置下拉刷新的按钮的颜色
-        refresh_layout.setColorSchemeResources(R.color.colorPrimary);
+        refresh_layout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
         refresh_layout.setOnRefreshListener(this);
 
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
@@ -83,6 +84,7 @@ public class NewsCommentFragment extends BaseFragment<INewsComment.Presenter> im
                 recycler_view.smoothScrollToPosition(0);
             }
         });
+        toolbar.setBackgroundColor(SettingsUtil.getInstance().getColor());
 
         adapter = new NewsCommentAdapter(getActivity());
         recycler_view.setAdapter(adapter);

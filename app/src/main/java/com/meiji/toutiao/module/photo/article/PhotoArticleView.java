@@ -14,6 +14,7 @@ import com.meiji.toutiao.adapter.photo.PhotoArticleAdapter;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.base.LazyLoadFragment;
+import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class PhotoArticleView extends LazyLoadFragment<IPhotoArticle.Presenter> 
 
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
-        refresh_layout.setColorSchemeResources(R.color.colorPrimary);
+        refresh_layout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
         refresh_layout.setOnRefreshListener(this);
 
         adapter = new PhotoArticleAdapter(getActivity());

@@ -27,8 +27,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:src="@drawable/ic_copy_gray_24dp"
-            android:tint="@color/textColorPrimary"/>
+            android:tint="@color/textColorPrimary"
+            app:srcCompat="@drawable/ic_copy_gray_24dp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -55,8 +55,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:src="@drawable/ic_share_grey_24dp"
-            android:tint="@color/textColorPrimary"/>
+            android:tint="@color/textColorPrimary"
+            app:srcCompat="@drawable/ic_share_grey_24dp"/>
 
         <TextView
             android:layout_width="match_parent"

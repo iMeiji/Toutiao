@@ -19,6 +19,7 @@ import com.meiji.toutiao.bean.media.MediaChannelBean;
 import com.meiji.toutiao.database.dao.MediaChannelDao;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.media.article.MediaArticleActivity;
+import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.List;
 
@@ -89,7 +90,7 @@ public class MediaChannelView extends Fragment implements SwipeRefreshLayout.OnR
 
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
-        refresh_layout.setColorSchemeResources(R.color.colorPrimary);
+        refresh_layout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
         refresh_layout.setOnRefreshListener(this);
         tv_desc = (TextView) view.findViewById(R.id.tv_desc);
     }

@@ -13,6 +13,7 @@ import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.module.video.article.VideoArticleView;
+import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,7 @@ public class VideoTabLayout extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        tab_layout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        tab_layout.setBackgroundColor(SettingsUtil.getInstance().getColor());
     }
 
     private void initView(View view) {

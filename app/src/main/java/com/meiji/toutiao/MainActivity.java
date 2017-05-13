@@ -76,7 +76,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        bottom_navigation.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        bottom_navigation.setBackgroundColor(SettingsUtil.getInstance().getColor());
         if (searchItem != null) {
             searchItem.collapseActionView();
         }

@@ -14,10 +14,15 @@
 <img src="/art/photo.gif" width="360" height="640"/>
 
 ## 下载
+[酷安](http://www.coolapk.com/apk/com.meiji.toutiao)
 [GitHub Release](https://github.com/iMeiji/Toutiao/releases)
 
 ## 更新日志
 ```
+2017-5-12
+修复闪退 bug 
+增加自定义主题颜色
+
 2017-5-11
 修复无法下拉刷新 bug
 重构项目

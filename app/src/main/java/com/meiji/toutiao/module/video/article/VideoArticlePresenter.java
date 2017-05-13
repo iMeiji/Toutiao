@@ -1,5 +1,8 @@
 package com.meiji.toutiao.module.video.article;
 
+import android.text.TextUtils;
+import android.util.Log;
+
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IVideoApi;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
@@ -23,6 +26,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class VideoArticlePresenter implements IVideoArticle.Presenter {
 
+    private static final String TAG = "VideoArticlePresenter";
     private IVideoArticle.View view;
     private String category;
     private int time;
@@ -59,6 +63,10 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
                 .filter(new Predicate<VideoArticleBean.DataBean>() {
                     @Override
                     public boolean test(@NonNull VideoArticleBean.DataBean dataBean) throws Exception {
+                        if (TextUtils.isEmpty(dataBean.getVideo_id())) {
+                            Log.d(TAG, "test: ");
+                            return false;
+                        }
                         // 去除重复新闻
                         for (VideoArticleBean.DataBean bean : dataList) {
                             if (dataBean.getTitle().equals(bean.getTitle())) {
@@ -131,5 +139,6 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
             e.printStackTrace();
         }
         VideoContentActivity.launch(bean, url);
+        Log.d(TAG, "doOnClickItem: " + bean.getVideo_id());
     }
 }

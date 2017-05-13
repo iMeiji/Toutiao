@@ -14,6 +14,7 @@ import com.meiji.toutiao.adapter.news.NewsArticleAdapter;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.base.LazyLoadFragment;
+import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class NewsArticleView extends LazyLoadFragment<INewsArticle.Presenter> im
 
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
-        refresh_layout.setColorSchemeResources(R.color.colorPrimary);
+        refresh_layout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
         refresh_layout.setOnRefreshListener(this);
 
         adapter = new NewsArticleAdapter(getActivity());
@@ -88,7 +89,7 @@ public class NewsArticleView extends LazyLoadFragment<INewsArticle.Presenter> im
     @Override
     public void onSetAdapter(final List<NewsArticleBean.DataBean> list) {
         List<NewsArticleBean.DataBean> oldList = adapter.getList();
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWs), true);
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWS), true);
         result.dispatchUpdatesTo(adapter);
         adapter.setList(list);
 

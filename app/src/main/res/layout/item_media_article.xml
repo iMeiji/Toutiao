@@ -14,10 +14,7 @@
         android:background="?attr/selectableItemBackground"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="vertical"
-        android:paddingBottom="4dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="4dp">
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/tv_title"

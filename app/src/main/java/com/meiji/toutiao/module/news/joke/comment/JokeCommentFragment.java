@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.util.DiffUtil;
@@ -26,6 +27,7 @@ import com.meiji.toutiao.bean.news.joke.JokeCommentBean;
 import com.meiji.toutiao.bean.news.joke.JokeContentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.base.BaseFragment;
+import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.List;
 
@@ -47,6 +49,7 @@ public class JokeCommentFragment extends BaseFragment<IJokeComment.Presenter> im
     private JokeCommentAdapter adapter;
 
     private IJokeComment.Presenter presenter;
+    private CollapsingToolbarLayout collapsing_toolbar;
 
     public static JokeCommentFragment newInstance(Parcelable data) {
         Bundle args = new Bundle();
@@ -68,7 +71,7 @@ public class JokeCommentFragment extends BaseFragment<IJokeComment.Presenter> im
 
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         // 设置下拉刷新的按钮的颜色
-        refresh_layout.setColorSchemeResources(R.color.colorPrimary);
+        refresh_layout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
         refresh_layout.setOnRefreshListener(this);
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +79,8 @@ public class JokeCommentFragment extends BaseFragment<IJokeComment.Presenter> im
                 recycler_view.smoothScrollToPosition(0);
             }
         });
+        collapsing_toolbar = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
+        collapsing_toolbar.setBackgroundColor(SettingsUtil.getInstance().getColor());
 
         adapter = new JokeCommentAdapter(getActivity());
         recycler_view.setAdapter(adapter);

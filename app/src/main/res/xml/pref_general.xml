@@ -22,6 +22,11 @@
         android:title="@string/other_settings">
 
         <Preference
+            android:key="color"
+            android:summary="@string/choose_theme_color_summary"
+            android:title="@string/choose_theme_color"/>
+
+        <Preference
             android:key="clearCache"
             android:title="@string/clear_cache"/>
     </PreferenceCategory>

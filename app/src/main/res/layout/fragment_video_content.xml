@@ -43,10 +43,11 @@
         android:layout_height="56dp"
         android:layout_gravity="end"
         android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="137dp"
         android:padding="16dp"
-        android:src="@drawable/ic_play_white_24dp"
-        app:elevation="8dp"/>
+        app:elevation="8dp"
+        app:srcCompat="@drawable/ic_play_white_24dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"

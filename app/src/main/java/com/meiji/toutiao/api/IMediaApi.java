@@ -20,6 +20,8 @@ public interface IMediaApi {
     /**
      * 获取头条号文章
      * http://www.toutiao.com/pgc/ma/?media_id=头条号&page_type=1&count=20&version=2&platform=pc&as=479BB4B7254C150&cp=585DB1871ED64E1&max_behot_time=时间
+     * 手机版
+     * http://toutiao.com/pgc/ma/?page_type=0&max_behot_time=&media_id=6547479326&output=json&is_json=1&count=20&from=user_profile_app&version=2&as=479BB4B7254C150&cp=58E7182DD50EFE1&callback=jsonp4
      */
     @GET("pgc/ma/?page_type=1&count=20&version=2&platform=pc&as=479BB4B7254C150&cp=585DB1871ED64E1")
     Observable<MediaArticleBean> getMediaArticle(

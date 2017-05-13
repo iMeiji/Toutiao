@@ -18,6 +18,7 @@ import com.meiji.toutiao.database.dao.NewsChannelDao;
 import com.meiji.toutiao.module.news.article.NewsArticleView;
 import com.meiji.toutiao.module.news.channel.NewsChannelActivity;
 import com.meiji.toutiao.module.news.joke.content.JokeContentView;
+import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,8 +60,8 @@ public class NewsTabLayout extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        tab_layout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        add_channel_iv.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        tab_layout.setBackgroundColor(SettingsUtil.getInstance().getColor());
+        add_channel_iv.setBackgroundColor(SettingsUtil.getInstance().getColor());
     }
 
     private void initView(View view) {

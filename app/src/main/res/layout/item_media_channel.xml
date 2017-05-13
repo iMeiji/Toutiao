@@ -31,7 +31,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="22dp">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/tv_mediaName"
@@ -49,16 +49,16 @@
                     android:layout_alignParentRight="true"
                     android:text=""/>
 
+                <TextView
+                    android:id="@+id/tv_descText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_mediaName"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="中国军力超越日本 日本为什么不怕中国？普京一句话让国人顿悟"
+                    android:textSize="14sp"/>
             </RelativeLayout>
-
-            <TextView
-                android:id="@+id/tv_descText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="中国军力超越日本 日本为什么不怕中国？普京一句话让国人顿悟"
-                android:textSize="14sp"/>
 
         </LinearLayout>
     </LinearLayout>

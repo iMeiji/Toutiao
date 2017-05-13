@@ -9,6 +9,7 @@ import com.meiji.toutiao.module.news.content.NewsContentActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import io.reactivex.Observable;
 import io.reactivex.SingleObserver;
@@ -35,14 +36,17 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
         this.view = view;
     }
 
-//    private static int getRandom() {
-//        Random random = new Random();
-//        StringBuilder result = new StringBuilder();
-//        for (int i = 0; i < 6; i++) {
-//            result.append(random.nextInt(10));
-//        }
-//        return Integer.parseInt(result.toString());
-//    }
+    private int getRandom() {
+        if (this.time != 0) {
+            Random random = new Random();
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < 6; i++) {
+                result.append(random.nextInt(10));
+            }
+            return this.time - Integer.parseInt(result.toString());
+        }
+        return 0;
+    }
 
     @Override
     public void doLoadData(String... category) {
@@ -57,7 +61,7 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
 
         // 因为删除了部分新闻 故使用2个请求
         Observable<NewsArticleBean> ob1 = RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsArticle1(this.category, time);
-        Observable<NewsArticleBean> ob2 = RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsArticle2(this.category);
+        Observable<NewsArticleBean> ob2 = RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsArticle2(this.category, getRandom());
 
         Observable.merge(ob1, ob2)
                 .subscribeOn(Schedulers.io())

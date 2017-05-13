@@ -6,7 +6,8 @@ import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.meiji.toutiao.R;
+import com.afollestad.materialdialogs.color.CircleView;
+import com.meiji.toutiao.utils.SettingsUtil;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 /**
@@ -28,12 +29,12 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        int color = getResources().getColor(R.color.colorPrimary, getTheme());
+        int color = SettingsUtil.getInstance().getColor();
         if (getSupportActionBar() != null)
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(color));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark, getTheme()));
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark, getTheme()));
+            getWindow().setStatusBarColor(CircleView.shiftColorDown(color));
+            getWindow().setNavigationBarColor(CircleView.shiftColorDown(color));
         }
     }
 

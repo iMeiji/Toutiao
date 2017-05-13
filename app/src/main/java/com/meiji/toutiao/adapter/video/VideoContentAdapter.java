@@ -178,7 +178,7 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
             this.tv_tv_video_duration_str = (TextView) itemView.findViewById(R.id.tv_tv_video_duration_str);
             this.tv_abstract = (TextView) itemView.findViewById(R.id.tv_abstract);
-            this.tv_source = (TextView) itemView.findViewById(R.id.tv_source);
+            this.tv_source = (TextView) itemView.findViewById(R.id.tv_extra);
             this.iv_media_avatar_url = (CircleImageView) itemView.findViewById(R.id.iv_media_avatar_url);
         }
     }
