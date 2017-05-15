@@ -56,8 +56,6 @@ public class VideoArticleView extends LazyLoadFragment<IVideoArticle.Presenter> 
         recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
-        // 设置下拉刷新的按钮的颜色
-        refresh_layout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
         refresh_layout.setOnRefreshListener(this);
 
         adapter = new VideoArticleAdapter(getActivity());
@@ -68,6 +66,13 @@ public class VideoArticleView extends LazyLoadFragment<IVideoArticle.Presenter> 
                 presenter.doOnClickItem(position);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // 设置下拉刷新的按钮的颜色
+        refresh_layout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
     }
 
     @Override

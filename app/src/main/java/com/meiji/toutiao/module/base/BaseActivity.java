@@ -1,12 +1,14 @@
 package com.meiji.toutiao.module.base;
 
-import android.annotation.TargetApi;
+import android.app.ActivityManager;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.afollestad.materialdialogs.color.CircleView;
+import com.meiji.toutiao.R;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
@@ -25,7 +27,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUpEnabled);
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onResume() {
         super.onResume();
@@ -35,6 +36,12 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(CircleView.shiftColorDown(color));
             getWindow().setNavigationBarColor(CircleView.shiftColorDown(color));
+            // 最近任务栏上色
+            ActivityManager.TaskDescription tDesc = new ActivityManager.TaskDescription(
+                    getString(R.string.app_name),
+                    BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher),
+                    color);
+            setTaskDescription(tDesc);
         }
     }
 

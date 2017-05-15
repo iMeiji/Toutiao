@@ -62,6 +62,7 @@ public class PhotoTabLayout extends Fragment {
 
         tab_layout.setupWithViewPager(view_pager);
         tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tab_layout.setBackgroundColor(SettingsUtil.getInstance().getColor());
         view_pager.setOffscreenPageLimit(pageSize);
     }
 

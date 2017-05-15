@@ -50,6 +50,7 @@ public class MediaChannelView extends Fragment implements SwipeRefreshLayout.OnR
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_media, container, false);
         initView(view);
+        initData();
         return view;
     }
 

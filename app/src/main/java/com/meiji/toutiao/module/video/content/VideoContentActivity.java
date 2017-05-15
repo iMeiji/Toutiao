@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
@@ -14,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -27,12 +29,12 @@ import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.news.comment.INewsComment;
 import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.widget.helper.MyJCVideoPlayerStandard;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 
 import java.util.List;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
 /**
  * Created by Meiji on 2017/3/30.
@@ -65,6 +67,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.fragment_video_content);
         presenter = new VideoContentPresenter(this);
         initView();
@@ -100,13 +103,25 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
         recycler_view.setHasFixedSize(true);
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
         fab_play.setOnClickListener(this);
+        fab_play.setBackgroundTintList(ColorStateList.valueOf(SettingsUtil.getInstance().getColor()));
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab_play:
-                JCVideoPlayerStandard.startFullscreen(this, JCVideoPlayerStandard.class, videoUrls, videoTitle);
+                MyJCVideoPlayerStandard.startFullscreen(this, MyJCVideoPlayerStandard.class, videoUrls, videoTitle);
+                View decorView = getWindow().getDecorView();
+                int uiOptions = 0;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                    uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                } else {
+                    uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN;
+                }
+                decorView.setSystemUiVisibility(uiOptions);
                 break;
         }
     }
@@ -199,6 +214,9 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onBackPressed() {
         if (JCVideoPlayer.backPress()) {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(0);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             return;
         }
         super.onBackPressed();

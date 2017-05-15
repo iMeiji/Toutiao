@@ -12,7 +12,6 @@
         style="@style/TabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:tabTextColor="@color/gray">

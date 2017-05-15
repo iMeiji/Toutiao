@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
@@ -40,6 +41,7 @@ public class NewsTabLayout extends Fragment {
     private ImageView add_channel_iv;
     private List<Fragment> list = new ArrayList<>();
     private BasePagerAdapter adapter;
+    private LinearLayout header_layout;
 
     public static NewsTabLayout getInstance() {
         if (instance == null) {
@@ -60,8 +62,7 @@ public class NewsTabLayout extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        tab_layout.setBackgroundColor(SettingsUtil.getInstance().getColor());
-        add_channel_iv.setBackgroundColor(SettingsUtil.getInstance().getColor());
+        header_layout.setBackgroundColor(SettingsUtil.getInstance().getColor());
     }
 
     private void initView(View view) {
@@ -78,6 +79,8 @@ public class NewsTabLayout extends Fragment {
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
+        header_layout = (LinearLayout) view.findViewById(R.id.header_layout);
+        header_layout.setBackgroundColor(SettingsUtil.getInstance().getColor());
     }
 
     /**
