@@ -9,8 +9,11 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -29,7 +32,7 @@ import com.meiji.toutiao.module.video.VideoTabLayout;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.widget.helper.BottomNavigationViewHelper;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
     private static final String POSITION = "position";
@@ -48,6 +51,8 @@ public class MainActivity extends BaseActivity {
     private int position;
     private FrameLayout content_main;
     private MenuItem searchItem;
+    private NavigationView nav_view;
+    private DrawerLayout drawer_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +90,7 @@ public class MainActivity extends BaseActivity {
     private void initView() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         bottom_navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottom_navigation.setBackgroundColor(SettingsUtil.getInstance().getColor());
         BottomNavigationViewHelper.disableShiftMode(bottom_navigation);
         setSupportActionBar(toolbar);
         bottom_navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -109,6 +115,15 @@ public class MainActivity extends BaseActivity {
         });
 
         content_main = (FrameLayout) findViewById(R.id.container);
+
+        drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer_layout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        nav_view = (NavigationView) findViewById(R.id.nav_view);
+        nav_view.setNavigationItemSelectedListener(this);
     }
 
     private void showFragment(int index) {
@@ -194,31 +209,30 @@ public class MainActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
         setSearchView(menu);
-
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        switch (itemId) {
-            case R.id.aciton_setting:
-                startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_CODE);
-                break;
-            case R.id.action_switch_night_mode:
-                int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-                if (mode == Configuration.UI_MODE_NIGHT_YES) {
-                    SettingsUtil.getInstance().setIsNightMode(false);
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                } else {
-                    SettingsUtil.getInstance().setIsNightMode(true);
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                }
-                getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
-                recreate();
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int itemId = item.getItemId();
+//        switch (itemId) {
+//            case R.id.aciton_setting:
+//                startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_CODE);
+//                break;
+//            case R.id.action_switch_night_mode:
+//                int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+//                if (mode == Configuration.UI_MODE_NIGHT_YES) {
+//                    SettingsUtil.getInstance().setIsNightMode(false);
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//                } else {
+//                    SettingsUtil.getInstance().setIsNightMode(true);
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//                }
+//                getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
+//                recreate();
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -258,8 +272,8 @@ public class MainActivity extends BaseActivity {
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 // Do something when action item collapses
                 content_main.setVisibility(View.VISIBLE);
-                menu.findItem(R.id.aciton_setting).setVisible(true);
-                menu.findItem(R.id.action_switch_night_mode).setVisible(true);
+//                menu.findItem(R.id.aciton_setting).setVisible(true);
+//                menu.findItem(R.id.action_switch_night_mode).setVisible(true);
                 return true;     //Return true to collapse action view
             }
 
@@ -267,10 +281,48 @@ public class MainActivity extends BaseActivity {
             public boolean onMenuItemActionExpand(MenuItem item) {
                 // Do something when expanded
                 content_main.setVisibility(View.GONE);
-                menu.findItem(R.id.aciton_setting).setVisible(false);
-                menu.findItem(R.id.action_switch_night_mode).setVisible(false);
+//                menu.findItem(R.id.aciton_setting).setVisible(false);
+//                menu.findItem(R.id.action_switch_night_mode).setVisible(false);
                 return true;      // Return true to expand action view
             }
         });
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.nav_account:
+                drawer_layout.closeDrawers();
+                return false;
+
+            case R.id.nav_switch_night_mode:
+                int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                if (mode == Configuration.UI_MODE_NIGHT_YES) {
+                    SettingsUtil.getInstance().setIsNightMode(false);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                } else {
+                    SettingsUtil.getInstance().setIsNightMode(true);
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                }
+                getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
+                recreate();
+                return false;
+
+            case R.id.nav_setting:
+                startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_CODE);
+                drawer_layout.closeDrawers();
+                return false;
+
+            case R.id.nav_share:
+                Intent shareIntent = new Intent()
+                        .setAction(Intent.ACTION_SEND)
+                        .setType("text/plain")
+                        .putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_text) + getString(R.string.source_code_url));
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
+                drawer_layout.closeDrawers();
+                return false;
+        }
+        return false;
     }
 }

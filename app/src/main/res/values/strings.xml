@@ -96,4 +96,15 @@
     <string name="done">完成</string>
     <string name="custom">自定义</string>
 
+    <!--Main Activity-->
+    <string name="navigation_drawer_open">打开侧栏</string>
+    <string name="navigation_drawer_close">关闭侧栏</string>
+
+
+    <!--Navigation Item-->
+    <string name="nav_account">个人</string>
+    <string name="nav_switch_night_mode">切换主题</string>
+    <string name="nav_setting">设置</string>
+    <string name="nav_share">分享</string>
+
 </resources>

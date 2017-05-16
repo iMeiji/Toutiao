@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/account"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_account"
+            android:icon="@drawable/ic_account_gray_24dp"
+            android:title="@string/nav_account"/>
+    </group>
+
+    <group android:id="@+id/other">
+        <item
+            android:id="@+id/nav_switch_night_mode"
+            android:icon="@drawable/ic_night_gray_24dp"
+            android:title="@string/nav_switch_night_mode"/>
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_setting_gray_24dp"
+            android:title="@string/nav_setting"/>
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/ic_share_grey_24dp"
+            android:title="@string/nav_share"/>
+    </group>
+
+</menu>

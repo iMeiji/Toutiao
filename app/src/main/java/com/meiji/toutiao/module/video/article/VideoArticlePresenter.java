@@ -64,7 +64,6 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
                     @Override
                     public boolean test(@NonNull VideoArticleBean.DataBean dataBean) throws Exception {
                         if (TextUtils.isEmpty(dataBean.getVideo_id())) {
-                            Log.d(TAG, "test: ");
                             return false;
                         }
                         // 去除重复新闻
