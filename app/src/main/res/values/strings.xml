@@ -4,7 +4,7 @@
     <!-- Example General com.meiji.toutiao.settings -->
     <string name="switch_photo_mode">无图模式</string>
     <string name="basic_settings">基本设置</string>
-    <string name="switch_no_photo_mode_summary">不加载图片, 节省流量</string>
+    <string name="switch_no_photo_mode_summary">开启后在非Wifi下不加载图片</string>
     <string name="switch_night_mode">夜间模式</string>
     <string name="switch_night_mode_summary">切换夜间皮肤</string>
     <string name="clear_cache">清除缓存</string>
@@ -82,7 +82,7 @@
     <string name="about_libraries_summary">查看开源许可信息</string>
     <string name="copyright">版权声明</string>
     <string name="copyright_summary">仅作个人及非商业用途</string>
-    <string name="copyright_content">本App所使用的所有API均由 今日头条 提供, 本人采取非正常手段获取. 获取与共享之行为或有侵犯 今日头条 权益的嫌疑.若被告知需停止共享与使用, 本人会及时删除此页面与整个项目.</string>
+    <string name="copyright_content">本App所使用的所有API均由 今日头条 提供, 本人采取非正常手段获取. 本程序仅供学习交流, 不可用于任何商业用途.</string>
     <string name="version">版本</string>
 
 

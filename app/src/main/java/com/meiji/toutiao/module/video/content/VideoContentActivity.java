@@ -23,7 +23,7 @@ import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.adapter.video.VideoContentAdapter;
-import com.meiji.toutiao.bean.news.NewsCommentBean;
+import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.base.BaseActivity;
@@ -94,6 +94,16 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
         this.itemId = articleBean.getItem_id() + "";
         this.videoId = articleBean.getVideo_id();
         this.videoTitle = articleBean.getTitle();
+
+
+        adapter = new VideoContentAdapter(this, articleBean);
+        recycler_view.setAdapter(adapter);
+        adapter.setOnItemClickListener(new IOnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                showCopyDialog(position);
+            }
+        });
     }
 
     private void initView() {
@@ -133,23 +143,11 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    public void onSetAdapter(final List<NewsCommentBean.DataBean.CommentsBean> list) {
-        if (adapter == null) {
-            adapter = new VideoContentAdapter(this, articleBean);
-            adapter.setList(list);
-            recycler_view.setAdapter(adapter);
-            adapter.setOnItemClickListener(new IOnItemClickListener() {
-                @Override
-                public void onClick(View view, int position) {
-                    showCopyDialog(position);
-                }
-            });
-        } else {
-            List<NewsCommentBean.DataBean.CommentsBean> oldList = adapter.getList();
-            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWS_COMMENT), true);
-            result.dispatchUpdatesTo(adapter);
-            adapter.setList(list);
-        }
+    public void onSetAdapter(final List<NewsCommentMobileBean.DataBean.CommentBean> list) {
+        List<NewsCommentMobileBean.DataBean.CommentBean> oldList = adapter.getList();
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWS_COMMENT), true);
+        result.dispatchUpdatesTo(adapter);
+        adapter.setList(list);
 
         canLoading = true;
 
@@ -197,7 +195,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onShowNoMore() {
-
+        Snackbar.make(fab_play, R.string.no_more, Snackbar.LENGTH_INDEFINITE).show();
     }
 
     @Override

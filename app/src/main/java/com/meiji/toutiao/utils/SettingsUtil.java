@@ -19,7 +19,7 @@ public class SettingsUtil {
     }
 
     public boolean getIsNoPhotoMode() {
-        return settings.getBoolean("switch_noPhotoMode", false);
+        return settings.getBoolean("switch_noPhotoMode", false) && !NetWorkUtil.isWifiConnected(InitApp.AppContext);
     }
 
     public int getColor() {

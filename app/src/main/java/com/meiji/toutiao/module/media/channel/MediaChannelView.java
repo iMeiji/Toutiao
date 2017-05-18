@@ -57,6 +57,7 @@ public class MediaChannelView extends Fragment implements SwipeRefreshLayout.OnR
     @Override
     public void onResume() {
         super.onResume();
+        refresh_layout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
         initData();
     }
 
@@ -90,7 +91,6 @@ public class MediaChannelView extends Fragment implements SwipeRefreshLayout.OnR
         recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
-        // 设置下拉刷新的按钮的颜色
         refresh_layout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
         refresh_layout.setOnRefreshListener(this);
         tv_desc = (TextView) view.findViewById(R.id.tv_desc);

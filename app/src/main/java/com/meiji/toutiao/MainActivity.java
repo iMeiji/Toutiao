@@ -40,7 +40,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private static final int FRAGMENT_PHOTO = 1;
     private static final int FRAGMENT_VIDEO = 2;
     private static final int FRAGMENT_MEDIA = 3;
-    private final int REQUEST_CODE = 1;
     private NewsTabLayout newsTabLayout;
     private PhotoTabLayout photoTabLayout;
     private VideoTabLayout videoTabLayout;
@@ -212,39 +211,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return true;
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int itemId = item.getItemId();
-//        switch (itemId) {
-//            case R.id.aciton_setting:
-//                startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_CODE);
-//                break;
-//            case R.id.action_switch_night_mode:
-//                int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-//                if (mode == Configuration.UI_MODE_NIGHT_YES) {
-//                    SettingsUtil.getInstance().setIsNightMode(false);
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//                } else {
-//                    SettingsUtil.getInstance().setIsNightMode(true);
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//                }
-//                getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
-//                recreate();
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
-                recreate();
-            }
-        }
-    }
-
     private void setSearchView(final Menu menu) {
         searchItem = menu.findItem(R.id.action_search);
         // 关联检索配置与 SearchActivity
@@ -310,7 +276,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 return false;
 
             case R.id.nav_setting:
-                startActivityForResult(new Intent(this, SettingsActivity.class), REQUEST_CODE);
+                startActivity(new Intent(this, SettingsActivity.class));
                 drawer_layout.closeDrawers();
                 return false;
 

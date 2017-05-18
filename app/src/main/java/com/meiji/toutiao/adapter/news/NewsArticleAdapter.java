@@ -1,12 +1,17 @@
 package com.meiji.toutiao.adapter.news;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -169,8 +174,19 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private class FooterViewHolder extends RecyclerView.ViewHolder {
 
+        private ProgressBar progressBar;
+
         FooterViewHolder(View itemView) {
             super(itemView);
+            this.progressBar = (ProgressBar) itemView.findViewById(R.id.progress_footer);
+            int color = SettingsUtil.getInstance().getColor();
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
+                DrawableCompat.setTint(wrapDrawable, color);
+                this.progressBar.setIndeterminateDrawable(DrawableCompat.unwrap(wrapDrawable));
+            } else {
+                this.progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            }
         }
     }
 

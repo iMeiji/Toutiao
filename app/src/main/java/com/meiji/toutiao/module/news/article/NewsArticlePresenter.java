@@ -98,7 +98,8 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
                 })
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(view.<List<NewsArticleBean.DataBean>>bindToLife())
+                // 转跳页面会停止加载
+//                .compose(view.<List<NewsArticleBean.DataBean>>bindToLife())
                 .subscribe(new SingleObserver<List<NewsArticleBean.DataBean>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {

@@ -235,6 +235,6 @@ public class JokeCommentFragment extends BaseFragment<IJokeComment.Presenter> im
 
     @Override
     public void onShowNoMore() {
-        Snackbar.make(refresh_layout, R.string.no_more, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(refresh_layout, R.string.no_more, Snackbar.LENGTH_INDEFINITE).show();
     }
 }

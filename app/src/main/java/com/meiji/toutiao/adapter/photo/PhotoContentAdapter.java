@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.util.SparseArray;
@@ -22,6 +26,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
+import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.utils.WindowUtil;
 
@@ -57,9 +62,17 @@ public class PhotoContentAdapter extends PagerAdapter {
             view = LayoutInflater.from(context).inflate(R.layout.item_photo_content, container, false);
             view.setTag(position);
             final ImageView iv_image = (ImageView) view.findViewById(R.id.iv_image);
-            TextView tv_abstract = (TextView) view.findViewById(R.id.tv_abstract);
+            final TextView tv_abstract = (TextView) view.findViewById(R.id.tv_abstract);
             final TextView tv_onclick = (TextView) view.findViewById(R.id.tv_onclick);
             final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
+            int color = SettingsUtil.getInstance().getColor();
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
+                DrawableCompat.setTint(wrapDrawable, color);
+                progressBar.setIndeterminateDrawable(DrawableCompat.unwrap(wrapDrawable));
+            } else {
+                progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            }
 
             PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(iv_image);
 
@@ -113,7 +126,7 @@ public class PhotoContentAdapter extends PagerAdapter {
             photoViewAttacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                 @Override
                 public void onPhotoTap(View view, float x, float y) {
-                    Activity activity = (Activity) context;
+                    BaseActivity activity = (BaseActivity) context;
                     activity.finish();
                 }
             });

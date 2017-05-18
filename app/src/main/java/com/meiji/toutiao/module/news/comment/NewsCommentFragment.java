@@ -18,7 +18,7 @@ import android.view.View;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.adapter.news.NewsCommentAdapter;
-import com.meiji.toutiao.bean.news.NewsCommentBean;
+import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.utils.SettingsUtil;
@@ -109,8 +109,8 @@ public class NewsCommentFragment extends BaseFragment<INewsComment.Presenter> im
     }
 
     @Override
-    public void onSetAdapter(final List<NewsCommentBean.DataBean.CommentsBean> list) {
-        List<NewsCommentBean.DataBean.CommentsBean> oldList = adapter.getList();
+    public void onSetAdapter(final List<NewsCommentMobileBean.DataBean.CommentBean> list) {
+        List<NewsCommentMobileBean.DataBean.CommentBean> oldList = adapter.getList();
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWS_COMMENT), true);
         result.dispatchUpdatesTo(adapter);
         adapter.setList(list);
@@ -206,6 +206,6 @@ public class NewsCommentFragment extends BaseFragment<INewsComment.Presenter> im
 
     @Override
     public void onShowNoMore() {
-        Snackbar.make(refresh_layout, R.string.no_more, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(refresh_layout, R.string.no_more, Snackbar.LENGTH_INDEFINITE).show();
     }
 }

@@ -1,16 +1,21 @@
 package com.meiji.toutiao.adapter.news;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.bean.news.NewsCommentBean;
+import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.utils.SettingsUtil;
 
@@ -25,7 +30,7 @@ public class NewsCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_FOOTER = 1;
-    private List<NewsCommentBean.DataBean.CommentsBean> list;
+    private List<NewsCommentMobileBean.DataBean.CommentBean> list;
     private Context context;
     private IOnItemClickListener onItemClickListener;
 
@@ -33,11 +38,11 @@ public class NewsCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.context = context;
     }
 
-    public List<NewsCommentBean.DataBean.CommentsBean> getList() {
+    public List<NewsCommentMobileBean.DataBean.CommentBean> getList() {
         return list;
     }
 
-    public void setList(List<NewsCommentBean.DataBean.CommentsBean> list) {
+    public void setList(List<NewsCommentMobileBean.DataBean.CommentBean> list) {
         this.list = new ArrayList<>(list);
     }
 
@@ -70,9 +75,9 @@ public class NewsCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof NewsCommentsViewHolder) {
             NewsCommentsViewHolder commentHolder = (NewsCommentsViewHolder) holder;
-            NewsCommentBean.DataBean.CommentsBean commentsBean = list.get(position);
-            String iv_avatar = commentsBean.getUser().getAvatar_url();
-            String tv_username = commentsBean.getUser().getName();
+            NewsCommentMobileBean.DataBean.CommentBean commentsBean = list.get(position);
+            String iv_avatar = commentsBean.getUser_profile_image_url();
+            String tv_username = commentsBean.getUser_name();
             String tv_text = commentsBean.getText();
             int tv_likes = commentsBean.getDigg_count();
 
@@ -87,7 +92,7 @@ public class NewsCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return list != null ? list.size() : 0;
+        return list != null ? list.size() + 1 : 0;
     }
 
     private class NewsCommentsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -117,8 +122,19 @@ public class NewsCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private class FooterViewHolder extends RecyclerView.ViewHolder {
 
+        private ProgressBar progressBar;
+
         FooterViewHolder(View itemView) {
             super(itemView);
+            this.progressBar = (ProgressBar) itemView.findViewById(R.id.progress_footer);
+            int color = SettingsUtil.getInstance().getColor();
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
+                DrawableCompat.setTint(wrapDrawable, color);
+                this.progressBar.setIndeterminateDrawable(DrawableCompat.unwrap(wrapDrawable));
+            } else {
+                this.progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            }
         }
     }
 }

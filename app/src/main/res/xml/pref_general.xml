@@ -10,11 +10,11 @@
             android:summary="@string/switch_no_photo_mode_summary"
             android:title="@string/switch_photo_mode"/>
 
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="switch_nightMode"
-            android:summary="@string/switch_night_mode_summary"
-            android:title="@string/switch_night_mode"/>
+        <!--<SwitchPreference-->
+        <!--android:defaultValue="false"-->
+        <!--android:key="switch_nightMode"-->
+        <!--android:summary="@string/switch_night_mode_summary"-->
+        <!--android:title="@string/switch_night_mode"/>-->
 
     </PreferenceCategory>
 

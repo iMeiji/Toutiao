@@ -4,7 +4,7 @@ import android.support.v7.util.DiffUtil;
 
 import com.meiji.toutiao.bean.media.MediaArticleBean;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
-import com.meiji.toutiao.bean.news.NewsCommentBean;
+import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.bean.news.joke.JokeCommentBean;
 import com.meiji.toutiao.bean.news.joke.JokeContentBean;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
@@ -64,8 +64,8 @@ public class DiffCallback extends DiffUtil.Callback {
                     return ((MediaArticleBean.DataBean) oldList.get(oldItemPosition)).getTitle().equals(
                             ((MediaArticleBean.DataBean) newList.get(newItemPosition)).getTitle());
                 case NEWS_COMMENT:
-                    return ((NewsCommentBean.DataBean.CommentsBean) oldList.get(oldItemPosition)).getText().equals(
-                            ((NewsCommentBean.DataBean.CommentsBean) newList.get(newItemPosition)).getText());
+                    return ((NewsCommentMobileBean.DataBean.CommentBean) oldList.get(oldItemPosition)).getText().equals(
+                            ((NewsCommentMobileBean.DataBean.CommentBean) newList.get(newItemPosition)).getText());
                 case JOKE_COMMENT:
                     return ((JokeCommentBean.DataBean.RecentCommentsBean) oldList.get(oldItemPosition)).getText().equals(
                             ((JokeCommentBean.DataBean.RecentCommentsBean) newList.get(newItemPosition)).getText());
@@ -96,8 +96,8 @@ public class DiffCallback extends DiffUtil.Callback {
                     return ((MediaArticleBean.DataBean) oldList.get(oldItemPosition)).getSource_url().equals(
                             ((MediaArticleBean.DataBean) newList.get(newItemPosition)).getSource_url());
                 case NEWS_COMMENT:
-                    return ((NewsCommentBean.DataBean.CommentsBean) oldList.get(oldItemPosition)).getId() ==
-                            ((NewsCommentBean.DataBean.CommentsBean) newList.get(newItemPosition)).getId();
+                    return ((NewsCommentMobileBean.DataBean.CommentBean) oldList.get(oldItemPosition)).getId() ==
+                            ((NewsCommentMobileBean.DataBean.CommentBean) newList.get(newItemPosition)).getId();
                 case JOKE_COMMENT:
                     return ((JokeCommentBean.DataBean.RecentCommentsBean) oldList.get(oldItemPosition)).getId() ==
                             ((JokeCommentBean.DataBean.RecentCommentsBean) newList.get(newItemPosition)).getId();

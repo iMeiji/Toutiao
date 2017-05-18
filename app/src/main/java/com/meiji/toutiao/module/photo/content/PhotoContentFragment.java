@@ -5,12 +5,15 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -98,6 +101,14 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
         webView = (WebView) view.findViewById(R.id.webview_content);
         scrollView = (NestedScrollView) view.findViewById(R.id.scrollView);
         progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
+        int color = SettingsUtil.getInstance().getColor();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
+            DrawableCompat.setTint(wrapDrawable, color);
+            this.progressBar.setIndeterminateDrawable(DrawableCompat.unwrap(wrapDrawable));
+        } else {
+            this.progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        }
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

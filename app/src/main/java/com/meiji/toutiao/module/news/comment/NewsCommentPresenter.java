@@ -1,8 +1,8 @@
 package com.meiji.toutiao.module.news.comment;
 
 import com.meiji.toutiao.RetrofitFactory;
-import com.meiji.toutiao.api.INewsApi;
-import com.meiji.toutiao.bean.news.NewsCommentBean;
+import com.meiji.toutiao.api.IMobileNewsApi;
+import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
     private String groupId;
     private String itemId;
     private int offset = 0;
-    private List<NewsCommentBean.DataBean.CommentsBean> commentsBeanList = new ArrayList<>();
+    private List<NewsCommentMobileBean.DataBean.CommentBean> commentsBeanList = new ArrayList<>();
 
     public NewsCommentPresenter(INewsComment.View view) {
         this.view = view;
@@ -45,27 +45,32 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
             e.printStackTrace();
         }
 
-        RetrofitFactory.getRetrofit().create(INewsApi.class)
-                .getNewsComment(groupId, itemId, offset)
+        RetrofitFactory.getRetrofit().create(IMobileNewsApi.class)
+                .getNewsComment(groupId, offset)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .map(new Function<NewsCommentBean, List<NewsCommentBean.DataBean.CommentsBean>>() {
+                .map(new Function<NewsCommentMobileBean, List<NewsCommentMobileBean.DataBean.CommentBean>>() {
                     @Override
-                    public List<NewsCommentBean.DataBean.CommentsBean> apply(@NonNull NewsCommentBean newsCommentBean) throws Exception {
-                        return newsCommentBean.getData().getComments();
+                    public List<NewsCommentMobileBean.DataBean.CommentBean> apply(@NonNull NewsCommentMobileBean newsCommentMobileBean) throws Exception {
+                        List<NewsCommentMobileBean.DataBean.CommentBean> data = new ArrayList<>();
+                        for (NewsCommentMobileBean.DataBean bean : newsCommentMobileBean.getData()) {
+                            data.add(bean.getComment());
+                        }
+                        return data;
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(view.<List<NewsCommentBean.DataBean.CommentsBean>>bindToLife())
-                .subscribe(new Observer<List<NewsCommentBean.DataBean.CommentsBean>>() {
+                .compose(view.<List<NewsCommentMobileBean.DataBean.CommentBean>>bindToLife())
+                .subscribe(new Observer<List<NewsCommentMobileBean.DataBean.CommentBean>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
+
                     }
 
                     @Override
-                    public void onNext(@NonNull List<NewsCommentBean.DataBean.CommentsBean> commentsBeen) {
-                        if (commentsBeen.size() > 0) {
-                            doSetAdapter(commentsBeen);
+                    public void onNext(@NonNull List<NewsCommentMobileBean.DataBean.CommentBean> commentBeen) {
+                        if (commentBeen.size() > 0) {
+                            doSetAdapter(commentBeen);
                         } else {
                             doShowNoMore();
                         }
@@ -73,6 +78,7 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
+                        e.printStackTrace();
                         doShowNetError();
                     }
 
@@ -90,8 +96,8 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
     }
 
     @Override
-    public void doSetAdapter(List<NewsCommentBean.DataBean.CommentsBean> commentsBeen) {
-        commentsBeanList.addAll(commentsBeen);
+    public void doSetAdapter(List<NewsCommentMobileBean.DataBean.CommentBean> list) {
+        commentsBeanList.addAll(list);
         view.onSetAdapter(commentsBeanList);
         view.onHideLoading();
     }

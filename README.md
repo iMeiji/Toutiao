@@ -5,7 +5,7 @@
 
 
 ## API的使用声明
-以下所有 API 均由 `今日头条` 提供, 本人采取非正常手段获取. 获取与共享之行为或有侵犯 `今日头条` 权益的嫌疑.若被告知需停止共享与使用, 本人会及时删除此页面与整个项目.
+以下所有 API 均由 `今日头条` 提供, 本人采取非正常手段获取. 本程序仅供学习交流, 不可用于任何商业用途
 
 ## 截图
 <img src="/art/2.jpg"/>
@@ -14,11 +14,15 @@
 <img src="/art/photo.gif" width="360" height="640"/>
 
 ## 下载
-[酷安](http://www.coolapk.com/apk/com.meiji.toutiao)
+[酷安](http://www.coolapk.com/apk/com.meiji.toutiao)  
 [GitHub Release](https://github.com/iMeiji/Toutiao/releases)
 
 ## 更新日志
 ```
+2017-5-18
+所有 UI 控件配色跟随主题颜色
+优化无图模式 (开启后在非Wifi下不加载图片)
+
 2017-5-15
 修复颜色错乱 bug
 屏蔽视频播放器无用的按钮

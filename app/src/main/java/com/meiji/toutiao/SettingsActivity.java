@@ -4,7 +4,6 @@ package com.meiji.toutiao;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -13,7 +12,6 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.widget.Toolbar;
@@ -102,22 +100,6 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
             setPreferencesFromResource(R.xml.pref_general, rootKey);
             setHasOptionsMenu(true);
             setText();
-
-            findPreference("switch_nightMode").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-                    if (mode == Configuration.UI_MODE_NIGHT_YES) {
-                        SettingsUtil.getInstance().setIsNightMode(false);
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    } else {
-                        SettingsUtil.getInstance().setIsNightMode(true);
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    }
-                    getActivity().setResult(RESULT_OK);
-                    return false;
-                }
-            });
 
             findPreference("color").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
