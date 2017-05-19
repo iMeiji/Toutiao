@@ -3,6 +3,7 @@ package com.meiji.toutiao.adapter;
 import android.support.v7.util.DiffUtil;
 
 import com.meiji.toutiao.bean.media.MediaArticleBean;
+import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.bean.news.joke.JokeCommentBean;
@@ -25,6 +26,7 @@ public class DiffCallback extends DiffUtil.Callback {
     public static final int MEDIA = 4;
     public static final int NEWS_COMMENT = 5;
     public static final int JOKE_COMMENT = 6;
+    public static final int MUlTI_NEWS = 7;
     private List oldList, newList;
     private int type;
 
@@ -69,6 +71,9 @@ public class DiffCallback extends DiffUtil.Callback {
                 case JOKE_COMMENT:
                     return ((JokeCommentBean.DataBean.RecentCommentsBean) oldList.get(oldItemPosition)).getText().equals(
                             ((JokeCommentBean.DataBean.RecentCommentsBean) newList.get(newItemPosition)).getText());
+                case MUlTI_NEWS:
+                    return ((MultiNewsArticleDataBean) oldList.get(oldItemPosition)).getTitle().equals(
+                            ((MultiNewsArticleDataBean) newList.get(newItemPosition)).getTitle());
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -101,6 +106,9 @@ public class DiffCallback extends DiffUtil.Callback {
                 case JOKE_COMMENT:
                     return ((JokeCommentBean.DataBean.RecentCommentsBean) oldList.get(oldItemPosition)).getId() ==
                             ((JokeCommentBean.DataBean.RecentCommentsBean) newList.get(newItemPosition)).getId();
+                case MUlTI_NEWS:
+                    return ((MultiNewsArticleDataBean) oldList.get(oldItemPosition)).getItem_id() ==
+                            ((MultiNewsArticleDataBean) newList.get(newItemPosition)).getItem_id();
             }
         } catch (NullPointerException e) {
             e.printStackTrace();

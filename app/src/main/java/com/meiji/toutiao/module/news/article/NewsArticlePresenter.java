@@ -2,10 +2,12 @@ package com.meiji.toutiao.module.news.article;
 
 import android.util.Log;
 
+import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.INewsApi;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.module.news.content.NewsContentActivity;
+import com.meiji.toutiao.utils.NetWorkUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +61,11 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
             e.printStackTrace();
         }
 
+        // 释放内存
+        if (dataList.size() > 100) {
+            dataList.clear();
+        }
+
         // 因为删除了部分新闻 故使用2个请求
         Observable<NewsArticleBean> ob1 = RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsArticle1(this.category, time);
         Observable<NewsArticleBean> ob2 = RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsArticle2(this.category, getRandom());
@@ -98,8 +105,7 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
                 })
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
-                // 转跳页面会停止加载
-//                .compose(view.<List<NewsArticleBean.DataBean>>bindToLife())
+                .compose(view.<List<NewsArticleBean.DataBean>>bindToLife())
                 .subscribe(new SingleObserver<List<NewsArticleBean.DataBean>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -113,7 +119,11 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        doShowNetError();
+                        if (NetWorkUtil.isNetworkConnected(InitApp.AppContext)) {
+                            doRefresh();
+                        } else {
+                            doShowNetError();
+                        }
                     }
                 });
     }
@@ -128,10 +138,6 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
         dataList.addAll(dataBeen);
         view.onSetAdapter(dataList);
         view.onHideLoading();
-        // 释放内存
-        if (dataList.size() > 100) {
-            dataList.clear();
-        }
     }
 
     @Override

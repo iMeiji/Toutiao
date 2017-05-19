@@ -224,6 +224,10 @@ public class VideoArticleBean {
         private long group_id;
         private boolean honey;
 
+        public DataBean() {
+
+        }
+
         protected DataBean(Parcel in) {
             video_id = in.readString();
             media_name = in.readString();

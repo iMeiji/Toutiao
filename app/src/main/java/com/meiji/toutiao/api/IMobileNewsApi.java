@@ -1,5 +1,6 @@
 package com.meiji.toutiao.api;
 
+import com.meiji.toutiao.bean.news.MultiNewsArticleBean;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 
 import io.reactivex.Observable;
@@ -35,7 +36,11 @@ public interface IMobileNewsApi {
             @Query("category") String category);
 
     @POST("http://is.snssdk.com/api/news/feed/v53/")
-    Call<ResponseBody> getNewsArticle(
+    Observable<MultiNewsArticleBean> getNewsArticle(
+            @Query("category") String category);
+
+    @POST("http://lf.snssdk.com/api/news/feed/v53/?iid=10247804300&device_id=36328180756")
+    Observable<MultiNewsArticleBean> getNewsArticle2(
             @Query("category") String category);
 
     /**

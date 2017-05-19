@@ -19,6 +19,7 @@ import com.meiji.toutiao.database.dao.NewsChannelDao;
 import com.meiji.toutiao.module.news.article.NewsArticleView;
 import com.meiji.toutiao.module.news.channel.NewsChannelActivity;
 import com.meiji.toutiao.module.news.joke.content.JokeContentView;
+import com.meiji.toutiao.module.news.multi.MultiNewsArticleView;
 import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class NewsTabLayout extends Fragment {
     private ViewPager view_pager;
     private TabLayout tab_layout;
     private ImageView add_channel_iv;
-    private List<Fragment> list = new ArrayList<>();
+    private List<Fragment> fragmentList = new ArrayList<>();
     private BasePagerAdapter adapter;
     private LinearLayout header_layout;
 
@@ -88,25 +89,28 @@ public class NewsTabLayout extends Fragment {
      */
     private void initData() {
         NewsChannelDao dao = new NewsChannelDao();
-        List<NewsChannelBean> tabList = dao.query(1);
-        if (tabList.size() == 0) {
+        List<NewsChannelBean> channelList = dao.query(1);
+        if (channelList.size() == 0) {
             dao.addInitData();
-            tabList = dao.query(1);
+            channelList = dao.query(1);
         }
-        String[] categoryName = new String[tabList.size()];
-        for (int i = 0; i < tabList.size(); i++) {
-            if (!tabList.get(i).getChannelId().equals("essay_joke")) {
-                Fragment fragment = NewsArticleView.newInstance(tabList.get(i).getChannelId());
-                list.add(fragment);
-            } else {
+        String[] categoryName = new String[channelList.size()];
+        for (int i = 0; i < channelList.size(); i++) {
+            if (channelList.get(i).getChannelId().equals("essay_joke")) {
                 Fragment jokeContentView = JokeContentView.newInstance();
-                list.add(jokeContentView);
+                fragmentList.add(jokeContentView);
+            } else if (channelList.get(i).getChannelId().equals("__all__")) {
+                Fragment fragment = MultiNewsArticleView.newInstance(channelList.get(i).getChannelId());
+                fragmentList.add(fragment);
+            } else {
+                Fragment fragment = NewsArticleView.newInstance(channelList.get(i).getChannelId());
+                fragmentList.add(fragment);
             }
-            categoryName[i] = tabList.get(i).getChannelName();
+            categoryName[i] = channelList.get(i).getChannelName();
         }
-        adapter = new BasePagerAdapter(getChildFragmentManager(), list, categoryName);
+        adapter = new BasePagerAdapter(getChildFragmentManager(), fragmentList, categoryName);
         view_pager.setAdapter(adapter);
-        view_pager.setOffscreenPageLimit(tabList.size());
+        view_pager.setOffscreenPageLimit(channelList.size());
     }
 
     @Override

@@ -1,25 +1,56 @@
-## 头条
+## Toutiao
 一款第三方今日头条客户端, 不断完善中, MVP + RxJava + Retrofit
 
 其中API来自 [今日头条Api分析](https://github.com/iMeiji/Toutiao/wiki/%E4%BB%8A%E6%97%A5%E5%A4%B4%E6%9D%A1Api%E5%88%86%E6%9E%90)
 
 
-## API的使用声明
+## Statement
 以下所有 API 均由 `今日头条` 提供, 本人采取非正常手段获取. 本程序仅供学习交流, 不可用于任何商业用途
 
-## 截图
-<img src="/art/2.jpg"/>
+## Features
+- 首页四大模块: 新闻 / 图片 / 视频 / 头条号
+- 实现首页的布局和数据的显示
+- 实现自定义新闻栏目顺序
+- 新闻详情页面支持日夜两种主题
+- 显示新闻评论
+- 头条号订阅 查看头条号历史文章
+- 搜索功能
+- 自定义主题颜色 无缝切换日夜皮肤
+- 视频播放
+
+
+## Screenshots
 <img src="/art/news.gif" width="360" height="640"/>
 <img src="/art/other.gif" width="360" height="640"/>
 <img src="/art/photo.gif" width="360" height="640"/>
 
-## 下载
+<a href="art/1.png"><img src="art/1.png" width="30%"/>
+<a href="art/2.png"><img src="art/2.png" width="30%"/>
+<a href="art/3.png"><img src="art/3.png" width="30%"/>
+
+<a href="art/4.png"><img src="art/4.png" width="30%"/>
+<a href="art/5.png"><img src="art/5.png" width="30%"/>
+<a href="art/6.png"><img src="art/6.png" width="30%"/>
+
+<a href="art/7.png"><img src="art/7.png" width="30%"/>
+<a href="art/8.png"><img src="art/8.png" width="30%"/>
+<a href="art/9.png"><img src="art/9.png" width="30%"/>
+
+<a href="art/10.png"><img src="art/10.png" width="30%"/>
+<a href="art/11.png"><img src="art/11.png" width="30%"/>
+
+
+## Download
 [酷安](http://www.coolapk.com/apk/com.meiji.toutiao)  
 [GitHub Release](https://github.com/iMeiji/Toutiao/releases)
 
-## 更新日志
+## Changelog
 ```
+2017-5-19
+新闻 "推荐" 栏目支持浏览 新闻 / 视频(beta)
+
 2017-5-18
+更新获取评论 API
 所有 UI 控件配色跟随主题颜色
 优化无图模式 (开启后在非Wifi下不加载图片)
 
@@ -116,8 +147,11 @@ WebView无图模式(beta)
 - 视频支持切换分辨率
 - 本地新闻
 - 订阅号要分类 新闻 / 图片 / 视频
+- 视频离线缓存
+- 更新 API 
+- 模拟登陆头条账号
 
-## 许可证
+## License
 ```
 Copyright 2017 iMeiji
 
