@@ -15,7 +15,7 @@ import com.meiji.toutiao.database.table.NewsChannelTable;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "Toutiao";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 3;
     private static final String CLEAR_TABLE_DATA = "delete from ";
     private static final String DROP_TABLE = "drop table if exists ";
     private static DatabaseHelper instance = null;
@@ -56,6 +56,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         switch (oldVersion) {
             case 1:
                 db.execSQL(MediaChannelTable.CREATE_TABLE);
+                break;
+            case 2:
+                db.execSQL(CLEAR_TABLE_DATA + NewsChannelTable.TABLENAME);
                 break;
         }
     }

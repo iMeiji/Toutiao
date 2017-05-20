@@ -1,5 +1,6 @@
 package com.meiji.toutiao.module.news.multi;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -33,13 +34,12 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
 
-    private static final String TAG = "NewsArticlePresenter";
+    private static final String TAG = "MultiNewsArticlePresenter";
     private IMultiNewsArticle.View view;
     private List<MultiNewsArticleDataBean> dataList = new ArrayList<>();
     private String category;
     private int time;
     private Gson gson = new Gson();
-    private int oldSize;
 
     MultiNewsArticlePresenter(IMultiNewsArticle.View view) {
         this.view = view;
@@ -94,10 +94,17 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
                 .filter(new Predicate<MultiNewsArticleDataBean>() {
                     @Override
                     public boolean test(@NonNull MultiNewsArticleDataBean multiNewsArticleDataBean) throws Exception {
-                        if (multiNewsArticleDataBean.getSource().contains("头条问答")
-                                || multiNewsArticleDataBean.getTag().contains("ad")
-                                || multiNewsArticleDataBean.getSource().contains("话题")) {
+                        if (TextUtils.isEmpty(multiNewsArticleDataBean.getSource())) {
                             return false;
+                        }
+                        try {
+                            if (multiNewsArticleDataBean.getSource().contains("头条问答")
+                                    || multiNewsArticleDataBean.getTag().contains("ad")
+                                    || multiNewsArticleDataBean.getSource().contains("话题")) {
+                                return false;
+                            }
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
                         }
                         for (MultiNewsArticleDataBean bean : dataList) {
                             if (bean.getTitle().equals(multiNewsArticleDataBean.getTitle())) {
@@ -176,13 +183,16 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
                 dataBean.setSource(bean.getSource());
                 dataBean.setVideo_duration_str(bean.getVideo_duration() / 60 + "");
                 String url = bean.getVideo_detail_info().getDetail_video_large_image().getUrl();
+                Log.d(TAG, "doOnClickItem: " + url);
                 VideoContentActivity.launch(dataBean, url);
             } else {
                 NewsArticleBean.DataBean dataBean = new NewsArticleBean.DataBean();
                 dataBean.setDisplay_url(bean.getDisplay_url());
                 dataBean.setTitle(bean.getTitle());
                 dataBean.setMedia_name(bean.getMedia_name());
-                dataBean.setMedia_url("http://toutiao.com/m" + bean.getMedia_info().getMedia_id());
+                if (bean.getMedia_info() != null) {
+                    dataBean.setMedia_url("http://toutiao.com/m" + bean.getMedia_info().getMedia_id());
+                }
                 dataBean.setGroup_id(bean.getGroup_id());
                 dataBean.setItem_id(bean.getGroup_id());
                 NewsContentActivity.launch(dataBean);

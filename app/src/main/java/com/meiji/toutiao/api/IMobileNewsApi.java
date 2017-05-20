@@ -21,7 +21,7 @@ public interface IMobileNewsApi {
 
     /**
      * 获取个性化新闻
-     * http://is.snssdk.com/api/news/feed/v53/?iid=10247804300&device_id=36328180756&category=news_society
+     * http://is.snssdk.com/api/news/feed/v53/?iid=5034850950&device_id=6096495334&category=news_society
      * http://lf.snssdk.com/api/news/feed/v53/?iid=10247804300&device_id=36328180756&category=news_society
      * http://ib.snssdk.com/api/news/feed/v53/?
      *

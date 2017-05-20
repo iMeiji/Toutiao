@@ -16,7 +16,6 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.bean.news.NewsChannelBean;
 import com.meiji.toutiao.database.dao.NewsChannelDao;
-import com.meiji.toutiao.module.news.article.NewsArticleView;
 import com.meiji.toutiao.module.news.channel.NewsChannelActivity;
 import com.meiji.toutiao.module.news.joke.content.JokeContentView;
 import com.meiji.toutiao.module.news.multi.MultiNewsArticleView;
@@ -99,11 +98,11 @@ public class NewsTabLayout extends Fragment {
             if (channelList.get(i).getChannelId().equals("essay_joke")) {
                 Fragment jokeContentView = JokeContentView.newInstance();
                 fragmentList.add(jokeContentView);
-            } else if (channelList.get(i).getChannelId().equals("__all__")) {
-                Fragment fragment = MultiNewsArticleView.newInstance(channelList.get(i).getChannelId());
-                fragmentList.add(fragment);
+            } else if (channelList.get(i).getChannelId().equals("question_and_answer")) {
+                // 头条问答
+                break;
             } else {
-                Fragment fragment = NewsArticleView.newInstance(channelList.get(i).getChannelId());
+                Fragment fragment = MultiNewsArticleView.newInstance(channelList.get(i).getChannelId());
                 fragmentList.add(fragment);
             }
             categoryName[i] = channelList.get(i).getChannelName();

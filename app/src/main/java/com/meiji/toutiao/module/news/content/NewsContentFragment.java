@@ -76,6 +76,12 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
         initToolBar(toolbar, true, "");
         webView = (WebView) view.findViewById(R.id.webview_content);
         scrollView = (NestedScrollView) view.findViewById(R.id.scrollView);
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
