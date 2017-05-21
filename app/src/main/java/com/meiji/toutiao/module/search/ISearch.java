@@ -18,11 +18,6 @@ interface ISearch {
          * 请求数据
          */
         void onLoadData();
-
-        /**
-         * 设置适配器
-         */
-        void onSetAdapter(List<NewsArticleBean.DataBean> list);
     }
 
     interface Presenter extends IBasePresenter {

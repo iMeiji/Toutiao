@@ -1,10 +1,7 @@
-package com.meiji.toutiao.module.news.joke.content;
+package com.meiji.toutiao.module.joke.content;
 
-import com.meiji.toutiao.bean.news.joke.JokeContentBean;
 import com.meiji.toutiao.module.base.IBasePresenter;
 import com.meiji.toutiao.module.base.IBaseView;
-
-import java.util.List;
 
 /**
  * Created by Meiji on 2016/12/28.
@@ -13,11 +10,6 @@ import java.util.List;
 interface IJokeContent {
 
     interface View extends IBaseView<Presenter> {
-
-        /**
-         * 设置适配器
-         */
-        void onSetAdapter(List<JokeContentBean.DataBean.GroupBean> list);
 
         /**
          * 请求数据

@@ -1,16 +1,16 @@
-package com.meiji.toutiao.module.video.article;
+package com.meiji.toutiao.module.wenda.article;
 
-import com.meiji.toutiao.bean.video.VideoArticleBean;
+import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
 import com.meiji.toutiao.module.base.IBasePresenter;
 import com.meiji.toutiao.module.base.IBaseView;
 
 import java.util.List;
 
 /**
- * Created by Meiji on 2017/3/29.
+ * Created by Meiji on 2017/5/20.
  */
 
-public interface IVideoArticle {
+public interface IWendaArticle {
 
     interface View extends IBaseView<Presenter> {
 
@@ -18,6 +18,11 @@ public interface IVideoArticle {
          * 请求数据
          */
         void onLoadData();
+
+        /**
+         * 刷新
+         */
+        void onRefresh();
     }
 
     interface Presenter extends IBasePresenter {
@@ -25,7 +30,7 @@ public interface IVideoArticle {
         /**
          * 请求数据
          */
-        void doLoadData(String... category);
+        void doLoadData();
 
         /**
          * 再起请求数据
@@ -35,7 +40,7 @@ public interface IVideoArticle {
         /**
          * 设置适配器
          */
-        void doSetAdapter(List<VideoArticleBean.DataBean> dataBeen);
+        void doSetAdapter(List<WendaArticleDataBean> list);
 
         /**
          * 点击事件跳转

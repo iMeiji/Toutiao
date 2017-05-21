@@ -1,9 +1,9 @@
-package com.meiji.toutiao.module.news.joke.content;
+package com.meiji.toutiao.module.joke.content;
 
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IJokeApi;
-import com.meiji.toutiao.bean.news.joke.JokeContentBean;
-import com.meiji.toutiao.module.news.joke.comment.JokeCommentActivity;
+import com.meiji.toutiao.bean.joke.JokeContentBean;
+import com.meiji.toutiao.module.joke.comment.JokeCommentActivity;
 
 import java.util.ArrayList;
 import java.util.List;

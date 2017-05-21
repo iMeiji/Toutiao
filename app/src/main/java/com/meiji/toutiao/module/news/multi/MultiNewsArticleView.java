@@ -93,11 +93,11 @@ public class MultiNewsArticleView extends LazyLoadFragment<IMultiNewsArticle.Pre
     }
 
     @Override
-    public void onSetAdapter(final List<MultiNewsArticleDataBean> list) {
+    public void onSetAdapter(final List<?> list) {
         List<MultiNewsArticleDataBean> oldList = adapter.getList();
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.MUlTI_NEWS), true);
         result.dispatchUpdatesTo(adapter);
-        adapter.setList(list);
+        adapter.setList((List<MultiNewsArticleDataBean>) list);
 
         canLoading = true;
 

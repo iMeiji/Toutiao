@@ -42,6 +42,8 @@ import com.meiji.toutiao.module.photo.comment.PhotoCommentFragment;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.widget.ViewPagerFixed;
 
+import java.util.List;
+
 /**
  * Created by Meiji on 2017/3/1.
  */
@@ -163,6 +165,11 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
         if (null == presenter) {
             this.presenter = new PhotoContentPresenter(this);
         }
+    }
+
+    @Override
+    public void onSetAdapter(List<?> list) {
+
     }
 
     @Override

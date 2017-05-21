@@ -1,4 +1,4 @@
-package com.meiji.toutiao.module.news.joke.content;
+package com.meiji.toutiao.module.joke.content;
 
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,7 +10,7 @@ import android.view.View;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.adapter.news.joke.JokeContentAdapter;
-import com.meiji.toutiao.bean.news.joke.JokeContentBean;
+import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.base.LazyLoadFragment;
 import com.meiji.toutiao.utils.SettingsUtil;
@@ -86,11 +86,11 @@ public class JokeContentView extends LazyLoadFragment<IJokeContent.Presenter> im
     }
 
     @Override
-    public void onSetAdapter(List<JokeContentBean.DataBean.GroupBean> list) {
+    public void onSetAdapter(List<?> list) {
         List<JokeContentBean.DataBean.GroupBean> oldList = adapter.getList();
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.JOKE), true);
         result.dispatchUpdatesTo(adapter);
-        adapter.setList(list);
+        adapter.setList((List<JokeContentBean.DataBean.GroupBean>) list);
 
         canLoading = true;
 

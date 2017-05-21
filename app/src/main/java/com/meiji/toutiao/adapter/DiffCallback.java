@@ -2,14 +2,15 @@ package com.meiji.toutiao.adapter;
 
 import android.support.v7.util.DiffUtil;
 
+import com.meiji.toutiao.bean.joke.JokeCommentBean;
+import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.bean.media.MediaArticleBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
-import com.meiji.toutiao.bean.news.joke.JokeCommentBean;
-import com.meiji.toutiao.bean.news.joke.JokeContentBean;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
+import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class DiffCallback extends DiffUtil.Callback {
     public static final int NEWS_COMMENT = 5;
     public static final int JOKE_COMMENT = 6;
     public static final int MUlTI_NEWS = 7;
+    public static final int WENDA_ARTICLE = 8;
     private List oldList, newList;
     private int type;
 
@@ -74,6 +76,9 @@ public class DiffCallback extends DiffUtil.Callback {
                 case MUlTI_NEWS:
                     return ((MultiNewsArticleDataBean) oldList.get(oldItemPosition)).getTitle().equals(
                             ((MultiNewsArticleDataBean) newList.get(newItemPosition)).getTitle());
+                case WENDA_ARTICLE:
+                    return ((WendaArticleDataBean) oldList.get(oldItemPosition)).getQuestionBean().getTitle().equals(
+                            ((WendaArticleDataBean) newList.get(newItemPosition)).getQuestionBean().getTitle());
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -109,6 +114,9 @@ public class DiffCallback extends DiffUtil.Callback {
                 case MUlTI_NEWS:
                     return ((MultiNewsArticleDataBean) oldList.get(oldItemPosition)).getItem_id() ==
                             ((MultiNewsArticleDataBean) newList.get(newItemPosition)).getItem_id();
+                case WENDA_ARTICLE:
+                    return ((WendaArticleDataBean) oldList.get(oldItemPosition)).getQuestionBean().getContent().equals(
+                            ((WendaArticleDataBean) newList.get(newItemPosition)).getQuestionBean().getContent());
             }
         } catch (NullPointerException e) {
             e.printStackTrace();

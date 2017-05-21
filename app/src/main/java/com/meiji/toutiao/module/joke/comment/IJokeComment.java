@@ -1,6 +1,6 @@
-package com.meiji.toutiao.module.news.joke.comment;
+package com.meiji.toutiao.module.joke.comment;
 
-import com.meiji.toutiao.bean.news.joke.JokeCommentBean;
+import com.meiji.toutiao.bean.joke.JokeCommentBean;
 import com.meiji.toutiao.module.base.IBasePresenter;
 import com.meiji.toutiao.module.base.IBaseView;
 
@@ -15,11 +15,6 @@ interface IJokeComment {
     interface View extends IBaseView<Presenter> {
 
         /**
-         * 设置适配器
-         */
-        void onSetAdapter(List<JokeCommentBean.DataBean.RecentCommentsBean> list);
-
-        /**
          * 请求数据
          */
         void onLoadData();
@@ -28,7 +23,6 @@ interface IJokeComment {
          * 加载完毕
          */
         void onShowNoMore();
-
     }
 
     interface Presenter extends IBasePresenter {

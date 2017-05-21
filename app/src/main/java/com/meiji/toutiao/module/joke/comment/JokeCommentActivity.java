@@ -1,4 +1,4 @@
-package com.meiji.toutiao.module.news.joke.comment;
+package com.meiji.toutiao.module.joke.comment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.bean.news.joke.JokeContentBean;
+import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.module.base.BaseActivity;
 
 /**

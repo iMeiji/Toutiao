@@ -143,11 +143,11 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     }
 
     @Override
-    public void onSetAdapter(final List<NewsCommentMobileBean.DataBean.CommentBean> list) {
+    public void onSetAdapter(final List<?> list) {
         List<NewsCommentMobileBean.DataBean.CommentBean> oldList = adapter.getList();
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWS_COMMENT), true);
         result.dispatchUpdatesTo(adapter);
-        adapter.setList(list);
+        adapter.setList((List<NewsCommentMobileBean.DataBean.CommentBean>) list);
 
         canLoading = true;
 

@@ -1,8 +1,8 @@
 package com.meiji.toutiao.api;
 
 import com.meiji.toutiao.Constant;
-import com.meiji.toutiao.bean.news.joke.JokeCommentBean;
-import com.meiji.toutiao.bean.news.joke.JokeContentBean;
+import com.meiji.toutiao.bean.joke.JokeCommentBean;
+import com.meiji.toutiao.bean.joke.JokeContentBean;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

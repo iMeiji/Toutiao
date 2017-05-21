@@ -94,11 +94,11 @@ public class SearchFragment extends BaseFragment<ISearch.Presenter> implements I
     }
 
     @Override
-    public void onSetAdapter(final List<NewsArticleBean.DataBean> list) {
+    public void onSetAdapter(final List<?> list) {
         List<NewsArticleBean.DataBean> oldList = adapter.getList();
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWS), true);
         result.dispatchUpdatesTo(adapter);
-        adapter.setList(list);
+        adapter.setList((List<NewsArticleBean.DataBean>) list);
 
         canLoading = true;
 

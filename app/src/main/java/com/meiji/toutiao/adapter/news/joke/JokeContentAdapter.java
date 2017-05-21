@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.bean.news.joke.JokeContentBean;
+import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.widget.CircleImageView;

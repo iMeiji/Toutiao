@@ -21,11 +21,6 @@ public interface IMediaArticle {
         void onLoadData();
 
         /**
-         * 设置适配器
-         */
-        void onSetAdapter(List<MediaArticleBean.DataBean> list);
-
-        /**
          * 加载完毕
          */
         void onShowNoMore();

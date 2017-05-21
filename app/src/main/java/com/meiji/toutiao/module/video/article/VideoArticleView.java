@@ -92,11 +92,11 @@ public class VideoArticleView extends LazyLoadFragment<IVideoArticle.Presenter> 
     }
 
     @Override
-    public void onSetAdapter(final List<VideoArticleBean.DataBean> list) {
+    public void onSetAdapter(final List<?> list) {
         List<VideoArticleBean.DataBean> oldList = adapter.getList();
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.VIDEO), true);
         result.dispatchUpdatesTo(adapter);
-        adapter.setList(list);
+        adapter.setList((List<VideoArticleBean.DataBean>) list);
 
         canLoading = true;
 

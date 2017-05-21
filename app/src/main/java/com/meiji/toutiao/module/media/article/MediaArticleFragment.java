@@ -119,11 +119,11 @@ public class MediaArticleFragment extends BaseFragment<IMediaArticle.Presenter> 
     }
 
     @Override
-    public void onSetAdapter(final List<MediaArticleBean.DataBean> list) {
+    public void onSetAdapter(final List<?> list) {
         List<MediaArticleBean.DataBean> oldList = adapter.getList();
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.MEDIA), true);
         result.dispatchUpdatesTo(adapter);
-        adapter.setList(list);
+        adapter.setList((List<MediaArticleBean.DataBean>) list);
 
         canLoading = true;
 

@@ -88,11 +88,11 @@ public class PhotoArticleView extends LazyLoadFragment<IPhotoArticle.Presenter> 
     }
 
     @Override
-    public void onSetAdapter(final List<PhotoArticleBean.DataBean> list) {
+    public void onSetAdapter(final List<?> list) {
         List<PhotoArticleBean.DataBean> oldList = adapter.getList();
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.PHOTO), true);
         result.dispatchUpdatesTo(adapter);
-        adapter.setList(list);
+        adapter.setList((List<PhotoArticleBean.DataBean>) list);
 
         canLoading = true;
 

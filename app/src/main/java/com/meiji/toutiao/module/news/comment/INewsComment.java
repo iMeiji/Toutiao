@@ -20,11 +20,6 @@ public interface INewsComment {
         void onLoadData();
 
         /**
-         * 设置适配器
-         */
-        void onSetAdapter(List<NewsCommentMobileBean.DataBean.CommentBean> list);
-
-        /**
          * 加载完毕
          */
         void onShowNoMore();

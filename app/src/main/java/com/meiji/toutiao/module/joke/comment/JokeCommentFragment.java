@@ -1,4 +1,4 @@
-package com.meiji.toutiao.module.news.joke.comment;
+package com.meiji.toutiao.module.joke.comment;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -23,8 +23,8 @@ import android.widget.TextView;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.adapter.news.joke.JokeCommentAdapter;
-import com.meiji.toutiao.bean.news.joke.JokeCommentBean;
-import com.meiji.toutiao.bean.news.joke.JokeContentBean;
+import com.meiji.toutiao.bean.joke.JokeCommentBean;
+import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.utils.SettingsUtil;
@@ -147,11 +147,11 @@ public class JokeCommentFragment extends BaseFragment<IJokeComment.Presenter> im
     }
 
     @Override
-    public void onSetAdapter(final List<JokeCommentBean.DataBean.RecentCommentsBean> list) {
+    public void onSetAdapter(final List<?> list) {
         List<JokeCommentBean.DataBean.RecentCommentsBean> oldList = adapter.getList();
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.JOKE_COMMENT), true);
         result.dispatchUpdatesTo(adapter);
-        adapter.setList(list);
+        adapter.setList((List<JokeCommentBean.DataBean.RecentCommentsBean>) list);
 
         canLoading = true;
 

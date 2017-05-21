@@ -2,6 +2,8 @@ package com.meiji.toutiao.module.base;
 
 import com.trello.rxlifecycle2.LifecycleTransformer;
 
+import java.util.List;
+
 /**
  * Created by Meiji on 2017/5/7.
  */
@@ -32,4 +34,9 @@ public interface IBaseView<T> {
      * 绑定生命周期
      */
     <T> LifecycleTransformer<T> bindToLife();
+
+    /**
+     * 设置适配器
+     */
+    void onSetAdapter(List<?> list);
 }

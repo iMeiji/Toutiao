@@ -16,9 +16,10 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.bean.news.NewsChannelBean;
 import com.meiji.toutiao.database.dao.NewsChannelDao;
+import com.meiji.toutiao.module.joke.content.JokeContentView;
 import com.meiji.toutiao.module.news.channel.NewsChannelActivity;
-import com.meiji.toutiao.module.news.joke.content.JokeContentView;
 import com.meiji.toutiao.module.news.multi.MultiNewsArticleView;
+import com.meiji.toutiao.module.wenda.article.WendaArticleView;
 import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.ArrayList;
@@ -99,8 +100,8 @@ public class NewsTabLayout extends Fragment {
                 Fragment jokeContentView = JokeContentView.newInstance();
                 fragmentList.add(jokeContentView);
             } else if (channelList.get(i).getChannelId().equals("question_and_answer")) {
-                // 头条问答
-                break;
+                WendaArticleView wendaArticleView = WendaArticleView.newInstance();
+                fragmentList.add(wendaArticleView);
             } else {
                 Fragment fragment = MultiNewsArticleView.newInstance(channelList.get(i).getChannelId());
                 fragmentList.add(fragment);

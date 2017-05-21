@@ -14,11 +14,6 @@ interface IPhotoArticle {
          * 请求数据
          */
         void onLoadData();
-
-        /**
-         * 设置适配器
-         */
-        void onSetAdapter(List<PhotoArticleBean.DataBean> list);
     }
 
     interface Presenter extends IBasePresenter {

@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Meiji on 2017/5/18.
  */
 
-public class IMultiNewsArticle {
+public interface IMultiNewsArticle {
 
     interface View extends IBaseView<Presenter> {
 
@@ -19,11 +19,10 @@ public class IMultiNewsArticle {
          */
         void onLoadData();
 
-        /**
-         * 设置适配器
-         */
-        void onSetAdapter(List<MultiNewsArticleDataBean> list);
 
+        /**
+         * 刷新
+         */
         void onRefresh();
     }
 

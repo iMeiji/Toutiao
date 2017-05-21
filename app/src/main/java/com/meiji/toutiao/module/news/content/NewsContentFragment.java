@@ -29,6 +29,8 @@ import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.module.media.MediaAddActivity;
 import com.meiji.toutiao.utils.SettingsUtil;
 
+import java.util.List;
+
 /**
  * Created by Meiji on 2017/2/28.
  */
@@ -163,6 +165,11 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
         if (null == presenter) {
             this.presenter = new NewsContentPresenter(this);
         }
+    }
+
+    @Override
+    public void onSetAdapter(List<?> list) {
+
     }
 
     @Override
