@@ -1,7 +1,6 @@
 package com.meiji.toutiao.module.wenda.article;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.meiji.toutiao.InitApp;
@@ -27,7 +26,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Meiji on 2017/5/20.
  */
 
-public class WendaArticlePresenter implements IWendaArticle.Presenter {
+class WendaArticlePresenter implements IWendaArticle.Presenter {
 
     private static final String TAG = "WendaArticlePresenter";
     private IWendaArticle.View view;
@@ -36,27 +35,18 @@ public class WendaArticlePresenter implements IWendaArticle.Presenter {
     private List<WendaArticleDataBean> dataList = new ArrayList<>();
 
 
-    public WendaArticlePresenter(IWendaArticle.View view) {
+    WendaArticlePresenter(IWendaArticle.View view) {
         this.view = view;
     }
 
     @Override
-    public void doRefresh() {
-        if (dataList.size() != 0) {
-            dataList.clear();
-            time = 0;
-        }
-        doLoadData();
-    }
-
-    @Override
-    public void doShowNetError() {
-        view.onHideLoading();
-        view.onShowNetError();
-    }
-
-    @Override
     public void doLoadData() {
+
+        // 释放内存
+        if (dataList.size() > 100) {
+            dataList.clear();
+        }
+
         RetrofitFactory.getRetrofit().create(IMobileWendaApi.class)
                 .getWendaArticle(time)
                 .subscribeOn(Schedulers.io())
@@ -64,12 +54,12 @@ public class WendaArticlePresenter implements IWendaArticle.Presenter {
                 .flatMap(new Function<WendaArticleBean, Observable<WendaArticleDataBean>>() {
                     @Override
                     public Observable<WendaArticleDataBean> apply(@NonNull WendaArticleBean wendaArticleBean) throws Exception {
+
                         List<WendaArticleDataBean> list = new ArrayList<>();
                         for (WendaArticleBean.DataBean bean : wendaArticleBean.getData()) {
                             WendaArticleDataBean contentBean = gson.fromJson(bean.getContent(), WendaArticleDataBean.class);
                             list.add(contentBean);
                         }
-                        Log.d(TAG, "apply2: " + list.size());
                         return Observable.fromIterable(list);
                     }
                 })
@@ -79,28 +69,33 @@ public class WendaArticlePresenter implements IWendaArticle.Presenter {
                         return !TextUtils.isEmpty(wendaArticleDataBean.getQuestion());
                     }
                 })
-                .toList()
-                .map(new Function<List<WendaArticleDataBean>, List<WendaArticleDataBean>>() {
+                .map(new Function<WendaArticleDataBean, WendaArticleDataBean>() {
                     @Override
-                    public List<WendaArticleDataBean> apply(@NonNull List<WendaArticleDataBean> wendaArticleContentBeen) throws Exception {
+                    public WendaArticleDataBean apply(@NonNull WendaArticleDataBean bean) throws Exception {
 
-                        List<WendaArticleDataBean> dataList = new ArrayList<>();
+                        WendaArticleDataBean.ExtraBean extraBean = gson.fromJson(bean.getExtra(), WendaArticleDataBean.ExtraBean.class);
+                        WendaArticleDataBean.QuestionBean questionBean = gson.fromJson(bean.getQuestion(), WendaArticleDataBean.QuestionBean.class);
+                        WendaArticleDataBean.AnswerBean answerBean = gson.fromJson(bean.getAnswer(), WendaArticleDataBean.AnswerBean.class);
+                        bean.setExtraBean(extraBean);
+                        bean.setQuestionBean(questionBean);
+                        bean.setAnswerBean(answerBean);
 
-                        for (WendaArticleDataBean bean : wendaArticleContentBeen) {
-                            WendaArticleDataBean dataBean = new WendaArticleDataBean();
-
-                            WendaArticleDataBean.ExtraBean extraBean = gson.fromJson(bean.getExtra(), WendaArticleDataBean.ExtraBean.class);
-                            dataBean.setExtraBean(extraBean);
-
-                            WendaArticleDataBean.QuestionBean questionBean = gson.fromJson(bean.getQuestion(), WendaArticleDataBean.QuestionBean.class);
-                            dataBean.setQuestionBean(questionBean);
-                            dataList.add(dataBean);
-                            time = bean.getBehot_time();
-                        }
-                        Log.d(TAG, "apply: " + dataList.size());
-                        return dataList;
+                        time = bean.getBehot_time();
+                        return bean;
                     }
                 })
+                .filter(new Predicate<WendaArticleDataBean>() {
+                    @Override
+                    public boolean test(@NonNull WendaArticleDataBean wendaArticleDataBean) throws Exception {
+                        for (WendaArticleDataBean bean : dataList) {
+                            if (bean.getQuestionBean().getTitle().equals(wendaArticleDataBean.getQuestionBean().getTitle())) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                })
+                .toList()
                 .compose(view.<List<WendaArticleDataBean>>bindToLife())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<WendaArticleDataBean>>() {
@@ -110,8 +105,8 @@ public class WendaArticlePresenter implements IWendaArticle.Presenter {
                     }
 
                     @Override
-                    public void onSuccess(@NonNull List<WendaArticleDataBean> wendaArticleContentBeen) {
-                        doSetAdapter(wendaArticleContentBeen);
+                    public void onSuccess(@NonNull List<WendaArticleDataBean> wendaArticleDataBeen) {
+                        doSetAdapter(wendaArticleDataBeen);
                     }
 
                     @Override
@@ -129,6 +124,21 @@ public class WendaArticlePresenter implements IWendaArticle.Presenter {
     @Override
     public void doLoadMoreData() {
         doLoadData();
+    }
+
+    @Override
+    public void doRefresh() {
+        if (dataList.size() != 0) {
+            dataList.clear();
+            time = 0;
+        }
+        doLoadData();
+    }
+
+    @Override
+    public void doShowNetError() {
+        view.onHideLoading();
+        view.onShowNetError();
     }
 
     @Override
