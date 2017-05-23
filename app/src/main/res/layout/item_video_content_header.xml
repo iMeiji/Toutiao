@@ -6,9 +6,9 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <android.support.v4.widget.Space
-        android:layout_width="match_parent"
-        android:layout_height="192dp"/>
+    <!--<android.support.v4.widget.Space-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="192dp"/>-->
 
     <TextView
         android:id="@+id/tv_title"

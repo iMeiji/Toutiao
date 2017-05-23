@@ -58,6 +58,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
+                android:layout_gravity="bottom"
                 android:layout_marginTop="6dp"
                 android:gravity="bottom"
                 android:orientation="horizontal">
@@ -69,8 +70,9 @@
                     android:text="53"/>
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginLeft="4dp"
                     app:srcCompat="@drawable/ic_like_gray_24dp"/>
 
                 <TextView
@@ -81,8 +83,9 @@
                     android:text="11"/>
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginLeft="4dp"
                     app:srcCompat="@drawable/ic_dislike_gray_24dp"/>
 
                 <TextView

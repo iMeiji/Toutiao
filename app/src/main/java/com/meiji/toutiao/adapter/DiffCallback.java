@@ -11,6 +11,7 @@ import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
+import com.meiji.toutiao.bean.wenda.WendaContentBean;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class DiffCallback extends DiffUtil.Callback {
     public static final int JOKE_COMMENT = 6;
     public static final int MUlTI_NEWS = 7;
     public static final int WENDA_ARTICLE = 8;
+    public static final int WENDA_CONTENT = 9;
     private List oldList, newList;
     private int type;
 
@@ -79,6 +81,9 @@ public class DiffCallback extends DiffUtil.Callback {
                 case WENDA_ARTICLE:
                     return ((WendaArticleDataBean) oldList.get(oldItemPosition)).getQuestionBean().getTitle().equals(
                             ((WendaArticleDataBean) newList.get(newItemPosition)).getQuestionBean().getTitle());
+                case WENDA_CONTENT:
+                    return ((WendaContentBean.AnsListBean) oldList.get(oldItemPosition)).getAnsid().equals(
+                            ((WendaContentBean.AnsListBean) newList.get(newItemPosition)).getAnsid());
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -117,6 +122,9 @@ public class DiffCallback extends DiffUtil.Callback {
                 case WENDA_ARTICLE:
                     return ((WendaArticleDataBean) oldList.get(oldItemPosition)).getQuestionBean().getContent().equals(
                             ((WendaArticleDataBean) newList.get(newItemPosition)).getQuestionBean().getContent());
+                case WENDA_CONTENT:
+                    return ((WendaContentBean.AnsListBean) oldList.get(oldItemPosition)).getAns_url().equals(
+                            ((WendaContentBean.AnsListBean) newList.get(newItemPosition)).getAns_url());
             }
         } catch (NullPointerException e) {
             e.printStackTrace();

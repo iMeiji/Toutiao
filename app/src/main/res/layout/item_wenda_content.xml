@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:foreground="?attr/selectableItemBackground"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.meiji.toutiao.widget.CircleImageView
+                android:id="@+id/iv_user_avatar"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:scaleType="centerCrop"/>
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="用户名"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/iv_like"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="4dp"
+                    android:layout_toLeftOf="@+id/tv_like_count"
+                    android:layout_toStartOf="@+id/tv_like_count"
+                    app:srcCompat="@drawable/ic_like_gray_24dp"/>
+
+                <TextView
+                    android:id="@+id/tv_like_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="22"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_abstract"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="6"
+            android:text="我去过印度，觉得印度人有时也太可爱了，在他们眼里，印度几乎就是唯一的，他们接受新事物的能力似乎非常的有限。但真心是想不到，印度居然还是IT大国。去过印度的人通常都会从导游那里知道：从新德里出发到阿格拉的泰姬陵之间的一趟列车，时速最高的时候达到了160公里/每小时，被印度人称为当地最快的火车。因为印度人非常的热情，看到中国游客就会用蹩脚的汉语跟中国人搭讪，甚至会问：“中国有没有这样快的火车呀？”，这让人尴尬不已，不知道如何回答是好。我在想如下回答，如何？----对不起，中国没有时速160的火车，只有时速360的动车。----我们中国的火车坐的人少，拉轻，印度的火车超载了，跑不快，所以中国的火车要快一点。----你们印度人是坐在车外面的，所以感觉很快，我们的高铁是坐里面的，所以感觉不到快。"/>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

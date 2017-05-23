@@ -32,8 +32,6 @@
                 android:scrollbarStyle="insideInset"
                 tools:ignore="ContentDescription"/>
 
-            <!--<include layout="@layout/toolbar"/>-->
-
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -50,6 +48,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="192dp"/>
 
 </android.support.design.widget.CoordinatorLayout>

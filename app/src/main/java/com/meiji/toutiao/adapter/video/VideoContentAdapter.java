@@ -61,9 +61,9 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (position == 0) {
             return TYPE_HEADER;
         }
-//        if (position == list.size()) {
-//            return TYPE_FOOTER;
-//        }
+        if (position == list.size() - 1) {
+            return TYPE_FOOTER;
+        }
         return TYPE_NORMAL;
     }
 
@@ -77,10 +77,10 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             View view = LayoutInflater.from(context).inflate(R.layout.item_news_comment, parent, false);
             return new NewsCommentsViewHolder(view, onItemClickListener);
         }
-//        if (viewType == TYPE_FOOTER) {
-//            View view = LayoutInflater.from(context).inflate(R.layout.list_footer, parent, false);
-//            return new FooterViewHolder(view);
-//        }
+        if (viewType == TYPE_FOOTER) {
+            View view = LayoutInflater.from(context).inflate(R.layout.list_footer, parent, false);
+            return new FooterViewHolder(view);
+        }
         return null;
     }
 
@@ -123,10 +123,6 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-//        if (list.size() > 0) {
-//            int count = 1;
-//            count = list.size() + 1;
-//        }
         return list != null ? list.size() : 0;
     }
 

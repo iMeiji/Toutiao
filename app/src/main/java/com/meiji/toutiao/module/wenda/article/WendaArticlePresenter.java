@@ -8,6 +8,7 @@ import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileWendaApi;
 import com.meiji.toutiao.bean.wenda.WendaArticleBean;
 import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
+import com.meiji.toutiao.module.wenda.content.WendaContentActivity;
 import com.meiji.toutiao.utils.NetWorkUtil;
 
 import java.util.ArrayList;
@@ -150,6 +151,6 @@ class WendaArticlePresenter implements IWendaArticle.Presenter {
 
     @Override
     public void doOnClickItem(int position) {
-
+        WendaContentActivity.launch(dataList.get(position).getQuestionBean().getQid() + "");
     }
 }
