@@ -6,6 +6,7 @@ import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileWendaApi;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
+import com.meiji.toutiao.module.wenda.detail.WendaDetailActivity;
 import com.meiji.toutiao.utils.NetWorkUtil;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ class WendaContentPresenter implements IWendaContent.Presenter {
     private int niceAnsCount = 0;
     private int normalAnsCount = 0;
     private List<WendaContentBean.AnsListBean> ansList = new ArrayList<>();
+    private String title;
 
     WendaContentPresenter(IWendaContent.View view) {
         this.view = view;
@@ -141,6 +143,7 @@ class WendaContentPresenter implements IWendaContent.Presenter {
     public void doSetHeader(WendaContentBean.QuestionBean questionBean) {
         this.niceAnsCount = questionBean.getNice_ans_count();
         this.normalAnsCount = questionBean.getNormal_ans_count();
+        this.title = questionBean.getTitle();
         view.onSetHeader(questionBean);
     }
 
@@ -152,6 +155,9 @@ class WendaContentPresenter implements IWendaContent.Presenter {
 
     @Override
     public void doOnClickItem(int position) {
-
+        WendaContentBean.AnsListBean ansListBean = ansList.get(position);
+        ansListBean.setTitle(this.title);
+        WendaDetailActivity.launch(ansListBean);
+        Log.d(TAG, "doOnClickItem: " + ansList.get(position).getShare_data().getShare_url());
     }
 }

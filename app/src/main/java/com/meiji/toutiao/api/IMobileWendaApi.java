@@ -1,14 +1,18 @@
 package com.meiji.toutiao.api;
 
+import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.bean.wenda.WendaArticleBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 /**
  * Created by Meiji on 2017/5/20.
@@ -71,4 +75,11 @@ public interface IMobileWendaApi {
     Observable<WendaContentBean> getWendaNormalContentLoadMore(
             @Field("qid") String qid,
             @Field("offset") int offset);
+
+    /**
+     * 获取头条问答回答正文
+     */
+    @GET
+    @Headers("User-Agent:" + Constant.USER_AGENT_MOBILE)
+    Observable<ResponseBody> getWendaAnsDetail(@Url String url);
 }

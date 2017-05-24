@@ -1,5 +1,8 @@
 package com.meiji.toutiao.bean.wenda;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -933,7 +936,18 @@ public class WendaContentBean {
         }
     }
 
-    public static class AnsListBean {
+    public static class AnsListBean implements Parcelable {
+        public static final Creator<AnsListBean> CREATOR = new Creator<AnsListBean>() {
+            @Override
+            public AnsListBean createFromParcel(Parcel in) {
+                return new AnsListBean(in);
+            }
+
+            @Override
+            public AnsListBean[] newArray(int size) {
+                return new AnsListBean[size];
+            }
+        };
         /**
          * content_abstract : {"text":"我去过印度，觉得印度人有时也太可爱了，在他们眼里，印度几乎就是唯一的，他们接受新事物的能力似乎非常的有限。但真心是想不到，印度居然还是IT大国。去过印度的人通常都会从导游那里知道：从新德里出发到阿格拉的泰姬陵之间的一趟列车，时速最高的时候达到了160公里/每小时，被印度人称为当地最快的火车。因为印度人非常的热情，看到中国游客就会用蹩脚的汉语跟中国人搭讪，甚至会问：\u201c中国有没有这样快的火车呀？\u201d，这让人尴尬不已，不知道如何回答是好。我在想如下回答，如何？----对不起，中国没有时速160的火车，只有时速360的动车。----我们中国的火车坐的人少，拉轻，印度的火车超载了，跑不快，所以中国的火车要快一点。----你们印度人是坐在车外面的，所以感觉很快，我们的高铁是坐里面的，所以感觉不到快。","thumb_image_list":[{"url":"http://p1.pstatp.com/list/r498/216d000c29349bc2648f","url_list":[{"url":"http://p1.pstatp.com/list/r498/216d000c29349bc2648f"},{"url":"http://pb3.pstatp.com/list/r498/216d000c29349bc2648f"},{"url":"http://pb3.pstatp.com/list/r498/216d000c29349bc2648f"}],"uri":"list/r498/216d000c29349bc2648f","height":350,"width":498,"type":1}],"large_image_list":[{"url":"http://p1.pstatp.com/large/216d000c29349bc2648f","url_list":[{"url":"http://p1.pstatp.com/large/216d000c29349bc2648f"},{"url":"http://pb3.pstatp.com/large/216d000c29349bc2648f"},{"url":"http://pb3.pstatp.com/large/216d000c29349bc2648f"}],"uri":"large/216d000c29349bc2648f","height":350,"width":498,"type":1}],"video_list":[]}
          * create_time : 1494936653
@@ -963,6 +977,42 @@ public class WendaContentBean {
         private int digg_count;
         private boolean is_digg;
         private String schema;
+
+        protected AnsListBean(Parcel in) {
+            create_time = in.readInt();
+            user = in.readParcelable(UserBeanX.class.getClassLoader());
+            share_data = in.readParcelable(ShareDataBeanX.class.getClassLoader());
+            ans_url = in.readString();
+            ansid = in.readString();
+            is_show_bury = in.readByte() != 0;
+            is_buryed = in.readByte() != 0;
+            bury_count = in.readInt();
+            title = in.readString();
+            digg_count = in.readInt();
+            is_digg = in.readByte() != 0;
+            schema = in.readString();
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(create_time);
+            dest.writeParcelable(user, flags);
+            dest.writeParcelable(share_data, flags);
+            dest.writeString(ans_url);
+            dest.writeString(ansid);
+            dest.writeByte((byte) (is_show_bury ? 1 : 0));
+            dest.writeByte((byte) (is_buryed ? 1 : 0));
+            dest.writeInt(bury_count);
+            dest.writeString(title);
+            dest.writeInt(digg_count);
+            dest.writeByte((byte) (is_digg ? 1 : 0));
+            dest.writeString(schema);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
 
         public ContentAbstractBean getContent_abstract() {
             return content_abstract;
@@ -1278,7 +1328,18 @@ public class WendaContentBean {
             }
         }
 
-        public static class UserBeanX {
+        public static class UserBeanX implements Parcelable {
+            public static final Creator<UserBeanX> CREATOR = new Creator<UserBeanX>() {
+                @Override
+                public UserBeanX createFromParcel(Parcel in) {
+                    return new UserBeanX(in);
+                }
+
+                @Override
+                public UserBeanX[] newArray(int size) {
+                    return new UserBeanX[size];
+                }
+            };
             /**
              * uname : 媒体人杨壮波的落脚地
              * avatar_url : http://p9.pstatp.com/thumb/1787/4062932054
@@ -1298,6 +1359,34 @@ public class WendaContentBean {
             private String user_intro;
             private String user_auth_info;
             private String schema;
+
+            protected UserBeanX(Parcel in) {
+                uname = in.readString();
+                avatar_url = in.readString();
+                user_id = in.readString();
+                is_verify = in.readInt();
+                create_time = in.readInt();
+                user_intro = in.readString();
+                user_auth_info = in.readString();
+                schema = in.readString();
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(uname);
+                dest.writeString(avatar_url);
+                dest.writeString(user_id);
+                dest.writeInt(is_verify);
+                dest.writeInt(create_time);
+                dest.writeString(user_intro);
+                dest.writeString(user_auth_info);
+                dest.writeString(schema);
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
 
             public String getUname() {
                 return uname;
@@ -1364,7 +1453,18 @@ public class WendaContentBean {
             }
         }
 
-        public static class ShareDataBeanX {
+        public static class ShareDataBeanX implements Parcelable {
+            public static final Creator<ShareDataBeanX> CREATOR = new Creator<ShareDataBeanX>() {
+                @Override
+                public ShareDataBeanX createFromParcel(Parcel in) {
+                    return new ShareDataBeanX(in);
+                }
+
+                @Override
+                public ShareDataBeanX[] newArray(int size) {
+                    return new ShareDataBeanX[size];
+                }
+            };
             /**
              * content : 我去过印度，觉得印度人有时也太可爱了，在他们眼里，印度几乎就是唯一的，他们接受新事物的能力似乎非常的有限。但真心是想不到，印度居然还是IT大国。去过印度的人通常都会从导游那里知道：从新德里出发到阿格拉的泰姬陵之间的一趟列车，时速最高的时候达到了160公里/每小时，被印度人称为当地最快的火车。因为印度人非常的热情，看到中国游客就会用蹩脚的汉语跟中国人搭讪，甚至会问：“中国有没有这样快的火车呀？”，这让人尴尬不已，不知道如何回答是好。我在想如下回答，如何？----对不起，中国没有时速160的火车，只有时速360的动车。----我们中国的火车坐的人少，拉轻，印度的火车超载了，跑不快，所以中国的火车要快一点。----你们印度人是坐在车外面的，所以感觉很快，我们的高铁是坐里面的，所以感觉不到快。
              * image_url : http://p1.pstatp.com/list/r498/216d000c29349bc2648f
@@ -1376,6 +1476,26 @@ public class WendaContentBean {
             private String image_url;
             private String share_url;
             private String title;
+
+            protected ShareDataBeanX(Parcel in) {
+                content = in.readString();
+                image_url = in.readString();
+                share_url = in.readString();
+                title = in.readString();
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(content);
+                dest.writeString(image_url);
+                dest.writeString(share_url);
+                dest.writeString(title);
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
 
             public String getContent() {
                 return content;
