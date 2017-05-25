@@ -60,7 +60,8 @@
     <string name="share_to">分享至</string>
     <string name="loading">加载中</string>
     <string name="copied_to_clipboard">复制成功</string>
-    <string name="no_more">没有更多了</string>
+    <string name="no_more_content">没有更多内容了</string>
+    <string name="no_more_comment">没有更多评论了</string>
     <string name="saved">保存成功</string>
     <string name="permission_denied">没有权限</string>
     <string name="double_click_exit">再按一次退出程序</string>

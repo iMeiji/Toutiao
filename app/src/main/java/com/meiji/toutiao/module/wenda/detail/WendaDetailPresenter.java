@@ -1,7 +1,9 @@
 package com.meiji.toutiao.module.wenda.detail;
 
 import com.meiji.toutiao.RetrofitFactory;
+import com.meiji.toutiao.api.IMobileNewsApi;
 import com.meiji.toutiao.api.IMobileWendaApi;
+import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.utils.SettingsUtil;
 
 import org.jsoup.Jsoup;
@@ -9,9 +11,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
@@ -22,6 +28,9 @@ import okhttp3.ResponseBody;
 public class WendaDetailPresenter implements IWendaDetail.Presenter {
 
     private IWendaDetail.View view;
+    private String groupId;
+    private int offset = 0;
+    private List<NewsCommentMobileBean.DataBean.CommentBean> commentsBeanList = new ArrayList<>();
 
     WendaDetailPresenter(IWendaDetail.View view) {
         this.view = view;
@@ -29,12 +38,11 @@ public class WendaDetailPresenter implements IWendaDetail.Presenter {
 
     @Override
     public void doRefresh() {
-
-    }
-
-    @Override
-    public void doShowNetError() {
-
+        if (commentsBeanList.size() != 0) {
+            commentsBeanList.clear();
+            offset = 0;
+        }
+        view.onLoadData();
     }
 
     @Override
@@ -52,14 +60,86 @@ public class WendaDetailPresenter implements IWendaDetail.Presenter {
                         } else {
                             view.onSetWebView(null, false);
                         }
+                        view.onHideLoading();
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         throwable.printStackTrace();
                         view.onSetWebView(null, false);
+                        view.onHideLoading();
                     }
                 });
+    }
+
+    @Override
+    public void doLoadComment(String... ansId) {
+
+        try {
+            if (null == groupId) {
+                this.groupId = ansId[0];
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+
+        RetrofitFactory.getRetrofit().create(IMobileNewsApi.class)
+                .getNewsComment(groupId, offset)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .map(new Function<NewsCommentMobileBean, List<NewsCommentMobileBean.DataBean.CommentBean>>() {
+                    @Override
+                    public List<NewsCommentMobileBean.DataBean.CommentBean> apply(@NonNull NewsCommentMobileBean newsCommentMobileBean) throws Exception {
+                        List<NewsCommentMobileBean.DataBean.CommentBean> data = new ArrayList<>();
+                        for (NewsCommentMobileBean.DataBean bean : newsCommentMobileBean.getData()) {
+                            data.add(bean.getComment());
+                        }
+                        return data;
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(view.<List<NewsCommentMobileBean.DataBean.CommentBean>>bindToLife())
+                .subscribe(new Consumer<List<NewsCommentMobileBean.DataBean.CommentBean>>() {
+                    @Override
+                    public void accept(@NonNull List<NewsCommentMobileBean.DataBean.CommentBean> list) throws Exception {
+                        if (list.size() > 0) {
+                            doSetAdapter(list);
+                        } else {
+                            doShowNoMore();
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
+                        doShowNetError();
+                    }
+                });
+    }
+
+    @Override
+    public void doLoadMoreComment() {
+        offset += 10;
+        doLoadComment();
+    }
+
+    @Override
+    public void doSetAdapter(List<NewsCommentMobileBean.DataBean.CommentBean> list) {
+        commentsBeanList.addAll(list);
+        view.onSetAdapter(commentsBeanList);
+        view.onHideLoading();
+    }
+
+    @Override
+    public void doShowNetError() {
+        view.onHideLoading();
+        view.onShowNetError();
+    }
+
+    @Override
+    public void doShowNoMore() {
+        view.onHideLoading();
+        view.onShowNoMore();
     }
 
     private String getHTML(String response) {

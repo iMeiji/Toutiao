@@ -206,6 +206,6 @@ public class NewsCommentFragment extends BaseFragment<INewsComment.Presenter> im
 
     @Override
     public void onShowNoMore() {
-        Snackbar.make(refresh_layout, R.string.no_more, Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(refresh_layout, R.string.no_more_comment, Snackbar.LENGTH_INDEFINITE).show();
     }
 }

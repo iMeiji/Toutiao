@@ -42,7 +42,7 @@ public class WendaContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.context = context;
     }
 
-    public void setQuestionBean(WendaContentBean.QuestionBean questionBean) {
+    public void setHeader(WendaContentBean.QuestionBean questionBean) {
         this.questionBean = questionBean;
     }
 

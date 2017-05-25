@@ -10,20 +10,28 @@ import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.util.DiffUtil;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.adapter.DiffCallback;
+import com.meiji.toutiao.adapter.news.NewsCommentAdapter;
+import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.utils.SettingsUtil;
@@ -37,6 +45,7 @@ import java.util.List;
 
 public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> implements IWendaDetail.View {
 
+    private static final String TAG = "WendaDetailFragment";
     private WendaContentBean.AnsListBean bean;
     private String url;
     private String title;
@@ -49,6 +58,9 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
     private CircleImageView iv_user_avatar;
     private TextView tv_user_name;
     private TextView tv_like_count;
+    private RecyclerView recycler_view;
+    private NewsCommentAdapter adapter;
+    private boolean canLoading;
 
     public static WendaDetailFragment newInstance(Parcelable bean) {
         Bundle args = new Bundle();
@@ -62,7 +74,6 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
     protected void initData() {
         this.bean = getArguments().getParcelable("bean");
         this.url = bean.getShare_data().getShare_url();
-        presenter.doLoadData(url);
 
         if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
             Glide.with(getActivity()).load(bean.getUser().getAvatar_url()).crossFade().centerCrop().error(R.mipmap.error_image).into(iv_user_avatar);
@@ -71,6 +82,17 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
         this.tv_user_name.setText(bean.getUser().getUname());
         this.tv_like_count.setText(bean.getDigg_count() + "");
         this.shareTitle = bean.getShare_data().getTitle();
+        onLoadData();
+    }
+
+    @Override
+    public void onLoadData() {
+        presenter.doLoadData(url);
+    }
+
+    @Override
+    public void onShowNoMore() {
+        Snackbar.make(scrollView, R.string.no_more_comment, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -97,7 +119,28 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
 
     @Override
     public void onSetAdapter(List<?> list) {
+        List<NewsCommentMobileBean.DataBean.CommentBean> oldList = adapter.getList();
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWS_COMMENT), true);
+        result.dispatchUpdatesTo(adapter);
+        adapter.setList((List<NewsCommentMobileBean.DataBean.CommentBean>) list);
 
+        canLoading = true;
+        recycler_view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                View view = scrollView.getChildAt(scrollView.getChildCount() - 1);
+
+                int diff = (view.getBottom() - (scrollView.getHeight() + scrollView
+                        .getScrollY()));
+
+                if (diff == 0) {
+                    presenter.doLoadMoreComment();
+                    canLoading = false;
+                }
+            }
+        });
     }
 
     @Override
@@ -139,6 +182,15 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
         tv_user_name = (TextView) view.findViewById(R.id.tv_user_name);
         tv_like_count = (TextView) view.findViewById(R.id.tv_like_count);
 
+        recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recycler_view.setHasFixedSize(true);
+        recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
+        // 禁止嵌套滚动
+        recycler_view.setNestedScrollingEnabled(false);
+
+        adapter = new NewsCommentAdapter(getActivity());
+        recycler_view.setAdapter(adapter);
+
         setHasOptionsMenu(true);
         initWebClient();
     }
@@ -148,6 +200,7 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
         // 是否解析网页成功
         if (flag) {
             webView.loadDataWithBaseURL(null, url, "text/html", "utf-8", null);
+            presenter.doLoadComment(bean.getAnsid());
         } else {
             webView.loadUrl(url);
         }

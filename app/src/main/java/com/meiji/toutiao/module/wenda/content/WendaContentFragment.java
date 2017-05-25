@@ -171,12 +171,12 @@ public class WendaContentFragment extends BaseFragment<IWendaContent.Presenter> 
     public void onSetHeader(WendaContentBean.QuestionBean questionBean) {
         this.shareTitle = questionBean.getShare_data().getTitle();
         this.shareUrl = questionBean.getShare_data().getShare_url();
-        adapter.setQuestionBean(questionBean);
+        adapter.setHeader(questionBean);
     }
 
     @Override
     public void onShowNoMore() {
-        Snackbar.make(refresh_layout, R.string.no_more, Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(refresh_layout, R.string.no_more_content, Snackbar.LENGTH_LONG).show();
     }
 
     @Override

@@ -195,7 +195,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onShowNoMore() {
-        Snackbar.make(fab_play, R.string.no_more, Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(fab_play, R.string.no_more_comment, Snackbar.LENGTH_INDEFINITE).show();
     }
 
     @Override
