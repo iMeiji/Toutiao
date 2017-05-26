@@ -110,7 +110,7 @@ public class NewsTabLayout extends Fragment {
         }
         adapter = new BasePagerAdapter(getChildFragmentManager(), fragmentList, categoryName);
         view_pager.setAdapter(adapter);
-        view_pager.setOffscreenPageLimit(channelList.size());
+        view_pager.setOffscreenPageLimit(15);
     }
 
     @Override

@@ -45,7 +45,10 @@ public interface IMobileNewsApi {
 
     /**
      * 获取新闻评论
-     * http://is.snssdk.com/article/v53/tab_comments/?group_id=6314103921648926977&offset=0
+     * 按热度排序
+     * http://is.snssdk.com/article/v53/tab_comments/?group_id=6314103921648926977&offset=0&tab_index=0
+     * 按时间排序
+     * http://is.snssdk.com/article/v53/tab_comments/?group_id=6314103921648926977&offset=0&tab_index=1
      *
      * @param groupId 新闻ID
      * @param offset  偏移量

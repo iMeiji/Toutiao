@@ -103,6 +103,10 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
                                     || multiNewsArticleDataBean.getSource().contains("话题")) {
                                 return false;
                             }
+                            // 过滤头条问答新闻
+                            if (multiNewsArticleDataBean.getMedia_info() == null) {
+                                return false;
+                            }
                         } catch (NullPointerException e) {
                             e.printStackTrace();
                         }
@@ -138,7 +142,6 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
                         }
                     }
                 });
-
     }
 
     @Override
@@ -151,7 +154,6 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
         dataList.addAll(dataBeen);
         view.onSetAdapter(dataList);
         view.onHideLoading();
-        Log.d(TAG, "doSetAdapter: " + dataList.size());
     }
 
     @Override

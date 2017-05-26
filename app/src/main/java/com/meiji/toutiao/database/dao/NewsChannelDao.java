@@ -28,10 +28,10 @@ public class NewsChannelDao {
     public void addInitData() {
         String categoryId[] = InitApp.AppContext.getResources().getStringArray(R.array.mobile_news_id);
         String categoryName[] = InitApp.AppContext.getResources().getStringArray(R.array.mobile_news_name);
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 8; i++) {
             add(categoryId[i], categoryName[i], 1, i);
         }
-        for (int i = 6; i < categoryId.length; i++) {
+        for (int i = 8; i < categoryId.length; i++) {
             add(categoryId[i], categoryName[i], 0, i);
         }
     }
