@@ -7,7 +7,6 @@ import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
@@ -29,19 +28,21 @@ public interface IMobileNewsApi {
      * @param deviceId 设备ID
      * @param category 新闻/图片/视频栏目
      */
-    @POST("http://is.snssdk.com/api/news/feed/v53/")
+    @GET("http://is.snssdk.com/api/news/feed/v53/")
     Call<ResponseBody> getNewsArticle(
             @Query("iid") String iid,
             @Query("device_id") String deviceId,
             @Query("category") String category);
 
-    @POST("http://is.snssdk.com/api/news/feed/v53/")
+    @GET("http://is.snssdk.com/api/news/feed/v53/?iid=10344168417&device_id=36394312781&refer=1&count=20")
     Observable<MultiNewsArticleBean> getNewsArticle(
-            @Query("category") String category);
+            @Query("category") String category,
+            @Query("max_behot_time") int maxBehotTime);
 
-    @POST("http://lf.snssdk.com/api/news/feed/v53/?iid=10247804300&device_id=36328180756")
+    @GET("http://lf.snssdk.com/api/news/feed/v53/?iid=10247804300&device_id=36328180756")
     Observable<MultiNewsArticleBean> getNewsArticle2(
-            @Query("category") String category);
+            @Query("category") String category,
+            @Query("max_behot_time") int maxBehotTime);
 
     /**
      * 获取新闻评论

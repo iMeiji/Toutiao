@@ -3,6 +3,7 @@
 
     <!--需要单独处理的 视频 / 段子 / 问答 -->
     <string-array name="mobile_news_name">
+        <item>推荐</item>
         <item>热点</item>
         <item>视频</item>
         <item>社会</item>
@@ -60,6 +61,7 @@
     </string-array>
 
     <string-array name="mobile_news_id">
+        <item> </item>
         <item>news_hot</item>
         <item>video</item>
         <item>news_society</item>

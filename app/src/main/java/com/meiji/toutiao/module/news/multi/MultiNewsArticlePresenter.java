@@ -16,6 +16,7 @@ import com.meiji.toutiao.module.video.content.VideoContentActivity;
 import com.meiji.toutiao.utils.NetWorkUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -43,6 +44,7 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
 
     MultiNewsArticlePresenter(IMultiNewsArticle.View view) {
         this.view = view;
+        this.time = (int) (new Date(System.currentTimeMillis()).getTime() / 1000);
     }
 
     private int getRandom() {
@@ -74,9 +76,9 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
         }
 
         Observable<MultiNewsArticleBean> ob1 = RetrofitFactory.getRetrofit().create(IMobileNewsApi.class)
-                .getNewsArticle(this.category);
+                .getNewsArticle(this.category, this.time);
         Observable<MultiNewsArticleBean> ob2 = RetrofitFactory.getRetrofit().create(IMobileNewsApi.class)
-                .getNewsArticle2(this.category);
+                .getNewsArticle2(this.category, this.time);
 
         Observable.merge(ob1, ob2)
                 .subscribeOn(Schedulers.io())
@@ -94,6 +96,7 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
                 .filter(new Predicate<MultiNewsArticleDataBean>() {
                     @Override
                     public boolean test(@NonNull MultiNewsArticleDataBean multiNewsArticleDataBean) throws Exception {
+                        time = multiNewsArticleDataBean.getBehot_time();
                         if (TextUtils.isEmpty(multiNewsArticleDataBean.getSource())) {
                             return false;
                         }

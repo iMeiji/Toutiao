@@ -6,6 +6,7 @@ import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.module.photo.content.PhotoContentActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -31,6 +32,7 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
 
     PhotoArticlePresenter(IPhotoArticle.View view) {
         this.view = view;
+        this.time = (int) (new Date(System.currentTimeMillis()).getTime() / 1000);
     }
 
     @Override

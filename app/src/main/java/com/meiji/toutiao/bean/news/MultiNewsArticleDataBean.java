@@ -118,7 +118,7 @@ public class MultiNewsArticleDataBean {
     private int video_style;
     private String verified_content;
     private String display_url;
-    private boolean is_stick;
+    //    private boolean is_stick;
     private long item_id;
     private boolean is_subject;
     private int stick_style;
@@ -472,13 +472,13 @@ public class MultiNewsArticleDataBean {
         this.display_url = display_url;
     }
 
-    public boolean is_stick() {
-        return is_stick;
-    }
+//    public boolean is_stick() {
+//        return is_stick;
+//    }
 
-    public void setIs_stick(boolean is_stick) {
-        this.is_stick = is_stick;
-    }
+//    public void setIs_stick(boolean is_stick) {
+//        this.is_stick = is_stick;
+//    }
 
     public long getItem_id() {
         return item_id;

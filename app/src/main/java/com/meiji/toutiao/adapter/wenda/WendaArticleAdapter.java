@@ -92,79 +92,84 @@ public class WendaArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        if (holder instanceof ThreeImageViewHolder) {
-            ThreeImageViewHolder viewHolder = (ThreeImageViewHolder) holder;
-            WendaArticleDataBean bean = list.get(position);
+        try {
 
-            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
+            if (holder instanceof ThreeImageViewHolder) {
+                ThreeImageViewHolder viewHolder = (ThreeImageViewHolder) holder;
+                WendaArticleDataBean bean = list.get(position);
 
-                int size = bean.getExtraBean().getWenda_image().getThree_image_list().size();
-                String[] ivs = new String[size];
-                for (int i = 0; i < size; i++) {
-                    ivs[i] = bean.getExtraBean().getWenda_image().getThree_image_list().get(i).getUrl();
+                if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
+
+                    int size = bean.getExtraBean().getWenda_image().getThree_image_list().size();
+                    String[] ivs = new String[size];
+                    for (int i = 0; i < size; i++) {
+                        ivs[i] = bean.getExtraBean().getWenda_image().getThree_image_list().get(i).getUrl();
+                    }
+                    switch (ivs.length) {
+                        case 1:
+                            Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(viewHolder.iv_0);
+                            break;
+                        case 2:
+                            Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(viewHolder.iv_0);
+                            Glide.with(context).load(ivs[1]).crossFade().centerCrop().into(viewHolder.iv_1);
+                            break;
+                        case 3:
+                            Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(viewHolder.iv_0);
+                            Glide.with(context).load(ivs[1]).crossFade().centerCrop().into(viewHolder.iv_1);
+                            Glide.with(context).load(ivs[2]).crossFade().centerCrop().into(viewHolder.iv_2);
+                            break;
+                    }
                 }
-                switch (ivs.length) {
-                    case 1:
-                        Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(viewHolder.iv_0);
-                        break;
-                    case 2:
-                        Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(viewHolder.iv_0);
-                        Glide.with(context).load(ivs[1]).crossFade().centerCrop().into(viewHolder.iv_1);
-                        break;
-                    case 3:
-                        Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(viewHolder.iv_0);
-                        Glide.with(context).load(ivs[1]).crossFade().centerCrop().into(viewHolder.iv_1);
-                        Glide.with(context).load(ivs[2]).crossFade().centerCrop().into(viewHolder.iv_2);
-                        break;
+
+                String tv_title = bean.getQuestionBean().getTitle();
+                String tv_answer_count = bean.getQuestionBean().getNormal_ans_count() + "回答";
+                String tv_datetime = bean.getQuestionBean().getCreate_time() + "";
+                if (!TextUtils.isEmpty(tv_datetime)) {
+                    tv_datetime = TimeUtil.getTimeStampAgo(tv_datetime);
                 }
+                viewHolder.tv_title.setText(tv_title);
+                viewHolder.tv_answer_count.setText(tv_answer_count);
+                viewHolder.tv_time.setText(tv_datetime);
             }
 
-            String tv_title = bean.getQuestionBean().getTitle();
-            String tv_answer_count = bean.getQuestionBean().getNormal_ans_count() + "回答";
-            String tv_datetime = bean.getQuestionBean().getCreate_time() + "";
-            if (!TextUtils.isEmpty(tv_datetime)) {
-                tv_datetime = TimeUtil.getTimeStampAgo(tv_datetime);
+            if (holder instanceof LargeImageViewHolder) {
+                LargeImageViewHolder viewHolder = (LargeImageViewHolder) holder;
+                WendaArticleDataBean bean = list.get(position);
+
+                if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
+                    String url = bean.getExtraBean().getWenda_image().getLarge_image_list().get(0).getUrl();
+                    Glide.with(context).load(url).crossFade().centerCrop().into(viewHolder.iv_image_big);
+                }
+
+                String tv_title = bean.getQuestionBean().getTitle();
+                String tv_answer_count = bean.getQuestionBean().getNormal_ans_count() + "回答";
+                String tv_datetime = bean.getQuestionBean().getCreate_time() + "";
+                if (!TextUtils.isEmpty(tv_datetime)) {
+                    tv_datetime = TimeUtil.getTimeStampAgo(tv_datetime);
+                }
+                viewHolder.tv_title.setText(tv_title);
+                viewHolder.tv_answer_count.setText(tv_answer_count);
+                viewHolder.tv_time.setText(tv_datetime);
             }
-            viewHolder.tv_title.setText(tv_title);
-            viewHolder.tv_answer_count.setText(tv_answer_count);
-            viewHolder.tv_time.setText(tv_datetime);
-        }
 
-        if (holder instanceof LargeImageViewHolder) {
-            LargeImageViewHolder viewHolder = (LargeImageViewHolder) holder;
-            WendaArticleDataBean bean = list.get(position);
+            if (holder instanceof NoImageViewHolder) {
+                NoImageViewHolder viewHolder = (NoImageViewHolder) holder;
+                WendaArticleDataBean bean = list.get(position);
 
-            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-                String url = bean.getExtraBean().getWenda_image().getLarge_image_list().get(0).getUrl();
-                Glide.with(context).load(url).crossFade().centerCrop().into(viewHolder.iv_image_big);
+                String tv_title = bean.getQuestionBean().getTitle();
+                String tv_answer_count = bean.getQuestionBean().getNormal_ans_count() + "回答";
+                String tv_datetime = bean.getQuestionBean().getCreate_time() + "";
+                if (!TextUtils.isEmpty(tv_datetime)) {
+                    tv_datetime = TimeUtil.getTimeStampAgo(tv_datetime);
+                }
+                String tv_content = bean.getAnswerBean().getAbstractX();
+                viewHolder.tv_title.setText(tv_title);
+                viewHolder.tv_answer_count.setText(tv_answer_count);
+                viewHolder.tv_time.setText(tv_datetime);
+                viewHolder.tv_content.setText(tv_content);
             }
+        } catch (Exception e) {
 
-            String tv_title = bean.getQuestionBean().getTitle();
-            String tv_answer_count = bean.getQuestionBean().getNormal_ans_count() + "回答";
-            String tv_datetime = bean.getQuestionBean().getCreate_time() + "";
-            if (!TextUtils.isEmpty(tv_datetime)) {
-                tv_datetime = TimeUtil.getTimeStampAgo(tv_datetime);
-            }
-            viewHolder.tv_title.setText(tv_title);
-            viewHolder.tv_answer_count.setText(tv_answer_count);
-            viewHolder.tv_time.setText(tv_datetime);
-        }
-
-        if (holder instanceof NoImageViewHolder) {
-            NoImageViewHolder viewHolder = (NoImageViewHolder) holder;
-            WendaArticleDataBean bean = list.get(position);
-
-            String tv_title = bean.getQuestionBean().getTitle();
-            String tv_answer_count = bean.getQuestionBean().getNormal_ans_count() + "回答";
-            String tv_datetime = bean.getQuestionBean().getCreate_time() + "";
-            if (!TextUtils.isEmpty(tv_datetime)) {
-                tv_datetime = TimeUtil.getTimeStampAgo(tv_datetime);
-            }
-            String tv_content = bean.getAnswerBean().getAbstractX();
-            viewHolder.tv_title.setText(tv_title);
-            viewHolder.tv_answer_count.setText(tv_answer_count);
-            viewHolder.tv_time.setText(tv_datetime);
-            viewHolder.tv_content.setText(tv_content);
         }
     }
 

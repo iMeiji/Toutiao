@@ -1,5 +1,6 @@
 package com.meiji.toutiao.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -15,7 +16,7 @@ import com.meiji.toutiao.database.table.NewsChannelTable;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "Toutiao";
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 4;
     private static final String CLEAR_TABLE_DATA = "delete from ";
     private static final String DROP_TABLE = "drop table if exists ";
     private static DatabaseHelper instance = null;
@@ -60,6 +61,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             case 2:
                 db.execSQL(CLEAR_TABLE_DATA + NewsChannelTable.TABLENAME);
                 break;
+            case 3:
+                ContentValues values = new ContentValues();
+                values.put(NewsChannelTable.ID, "");
+                values.put(NewsChannelTable.NAME, "推荐");
+                values.put(NewsChannelTable.IS_ENABLE, 0);
+                values.put(NewsChannelTable.POSITION, 46);
+                db.insert(NewsChannelTable.TABLENAME, null, values);
         }
     }
 }

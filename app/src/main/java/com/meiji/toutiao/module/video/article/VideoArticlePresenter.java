@@ -9,6 +9,7 @@ import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.module.video.content.VideoContentActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -34,6 +35,7 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
 
     VideoArticlePresenter(IVideoArticle.View view) {
         this.view = view;
+        this.time = (int) (new Date(System.currentTimeMillis()).getTime() / 1000);
     }
 
     @Override
