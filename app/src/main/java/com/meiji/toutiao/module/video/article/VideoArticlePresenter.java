@@ -119,7 +119,7 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
     public void doRefresh() {
         if (dataList.size() != 0) {
             dataList.clear();
-            time = 0;
+            time = (int) (new Date(System.currentTimeMillis()).getTime() / 1000);
         }
         doLoadData();
     }

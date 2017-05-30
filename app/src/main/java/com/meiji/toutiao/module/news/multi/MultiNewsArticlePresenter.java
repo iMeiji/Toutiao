@@ -122,6 +122,19 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
                     }
                 })
                 .toList()
+                .map(new Function<List<MultiNewsArticleDataBean>, List<MultiNewsArticleDataBean>>() {
+                    @Override
+                    public List<MultiNewsArticleDataBean> apply(@NonNull List<MultiNewsArticleDataBean> list) throws Exception {
+                        for (int i = 0; i < list.size() - 1; i++) {
+                            for (int j = list.size() - 1; j > i; j--) {
+                                if (list.get(j).getTitle().equals(list.get(i).getTitle())) {
+                                    list.remove(j);
+                                }
+                            }
+                        }
+                        return list;
+                    }
+                })
                 .compose(view.<List<MultiNewsArticleDataBean>>bindToLife())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<List<MultiNewsArticleDataBean>>() {
@@ -153,8 +166,8 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
     }
 
     @Override
-    public void doSetAdapter(List<MultiNewsArticleDataBean> dataBeen) {
-        dataList.addAll(dataBeen);
+    public void doSetAdapter(List<MultiNewsArticleDataBean> list) {
+        dataList.addAll(list);
         view.onSetAdapter(dataList);
         view.onHideLoading();
     }
@@ -163,7 +176,7 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
     public void doRefresh() {
         if (dataList.size() != 0) {
             dataList.clear();
-            time = 0;
+            time = (int) (new Date(System.currentTimeMillis()).getTime() / 1000);
         }
         doLoadData();
     }
@@ -202,7 +215,8 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
                 dataBean.setItem_id(bean.getGroup_id());
                 NewsContentActivity.launch(dataBean);
             }
-            Log.d(TAG, "doOnClickItem: " + "点击的标题和链接---" + bean.getTitle() + "  " + bean.getDisplay_url());
+            Log.d(TAG, "doOnClickItem: " + bean.getTitle());
+            Log.d(TAG, "doOnClickItem: " + bean.getDisplay_url());
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

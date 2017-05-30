@@ -61,7 +61,7 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (position == 0) {
             return TYPE_HEADER;
         }
-        if (position == list.size() - 1) {
+        if (position == list.size()) {
             return TYPE_FOOTER;
         }
         return TYPE_NORMAL;
@@ -123,7 +123,7 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return list != null ? list.size() : 0;
+        return list != null ? list.size() + 1 : 0;
     }
 
     private class NewsCommentsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

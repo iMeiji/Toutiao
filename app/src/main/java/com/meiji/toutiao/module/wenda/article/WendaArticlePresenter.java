@@ -12,6 +12,7 @@ import com.meiji.toutiao.module.wenda.content.WendaContentActivity;
 import com.meiji.toutiao.utils.NetWorkUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -38,6 +39,7 @@ class WendaArticlePresenter implements IWendaArticle.Presenter {
 
     WendaArticlePresenter(IWendaArticle.View view) {
         this.view = view;
+        this.time = (int) (new Date(System.currentTimeMillis()).getTime() / 1000);
     }
 
     @Override
@@ -131,7 +133,7 @@ class WendaArticlePresenter implements IWendaArticle.Presenter {
     public void doRefresh() {
         if (dataList.size() != 0) {
             dataList.clear();
-            time = 0;
+            time = (int) (new Date(System.currentTimeMillis()).getTime() / 1000);
         }
         doLoadData();
     }

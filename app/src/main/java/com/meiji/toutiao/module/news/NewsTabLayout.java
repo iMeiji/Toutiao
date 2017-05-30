@@ -35,7 +35,6 @@ public class NewsTabLayout extends Fragment {
 
     private static final String TAG = "NewsTabLayout";
     private static NewsTabLayout instance = null;
-    //    private static int pageSize = InitApp.AppContext.getResources().getStringArray(R.array.news_id).length;
     private final int REQUEST_CODE = 1;
     private ViewPager view_pager;
     private TabLayout tab_layout;
@@ -128,6 +127,28 @@ public class NewsTabLayout extends Fragment {
             if (resultCode == RESULT_OK) {
                 getActivity().getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
                 getActivity().recreate();
+//                NewsChannelDao dao = new NewsChannelDao();
+//                List<NewsChannelBean> channelList = dao.query(1);
+//                if (channelList.size() == 0) {
+//                    dao.addInitData();
+//                    channelList = dao.query(1);
+//                }
+//                String[] categoryName = new String[channelList.size()];
+//                List<Fragment> fragmentList = new ArrayList<>();
+//                for (int i = 0; i < channelList.size(); i++) {
+//                    if (channelList.get(i).getChannelId().equals("essay_joke")) {
+//                        Fragment jokeContentView = JokeContentView.newInstance();
+//                        fragmentList.add(jokeContentView);
+//                    } else if (channelList.get(i).getChannelId().equals("question_and_answer")) {
+//                        WendaArticleView wendaArticleView = WendaArticleView.newInstance();
+//                        fragmentList.add(wendaArticleView);
+//                    } else {
+//                        Fragment fragment = MultiNewsArticleView.newInstance(channelList.get(i).getChannelId());
+//                        fragmentList.add(fragment);
+//                    }
+//                    categoryName[i] = channelList.get(i).getChannelName();
+//                }
+//                adapter.recreateItems(fragmentList, categoryName);
             }
         }
     }
