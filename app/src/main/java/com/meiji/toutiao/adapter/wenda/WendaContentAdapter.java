@@ -13,10 +13,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.utils.ImageLoader;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.widget.CircleImageView;
 
@@ -95,12 +95,11 @@ public class WendaContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             String tv_title = questionBean.getTitle();
             String tv_abstract = questionBean.getContent().getText();
 
-            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-                if (questionBean.getContent().getThumb_image_list().size() > 0) {
-                    viewHolder.iv_image.setVisibility(View.VISIBLE);
-                    String url = questionBean.getContent().getThumb_image_list().get(0).getUrl();
-                    Glide.with(context).load(url).crossFade().centerCrop().into(viewHolder.iv_image);
-                }
+            if (questionBean.getContent().getThumb_image_list().size() > 0) {
+                viewHolder.iv_image.setVisibility(View.VISIBLE);
+                String url = questionBean.getContent().getThumb_image_list().get(0).getUrl();
+                ImageLoader.loadCenterCrop(context, url, viewHolder.iv_image, R.color.viewBackground);
+
             }
 
             String tv_answer_count = questionBean.getNormal_ans_count() + " 回答";
@@ -115,10 +114,8 @@ public class WendaContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             NormalViewHolder viewHolder = (NormalViewHolder) holder;
             WendaContentBean.AnsListBean bean = list.get(position);
 
-            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-                String iv_user_avatar = bean.getUser().getAvatar_url();
-                Glide.with(context).load(iv_user_avatar).crossFade().centerCrop().into(viewHolder.iv_user_avatar);
-            }
+            String iv_user_avatar = bean.getUser().getAvatar_url();
+            ImageLoader.loadCenterCrop(context, iv_user_avatar, viewHolder.iv_user_avatar, R.color.viewBackground);
             String tv_user_name = bean.getUser().getUname();
             String tv_like_count = bean.getDigg_count() + "";
             String tv_abstract = bean.getContent_abstract().getText();

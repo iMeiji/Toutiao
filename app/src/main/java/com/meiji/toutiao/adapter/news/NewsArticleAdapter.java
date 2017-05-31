@@ -14,10 +14,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.utils.ImageLoader;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.utils.TimeUtil;
 import com.meiji.toutiao.widget.CircleImageView;
@@ -89,15 +89,14 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             NewsArticleBean.DataBean bean = list.get(position);
 
-            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-                List<NewsArticleBean.DataBean.ImageListBean> image_list = bean.getImage_list();
-                if (image_list != null && image_list.size() != 0) {
-                    String url = image_list.get(0).getUrl();
-                    Glide.with(context).load(url).crossFade().centerCrop().error(R.mipmap.error_image).into(newsHolder.iv_image);
-                }
-                if (!TextUtils.isEmpty(bean.getMedia_avatar_url())) {
-                    Glide.with(context).load(bean.getMedia_avatar_url()).crossFade().centerCrop().into(newsHolder.iv_media);
-                }
+            List<NewsArticleBean.DataBean.ImageListBean> image_list = bean.getImage_list();
+            if (image_list != null && image_list.size() != 0) {
+                String url = image_list.get(0).getUrl();
+                ImageLoader.loadCenterCrop(context, url, newsHolder.iv_image, R.color.viewBackground);
+            }
+            if (!TextUtils.isEmpty(bean.getMedia_avatar_url())) {
+                ImageLoader.loadCenterCrop(context, bean.getMedia_avatar_url(), newsHolder.iv_media, R.color.viewBackground);
+
             }
 
             String tv_title = bean.getTitle();
@@ -118,10 +117,8 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             NewsArticleNoImageViewHolder viewHolder = (NewsArticleNoImageViewHolder) holder;
             NewsArticleBean.DataBean bean = list.get(position);
 
-            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-                if (!TextUtils.isEmpty(bean.getMedia_avatar_url())) {
-                    Glide.with(context).load(bean.getMedia_avatar_url()).crossFade().centerCrop().into(viewHolder.iv_media);
-                }
+            if (!TextUtils.isEmpty(bean.getMedia_avatar_url())) {
+                ImageLoader.loadCenterCrop(context, bean.getMedia_avatar_url(), viewHolder.iv_media, R.color.viewBackground);
             }
 
             String tv_title = bean.getTitle();

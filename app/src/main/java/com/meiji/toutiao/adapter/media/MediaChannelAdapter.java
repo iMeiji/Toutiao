@@ -7,11 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.utils.ImageLoader;
 import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.ArrayList;
@@ -46,10 +45,8 @@ public class MediaChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         MediaChannelViewHolder viewHolder = (MediaChannelViewHolder) holder;
         MediaChannelBean bean = list.get(position);
-        if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-            String url = bean.getAvatar();
-            Glide.with(context).load(url).crossFade().centerCrop().error(R.mipmap.error_image).into(viewHolder.cv_avatar);
-        }
+        String url = bean.getAvatar();
+        ImageLoader.loadCenterCrop(context, url, viewHolder.cv_avatar, R.color.viewBackground);
         viewHolder.tv_mediaName.setText(bean.getName());
         viewHolder.tv_descText.setText(bean.getDescText());
     }

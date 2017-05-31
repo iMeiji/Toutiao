@@ -18,10 +18,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.utils.ImageLoader;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.utils.TimeUtil;
 import com.meiji.toutiao.widget.CircleImageView;
@@ -86,21 +86,18 @@ public class VideoArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             VideoArticleViewHolder viewHolder = (VideoArticleViewHolder) holder;
             final VideoArticleBean.DataBean bean = list.get(position);
 
-            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-                //String image_url = bean.getImage_url();
-                try {
-                    String url = bean.getVideo_detail_info().getVideo_detail_info().getDetail_video_large_image().getUrl();
-                    if (!TextUtils.isEmpty(url)) {
-                        Glide.with(context).load(url).crossFade().centerCrop().error(R.mipmap.error_image).into(viewHolder.iv_image_url);
-                    }
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
+            try {
+                String url = bean.getVideo_detail_info().getVideo_detail_info().getDetail_video_large_image().getUrl();
+                if (!TextUtils.isEmpty(url)) {
+                    ImageLoader.loadCenterCrop(context, url, viewHolder.iv_image_url, R.color.viewBackground);
                 }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
-                String media_avatar_url = bean.getMedia_avatar_url();
-                if (!TextUtils.isEmpty(media_avatar_url)) {
-                    Glide.with(context).load(media_avatar_url).crossFade().centerCrop().error(R.mipmap.error_image).into(viewHolder.iv_media_avatar_url);
-                }
+            String media_avatar_url = bean.getMedia_avatar_url();
+            if (!TextUtils.isEmpty(media_avatar_url)) {
+                ImageLoader.loadCenterCrop(context, media_avatar_url, viewHolder.iv_media_avatar_url, R.color.viewBackground);
             }
 
             String title = bean.getTitle();

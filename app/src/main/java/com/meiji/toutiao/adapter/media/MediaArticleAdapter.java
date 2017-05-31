@@ -15,10 +15,10 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MediaArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.utils.ImageLoader;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.utils.TimeUtil;
 
@@ -79,35 +79,32 @@ public class MediaArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof MediaArticleViewHolder) {
             MediaArticleViewHolder viewHolder = (MediaArticleViewHolder) holder;
             MediaArticleBean.DataBean bean = list.get(position);
-            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
 
-                if (bean.getImage_list() != null) {
-                    List<MediaArticleBean.DataBean.ImageListBean> image_list = bean.getImage_list();
+            if (bean.getImage_list() != null) {
+                List<MediaArticleBean.DataBean.ImageListBean> image_list = bean.getImage_list();
 
-                    if (image_list.size() == 1) {
-                        String url = image_list.get(0).getPc_url();
-                        viewHolder.iv_imageBig.setVisibility(View.VISIBLE);
-                        viewHolder.view_image.setVisibility(View.GONE);
-                        Glide.with(context).load(url).crossFade().centerCrop().error(R.color.viewBackground).into(viewHolder.iv_imageBig);
-                    } else {
-                        int size = image_list.size();
-                        String[] ivs = new String[size];
-                        for (int i = 0; i < size; i++) {
-                            ivs[i] = image_list.get(i).getUrl();
-                        }
-                        switch (ivs.length) {
-                            case 2:
-                                Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(viewHolder.iv_0);
-                                Glide.with(context).load(ivs[1]).crossFade().centerCrop().into(viewHolder.iv_1);
-                                break;
-                            case 3:
-                                Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(viewHolder.iv_0);
-                                Glide.with(context).load(ivs[1]).crossFade().centerCrop().into(viewHolder.iv_1);
-                                Glide.with(context).load(ivs[2]).crossFade().centerCrop().into(viewHolder.iv_2);
-                                break;
-                        }
+                if (image_list.size() == 1) {
+                    String url = image_list.get(0).getPc_url();
+                    viewHolder.iv_imageBig.setVisibility(View.VISIBLE);
+                    viewHolder.view_image.setVisibility(View.GONE);
+                    ImageLoader.loadCenterCrop(context, url, viewHolder.iv_imageBig, R.color.viewBackground);
+                } else {
+                    int size = image_list.size();
+                    String[] ivs = new String[size];
+                    for (int i = 0; i < size; i++) {
+                        ivs[i] = image_list.get(i).getUrl();
                     }
-
+                    switch (ivs.length) {
+                        case 2:
+                            ImageLoader.loadCenterCrop(context, ivs[0], viewHolder.iv_0, R.color.viewBackground);
+                            ImageLoader.loadCenterCrop(context, ivs[1], viewHolder.iv_1, R.color.viewBackground);
+                            break;
+                        case 3:
+                            ImageLoader.loadCenterCrop(context, ivs[0], viewHolder.iv_0, R.color.viewBackground);
+                            ImageLoader.loadCenterCrop(context, ivs[1], viewHolder.iv_1, R.color.viewBackground);
+                            ImageLoader.loadCenterCrop(context, ivs[2], viewHolder.iv_2, R.color.viewBackground);
+                            break;
+                    }
                 }
             }
             String tv_title = bean.getTitle();

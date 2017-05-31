@@ -27,13 +27,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.adapter.news.NewsCommentAdapter;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.module.base.BaseFragment;
+import com.meiji.toutiao.utils.ImageLoader;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.widget.CircleImageView;
 
@@ -75,9 +75,7 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
         this.bean = getArguments().getParcelable("bean");
         this.url = bean.getShare_data().getShare_url();
 
-        if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-            Glide.with(getActivity()).load(bean.getUser().getAvatar_url()).crossFade().centerCrop().error(R.mipmap.error_image).into(iv_user_avatar);
-        }
+        ImageLoader.loadCenterCrop(getActivity(), bean.getUser().getAvatar_url(), iv_user_avatar, R.color.viewBackground);
         this.tv_title.setText(bean.getTitle());
         this.tv_user_name.setText(bean.getUser().getUname());
         this.tv_like_count.setText(bean.getDigg_count() + "");

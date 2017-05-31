@@ -46,6 +46,10 @@
 
 ## Changelog
 ```
+2015-5-31
+封装 ImageLoader
+ViewPager 动态更新
+
 2017-5-30
 修复新闻重复 bug
 

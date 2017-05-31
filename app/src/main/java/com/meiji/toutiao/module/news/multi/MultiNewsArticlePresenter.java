@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Random;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -188,37 +190,38 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
     }
 
     @Override
-    public void doOnClickItem(int position) {
-        try {
-            MultiNewsArticleDataBean bean = dataList.get(position);
-            if (bean.isHas_video()) {
-                VideoArticleBean.DataBean dataBean = new VideoArticleBean.DataBean();
-                dataBean.setTitle(bean.getTitle());
-                dataBean.setGroup_id(bean.getGroup_id());
-                dataBean.setItem_id(bean.getGroup_id());
-                dataBean.setVideo_id(bean.getVideo_id());
-                dataBean.setAbstractX(bean.getAbstractX());
-                dataBean.setSource(bean.getSource());
-                dataBean.setVideo_duration_str(bean.getVideo_duration() / 60 + "");
-                String url = bean.getVideo_detail_info().getDetail_video_large_image().getUrl();
-                Log.d(TAG, "doOnClickItem: " + url);
-                VideoContentActivity.launch(dataBean, url);
-            } else {
-                NewsArticleBean.DataBean dataBean = new NewsArticleBean.DataBean();
-                dataBean.setDisplay_url(bean.getDisplay_url());
-                dataBean.setTitle(bean.getTitle());
-                dataBean.setMedia_name(bean.getMedia_name());
-                if (bean.getMedia_info() != null) {
-                    dataBean.setMedia_url("http://toutiao.com/m" + bean.getMedia_info().getMedia_id());
+    public void doOnClickItem(final int position) {
+        Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Object> e) throws Exception {
+                MultiNewsArticleDataBean bean = dataList.get(position);
+                if (bean.isHas_video()) {
+                    VideoArticleBean.DataBean dataBean = new VideoArticleBean.DataBean();
+                    dataBean.setTitle(bean.getTitle());
+                    dataBean.setGroup_id(bean.getGroup_id());
+                    dataBean.setItem_id(bean.getGroup_id());
+                    dataBean.setVideo_id(bean.getVideo_id());
+                    dataBean.setAbstractX(bean.getAbstractX());
+                    dataBean.setSource(bean.getSource());
+                    dataBean.setVideo_duration_str(bean.getVideo_duration() / 60 + "");
+                    String url = bean.getVideo_detail_info().getDetail_video_large_image().getUrl();
+                    Log.d(TAG, "doOnClickItem: " + url);
+                    VideoContentActivity.launch(dataBean, url);
+                } else {
+                    NewsArticleBean.DataBean dataBean = new NewsArticleBean.DataBean();
+                    dataBean.setDisplay_url(bean.getDisplay_url());
+                    dataBean.setTitle(bean.getTitle());
+                    dataBean.setMedia_name(bean.getMedia_name());
+                    if (bean.getMedia_info() != null) {
+                        dataBean.setMedia_url("http://toutiao.com/m" + bean.getMedia_info().getMedia_id());
+                    }
+                    dataBean.setGroup_id(bean.getGroup_id());
+                    dataBean.setItem_id(bean.getGroup_id());
+                    NewsContentActivity.launch(dataBean);
                 }
-                dataBean.setGroup_id(bean.getGroup_id());
-                dataBean.setItem_id(bean.getGroup_id());
-                NewsContentActivity.launch(dataBean);
+                Log.d(TAG, "doOnClickItem: " + bean.getTitle());
+                Log.d(TAG, "doOnClickItem: " + bean.getDisplay_url());
             }
-            Log.d(TAG, "doOnClickItem: " + bean.getTitle());
-            Log.d(TAG, "doOnClickItem: " + bean.getDisplay_url());
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+        }).subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).compose(view.bindToLife()).subscribe();
     }
 }

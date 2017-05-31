@@ -37,11 +37,9 @@ public class NewsTabLayout extends Fragment {
     private static NewsTabLayout instance = null;
     private final int REQUEST_CODE = 1;
     private ViewPager view_pager;
-    private TabLayout tab_layout;
-    private ImageView add_channel_iv;
-    private List<Fragment> fragmentList = new ArrayList<>();
     private BasePagerAdapter adapter;
     private LinearLayout header_layout;
+    private NewsChannelDao dao = new NewsChannelDao();
 
     public static NewsTabLayout getInstance() {
         if (instance == null) {
@@ -66,12 +64,12 @@ public class NewsTabLayout extends Fragment {
     }
 
     private void initView(View view) {
-        tab_layout = (TabLayout) view.findViewById(R.id.tab_layout_news);
+        TabLayout tab_layout = (TabLayout) view.findViewById(R.id.tab_layout_news);
         view_pager = (ViewPager) view.findViewById(R.id.view_pager_news);
 
         tab_layout.setupWithViewPager(view_pager);
         tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        add_channel_iv = (ImageView) view.findViewById(R.id.add_channel_iv);
+        ImageView add_channel_iv = (ImageView) view.findViewById(R.id.add_channel_iv);
         add_channel_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,8 +85,8 @@ public class NewsTabLayout extends Fragment {
      * 初始化 NewsArticleView 数据
      */
     private void initData() {
-        NewsChannelDao dao = new NewsChannelDao();
         List<NewsChannelBean> channelList = dao.query(1);
+        List<Fragment> fragmentList = new ArrayList<>();
         if (channelList.size() == 0) {
             dao.addInitData();
             channelList = dao.query(1);
@@ -125,30 +123,29 @@ public class NewsTabLayout extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                getActivity().getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
-                getActivity().recreate();
-//                NewsChannelDao dao = new NewsChannelDao();
-//                List<NewsChannelBean> channelList = dao.query(1);
-//                if (channelList.size() == 0) {
-//                    dao.addInitData();
-//                    channelList = dao.query(1);
-//                }
-//                String[] categoryName = new String[channelList.size()];
-//                List<Fragment> fragmentList = new ArrayList<>();
-//                for (int i = 0; i < channelList.size(); i++) {
-//                    if (channelList.get(i).getChannelId().equals("essay_joke")) {
-//                        Fragment jokeContentView = JokeContentView.newInstance();
-//                        fragmentList.add(jokeContentView);
-//                    } else if (channelList.get(i).getChannelId().equals("question_and_answer")) {
-//                        WendaArticleView wendaArticleView = WendaArticleView.newInstance();
-//                        fragmentList.add(wendaArticleView);
-//                    } else {
-//                        Fragment fragment = MultiNewsArticleView.newInstance(channelList.get(i).getChannelId());
-//                        fragmentList.add(fragment);
-//                    }
-//                    categoryName[i] = channelList.get(i).getChannelName();
-//                }
-//                adapter.recreateItems(fragmentList, categoryName);
+//                getActivity().getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
+//                getActivity().recreate();
+                List<NewsChannelBean> channelList = dao.query(1);
+                List<Fragment> fragmentList = new ArrayList<>();
+                if (channelList.size() == 0) {
+                    dao.addInitData();
+                    channelList = dao.query(1);
+                }
+                String[] categoryName = new String[channelList.size()];
+                for (int i = 0; i < channelList.size(); i++) {
+                    if (channelList.get(i).getChannelId().equals("essay_joke")) {
+                        Fragment jokeContentView = JokeContentView.newInstance();
+                        fragmentList.add(jokeContentView);
+                    } else if (channelList.get(i).getChannelId().equals("question_and_answer")) {
+                        WendaArticleView wendaArticleView = WendaArticleView.newInstance();
+                        fragmentList.add(wendaArticleView);
+                    } else {
+                        Fragment fragment = MultiNewsArticleView.newInstance(channelList.get(i).getChannelId());
+                        fragmentList.add(fragment);
+                    }
+                    categoryName[i] = channelList.get(i).getChannelName();
+                }
+                adapter.recreateItems(fragmentList, categoryName);
             }
         }
     }

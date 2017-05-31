@@ -12,10 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.utils.ImageLoader;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.widget.CircleImageView;
 
@@ -86,9 +86,7 @@ public class JokeContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             String bury_count = bean.getBury_count() + "";
             String comment_count = bean.getComment_count() + "评论";
 
-            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-                Glide.with(context).load(avatar_url).crossFade().centerCrop().into(jokeViewHolder.iv_avatar);
-            }
+            ImageLoader.loadCenterCrop(context, avatar_url, jokeViewHolder.iv_avatar, R.color.viewBackground);
             jokeViewHolder.tv_username.setText(name);
             jokeViewHolder.tv_text.setText(text);
             jokeViewHolder.tv_digg_count.setText(digg_count);

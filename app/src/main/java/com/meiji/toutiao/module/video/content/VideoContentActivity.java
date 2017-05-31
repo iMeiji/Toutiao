@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.DiffCallback;
@@ -28,6 +27,7 @@ import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.news.comment.INewsComment;
+import com.meiji.toutiao.utils.ImageLoader;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.widget.helper.MyJCVideoPlayerStandard;
 import com.trello.rxlifecycle2.LifecycleTransformer;
@@ -79,15 +79,13 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
         Intent intent = getIntent();
         articleBean = intent.getParcelableExtra(TAG);
 
-        if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-            try {
-                String url = intent.getStringExtra("url");
-                if (!TextUtils.isEmpty(url)) {
-                    Glide.with(this).load(url).crossFade().centerCrop().error(R.mipmap.error_image).into(iv_image_url);
-                }
-            } catch (NullPointerException e) {
-                e.printStackTrace();
+        try {
+            String url = intent.getStringExtra("url");
+            if (!TextUtils.isEmpty(url)) {
+                ImageLoader.loadCenterCrop(this, url, iv_image_url, R.color.viewBackground);
             }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
         this.groupId = articleBean.getGroup_id() + "";

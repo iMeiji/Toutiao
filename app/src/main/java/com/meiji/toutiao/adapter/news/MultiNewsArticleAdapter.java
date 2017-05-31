@@ -14,10 +14,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.utils.ImageLoader;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.utils.TimeUtil;
 import com.meiji.toutiao.widget.CircleImageView;
@@ -100,16 +100,14 @@ public class MultiNewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                 MultiNewsArticleDataBean bean = list.get(position);
 
-                if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-                    List<MultiNewsArticleDataBean.ImageListBean> image_list = bean.getImage_list();
-                    if (image_list != null && image_list.size() != 0) {
-                        String url = image_list.get(0).getUrl();
-                        Glide.with(context).load(url).crossFade().centerCrop().error(R.mipmap.error_image).into(viewHolder.iv_image);
-                    }
-                    String avatar_url = bean.getUser_info().getAvatar_url();
-                    if (!TextUtils.isEmpty(avatar_url)) {
-                        Glide.with(context).load(avatar_url).crossFade().centerCrop().into(viewHolder.iv_media);
-                    }
+                List<MultiNewsArticleDataBean.ImageListBean> image_list = bean.getImage_list();
+                if (image_list != null && image_list.size() != 0) {
+                    String url = image_list.get(0).getUrl();
+                    ImageLoader.loadCenterCrop(context, url, viewHolder.iv_image, R.color.viewBackground);
+                }
+                String avatar_url = bean.getUser_info().getAvatar_url();
+                if (!TextUtils.isEmpty(avatar_url)) {
+                    ImageLoader.loadCenterCrop(context, avatar_url, viewHolder.iv_media, R.color.viewBackground);
                 }
 
                 String tv_title = bean.getTitle();
@@ -130,11 +128,9 @@ public class MultiNewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.V
                 NoImageViewHolder viewHolder = (NoImageViewHolder) holder;
                 MultiNewsArticleDataBean bean = list.get(position);
 
-                if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-                    String avatar_url = bean.getUser_info().getAvatar_url();
-                    if (!TextUtils.isEmpty(avatar_url)) {
-                        Glide.with(context).load(avatar_url).crossFade().centerCrop().into(viewHolder.iv_media);
-                    }
+                String avatar_url = bean.getUser_info().getAvatar_url();
+                if (!TextUtils.isEmpty(avatar_url)) {
+                    ImageLoader.loadCenterCrop(context, avatar_url, viewHolder.iv_media, R.color.viewBackground);
                 }
 
                 String tv_title = bean.getTitle();
@@ -155,16 +151,13 @@ public class MultiNewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.V
                 VideoViewHolder viewHolder = (VideoViewHolder) holder;
                 MultiNewsArticleDataBean bean = list.get(position);
 
-                if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-
-                    String image = bean.getVideo_detail_info().getDetail_video_large_image().getUrl();
-                    if (!TextUtils.isEmpty(image)) {
-                        Glide.with(context).load(image).crossFade().centerCrop().into(viewHolder.iv_video_image);
-                    }
-                    String avatar_url = bean.getUser_info().getAvatar_url();
-                    if (!TextUtils.isEmpty(avatar_url)) {
-                        Glide.with(context).load(avatar_url).crossFade().centerCrop().into(viewHolder.iv_media);
-                    }
+                String image = bean.getVideo_detail_info().getDetail_video_large_image().getUrl();
+                if (!TextUtils.isEmpty(image)) {
+                    ImageLoader.loadCenterCrop(context, image, viewHolder.iv_video_image, R.color.viewBackground);
+                }
+                String avatar_url = bean.getUser_info().getAvatar_url();
+                if (!TextUtils.isEmpty(avatar_url)) {
+                    ImageLoader.loadCenterCrop(context, image, viewHolder.iv_media, R.color.viewBackground);
                 }
 
                 String tv_title = bean.getTitle();

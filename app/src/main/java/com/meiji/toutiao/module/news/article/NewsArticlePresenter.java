@@ -25,7 +25,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by Meiji on 2016/12/15.
  */
-
+@Deprecated
 class NewsArticlePresenter implements INewsArticle.Presenter {
 
     private static final String TAG = "NewsArticlePresenter";

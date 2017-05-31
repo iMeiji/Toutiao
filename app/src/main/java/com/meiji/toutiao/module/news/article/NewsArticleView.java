@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by Meiji on 2016/12/12.
  */
-
+@Deprecated
 public class NewsArticleView extends LazyLoadFragment<INewsArticle.Presenter> implements SwipeRefreshLayout.OnRefreshListener, INewsArticle.View {
 
     private static final String TAG = "NewsArticleView";

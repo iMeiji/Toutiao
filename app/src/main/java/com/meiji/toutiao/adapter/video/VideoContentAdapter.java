@@ -14,11 +14,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.utils.ImageLoader;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.widget.CircleImageView;
 
@@ -95,9 +95,7 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             String tv_text = commentsBean.getText();
             int tv_likes = commentsBean.getDigg_count();
 
-            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-                Glide.with(context).load(iv_avatar).crossFade().centerCrop().into(commentHolder.iv_avatar);
-            }
+            ImageLoader.loadCenterCrop(context, iv_avatar, commentHolder.iv_avatar, R.color.viewBackground);
             commentHolder.tv_username.setText(tv_username);
             commentHolder.tv_text.setText(tv_text);
             commentHolder.tv_likes.setText(tv_likes + "赞");
@@ -106,12 +104,9 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof VideoDescHeader) {
             VideoDescHeader videoDescHeader = (VideoDescHeader) holder;
 
-            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-
-                String media_avatar_url = articleBean.getMedia_avatar_url();
-                if (!TextUtils.isEmpty(media_avatar_url)) {
-                    Glide.with(context).load(media_avatar_url).crossFade().centerCrop().error(R.mipmap.error_image).into(videoDescHeader.iv_media_avatar_url);
-                }
+            String media_avatar_url = articleBean.getMedia_avatar_url();
+            if (!TextUtils.isEmpty(media_avatar_url)) {
+                ImageLoader.loadCenterCrop(context, media_avatar_url, videoDescHeader.iv_media_avatar_url, R.color.viewBackground);
             }
 
             videoDescHeader.tv_title.setText(articleBean.getTitle());

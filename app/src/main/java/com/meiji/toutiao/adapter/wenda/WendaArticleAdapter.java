@@ -14,10 +14,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.utils.ImageLoader;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.utils.TimeUtil;
 
@@ -98,27 +98,24 @@ public class WendaArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ThreeImageViewHolder viewHolder = (ThreeImageViewHolder) holder;
                 WendaArticleDataBean bean = list.get(position);
 
-                if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-
-                    int size = bean.getExtraBean().getWenda_image().getThree_image_list().size();
-                    String[] ivs = new String[size];
-                    for (int i = 0; i < size; i++) {
-                        ivs[i] = bean.getExtraBean().getWenda_image().getThree_image_list().get(i).getUrl();
-                    }
-                    switch (ivs.length) {
-                        case 1:
-                            Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(viewHolder.iv_0);
-                            break;
-                        case 2:
-                            Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(viewHolder.iv_0);
-                            Glide.with(context).load(ivs[1]).crossFade().centerCrop().into(viewHolder.iv_1);
-                            break;
-                        case 3:
-                            Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(viewHolder.iv_0);
-                            Glide.with(context).load(ivs[1]).crossFade().centerCrop().into(viewHolder.iv_1);
-                            Glide.with(context).load(ivs[2]).crossFade().centerCrop().into(viewHolder.iv_2);
-                            break;
-                    }
+                int size = bean.getExtraBean().getWenda_image().getThree_image_list().size();
+                String[] ivs = new String[size];
+                for (int i = 0; i < size; i++) {
+                    ivs[i] = bean.getExtraBean().getWenda_image().getThree_image_list().get(i).getUrl();
+                }
+                switch (ivs.length) {
+                    case 1:
+                        ImageLoader.loadCenterCrop(context, ivs[0], viewHolder.iv_0, R.color.viewBackground);
+                        break;
+                    case 2:
+                        ImageLoader.loadCenterCrop(context, ivs[0], viewHolder.iv_0, R.color.viewBackground);
+                        ImageLoader.loadCenterCrop(context, ivs[1], viewHolder.iv_1, R.color.viewBackground);
+                        break;
+                    case 3:
+                        ImageLoader.loadCenterCrop(context, ivs[0], viewHolder.iv_0, R.color.viewBackground);
+                        ImageLoader.loadCenterCrop(context, ivs[1], viewHolder.iv_1, R.color.viewBackground);
+                        ImageLoader.loadCenterCrop(context, ivs[2], viewHolder.iv_2, R.color.viewBackground);
+                        break;
                 }
 
                 String tv_title = bean.getQuestionBean().getTitle();
@@ -136,10 +133,8 @@ public class WendaArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 LargeImageViewHolder viewHolder = (LargeImageViewHolder) holder;
                 WendaArticleDataBean bean = list.get(position);
 
-                if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-                    String url = bean.getExtraBean().getWenda_image().getLarge_image_list().get(0).getUrl();
-                    Glide.with(context).load(url).crossFade().centerCrop().into(viewHolder.iv_image_big);
-                }
+                String url = bean.getExtraBean().getWenda_image().getLarge_image_list().get(0).getUrl();
+                ImageLoader.loadCenterCrop(context, url, viewHolder.iv_image_big, R.color.viewBackground);
 
                 String tv_title = bean.getQuestionBean().getTitle();
                 String tv_answer_count = bean.getQuestionBean().getNormal_ans_count() + "回答";

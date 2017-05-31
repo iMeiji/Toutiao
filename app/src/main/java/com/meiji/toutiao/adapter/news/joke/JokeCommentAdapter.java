@@ -12,10 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.joke.JokeCommentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.utils.ImageLoader;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.widget.CircleImageView;
 
@@ -84,9 +84,7 @@ public class JokeCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             String tv_text = bean.getText();
             String tv_likes = bean.getDigg_count() + "赞";
 
-            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
-                Glide.with(context).load(iv_avatar).crossFade().centerCrop().into(jokeViewHolder.iv_avatar);
-            }
+            ImageLoader.loadCenterCrop(context, iv_avatar, jokeViewHolder.iv_avatar, R.color.viewBackground);
             jokeViewHolder.tv_username.setText(tv_username);
             jokeViewHolder.tv_text.setText(tv_text);
             jokeViewHolder.tv_likes.setText(tv_likes);

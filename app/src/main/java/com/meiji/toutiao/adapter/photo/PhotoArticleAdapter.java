@@ -14,10 +14,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
+import com.meiji.toutiao.utils.ImageLoader;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.utils.TimeUtil;
 import com.meiji.toutiao.widget.CircleImageView;
@@ -82,32 +82,30 @@ public class PhotoArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             PhotoArticleBean.DataBean bean = list.get(position);
             String tv_title = bean.getTitle();
-            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
 
-                if (!TextUtils.isEmpty(bean.getMedia_avatar_url())) {
-                    Glide.with(context).load(bean.getMedia_avatar_url()).crossFade().centerCrop().into(photoViewHolder.iv_media);
+            if (!TextUtils.isEmpty(bean.getMedia_avatar_url())) {
+                ImageLoader.loadCenterCrop(context, bean.getMedia_avatar_url(), photoViewHolder.iv_media, R.color.viewBackground);
+            }
+
+            if (bean.getImage_list() != null) {
+                int size = bean.getImage_list().size();
+                String[] ivs = new String[size];
+                for (int i = 0; i < bean.getImage_list().size(); i++) {
+                    ivs[i] = bean.getImage_list().get(i).getUrl();
                 }
-
-                if (bean.getImage_list() != null) {
-                    int size = bean.getImage_list().size();
-                    String[] ivs = new String[size];
-                    for (int i = 0; i < bean.getImage_list().size(); i++) {
-                        ivs[i] = bean.getImage_list().get(i).getUrl();
-                    }
-                    switch (ivs.length) {
-                        case 1:
-                            Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(photoViewHolder.iv_0);
-                            break;
-                        case 2:
-                            Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(photoViewHolder.iv_0);
-                            Glide.with(context).load(ivs[1]).crossFade().centerCrop().into(photoViewHolder.iv_1);
-                            break;
-                        case 3:
-                            Glide.with(context).load(ivs[0]).crossFade().centerCrop().into(photoViewHolder.iv_0);
-                            Glide.with(context).load(ivs[1]).crossFade().centerCrop().into(photoViewHolder.iv_1);
-                            Glide.with(context).load(ivs[2]).crossFade().centerCrop().into(photoViewHolder.iv_2);
-                            break;
-                    }
+                switch (ivs.length) {
+                    case 1:
+                        ImageLoader.loadCenterCrop(context, ivs[0], photoViewHolder.iv_0, R.color.viewBackground);
+                        break;
+                    case 2:
+                        ImageLoader.loadCenterCrop(context, ivs[0], photoViewHolder.iv_0, R.color.viewBackground);
+                        ImageLoader.loadCenterCrop(context, ivs[1], photoViewHolder.iv_1, R.color.viewBackground);
+                        break;
+                    case 3:
+                        ImageLoader.loadCenterCrop(context, ivs[0], photoViewHolder.iv_0, R.color.viewBackground);
+                        ImageLoader.loadCenterCrop(context, ivs[1], photoViewHolder.iv_1, R.color.viewBackground);
+                        ImageLoader.loadCenterCrop(context, ivs[2], photoViewHolder.iv_2, R.color.viewBackground);
+                        break;
                 }
             }
             String tv_source = bean.getSource();

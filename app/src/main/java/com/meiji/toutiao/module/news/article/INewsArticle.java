@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Meiji on 2016/12/15.
  */
-
+@Deprecated
 public interface INewsArticle {
 
     interface View extends IBaseView<Presenter> {

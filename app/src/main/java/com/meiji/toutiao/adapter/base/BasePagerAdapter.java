@@ -2,7 +2,7 @@ package com.meiji.toutiao.adapter.base;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 
 import java.util.ArrayList;
@@ -13,30 +13,30 @@ import java.util.List;
  * Created by Meiji on 2017/2/16.
  */
 
-public class BasePagerAdapter extends FragmentPagerAdapter {
+public class BasePagerAdapter extends FragmentStatePagerAdapter {
 
-    private List<Fragment> fragments;
-    private List<String> titles;
+    private List<Fragment> fragmentList;
+    private List<String> titleList;
 
-    public BasePagerAdapter(FragmentManager fm, List<Fragment> list, String[] title) {
+    public BasePagerAdapter(FragmentManager fm, List<Fragment> fragmentList, String[] titles) {
         super(fm);
-        this.fragments = list;
-        this.titles = new ArrayList<>(Arrays.asList(title));
+        this.fragmentList = fragmentList;
+        this.titleList = new ArrayList<>(Arrays.asList(titles));
     }
 
     @Override
     public Fragment getItem(int position) {
-        return fragments.get(position);
+        return fragmentList.get(position);
     }
 
     @Override
     public int getCount() {
-        return fragments.size();
+        return titleList.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return titles.get(position);
+        return titleList.get(position);
     }
 
     @Override
@@ -44,12 +44,9 @@ public class BasePagerAdapter extends FragmentPagerAdapter {
         return PagerAdapter.POSITION_NONE;
     }
 
-    public void recreateItems(List<Fragment> list, String[] title) {
-        this.fragments.clear();
-        this.titles.clear();
-
-        this.fragments = list;
-        this.titles = new ArrayList<>(Arrays.asList(title));
+    public void recreateItems(List<Fragment> list, String[] titles) {
+        this.fragmentList = list;
+        this.titleList = new ArrayList<>(Arrays.asList(titles));
         notifyDataSetChanged();
     }
 }
