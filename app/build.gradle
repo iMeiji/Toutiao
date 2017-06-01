@@ -24,12 +24,20 @@ android {
 
     signingConfigs {
         release {
+//            Properties props = new Properties()
+//            props.load(new FileInputStream(file("/sign/sign.properties")))
+            keyAlias System.getenv("KEY_ALIAS")
+            keyPassword System.getenv("KEY_PASSWORD")
+            storeFile file("../KeyStore.jks")
+            storePassword System.getenv("STORE_PASSWORD")
+        }
+        debug {
             Properties props = new Properties()
             props.load(new FileInputStream(file("/sign/sign.properties")))
             keyAlias props['KEY_ALIAS']
             keyPassword props['KEY_PASSWORD']
             storeFile file(props['KEYSTORE_FILE'])
-            storePassword props['KEYSTORE_PASSWORD']
+            storePassword props['STORE_PASSWORD']
         }
     }
 
@@ -51,7 +59,7 @@ android {
             }
         }
         debug {
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.debug
         }
     }
 }
