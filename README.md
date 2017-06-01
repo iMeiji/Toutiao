@@ -1,3 +1,14 @@
+[![Platform][1]][2]  [![Build Status][3]][4]  [![Release][5]][6]  [![GitHub license][7]][8] 
+
+[1]:https://img.shields.io/badge/platform-Android-blue.svg  
+[2]:https://github.com/iMeiji/Toutiao
+[3]:https://travis-ci.org/iMeiji/Toutiao.svg?branch=master
+[4]:https://travis-ci.org/iMeiji/Toutiao
+[5]:https://img.shields.io/github/release/iMeiji/Toutiao.svg
+[6]:https://github.com/iMeiji/Toutiao/releases/latest
+[7]:https://img.shields.io/badge/license-Apache%202-blue.svg
+[8]:https://github.com/iMeiji/Toutiao/blob/master/LICENSE
+
 ## Toutiao
 一款第三方今日头条客户端, 不断完善中, MVP + RxJava + Retrofit
 

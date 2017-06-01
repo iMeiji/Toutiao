@@ -1,0 +1,22 @@
+language: android
+jdk: oraclejdk8
+sudo: false
+android:
+  components:
+  - tools
+  - build-tools-25.0.2
+  - build-tools-25.0.3
+  - android-25
+  - extra-android-m2repository
+  - extra-android-support
+before_cache:
+- rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+cache:
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+before_install:
+- rm -f /gradle.properties
+- chmod +x gradlew
+script:
+- "./gradlew assembleRelease"
