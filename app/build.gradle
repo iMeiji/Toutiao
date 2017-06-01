@@ -32,12 +32,15 @@ android {
             storePassword System.getenv("STORE_PASSWORD")
         }
         debug {
-            Properties props = new Properties()
-            props.load(new FileInputStream(file("/sign/sign.properties")))
-            keyAlias props['KEY_ALIAS']
-            keyPassword props['KEY_PASSWORD']
-            storeFile file(props['KEYSTORE_FILE'])
-            storePassword props['STORE_PASSWORD']
+            try {
+                Properties props = new Properties()
+                props.load(new FileInputStream(file("/sign/sign.properties")))
+                keyAlias props['KEY_ALIAS']
+                keyPassword props['KEY_PASSWORD']
+                storeFile file(props['KEYSTORE_FILE'])
+                storePassword props['STORE_PASSWORD']
+            } catch (Exception e) {
+            }
         }
     }
 
