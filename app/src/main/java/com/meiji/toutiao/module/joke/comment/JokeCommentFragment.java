@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.BottomSheetDialog;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.util.DiffUtil;
@@ -18,11 +17,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.DiffCallback;
-import com.meiji.toutiao.adapter.news.joke.JokeCommentAdapter;
+import com.meiji.toutiao.adapter.joke.JokeCommentAdapter;
 import com.meiji.toutiao.bean.joke.JokeCommentBean;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
@@ -42,14 +40,11 @@ public class JokeCommentFragment extends BaseFragment<IJokeComment.Presenter> im
     private String jokeCommentCount;
     private String jokeText;
     private boolean canLoading;
-
-    private TextView tv_content;
     private RecyclerView recycler_view;
     private SwipeRefreshLayout refresh_layout;
     private JokeCommentAdapter adapter;
 
     private IJokeComment.Presenter presenter;
-    private CollapsingToolbarLayout collapsing_toolbar;
 
     public static JokeCommentFragment newInstance(Parcelable data) {
         Bundle args = new Bundle();
@@ -63,7 +58,6 @@ public class JokeCommentFragment extends BaseFragment<IJokeComment.Presenter> im
     protected void initViews(View view) {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, "");
-        tv_content = (TextView) view.findViewById(R.id.tv_content);
 
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
         recycler_view.setHasFixedSize(true);
@@ -79,8 +73,6 @@ public class JokeCommentFragment extends BaseFragment<IJokeComment.Presenter> im
                 recycler_view.smoothScrollToPosition(0);
             }
         });
-        collapsing_toolbar = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_toolbar);
-        collapsing_toolbar.setBackgroundColor(SettingsUtil.getInstance().getColor());
 
         adapter = new JokeCommentAdapter(getActivity());
         recycler_view.setAdapter(adapter);
@@ -96,7 +88,7 @@ public class JokeCommentFragment extends BaseFragment<IJokeComment.Presenter> im
 
     @Override
     protected int attachLayoutId() {
-        return R.layout.fragment_news_joke_comment;
+        return R.layout.fragment_list_toolbar;
     }
 
     @Override
@@ -105,8 +97,8 @@ public class JokeCommentFragment extends BaseFragment<IJokeComment.Presenter> im
         JokeContentBean.DataBean.GroupBean bean = bundle.getParcelable(TAG);
         jokeId = bean.getId() + "";
         jokeCommentCount = bean.getComment_count() + "";
+        adapter.setBean(bean);
         jokeText = bean.getText();
-        tv_content.setText(jokeText);
         onLoadData();
     }
 
@@ -125,12 +117,6 @@ public class JokeCommentFragment extends BaseFragment<IJokeComment.Presenter> im
                         .setType("text/plain")
                         .putExtra(Intent.EXTRA_TEXT, jokeText);
                 startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
-                break;
-            case R.id.action_comment_copy:
-                ClipboardManager copy = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clipData = ClipData.newPlainText("text", jokeText);
-                copy.setPrimaryClip(clipData);
-                Snackbar.make(refresh_layout, R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -172,7 +158,12 @@ public class JokeCommentFragment extends BaseFragment<IJokeComment.Presenter> im
     }
 
     private void showCopyDialog(final int position) {
-        final String content = presenter.doGetCopyContent(position);
+        final String content;
+        if (position == 0) {
+            content = jokeText;
+        } else {
+            content = presenter.doGetCopyContent(position);
+        }
 
         final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
         View view = getActivity().getLayoutInflater().inflate(R.layout.item_comment_action_sheet, null);

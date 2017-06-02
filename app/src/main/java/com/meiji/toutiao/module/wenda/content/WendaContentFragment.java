@@ -111,7 +111,7 @@ public class WendaContentFragment extends BaseFragment<IWendaContent.Presenter> 
 
     @Override
     protected int attachLayoutId() {
-        return R.layout.fragment_wenda_content;
+        return R.layout.fragment_list_toolbar;
     }
 
     @Override

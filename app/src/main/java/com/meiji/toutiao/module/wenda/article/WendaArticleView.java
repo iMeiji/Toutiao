@@ -103,7 +103,7 @@ public class WendaArticleView extends LazyLoadFragment<IWendaArticle.Presenter> 
 
     @Override
     protected int attachLayoutId() {
-        return R.layout.fragment_base_main;
+        return R.layout.fragment_list;
     }
 
     @Override

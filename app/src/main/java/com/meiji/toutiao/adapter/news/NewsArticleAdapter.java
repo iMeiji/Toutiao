@@ -59,9 +59,9 @@ public class NewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (position == list.size()) {
             return TYPE_FOOTER;
         }
-        if (list.get(position).getImage_list().size() < 1) {
-            return TYPE_NOIMAGE;
-        }
+//        if (list.get(position).getImage_list().size() < 1) {
+//            return TYPE_NOIMAGE;
+//        }
         return TYPE_NORMAL;
     }
 

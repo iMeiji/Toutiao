@@ -26,12 +26,15 @@ android {
         release {
 //            Properties props = new Properties()
 //            props.load(new FileInputStream(file("/sign/sign.properties")))
+            // 变量在 Travis CI 后台设置好
             keyAlias System.getenv("KEY_ALIAS")
             keyPassword System.getenv("KEY_PASSWORD")
             storeFile file("../KeyStore.jks")
             storePassword System.getenv("STORE_PASSWORD")
         }
         debug {
+            // 部分第三方SDK要绑定签名, 故使用 release 的签名, 方便测试
+            // 使用 try catch 是防止 Travis CI 打包失败
             try {
                 Properties props = new Properties()
                 props.load(new FileInputStream(file("/sign/sign.properties")))

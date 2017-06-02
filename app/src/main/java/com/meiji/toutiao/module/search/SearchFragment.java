@@ -42,7 +42,7 @@ public class SearchFragment extends BaseFragment<ISearch.Presenter> implements I
 
     @Override
     protected int attachLayoutId() {
-        return R.layout.fragment_search;
+        return R.layout.fragment_list_toolbar;
     }
 
 

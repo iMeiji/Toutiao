@@ -41,7 +41,7 @@ public class MultiNewsArticleView extends LazyLoadFragment<IMultiNewsArticle.Pre
 
     @Override
     protected int attachLayoutId() {
-        return R.layout.fragment_base_main;
+        return R.layout.fragment_list;
     }
 
     @Override

@@ -41,7 +41,7 @@ public class VideoArticleView extends LazyLoadFragment<IVideoArticle.Presenter> 
 
     @Override
     protected int attachLayoutId() {
-        return R.layout.fragment_base_main;
+        return R.layout.fragment_list;
     }
 
     @Override

@@ -127,6 +127,7 @@ public class JokeContentBean {
         }
 
         public static class GroupBean implements Parcelable {
+
             public static final Creator<GroupBean> CREATOR = new Creator<GroupBean>() {
                 @Override
                 public GroupBean createFromParcel(Parcel in) {
@@ -234,6 +235,7 @@ public class JokeContentBean {
                 has_comments = in.readInt();
                 user_bury = in.readInt();
                 status_desc = in.readString();
+                user = in.readParcelable(UserBean.class.getClassLoader());
                 user_digg = in.readInt();
                 online_time = in.readInt();
                 category_name = in.readString();
@@ -271,6 +273,7 @@ public class JokeContentBean {
                 dest.writeInt(has_comments);
                 dest.writeInt(user_bury);
                 dest.writeString(status_desc);
+                dest.writeParcelable(user, flags);
                 dest.writeInt(user_digg);
                 dest.writeInt(online_time);
                 dest.writeString(category_name);
@@ -570,7 +573,18 @@ public class JokeContentBean {
                 this.category_id = category_id;
             }
 
-            public static class UserBean {
+            public static class UserBean implements Parcelable {
+                public static final Creator<UserBean> CREATOR = new Creator<UserBean>() {
+                    @Override
+                    public UserBean createFromParcel(Parcel in) {
+                        return new UserBean(in);
+                    }
+
+                    @Override
+                    public UserBean[] newArray(int size) {
+                        return new UserBean[size];
+                    }
+                };
                 /**
                  * is_following : false
                  * avatar_url : http://p3.pstatp.com/thumb/123200136e8a76748b9f
@@ -584,6 +598,28 @@ public class JokeContentBean {
                 private long user_id;
                 private String name;
                 private boolean user_verified;
+
+                protected UserBean(Parcel in) {
+                    is_following = in.readByte() != 0;
+                    avatar_url = in.readString();
+                    user_id = in.readLong();
+                    name = in.readString();
+                    user_verified = in.readByte() != 0;
+                }
+
+                @Override
+                public void writeToParcel(Parcel dest, int flags) {
+                    dest.writeByte((byte) (is_following ? 1 : 0));
+                    dest.writeString(avatar_url);
+                    dest.writeLong(user_id);
+                    dest.writeString(name);
+                    dest.writeByte((byte) (user_verified ? 1 : 0));
+                }
+
+                @Override
+                public int describeContents() {
+                    return 0;
+                }
 
                 public boolean isIs_following() {
                     return is_following;

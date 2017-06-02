@@ -19,7 +19,8 @@
         android:layout_height="48dp"
         android:background="?attr/selectableItemBackground"
         android:foreground="?attr/selectableItemBackground"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <ImageView
             android:layout_width="24dp"
@@ -47,7 +48,8 @@
         android:layout_height="48dp"
         android:background="?attr/selectableItemBackground"
         android:foreground="?attr/selectableItemBackground"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="8dp">
 
         <ImageView
             android:layout_width="24dp"

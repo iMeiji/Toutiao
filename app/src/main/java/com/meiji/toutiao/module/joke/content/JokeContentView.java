@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.DiffCallback;
-import com.meiji.toutiao.adapter.news.joke.JokeContentAdapter;
+import com.meiji.toutiao.adapter.joke.JokeContentAdapter;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.base.LazyLoadFragment;
@@ -35,7 +35,7 @@ public class JokeContentView extends LazyLoadFragment<IJokeContent.Presenter> im
 
     @Override
     protected int attachLayoutId() {
-        return R.layout.fragment_base_main;
+        return R.layout.fragment_list;
     }
 
     @Override

@@ -41,7 +41,7 @@ public class NewsArticleView extends LazyLoadFragment<INewsArticle.Presenter> im
 
     @Override
     protected int attachLayoutId() {
-        return R.layout.fragment_base_main;
+        return R.layout.fragment_list;
     }
 
     @Override

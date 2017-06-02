@@ -37,7 +37,7 @@ public class PhotoArticleView extends LazyLoadFragment<IPhotoArticle.Presenter> 
 
     @Override
     protected int attachLayoutId() {
-        return R.layout.fragment_base_main;
+        return R.layout.fragment_list;
     }
 
     @Override
