@@ -4,6 +4,7 @@ package com.meiji.toutiao;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -77,7 +78,11 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(selectedColor));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(CircleView.shiftColorDown(selectedColor));
-            getWindow().setNavigationBarColor(CircleView.shiftColorDown(selectedColor));
+            if (SettingsUtil.getInstance().getNavBar()) {
+                getWindow().setNavigationBarColor(CircleView.shiftColorDown(selectedColor));
+            } else {
+                getWindow().setNavigationBarColor(Color.BLACK);
+            }
         }
         if (!dialog.isAccentMode()) {
             SettingsUtil.getInstance().setColor(selectedColor);
@@ -111,6 +116,21 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
                             .doneButton(R.string.done)
                             .customButton(R.string.custom)
                             .show();
+                    return false;
+                }
+            });
+
+            findPreference("nav_bar").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    int color = SettingsUtil.getInstance().getColor();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        if (SettingsUtil.getInstance().getNavBar()) {
+                            getActivity().getWindow().setNavigationBarColor(CircleView.shiftColorDown(CircleView.shiftColorDown(color)));
+                        } else {
+                            getActivity().getWindow().setNavigationBarColor(Color.BLACK);
+                        }
+                    }
                     return false;
                 }
             });

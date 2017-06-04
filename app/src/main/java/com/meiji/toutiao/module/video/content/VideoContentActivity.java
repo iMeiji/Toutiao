@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -93,8 +94,20 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
         this.videoId = articleBean.getVideo_id();
         this.videoTitle = articleBean.getTitle();
 
+        adapter.setBean(articleBean);
+    }
 
-        adapter = new VideoContentAdapter(this, articleBean);
+    private void initView() {
+        iv_image_url = (ImageView) findViewById(R.id.iv_image_url);
+        fab_play = (FloatingActionButton) findViewById(R.id.fab_play);
+        fab_play.setOnClickListener(this);
+        fab_play.setBackgroundTintList(ColorStateList.valueOf(SettingsUtil.getInstance().getColor()));
+
+        recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
+        recycler_view.setHasFixedSize(true);
+        recycler_view.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter = new VideoContentAdapter(this);
         recycler_view.setAdapter(adapter);
         adapter.setOnItemClickListener(new IOnItemClickListener() {
             @Override
@@ -102,16 +115,6 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
                 showCopyDialog(position);
             }
         });
-    }
-
-    private void initView() {
-        iv_image_url = (ImageView) findViewById(R.id.iv_image_url);
-        fab_play = (FloatingActionButton) findViewById(R.id.fab_play);
-        recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
-        recycler_view.setHasFixedSize(true);
-        recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        fab_play.setOnClickListener(this);
-        fab_play.setBackgroundTintList(ColorStateList.valueOf(SettingsUtil.getInstance().getColor()));
     }
 
     @Override
@@ -130,6 +133,9 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
                             | View.SYSTEM_UI_FLAG_FULLSCREEN;
                 }
                 decorView.setSystemUiVisibility(uiOptions);
+                if (SettingsUtil.getInstance().getVideoOrientation()) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                }
                 break;
         }
     }

@@ -39,6 +39,14 @@ public class SettingsUtil {
         settings.edit().putBoolean("switch_nightMode", flag).apply();
     }
 
+    public boolean getNavBar() {
+        return settings.getBoolean("nav_bar", false);
+    }
+
+    public boolean getVideoOrientation() {
+        return settings.getBoolean("video_force_landscape", false);
+    }
+
     private static final class SettingsUtilInstance {
         private static final SettingsUtil instance = new SettingsUtil();
     }

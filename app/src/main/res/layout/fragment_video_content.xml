@@ -40,7 +40,7 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_margin="16dp"
-        app:elevation="8dp"
+        app:elevation="16dp"
         app:layout_anchor="@id/app_bar_layout"
         app:layout_anchorGravity="bottom|end"
         app:srcCompat="@drawable/ic_play_white_24dp"/>

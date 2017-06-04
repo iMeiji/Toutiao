@@ -80,7 +80,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected void onResume() {
         super.onResume();
-        bottom_navigation.setBackgroundColor(SettingsUtil.getInstance().getColor());
         if (searchItem != null) {
             searchItem.collapseActionView();
         }
@@ -89,7 +88,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void initView() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         bottom_navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        bottom_navigation.setBackgroundColor(SettingsUtil.getInstance().getColor());
         BottomNavigationViewHelper.disableShiftMode(bottom_navigation);
         setSupportActionBar(toolbar);
         bottom_navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

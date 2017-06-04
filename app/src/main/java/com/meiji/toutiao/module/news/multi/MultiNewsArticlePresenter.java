@@ -27,6 +27,7 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
@@ -222,6 +223,19 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
                 Log.d(TAG, "doOnClickItem: " + bean.getTitle());
                 Log.d(TAG, "doOnClickItem: " + bean.getDisplay_url());
             }
-        }).subscribeOn(Schedulers.io()).observeOn(Schedulers.io()).compose(view.bindToLife()).subscribe();
+        }).subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .compose(view.bindToLife())
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(@NonNull Object o) throws Exception {
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+
+                    }
+                });
     }
 }

@@ -2,6 +2,7 @@ package com.meiji.toutiao.module.base;
 
 import android.app.ActivityManager;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.v7.widget.Toolbar;
@@ -35,13 +36,17 @@ public abstract class BaseActivity extends RxAppCompatActivity {
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(color));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(CircleView.shiftColorDown(color));
-            getWindow().setNavigationBarColor(CircleView.shiftColorDown(color));
             // 最近任务栏上色
             ActivityManager.TaskDescription tDesc = new ActivityManager.TaskDescription(
                     getString(R.string.app_name),
                     BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher),
                     color);
             setTaskDescription(tDesc);
+            if (SettingsUtil.getInstance().getNavBar()) {
+                getWindow().setNavigationBarColor(CircleView.shiftColorDown(CircleView.shiftColorDown(color)));
+            } else {
+                getWindow().setNavigationBarColor(Color.BLACK);
+            }
         }
     }
 

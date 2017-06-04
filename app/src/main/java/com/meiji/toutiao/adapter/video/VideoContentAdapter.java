@@ -34,14 +34,13 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_NORMAL = 1;
     private static final int TYPE_FOOTER = 2;
-    private List<NewsCommentMobileBean.DataBean.CommentBean> list = new ArrayList<>();
-    private VideoArticleBean.DataBean articleBean;
+    private List<NewsCommentMobileBean.DataBean.CommentBean> list;
+    private VideoArticleBean.DataBean bean;
     private Context context;
     private IOnItemClickListener onItemClickListener;
 
-    public VideoContentAdapter(Context context, VideoArticleBean.DataBean articleBean) {
+    public VideoContentAdapter(Context context) {
         this.context = context;
-        this.articleBean = articleBean;
     }
 
     public List<NewsCommentMobileBean.DataBean.CommentBean> getList() {
@@ -56,14 +55,19 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this.onItemClickListener = onItemClickListener;
     }
 
+    public void setBean(VideoArticleBean.DataBean bean) {
+        this.bean = bean;
+    }
+
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
             return TYPE_HEADER;
         }
-        if (position == list.size()) {
-            return TYPE_FOOTER;
-        }
+        // 显示加载更多有bug 有时候会自动跳转到最后一条评论
+//        if (position == list.size()) {
+//            return TYPE_FOOTER;
+//        }
         return TYPE_NORMAL;
     }
 
@@ -77,10 +81,10 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             View view = LayoutInflater.from(context).inflate(R.layout.item_news_comment, parent, false);
             return new NewsCommentsViewHolder(view, onItemClickListener);
         }
-        if (viewType == TYPE_FOOTER) {
-            View view = LayoutInflater.from(context).inflate(R.layout.list_footer, parent, false);
-            return new FooterViewHolder(view);
-        }
+//        if (viewType == TYPE_FOOTER) {
+//            View view = LayoutInflater.from(context).inflate(R.layout.list_footer, parent, false);
+//            return new FooterViewHolder(view);
+//        }
         return null;
     }
 
@@ -104,21 +108,21 @@ public class VideoContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof VideoDescHeader) {
             VideoDescHeader videoDescHeader = (VideoDescHeader) holder;
 
-            String media_avatar_url = articleBean.getMedia_avatar_url();
+            String media_avatar_url = bean.getMedia_avatar_url();
             if (!TextUtils.isEmpty(media_avatar_url)) {
                 ImageLoader.loadCenterCrop(context, media_avatar_url, videoDescHeader.iv_media_avatar_url, R.color.viewBackground);
             }
 
-            videoDescHeader.tv_title.setText(articleBean.getTitle());
-            videoDescHeader.tv_tv_video_duration_str.setText("时长 " + articleBean.getVideo_duration_str() + " | " + articleBean.getComments_count() + "评论");
-            videoDescHeader.tv_abstract.setText(articleBean.getAbstractX());
-            videoDescHeader.tv_source.setText(articleBean.getSource());
+            videoDescHeader.tv_title.setText(bean.getTitle());
+            videoDescHeader.tv_tv_video_duration_str.setText("时长 " + bean.getVideo_duration_str() + " | " + bean.getComments_count() + "评论");
+            videoDescHeader.tv_abstract.setText(bean.getAbstractX());
+            videoDescHeader.tv_source.setText(bean.getSource());
         }
     }
 
     @Override
     public int getItemCount() {
-        return list != null ? list.size() + 1 : 0;
+        return list != null ? list.size() : 0;
     }
 
     private class NewsCommentsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

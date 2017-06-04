@@ -4,7 +4,7 @@
     <PreferenceCategory
         android:title="@string/basic_settings">
 
-        <SwitchPreference
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="switch_noPhotoMode"
             android:summary="@string/switch_no_photo_mode_summary"
@@ -25,6 +25,18 @@
             android:key="color"
             android:summary="@string/choose_theme_color_summary"
             android:title="@string/choose_theme_color"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="nav_bar"
+            android:summary="@string/nav_bar_coloration_summary"
+            android:title="@string/nav_bar_coloration"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="video_force_landscape"
+            android:summary="@string/video_landscape_summary"
+            android:title="@string/video_landscape"/>
 
         <Preference
             android:key="clearCache"

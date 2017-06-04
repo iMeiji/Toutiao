@@ -14,6 +14,8 @@
     <string name="choose_theme_color">主题颜色</string>
     <string name="choose_theme_color_summary">自定义主题颜色</string>
     <string name="back">返回</string>
+    <string name="nav_bar_coloration">导航栏着色</string>
+    <string name="nav_bar_coloration_summary">导航栏颜色跟随主题颜色</string>
 
     <!-- Menu Action -->
     <string name="action_search">搜索</string>
@@ -107,5 +109,7 @@
     <string name="nav_switch_night_mode">切换主题</string>
     <string name="nav_setting">设置</string>
     <string name="nav_share">分享</string>
+    <string name="video_landscape">视频横屏</string>
+    <string name="video_landscape_summary">开启后强制横屏播放视频(能自动旋转就别开)</string>
 
 </resources>
