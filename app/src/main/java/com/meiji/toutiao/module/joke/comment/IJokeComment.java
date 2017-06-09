@@ -46,10 +46,5 @@ interface IJokeComment {
          * 加载完毕
          */
         void doShowNoMore();
-
-        /**
-         * 获取复制内容
-         */
-        String doGetCopyContent(int position);
     }
 }

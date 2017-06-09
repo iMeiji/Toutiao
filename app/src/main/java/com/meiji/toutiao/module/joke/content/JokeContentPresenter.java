@@ -3,15 +3,12 @@ package com.meiji.toutiao.module.joke.content;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IJokeApi;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
-import com.meiji.toutiao.module.joke.comment.JokeCommentActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -30,6 +27,11 @@ class JokeContentPresenter implements IJokeContent.Presenter {
 
     @Override
     public void doLoadData() {
+        // 释放内存
+        if (groupList.size() > 100) {
+            groupList.clear();
+        }
+
         RetrofitFactory.getRetrofit().create(IJokeApi.class).getJokeContent()
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -43,25 +45,15 @@ class JokeContentPresenter implements IJokeContent.Presenter {
                         return groupList;
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
                 .compose(view.<List<JokeContentBean.DataBean.GroupBean>>bindToLife())
-                .subscribe(new Observer<List<JokeContentBean.DataBean.GroupBean>>() {
+                .subscribe(new Consumer<List<JokeContentBean.DataBean.GroupBean>>() {
                     @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(@NonNull List<JokeContentBean.DataBean.GroupBean> o) {
+                    public void accept(@NonNull List<JokeContentBean.DataBean.GroupBean> groupBeen) throws Exception {
                         doSetAdapter();
                     }
-
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void onError(@NonNull Throwable e) {
-                        doShowNetError();
-                    }
-
-                    @Override
-                    public void onComplete() {
+                    public void accept(@NonNull Throwable throwable) throws Exception {
 
                     }
                 });
@@ -76,10 +68,6 @@ class JokeContentPresenter implements IJokeContent.Presenter {
     public void doSetAdapter() {
         view.onSetAdapter(groupList);
         view.onHideLoading();
-        // 释放内存
-        if (groupList.size() > 100) {
-            groupList.clear();
-        }
     }
 
     @Override
@@ -94,10 +82,5 @@ class JokeContentPresenter implements IJokeContent.Presenter {
     public void doShowNetError() {
         view.onHideLoading();
         view.onShowNetError();
-    }
-
-    @Override
-    public void doOnClickItem(int position) {
-        JokeCommentActivity.launch(groupList.get(position));
     }
 }

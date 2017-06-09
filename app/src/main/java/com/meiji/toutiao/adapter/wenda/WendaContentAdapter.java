@@ -76,7 +76,7 @@ public class WendaContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return new HeaderViewHolder(view);
         }
         if (viewType == TYPE_FOOTER) {
-            View view = LayoutInflater.from(context).inflate(R.layout.list_footer, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_footer, parent, false);
             return new FooterViewHolder(view);
         }
         if (viewType == TYPE_NORMAL) {

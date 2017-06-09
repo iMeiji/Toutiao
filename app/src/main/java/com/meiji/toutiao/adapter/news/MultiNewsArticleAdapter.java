@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created by Meiji on 2017/5/18.
  */
-
+@Deprecated
 public class MultiNewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG = "MultiNewsArticleAdapter";
@@ -77,15 +77,15 @@ public class MultiNewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.V
             return new NormalViewHolder(view, onItemClickListener);
         }
         if (viewType == TYPE_FOOTER) {
-            View view = LayoutInflater.from(context).inflate(R.layout.list_footer, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_footer, parent, false);
             return new FooterViewHolder(view);
         }
         if (viewType == TYPE_NOIMAGE) {
-            View view = LayoutInflater.from(context).inflate(R.layout.item_news_article_no_image, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_news_article_no_pic, parent, false);
             return new NoImageViewHolder(view, onItemClickListener);
         }
         if (viewType == TYPE_VIDEO) {
-            View view = LayoutInflater.from(context).inflate(R.layout.item_news_article_video, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_news_article_has_video, parent, false);
             return new VideoViewHolder(view, onItemClickListener);
         }
         return null;

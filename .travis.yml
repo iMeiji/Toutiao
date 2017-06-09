@@ -18,7 +18,7 @@ cache:
 before_install:
 - openssl aes-256-cbc -K $encrypted_1fc90f464345_key -iv $encrypted_1fc90f464345_iv
   -in KeyStore.jks.enc -out KeyStore.jks -d
-- rm -f /gradle.properties
+- rm -f gradle.properties
 - chmod +x gradlew
 script:
 - "./gradlew assembleRelease"

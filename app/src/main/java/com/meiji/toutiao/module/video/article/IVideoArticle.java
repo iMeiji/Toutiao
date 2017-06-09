@@ -37,9 +37,9 @@ public interface IVideoArticle {
          */
         void doSetAdapter(List<VideoArticleBean.DataBean> dataBeen);
 
-        /**
-         * 点击事件跳转
-         */
-        void doOnClickItem(int position);
+//        /**
+//         * 点击事件跳转
+//         */
+//        void doOnClickItem(int position);
     }
 }

@@ -61,11 +61,11 @@ public class JokeContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_NORMAL) {
-            View view = LayoutInflater.from(context).inflate(R.layout.item_news_joke, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_news_joke_content, parent, false);
             return new JokeContentViewHolder(view, onItemClickListener);
         }
         if (viewType == TYPE_FOOTER) {
-            View view = LayoutInflater.from(context).inflate(R.layout.list_footer, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_footer, parent, false);
             return new FooterViewHolder(view);
         }
         return null;

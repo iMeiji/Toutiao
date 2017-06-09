@@ -51,7 +51,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:gravity="bottom"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="4dp">
 
                 <com.meiji.toutiao.widget.CircleImageView
                     android:id="@+id/iv_media_avatar_url"
@@ -62,7 +63,7 @@
                     android:src="@mipmap/error_image"/>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
                     android:layout_weight="1"
@@ -96,13 +97,14 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:gravity="end|top"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/iv_menu"
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        android:layout_gravity="top"
                         app:srcCompat="@drawable/ic_dots_vertical_gray_24dp"/>
                 </LinearLayout>
 

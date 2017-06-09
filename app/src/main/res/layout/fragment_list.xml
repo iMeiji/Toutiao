@@ -18,7 +18,8 @@
             android:layout_height="match_parent"
             android:fadeScrollbars="true"
             android:scrollbarFadeDuration="1"
-            android:scrollbars="vertical">
+            android:scrollbars="vertical"
+            app:layoutManager="LinearLayoutManager">
         </android.support.v7.widget.RecyclerView>
 
     </android.support.v4.widget.SwipeRefreshLayout>

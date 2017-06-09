@@ -46,8 +46,8 @@
     <string name="title_media">头条号</string>
 
     <!-- Bottom Sheet List -->
-    <string name="copy_comment">复制评论</string>
-    <string name="share_comment">分享评论</string>
+    <string name="copy_content">复制内容</string>
+    <string name="share_content">分享内容</string>
 
     <!-- Item Drag -->
     <string name="tip_drag">长按编辑,拖拽排序</string>

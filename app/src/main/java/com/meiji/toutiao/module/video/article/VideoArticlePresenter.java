@@ -1,22 +1,18 @@
 package com.meiji.toutiao.module.video.article;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IVideoApi;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
-import com.meiji.toutiao.module.video.content.VideoContentActivity;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
@@ -46,6 +42,11 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
+        }
+
+        // 释放内存
+        if (dataList.size() > 100) {
+            dataList.clear();
         }
 
         RetrofitFactory.getRetrofit().create(IVideoApi.class).getVideoArticle(this.category, time)
@@ -78,22 +79,16 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
                     }
                 })
                 .toList()
-                .observeOn(AndroidSchedulers.mainThread())
                 .compose(view.<List<VideoArticleBean.DataBean>>bindToLife())
-                .subscribe(new SingleObserver<List<VideoArticleBean.DataBean>>() {
+                .subscribe(new Consumer<List<VideoArticleBean.DataBean>>() {
                     @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
+                    public void accept(@NonNull List<VideoArticleBean.DataBean> list) throws Exception {
+                        doSetAdapter(list);
                     }
-
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void onSuccess(@NonNull List<VideoArticleBean.DataBean> dataBeen) {
-                        doSetAdapter(dataBeen);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        e.printStackTrace();
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
                         doShowNetError();
                     }
                 });
@@ -109,10 +104,6 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
         dataList.addAll(dataBeen);
         view.onSetAdapter(dataList);
         view.onHideLoading();
-        // 释放内存
-        if (dataList.size() > 100) {
-            dataList.clear();
-        }
     }
 
     @Override
@@ -130,16 +121,16 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
         view.onShowNetError();
     }
 
-    @Override
-    public void doOnClickItem(int position) {
-        VideoArticleBean.DataBean bean = dataList.get(position);
-        String url = null;
-        try {
-            url = bean.getVideo_detail_info().getVideo_detail_info().getDetail_video_large_image().getUrl();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        VideoContentActivity.launch(bean, url);
-        Log.d(TAG, "doOnClickItem: " + bean.getVideo_id());
-    }
+//    @Override
+//    public void doOnClickItem(int position) {
+//        VideoArticleBean.DataBean bean = dataList.get(position);
+//        String url = null;
+//        try {
+//            url = bean.getVideo_detail_info().getVideo_detail_info().getDetail_video_large_image().getUrl();
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//        }
+//        VideoContentActivity.launch(bean, url);
+//        Log.d(TAG, "doOnClickItem: " + bean.getVideo_id());
+//    }
 }

@@ -1,7 +1,6 @@
 package com.meiji.toutiao.module.news.multi;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.meiji.toutiao.InitApp;
@@ -9,10 +8,6 @@ import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileNewsApi;
 import com.meiji.toutiao.bean.news.MultiNewsArticleBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
-import com.meiji.toutiao.bean.news.NewsArticleBean;
-import com.meiji.toutiao.bean.video.VideoArticleBean;
-import com.meiji.toutiao.module.news.content.NewsContentActivity;
-import com.meiji.toutiao.module.video.content.VideoContentActivity;
 import com.meiji.toutiao.utils.NetWorkUtil;
 
 import java.util.ArrayList;
@@ -21,12 +16,7 @@ import java.util.List;
 import java.util.Random;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
@@ -69,7 +59,7 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
             if (this.category == null) {
                 this.category = category[0];
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -116,6 +106,7 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
                         } catch (NullPointerException e) {
                             e.printStackTrace();
                         }
+                        // 过滤重复新闻(与上次刷新的数据比较)
                         for (MultiNewsArticleDataBean bean : dataList) {
                             if (bean.getTitle().equals(multiNewsArticleDataBean.getTitle())) {
                                 return false;
@@ -128,6 +119,7 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
                 .map(new Function<List<MultiNewsArticleDataBean>, List<MultiNewsArticleDataBean>>() {
                     @Override
                     public List<MultiNewsArticleDataBean> apply(@NonNull List<MultiNewsArticleDataBean> list) throws Exception {
+                        // 过滤重复新闻(与本次刷新的数据比较,因为使用了2个请求,数据会有重复)
                         for (int i = 0; i < list.size() - 1; i++) {
                             for (int j = list.size() - 1; j > i; j--) {
                                 if (list.get(j).getTitle().equals(list.get(i).getTitle())) {
@@ -139,21 +131,15 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
                     }
                 })
                 .compose(view.<List<MultiNewsArticleDataBean>>bindToLife())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<MultiNewsArticleDataBean>>() {
+                .subscribe(new Consumer<List<MultiNewsArticleDataBean>>() {
                     @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
+                    public void accept(@NonNull List<MultiNewsArticleDataBean> list) throws Exception {
+                        doSetAdapter(list);
                     }
-
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void onSuccess(@NonNull List<MultiNewsArticleDataBean> testNewsArticleDataBeen) {
-                        doSetAdapter(testNewsArticleDataBeen);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        e.printStackTrace();
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
                         if (NetWorkUtil.isNetworkConnected(InitApp.AppContext)) {
                             view.onRefresh();
                         } else {
@@ -190,52 +176,52 @@ public class MultiNewsArticlePresenter implements IMultiNewsArticle.Presenter {
         view.onShowNetError();
     }
 
-    @Override
-    public void doOnClickItem(final int position) {
-        Observable.create(new ObservableOnSubscribe<Object>() {
-            @Override
-            public void subscribe(@NonNull ObservableEmitter<Object> e) throws Exception {
-                MultiNewsArticleDataBean bean = dataList.get(position);
-                if (bean.isHas_video()) {
-                    VideoArticleBean.DataBean dataBean = new VideoArticleBean.DataBean();
-                    dataBean.setTitle(bean.getTitle());
-                    dataBean.setGroup_id(bean.getGroup_id());
-                    dataBean.setItem_id(bean.getGroup_id());
-                    dataBean.setVideo_id(bean.getVideo_id());
-                    dataBean.setAbstractX(bean.getAbstractX());
-                    dataBean.setSource(bean.getSource());
-                    dataBean.setVideo_duration_str(bean.getVideo_duration() / 60 + "");
-                    String url = bean.getVideo_detail_info().getDetail_video_large_image().getUrl();
-                    Log.d(TAG, "doOnClickItem: " + url);
-                    VideoContentActivity.launch(dataBean, url);
-                } else {
-                    NewsArticleBean.DataBean dataBean = new NewsArticleBean.DataBean();
-                    dataBean.setDisplay_url(bean.getDisplay_url());
-                    dataBean.setTitle(bean.getTitle());
-                    dataBean.setMedia_name(bean.getMedia_name());
-                    if (bean.getMedia_info() != null) {
-                        dataBean.setMedia_url("http://toutiao.com/m" + bean.getMedia_info().getMedia_id());
-                    }
-                    dataBean.setGroup_id(bean.getGroup_id());
-                    dataBean.setItem_id(bean.getGroup_id());
-                    NewsContentActivity.launch(dataBean);
-                }
-                Log.d(TAG, "doOnClickItem: " + bean.getTitle());
-                Log.d(TAG, "doOnClickItem: " + bean.getDisplay_url());
-            }
-        }).subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .compose(view.bindToLife())
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(@NonNull Object o) throws Exception {
-
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-
-                    }
-                });
-    }
+//    @Override
+//    public void doOnClickItem(final int position) {
+//        Observable.create(new ObservableOnSubscribe<Object>() {
+//            @Override
+//            public void subscribe(@NonNull ObservableEmitter<Object> e) throws Exception {
+//                MultiNewsArticleDataBean bean = dataList.get(position);
+//                if (bean.isHas_video()) {
+//                    VideoArticleBean.DataBean dataBean = new VideoArticleBean.DataBean();
+//                    dataBean.setTitle(bean.getTitle());
+//                    dataBean.setGroup_id(bean.getGroup_id());
+//                    dataBean.setItem_id(bean.getGroup_id());
+//                    dataBean.setVideo_id(bean.getVideo_id());
+//                    dataBean.setAbstractX(bean.getAbstractX());
+//                    dataBean.setSource(bean.getSource());
+//                    dataBean.setVideo_duration_str(bean.getVideo_duration() / 60 + "");
+//                    String url = bean.getVideo_detail_info().getDetail_video_large_image().getUrl();
+//                    Log.d(TAG, "doOnClickItem: " + url);
+//                    VideoContentActivity.launch(dataBean, url);
+//                } else {
+//                    NewsArticleBean.DataBean dataBean = new NewsArticleBean.DataBean();
+//                    dataBean.setDisplay_url(bean.getDisplay_url());
+//                    dataBean.setTitle(bean.getTitle());
+//                    dataBean.setMedia_name(bean.getMedia_name());
+//                    if (bean.getMedia_info() != null) {
+//                        dataBean.setMedia_url("http://toutiao.com/m" + bean.getMedia_info().getMedia_id());
+//                    }
+//                    dataBean.setGroup_id(bean.getGroup_id());
+//                    dataBean.setItem_id(bean.getGroup_id());
+//                    NewsContentActivity.launch(dataBean);
+//                }
+//                Log.d(TAG, "doOnClickItem: " + bean.getTitle());
+//                Log.d(TAG, "doOnClickItem: " + bean.getDisplay_url());
+//            }
+//        }).subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.io())
+//                .compose(view.bindToLife())
+//                .subscribe(new Consumer<Object>() {
+//                    @Override
+//                    public void accept(@NonNull Object o) throws Exception {
+//
+//                    }
+//                }, new Consumer<Throwable>() {
+//                    @Override
+//                    public void accept(@NonNull Throwable throwable) throws Exception {
+//
+//                    }
+//                });
+//    }
 }

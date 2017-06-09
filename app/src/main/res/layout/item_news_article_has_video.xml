@@ -46,8 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/header"
             android:layout_marginTop="4dp"
-            android:orientation="vertical"
-            android:padding="4dp">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_title"

@@ -1,14 +1,10 @@
 package com.meiji.toutiao.module.video.content;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.util.DiffUtil;
@@ -21,14 +17,14 @@ import android.widget.ImageView;
 
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
-import com.meiji.toutiao.adapter.video.VideoContentAdapter;
-import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
+import com.meiji.toutiao.bean.FooterBean;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
-import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.news.comment.INewsComment;
 import com.meiji.toutiao.utils.ImageLoader;
+import com.meiji.toutiao.utils.OnLoadMoreListener;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.widget.helper.MyJCVideoPlayerStandard;
 import com.trello.rxlifecycle2.LifecycleTransformer;
@@ -36,6 +32,8 @@ import com.trello.rxlifecycle2.LifecycleTransformer;
 import java.util.List;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
+import me.drakeet.multitype.Items;
+import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
  * Created by Meiji on 2017/3/30.
@@ -44,19 +42,19 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 public class VideoContentActivity extends BaseActivity implements View.OnClickListener, IVideoContent.View {
 
     public static final String TAG = "VideoContentActivity";
+    protected MultiTypeAdapter adapter;
+    protected boolean canLoadMore = false;
     private String groupId;
     private String itemId;
     private String videoId;
     private String videoUrls;
     private String videoTitle;
-    private VideoArticleBean.DataBean articleBean;
-
+    private VideoArticleBean.DataBean videoHeaderData;
     private ImageView iv_image_url;
-    private FloatingActionButton fab_play;
-    private RecyclerView recycler_view;
+    private FloatingActionButton fabPlay;
+    private RecyclerView recyclerView;
     private IVideoContent.Presenter presenter;
-    private VideoContentAdapter adapter;
-    private boolean canLoading;
+    private Items oldItems = new Items();
 
     public static void launch(VideoArticleBean.DataBean bean, String url) {
         InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, VideoContentActivity.class)
@@ -78,41 +76,40 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
 
     private void initData() {
         Intent intent = getIntent();
-        articleBean = intent.getParcelableExtra(TAG);
-
         try {
+            videoHeaderData = intent.getParcelableExtra(TAG);
             String url = intent.getStringExtra("url");
             if (!TextUtils.isEmpty(url)) {
                 ImageLoader.loadCenterCrop(this, url, iv_image_url, R.color.viewBackground);
             }
+            this.groupId = videoHeaderData.getGroup_id() + "";
+            this.itemId = videoHeaderData.getItem_id() + "";
+            this.videoId = videoHeaderData.getVideo_id();
+            this.videoTitle = videoHeaderData.getTitle();
+            oldItems.add(videoHeaderData);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-
-        this.groupId = articleBean.getGroup_id() + "";
-        this.itemId = articleBean.getItem_id() + "";
-        this.videoId = articleBean.getVideo_id();
-        this.videoTitle = articleBean.getTitle();
-
-        adapter.setBean(articleBean);
     }
 
     private void initView() {
         iv_image_url = (ImageView) findViewById(R.id.iv_image_url);
-        fab_play = (FloatingActionButton) findViewById(R.id.fab_play);
-        fab_play.setOnClickListener(this);
-        fab_play.setBackgroundTintList(ColorStateList.valueOf(SettingsUtil.getInstance().getColor()));
+        fabPlay = (FloatingActionButton) findViewById(R.id.fab_play);
+        fabPlay.setOnClickListener(this);
+        fabPlay.setBackgroundTintList(ColorStateList.valueOf(SettingsUtil.getInstance().getColor()));
 
-        recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
-        recycler_view.setHasFixedSize(true);
-        recycler_view.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new VideoContentAdapter(this);
-        recycler_view.setAdapter(adapter);
-        adapter.setOnItemClickListener(new IOnItemClickListener() {
+        adapter = new MultiTypeAdapter(oldItems);
+        Register.registerVideoContentItem(adapter);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new OnLoadMoreListener() {
             @Override
-            public void onClick(View view, int position) {
-                showCopyDialog(position);
+            public void onLoadMore() {
+                canLoadMore = false;
+                presenter.doLoadMoreData();
             }
         });
     }
@@ -148,28 +145,16 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onSetAdapter(final List<?> list) {
-        List<NewsCommentMobileBean.DataBean.CommentBean> oldList = adapter.getList();
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWS_COMMENT), true);
+        Items newItems = new Items();
+        newItems.add(videoHeaderData);
+        newItems.addAll(list);
+        newItems.add(new FooterBean());
+        DiffCallback diffCallback = new DiffCallback(oldItems, newItems, DiffCallback.NEWS_COMMENT);
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallback, true);
         result.dispatchUpdatesTo(adapter);
-        adapter.setList((List<NewsCommentMobileBean.DataBean.CommentBean>) list);
-
-        canLoading = true;
-
-        recycler_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!recyclerView.canScrollVertically(1)) {
-                        if (canLoading) {
-                            presenter.doLoadMoreData();
-                            canLoading = false;
-                        }
-                    }
-                }
-            }
-        });
+        oldItems.clear();
+        oldItems.addAll(newItems);
+        canLoadMore = true;
     }
 
     @Override
@@ -199,7 +184,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onShowNoMore() {
-        Snackbar.make(fab_play, R.string.no_more_comment, Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(fabPlay, R.string.no_more_comment, Snackbar.LENGTH_INDEFINITE).show();
     }
 
     @Override
@@ -222,35 +207,5 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
             return;
         }
         super.onBackPressed();
-    }
-
-    private void showCopyDialog(final int position) {
-        final String content = presenter.doGetCopyContent(position);
-
-        final BottomSheetDialog dialog = new BottomSheetDialog(this);
-        View view = getLayoutInflater().inflate(R.layout.item_comment_action_sheet, null);
-        view.findViewById(R.id.layout_copy_text).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ClipboardManager copy = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clipData = ClipData.newPlainText("text", content);
-                copy.setPrimaryClip(clipData);
-                Snackbar.make(recycler_view, R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
-        });
-        view.findViewById(R.id.layout_share_text).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent shareIntent = new Intent()
-                        .setAction(Intent.ACTION_SEND)
-                        .setType("text/plain")
-                        .putExtra(Intent.EXTRA_TEXT, content);
-                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
-                dialog.dismiss();
-            }
-        });
-        dialog.setContentView(view);
-        dialog.show();
     }
 }

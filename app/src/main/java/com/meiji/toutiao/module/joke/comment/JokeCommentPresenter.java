@@ -7,10 +7,8 @@ import com.meiji.toutiao.bean.joke.JokeCommentBean;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -40,7 +38,7 @@ class JokeCommentPresenter implements IJokeComment.Presenter {
             if (-1 == this.count) {
                 this.count = Integer.parseInt(jokeId_Count[1]);
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -53,31 +51,20 @@ class JokeCommentPresenter implements IJokeComment.Presenter {
                         return jokeCommentBean.getData().getRecent_comments();
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
                 .compose(view.<List<JokeCommentBean.DataBean.RecentCommentsBean>>bindToLife())
-                .subscribe(new Observer<List<JokeCommentBean.DataBean.RecentCommentsBean>>() {
+                .subscribe(new Consumer<List<JokeCommentBean.DataBean.RecentCommentsBean>>() {
                     @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        view.onShowLoading();
-                    }
-
-                    @Override
-                    public void onNext(@NonNull List<JokeCommentBean.DataBean.RecentCommentsBean> recentCommentsBeen) {
+                    public void accept(@NonNull List<JokeCommentBean.DataBean.RecentCommentsBean> recentCommentsBeen) throws Exception {
                         if (recentCommentsBeen.size() > 0) {
                             doSetAdapter(recentCommentsBeen);
                         } else {
                             doShowNoMore();
                         }
                     }
-
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void onError(@NonNull Throwable e) {
-                        doShowNetError();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        view.onShowNetError();
                     }
                 });
     }
@@ -114,10 +101,5 @@ class JokeCommentPresenter implements IJokeComment.Presenter {
     public void doShowNoMore() {
         view.onHideLoading();
         view.onShowNoMore();
-    }
-
-    @Override
-    public String doGetCopyContent(int position) {
-        return commentsList.get(position).getText();
     }
 }

@@ -85,8 +85,8 @@ public class DiffCallback extends DiffUtil.Callback {
                     return ((WendaContentBean.AnsListBean) oldList.get(oldItemPosition)).getAnsid().equals(
                             ((WendaContentBean.AnsListBean) newList.get(newItemPosition)).getAnsid());
             }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+//            e.printStackTrace();
         }
         return false;
     }
@@ -111,8 +111,8 @@ public class DiffCallback extends DiffUtil.Callback {
                     return ((MediaArticleBean.DataBean) oldList.get(oldItemPosition)).getSource_url().equals(
                             ((MediaArticleBean.DataBean) newList.get(newItemPosition)).getSource_url());
                 case NEWS_COMMENT:
-                    return ((NewsCommentMobileBean.DataBean.CommentBean) oldList.get(oldItemPosition)).getId() ==
-                            ((NewsCommentMobileBean.DataBean.CommentBean) newList.get(newItemPosition)).getId();
+                    return ((NewsCommentMobileBean.DataBean.CommentBean) oldList.get(oldItemPosition)).getUser_name().equals(
+                            ((NewsCommentMobileBean.DataBean.CommentBean) newList.get(newItemPosition)).getUser_name());
                 case JOKE_COMMENT:
                     return ((JokeCommentBean.DataBean.RecentCommentsBean) oldList.get(oldItemPosition)).getId() ==
                             ((JokeCommentBean.DataBean.RecentCommentsBean) newList.get(newItemPosition)).getId();
@@ -126,8 +126,8 @@ public class DiffCallback extends DiffUtil.Callback {
                     return ((WendaContentBean.AnsListBean) oldList.get(oldItemPosition)).getAns_url().equals(
                             ((WendaContentBean.AnsListBean) newList.get(newItemPosition)).getAns_url());
             }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+//            e.printStackTrace();
         }
         return false;
     }

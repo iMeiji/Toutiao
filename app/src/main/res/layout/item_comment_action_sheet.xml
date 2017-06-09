@@ -16,11 +16,11 @@
     <LinearLayout
         android:id="@+id/layout_copy_text"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="?attr/actionBarSize"
         android:background="?attr/selectableItemBackground"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="4dp">
 
         <ImageView
             android:layout_width="24dp"
@@ -37,7 +37,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:gravity="center_vertical"
-            android:text="@string/copy_comment"
+            android:text="@string/copy_content"
             android:textColor="@color/textColorPrimary"/>
 
     </LinearLayout>
@@ -45,11 +45,11 @@
     <LinearLayout
         android:id="@+id/layout_share_text"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="?attr/actionBarSize"
         android:background="?attr/selectableItemBackground"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="4dp">
 
         <ImageView
             android:layout_width="24dp"
@@ -66,7 +66,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:gravity="center_vertical"
-            android:text="@string/share_comment"
+            android:text="@string/share_content"
             android:textColor="@color/textColorPrimary"/>
 
     </LinearLayout>

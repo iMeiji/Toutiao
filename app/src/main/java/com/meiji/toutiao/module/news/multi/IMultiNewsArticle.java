@@ -19,7 +19,6 @@ public interface IMultiNewsArticle {
          */
         void onLoadData();
 
-
         /**
          * 刷新
          */
@@ -43,9 +42,9 @@ public interface IMultiNewsArticle {
          */
         void doSetAdapter(List<MultiNewsArticleDataBean> dataBeen);
 
-        /**
-         * 点击事件跳转
-         */
-        void doOnClickItem(int position);
+//        /**
+//         * 点击事件跳转
+//         */
+//        void doOnClickItem(int position);
     }
 }

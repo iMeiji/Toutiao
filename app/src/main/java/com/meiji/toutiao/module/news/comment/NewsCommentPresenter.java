@@ -7,10 +7,8 @@ import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -41,8 +39,7 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
             if (null == this.itemId) {
                 this.itemId = groupId_ItemId[1];
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
         }
 
         RetrofitFactory.getRetrofit().create(IMobileNewsApi.class)
@@ -59,32 +56,21 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
                         return data;
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
                 .compose(view.<List<NewsCommentMobileBean.DataBean.CommentBean>>bindToLife())
-                .subscribe(new Observer<List<NewsCommentMobileBean.DataBean.CommentBean>>() {
+                .subscribe(new Consumer<List<NewsCommentMobileBean.DataBean.CommentBean>>() {
                     @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(@NonNull List<NewsCommentMobileBean.DataBean.CommentBean> commentBeen) {
-                        if (commentBeen.size() > 0) {
-                            doSetAdapter(commentBeen);
+                    public void accept(@NonNull List<NewsCommentMobileBean.DataBean.CommentBean> list) throws Exception {
+                        if (list.size() > 0) {
+                            doSetAdapter(list);
                         } else {
                             doShowNoMore();
                         }
                     }
-
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void onError(@NonNull Throwable e) {
-                        e.printStackTrace();
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
                         doShowNetError();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
                     }
                 });
     }
@@ -121,10 +107,5 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
     public void doShowNoMore() {
         view.onHideLoading();
         view.onShowNoMore();
-    }
-
-    @Override
-    public String doGetCopyContent(int position) {
-        return commentsBeanList.get(position).getText();
     }
 }

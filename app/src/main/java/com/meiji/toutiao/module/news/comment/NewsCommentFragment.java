@@ -1,47 +1,36 @@
 package com.meiji.toutiao.module.news.comment;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.util.DiffUtil;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
-import com.meiji.toutiao.adapter.news.NewsCommentAdapter;
-import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
-import com.meiji.toutiao.interfaces.IOnItemClickListener;
-import com.meiji.toutiao.module.base.BaseFragment;
+import com.meiji.toutiao.bean.FooterBean;
+import com.meiji.toutiao.module.base.BaseListFragment;
+import com.meiji.toutiao.utils.OnLoadMoreListener;
 import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.List;
+
+import me.drakeet.multitype.Items;
+import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
  * Created by Meiji on 2017/2/28.
  */
 
-public class NewsCommentFragment extends BaseFragment<INewsComment.Presenter> implements SwipeRefreshLayout.OnRefreshListener, INewsComment.View {
+public class NewsCommentFragment extends BaseListFragment<INewsComment.Presenter> implements INewsComment.View {
 
     private static final String GROUP_ID = "groupId";
     private static final String ITEM_ID = "itemId";
     private static final String TAG = "NewsCommentFragment";
     private String groupId;
     private String itemId;
-    private NewsCommentAdapter adapter;
-    private RecyclerView recycler_view;
-    private SwipeRefreshLayout refresh_layout;
-    private Toolbar toolbar;
-    private INewsComment.Presenter presenter;
-    private boolean canLoading;
 
     public static NewsCommentFragment newInstance(String groupId, String itemId) {
         NewsCommentFragment instance = new NewsCommentFragment();
@@ -54,7 +43,7 @@ public class NewsCommentFragment extends BaseFragment<INewsComment.Presenter> im
 
     @Override
     protected int attachLayoutId() {
-        return R.layout.fragment_news_comment;
+        return R.layout.fragment_list_toolbar;
     }
 
     @Override
@@ -67,34 +56,27 @@ public class NewsCommentFragment extends BaseFragment<INewsComment.Presenter> im
 
     @Override
     protected void initViews(View view) {
-        recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view_comment);
-        recycler_view.setHasFixedSize(true);
-        recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout_comment);
-        // 设置下拉刷新的按钮的颜色
-        refresh_layout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
-        refresh_layout.setOnRefreshListener(this);
-
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        super.initViews(view);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, getString(R.string.title_comment));
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recycler_view.smoothScrollToPosition(0);
+                recyclerView.smoothScrollToPosition(0);
             }
         });
         toolbar.setBackgroundColor(SettingsUtil.getInstance().getColor());
 
-        adapter = new NewsCommentAdapter(getActivity());
-        recycler_view.setAdapter(adapter);
-        adapter.setOnItemClickListener(new IOnItemClickListener() {
+        adapter = new MultiTypeAdapter(oldItems);
+        Register.registerNewsCommentItem(adapter);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new OnLoadMoreListener() {
             @Override
-            public void onClick(View view, int position) {
-                showCopyDialog(position);
+            public void onLoadMore() {
+                canLoadMore = false;
+                presenter.doLoadMoreData();
             }
         });
-
         setHasOptionsMenu(true);
     }
 
@@ -110,82 +92,14 @@ public class NewsCommentFragment extends BaseFragment<INewsComment.Presenter> im
 
     @Override
     public void onSetAdapter(final List<?> list) {
-        List<NewsCommentMobileBean.DataBean.CommentBean> oldList = adapter.getList();
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWS_COMMENT), true);
+        Items newItems = new Items(list);
+        newItems.add(new FooterBean());
+        DiffCallback diffCallback = new DiffCallback(oldItems, newItems, DiffCallback.NEWS_COMMENT);
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallback, true);
         result.dispatchUpdatesTo(adapter);
-        adapter.setList((List<NewsCommentMobileBean.DataBean.CommentBean>) list);
-
-        canLoading = true;
-
-        recycler_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!recyclerView.canScrollVertically(1)) {
-                        if (canLoading) {
-                            presenter.doLoadMoreData();
-                            canLoading = false;
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    private void showCopyDialog(final int position) {
-        final String content = presenter.doGetCopyContent(position);
-
-        final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
-        View view = getActivity().getLayoutInflater().inflate(R.layout.item_comment_action_sheet, null);
-        view.findViewById(R.id.layout_copy_text).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ClipboardManager copy = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clipData = ClipData.newPlainText("text", content);
-                copy.setPrimaryClip(clipData);
-                Snackbar.make(refresh_layout, R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
-        });
-        view.findViewById(R.id.layout_share_text).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent shareIntent = new Intent()
-                        .setAction(Intent.ACTION_SEND)
-                        .setType("text/plain")
-                        .putExtra(Intent.EXTRA_TEXT, content);
-                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
-                dialog.dismiss();
-            }
-        });
-        dialog.setContentView(view);
-        dialog.show();
-    }
-
-    @Override
-    public void onShowLoading() {
-        refresh_layout.post(new Runnable() {
-            @Override
-            public void run() {
-                refresh_layout.setRefreshing(true);
-            }
-        });
-    }
-
-    @Override
-    public void onHideLoading() {
-        refresh_layout.post(new Runnable() {
-            @Override
-            public void run() {
-                refresh_layout.setRefreshing(false);
-            }
-        });
-    }
-
-    @Override
-    public void onShowNetError() {
-        Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT).show();
+        oldItems.clear();
+        oldItems.addAll(newItems);
+        canLoadMore = true;
     }
 
     @Override
@@ -206,6 +120,11 @@ public class NewsCommentFragment extends BaseFragment<INewsComment.Presenter> im
 
     @Override
     public void onShowNoMore() {
-        Snackbar.make(refresh_layout, R.string.no_more_comment, Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(swipeRefreshLayout, R.string.no_more_comment, Snackbar.LENGTH_INDEFINITE).show();
+    }
+
+    @Override
+    public void fetchData() {
+
     }
 }
