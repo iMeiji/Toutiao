@@ -15,6 +15,8 @@ import com.meiji.toutiao.bean.wenda.WendaContentBean;
 
 import java.util.List;
 
+import me.drakeet.multitype.MultiTypeAdapter;
+
 /**
  * Created by Meiji on 2017/4/18.
  */
@@ -38,6 +40,12 @@ public class DiffCallback extends DiffUtil.Callback {
         this.oldList = oldList;
         this.newList = newList;
         this.type = type;
+    }
+
+    public static void notifyDataSetChanged(List oldList, List newList, int type, MultiTypeAdapter adapter) {
+        DiffCallback diffCallback = new DiffCallback(oldList, newList, type);
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallback, true);
+        result.dispatchUpdatesTo(adapter);
     }
 
     @Override

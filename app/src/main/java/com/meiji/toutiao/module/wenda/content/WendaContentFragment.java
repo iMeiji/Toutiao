@@ -3,10 +3,6 @@ package com.meiji.toutiao.module.wenda.content;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.util.DiffUtil;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,29 +10,30 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
-import com.meiji.toutiao.adapter.wenda.WendaContentAdapter;
+import com.meiji.toutiao.bean.FooterBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
-import com.meiji.toutiao.interfaces.IOnItemClickListener;
-import com.meiji.toutiao.module.base.BaseFragment;
+import com.meiji.toutiao.module.base.BaseListFragment;
+import com.meiji.toutiao.utils.OnLoadMoreListener;
 import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.List;
+
+import me.drakeet.multitype.Items;
+import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
  * Created by Meiji on 2017/5/22.
  */
 
-public class WendaContentFragment extends BaseFragment<IWendaContent.Presenter> implements IWendaContent.View, SwipeRefreshLayout.OnRefreshListener {
+public class WendaContentFragment extends BaseListFragment<IWendaContent.Presenter> implements IWendaContent.View {
 
     private static final String TAG = "WendaContentFragment";
-    private RecyclerView recycler_view;
-    private SwipeRefreshLayout refresh_layout;
-    private WendaContentAdapter adapter;
-    private boolean canLoading = false;
     private String qid;
     private String shareTitle;
     private String shareUrl;
+    private WendaContentBean.QuestionBean WendaContentHeaderBean;
 
     public static WendaContentFragment newInstance(String qid) {
         Bundle args = new Bundle();
@@ -44,37 +41,6 @@ public class WendaContentFragment extends BaseFragment<IWendaContent.Presenter> 
         WendaContentFragment fragment = new WendaContentFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onShowLoading() {
-        refresh_layout.post(new Runnable() {
-            @Override
-            public void run() {
-                refresh_layout.setRefreshing(true);
-            }
-        });
-    }
-
-    @Override
-    public void onHideLoading() {
-        refresh_layout.post(new Runnable() {
-            @Override
-            public void run() {
-                refresh_layout.setRefreshing(false);
-            }
-        });
-    }
-
-    @Override
-    public void onShowNetError() {
-        Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT)
-                .setAction(R.string.retry, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        presenter.doLoadMoreData();
-                    }
-                }).show();
     }
 
     @Override
@@ -86,27 +52,14 @@ public class WendaContentFragment extends BaseFragment<IWendaContent.Presenter> 
 
     @Override
     public void onSetAdapter(List<?> list) {
-        List<WendaContentBean.AnsListBean> oldList = adapter.getList();
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.WENDA_CONTENT), true);
-        result.dispatchUpdatesTo(adapter);
-        adapter.setList((List<WendaContentBean.AnsListBean>) list);
-
-        canLoading = true;
-
-        recycler_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!recyclerView.canScrollVertically(1)) {
-                        if (canLoading) {
-                            presenter.doLoadMoreData();
-                            canLoading = false;
-                        }
-                    }
-                }
-            }
-        });
+        Items newItems = new Items();
+        newItems.add(WendaContentHeaderBean);
+        newItems.addAll(list);
+        newItems.add(new FooterBean());
+        DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.WENDA_CONTENT, adapter);
+        oldItems.clear();
+        oldItems.addAll(newItems);
+        canLoadMore = true;
     }
 
     @Override
@@ -116,37 +69,30 @@ public class WendaContentFragment extends BaseFragment<IWendaContent.Presenter> 
 
     @Override
     protected void initViews(View view) {
+        super.initViews(view);
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        initToolBar(toolbar, true, "问答");
-        recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
-        recycler_view.setHasFixedSize(true);
-        recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
+        initToolBar(toolbar, true, getString(R.string.title_wenda));
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recycler_view.smoothScrollToPosition(0);
+                recyclerView.smoothScrollToPosition(0);
             }
         });
-        refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
-        refresh_layout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
-        refresh_layout.setOnRefreshListener(this);
+        toolbar.setBackgroundColor(SettingsUtil.getInstance().getColor());
 
-        adapter = new WendaContentAdapter(getActivity());
-        recycler_view.setAdapter(adapter);
-        adapter.setOnItemClickListener(new IOnItemClickListener() {
+        adapter = new MultiTypeAdapter(oldItems);
+        Register.registerWendaContentItem(adapter);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new OnLoadMoreListener() {
             @Override
-            public void onClick(View view, int position) {
-                presenter.doOnClickItem(position);
+            public void onLoadMore() {
+                if (canLoadMore) {
+                    canLoadMore = false;
+                    presenter.doLoadMoreData();
+                }
             }
         });
-
         setHasOptionsMenu(true);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        refresh_layout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
     }
 
     @Override
@@ -163,7 +109,7 @@ public class WendaContentFragment extends BaseFragment<IWendaContent.Presenter> 
 
     @Override
     public void onRefresh() {
-        recycler_view.smoothScrollToPosition(0);
+        recyclerView.smoothScrollToPosition(0);
         presenter.doRefresh();
     }
 
@@ -171,12 +117,24 @@ public class WendaContentFragment extends BaseFragment<IWendaContent.Presenter> 
     public void onSetHeader(WendaContentBean.QuestionBean questionBean) {
         this.shareTitle = questionBean.getShare_data().getTitle();
         this.shareUrl = questionBean.getShare_data().getShare_url();
-        adapter.setHeader(questionBean);
+        this.WendaContentHeaderBean = questionBean;
     }
 
     @Override
     public void onShowNoMore() {
-        Snackbar.make(refresh_layout, R.string.no_more_content, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(swipeRefreshLayout, R.string.no_more_comment, Snackbar.LENGTH_SHORT).show();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (oldItems.size() > 0) {
+                    Items newItems = new Items(oldItems);
+                    newItems.remove(newItems.size() - 1);
+                    adapter.setItems(newItems);
+                    adapter.notifyDataSetChanged();
+                }
+                canLoadMore = false;
+            }
+        });
     }
 
     @Override
@@ -195,5 +153,10 @@ public class WendaContentFragment extends BaseFragment<IWendaContent.Presenter> 
             startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void fetchData() {
+
     }
 }

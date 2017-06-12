@@ -41,10 +41,5 @@ public interface IWendaArticle {
          * 设置适配器
          */
         void doSetAdapter(List<WendaArticleDataBean> list);
-
-        /**
-         * 点击事件跳转
-         */
-        void doOnClickItem(int position);
     }
 }

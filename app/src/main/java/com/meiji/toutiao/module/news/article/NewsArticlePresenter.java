@@ -1,41 +1,43 @@
 package com.meiji.toutiao.module.news.article;
 
-import android.util.Log;
+import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.RetrofitFactory;
-import com.meiji.toutiao.api.INewsApi;
-import com.meiji.toutiao.bean.news.NewsArticleBean;
-import com.meiji.toutiao.module.news.content.NewsContentActivity;
+import com.meiji.toutiao.api.IMobileNewsApi;
+import com.meiji.toutiao.bean.news.MultiNewsArticleBean;
+import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.utils.NetWorkUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import io.reactivex.Observable;
-import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Created by Meiji on 2016/12/15.
+ * Created by Meiji on 2017/5/18.
  */
-@Deprecated
-class NewsArticlePresenter implements INewsArticle.Presenter {
+
+public class NewsArticlePresenter implements INewsArticle.Presenter {
 
     private static final String TAG = "NewsArticlePresenter";
     private INewsArticle.View view;
-    private List<NewsArticleBean.DataBean> dataList = new ArrayList<>();
+    private List<MultiNewsArticleDataBean> dataList = new ArrayList<>();
     private String category;
     private int time;
+    private Gson gson = new Gson();
 
     NewsArticlePresenter(INewsArticle.View view) {
         this.view = view;
+        this.time = (int) (new Date(System.currentTimeMillis()).getTime() / 1000);
     }
 
     private int getRandom() {
@@ -57,7 +59,7 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
             if (this.category == null) {
                 this.category = category[0];
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -66,37 +68,47 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
             dataList.clear();
         }
 
-        // 因为删除了部分新闻 故使用2个请求
-        Observable<NewsArticleBean> ob1 = RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsArticle1(this.category, time);
-        Observable<NewsArticleBean> ob2 = RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsArticle2(this.category, getRandom());
+        Observable<MultiNewsArticleBean> ob1 = RetrofitFactory.getRetrofit().create(IMobileNewsApi.class)
+                .getNewsArticle(this.category, this.time);
+        Observable<MultiNewsArticleBean> ob2 = RetrofitFactory.getRetrofit().create(IMobileNewsApi.class)
+                .getNewsArticle2(this.category, this.time);
 
         Observable.merge(ob1, ob2)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .flatMap(new Function<NewsArticleBean, Observable<NewsArticleBean.DataBean>>() {
+                .flatMap(new Function<MultiNewsArticleBean, Observable<MultiNewsArticleDataBean>>() {
                     @Override
-                    public Observable<NewsArticleBean.DataBean> apply(@NonNull NewsArticleBean newsArticleBean) throws Exception {
-                        List<NewsArticleBean.DataBean> data = newsArticleBean.getData();
-                        // 移除最后一项 数据有重复
-                        if (data.size() > 0)
-                            data.remove(data.size() - 1);
-                        time = newsArticleBean.getNext().getMax_behot_time();
-                        return Observable.fromIterable(data);
+                    public Observable<MultiNewsArticleDataBean> apply(@NonNull MultiNewsArticleBean multiNewsArticleBean) throws Exception {
+                        List<MultiNewsArticleDataBean> dataList = new ArrayList<>();
+                        for (MultiNewsArticleBean.DataBean dataBean : multiNewsArticleBean.getData()) {
+                            dataList.add(gson.fromJson(dataBean.getContent(), MultiNewsArticleDataBean.class));
+                        }
+                        return Observable.fromIterable(dataList);
                     }
                 })
-                .filter(new Predicate<NewsArticleBean.DataBean>() {
+                .filter(new Predicate<MultiNewsArticleDataBean>() {
                     @Override
-                    public boolean test(@NonNull NewsArticleBean.DataBean dataBean) throws Exception {
-                        // 删除广告等等
-                        if (dataBean.getSource().contains("头条问答")
-                                || dataBean.getTag().contains("ad")
-                                || dataBean.isHas_video()
-                                || dataBean.getSource().contains("话题")) {
+                    public boolean test(@NonNull MultiNewsArticleDataBean multiNewsArticleDataBean) throws Exception {
+                        time = multiNewsArticleDataBean.getBehot_time();
+                        if (TextUtils.isEmpty(multiNewsArticleDataBean.getSource())) {
                             return false;
                         }
-                        // 去除重复新闻
-                        for (NewsArticleBean.DataBean bean : dataList) {
-                            if (dataBean.getTitle().equals(bean.getTitle())) {
+                        try {
+                            if (multiNewsArticleDataBean.getSource().contains("头条问答")
+                                    || multiNewsArticleDataBean.getTag().contains("ad")
+                                    || multiNewsArticleDataBean.getSource().contains("话题")) {
+                                return false;
+                            }
+                            // 过滤头条问答新闻
+                            if (multiNewsArticleDataBean.getMedia_info() == null) {
+                                return false;
+                            }
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
+                        // 过滤重复新闻(与上次刷新的数据比较)
+                        for (MultiNewsArticleDataBean bean : dataList) {
+                            if (bean.getTitle().equals(multiNewsArticleDataBean.getTitle())) {
                                 return false;
                             }
                         }
@@ -104,23 +116,32 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
                     }
                 })
                 .toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(view.<List<NewsArticleBean.DataBean>>bindToLife())
-                .subscribe(new SingleObserver<List<NewsArticleBean.DataBean>>() {
+                .map(new Function<List<MultiNewsArticleDataBean>, List<MultiNewsArticleDataBean>>() {
                     @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
+                    public List<MultiNewsArticleDataBean> apply(@NonNull List<MultiNewsArticleDataBean> list) throws Exception {
+                        // 过滤重复新闻(与本次刷新的数据比较,因为使用了2个请求,数据会有重复)
+                        for (int i = 0; i < list.size() - 1; i++) {
+                            for (int j = list.size() - 1; j > i; j--) {
+                                if (list.get(j).getTitle().equals(list.get(i).getTitle())) {
+                                    list.remove(j);
+                                }
+                            }
+                        }
+                        return list;
                     }
-
+                })
+                .compose(view.<List<MultiNewsArticleDataBean>>bindToLife())
+                .subscribe(new Consumer<List<MultiNewsArticleDataBean>>() {
                     @Override
-                    public void onSuccess(@NonNull List<NewsArticleBean.DataBean> dataBeen) {
-                        doSetAdapter(dataBeen);
+                    public void accept(@NonNull List<MultiNewsArticleDataBean> list) throws Exception {
+                        doSetAdapter(list);
                     }
-
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void onError(@NonNull Throwable e) {
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
                         if (NetWorkUtil.isNetworkConnected(InitApp.AppContext)) {
-                            doRefresh();
+                            view.onRefresh();
                         } else {
                             doShowNetError();
                         }
@@ -134,8 +155,8 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
     }
 
     @Override
-    public void doSetAdapter(List<NewsArticleBean.DataBean> dataBeen) {
-        dataList.addAll(dataBeen);
+    public void doSetAdapter(List<MultiNewsArticleDataBean> list) {
+        dataList.addAll(list);
         view.onSetAdapter(dataList);
         view.onHideLoading();
     }
@@ -144,7 +165,7 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
     public void doRefresh() {
         if (dataList.size() != 0) {
             dataList.clear();
-            time = 0;
+            time = (int) (new Date(System.currentTimeMillis()).getTime() / 1000);
         }
         doLoadData();
     }
@@ -155,11 +176,52 @@ class NewsArticlePresenter implements INewsArticle.Presenter {
         view.onShowNetError();
     }
 
-    @Override
-    public void doOnClickItem(int position) {
-        NewsArticleBean.DataBean bean = dataList.get(position);
-        NewsContentActivity.launch(bean);
-        // 打印下点击的标题和链接
-        Log.d(TAG, "doOnClickItem: " + "点击的标题和链接---" + bean.getTitle() + "  " + bean.getDisplay_url());
-    }
+//    @Override
+//    public void doOnClickItem(final int position) {
+//        Observable.create(new ObservableOnSubscribe<Object>() {
+//            @Override
+//            public void subscribe(@NonNull ObservableEmitter<Object> e) throws Exception {
+//                MultiNewsArticleDataBean bean = dataList.get(position);
+//                if (bean.isHas_video()) {
+//                    VideoArticleBean.DataBean dataBean = new VideoArticleBean.DataBean();
+//                    dataBean.setTitle(bean.getTitle());
+//                    dataBean.setGroup_id(bean.getGroup_id());
+//                    dataBean.setItem_id(bean.getGroup_id());
+//                    dataBean.setVideo_id(bean.getVideo_id());
+//                    dataBean.setAbstractX(bean.getAbstractX());
+//                    dataBean.setSource(bean.getSource());
+//                    dataBean.setVideo_duration_str(bean.getVideo_duration() / 60 + "");
+//                    String url = bean.getVideo_detail_info().getDetail_video_large_image().getUrl();
+//                    Log.d(TAG, "doOnClickItem: " + url);
+//                    VideoContentActivity.launch(dataBean, url);
+//                } else {
+//                    NewsArticleBean.DataBean dataBean = new NewsArticleBean.DataBean();
+//                    dataBean.setDisplay_url(bean.getDisplay_url());
+//                    dataBean.setTitle(bean.getTitle());
+//                    dataBean.setMedia_name(bean.getMedia_name());
+//                    if (bean.getMedia_info() != null) {
+//                        dataBean.setMedia_url("http://toutiao.com/m" + bean.getMedia_info().getMedia_id());
+//                    }
+//                    dataBean.setGroup_id(bean.getGroup_id());
+//                    dataBean.setItem_id(bean.getGroup_id());
+//                    NewsContentActivity.launch(dataBean);
+//                }
+//                Log.d(TAG, "doOnClickItem: " + bean.getTitle());
+//                Log.d(TAG, "doOnClickItem: " + bean.getDisplay_url());
+//            }
+//        }).subscribeOn(Schedulers.io())
+//                .observeOn(Schedulers.io())
+//                .compose(view.bindToLife())
+//                .subscribe(new Consumer<Object>() {
+//                    @Override
+//                    public void accept(@NonNull Object o) throws Exception {
+//
+//                    }
+//                }, new Consumer<Throwable>() {
+//                    @Override
+//                    public void accept(@NonNull Throwable throwable) throws Exception {
+//
+//                    }
+//                });
+//    }
 }

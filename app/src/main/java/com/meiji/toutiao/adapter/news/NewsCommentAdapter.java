@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Created by Meiji on 2016/12/20.
  */
-
+@Deprecated
 public class NewsCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_NORMAL = 0;

@@ -14,7 +14,6 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -50,7 +49,7 @@ public class WendaDetailPresenter implements IWendaDetail.Presenter {
         RetrofitFactory.getRetrofit().create(IMobileWendaApi.class)
                 .getWendaAnsDetail(url)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .subscribe(new Consumer<ResponseBody>() {
                     @Override
                     public void accept(@NonNull ResponseBody responseBody) throws Exception {
@@ -97,7 +96,6 @@ public class WendaDetailPresenter implements IWendaDetail.Presenter {
                         return data;
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
                 .compose(view.<List<NewsCommentMobileBean.DataBean.CommentBean>>bindToLife())
                 .subscribe(new Consumer<List<NewsCommentMobileBean.DataBean.CommentBean>>() {
                     @Override

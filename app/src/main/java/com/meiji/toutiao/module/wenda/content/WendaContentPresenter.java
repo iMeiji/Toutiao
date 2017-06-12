@@ -6,13 +6,11 @@ import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileWendaApi;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
-import com.meiji.toutiao.module.wenda.detail.WendaDetailActivity;
 import com.meiji.toutiao.utils.NetWorkUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -59,7 +57,7 @@ class WendaContentPresenter implements IWendaContent.Presenter {
 
         RetrofitFactory.getRetrofit().create(IMobileWendaApi.class).getWendaNiceContent(qid)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .subscribe(new Consumer<WendaContentBean>() {
                     @Override
                     public void accept(@NonNull WendaContentBean wendaContentBean) throws Exception {
@@ -87,7 +85,7 @@ class WendaContentPresenter implements IWendaContent.Presenter {
             RetrofitFactory.getRetrofit().create(IMobileWendaApi.class)
                     .getWendaNiceContentLoadMore(qid, niceOffset)
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(Schedulers.io())
                     .subscribe(new Consumer<WendaContentBean>() {
                         @Override
                         public void accept(@NonNull WendaContentBean wendaContentBean) throws Exception {
@@ -109,7 +107,7 @@ class WendaContentPresenter implements IWendaContent.Presenter {
             RetrofitFactory.getRetrofit().create(IMobileWendaApi.class)
                     .getWendaNormalContentLoadMore(qid, normalOffset)
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(Schedulers.io())
                     .subscribe(new Consumer<WendaContentBean>() {
                         @Override
                         public void accept(@NonNull WendaContentBean wendaContentBean) throws Exception {
@@ -134,6 +132,9 @@ class WendaContentPresenter implements IWendaContent.Presenter {
 
     @Override
     public void doSetAdapter(List<WendaContentBean.AnsListBean> list) {
+        for (WendaContentBean.AnsListBean bean : list) {
+            bean.setTitle(this.title);
+        }
         ansList.addAll(list);
         view.onSetAdapter(ansList);
         view.onHideLoading();
@@ -151,13 +152,5 @@ class WendaContentPresenter implements IWendaContent.Presenter {
     public void doShowNoMore() {
         view.onHideLoading();
         view.onShowNoMore();
-    }
-
-    @Override
-    public void doOnClickItem(int position) {
-        WendaContentBean.AnsListBean ansListBean = ansList.get(position);
-        ansListBean.setTitle(this.title);
-        WendaDetailActivity.launch(ansListBean);
-        Log.d(TAG, "doOnClickItem: " + ansList.get(position).getShare_data().getShare_url());
     }
 }

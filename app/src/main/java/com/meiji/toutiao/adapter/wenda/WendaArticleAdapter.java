@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created by Meiji on 2017/5/21.
  */
-
+@Deprecated
 public class WendaArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_THREE_IMAGE = 0;
@@ -71,7 +71,7 @@ public class WendaArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_THREE_IMAGE) {
-            View view = LayoutInflater.from(context).inflate(R.layout.item_wenda_article_three_image, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_wenda_article_three_pic, parent, false);
             return new ThreeImageViewHolder(view, onItemClickListener);
         }
         if (viewType == TYPE_FOOTER) {
@@ -79,11 +79,11 @@ public class WendaArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return new FooterViewHolder(view);
         }
         if (viewType == TYPE_LARGE_IMAGE) {
-            View view = LayoutInflater.from(context).inflate(R.layout.item_wenda_article_large_image, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_wenda_article_one_pic, parent, false);
             return new LargeImageViewHolder(view, onItemClickListener);
         }
         if (viewType == TYPE_NO_IMAGE) {
-            View view = LayoutInflater.from(context).inflate(R.layout.item_wenda_article_no_image, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.item_wenda_article_no_pic, parent, false);
             return new NoImageViewHolder(view, onItemClickListener);
         }
         return null;

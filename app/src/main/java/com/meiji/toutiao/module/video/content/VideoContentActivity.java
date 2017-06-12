@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -108,8 +107,10 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
         recyclerView.addOnScrollListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                canLoadMore = false;
-                presenter.doLoadMoreData();
+                if (canLoadMore) {
+                    canLoadMore = false;
+                    presenter.doLoadMoreData();
+                }
             }
         });
     }
@@ -149,9 +150,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
         newItems.add(videoHeaderData);
         newItems.addAll(list);
         newItems.add(new FooterBean());
-        DiffCallback diffCallback = new DiffCallback(oldItems, newItems, DiffCallback.NEWS_COMMENT);
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallback, true);
-        result.dispatchUpdatesTo(adapter);
+        DiffCallback.notifyDataSetChanged(newItems, newItems, DiffCallback.NEWS_COMMENT, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;
@@ -184,7 +183,20 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onShowNoMore() {
-        Snackbar.make(fabPlay, R.string.no_more_comment, Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(fabPlay, R.string.no_more_comment, Snackbar.LENGTH_LONG).show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // 保留显示 Header
+                if (oldItems.size() > 1) {
+                    Items newItems = new Items(oldItems);
+                    newItems.remove(newItems.size() - 1);
+                    adapter.setItems(newItems);
+                    adapter.notifyDataSetChanged();
+                }
+                canLoadMore = false;
+            }
+        });
     }
 
     @Override

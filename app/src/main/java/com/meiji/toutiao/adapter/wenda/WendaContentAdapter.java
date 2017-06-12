@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by Meiji on 2017/5/22.
  */
-
+@Deprecated
 public class WendaContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_HEADER = 0;

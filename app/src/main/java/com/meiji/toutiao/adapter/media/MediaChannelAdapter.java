@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by Meiji on 2017/4/9.
  */
-
+@Deprecated
 public class MediaChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<MediaChannelBean> list = new ArrayList<>();
@@ -66,10 +66,7 @@ public class MediaChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         MediaChannelViewHolder(View itemView, IOnItemClickListener onItemClickListener) {
             super(itemView);
-            this.cv_avatar = (CircleImageView) itemView.findViewById(R.id.cv_avatar);
-            this.tv_mediaName = (TextView) itemView.findViewById(R.id.tv_mediaName);
-            this.tv_followCount = (TextView) itemView.findViewById(R.id.tv_followCount);
-            this.tv_descText = (TextView) itemView.findViewById(R.id.tv_descText);
+
             this.onItemClickListener = onItemClickListener;
             itemView.setOnClickListener(this);
         }

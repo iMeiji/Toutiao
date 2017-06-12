@@ -10,7 +10,6 @@ import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -28,9 +27,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
-import com.meiji.toutiao.adapter.news.NewsCommentAdapter;
-import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
+import com.meiji.toutiao.bean.FooterBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.utils.ImageLoader;
@@ -38,6 +37,9 @@ import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.List;
+
+import me.drakeet.multitype.Items;
+import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
  * Created by Meiji on 2017/5/23.
@@ -58,9 +60,10 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
     private CircleImageView iv_user_avatar;
     private TextView tv_user_name;
     private TextView tv_like_count;
-    private RecyclerView recycler_view;
-    private NewsCommentAdapter adapter;
-    private boolean canLoading;
+    private RecyclerView recyclerView;
+    private MultiTypeAdapter adapter;
+    private boolean canLoadMore;
+    private Items oldItems = new Items();
 
     public static WendaDetailFragment newInstance(Parcelable bean) {
         Bundle args = new Bundle();
@@ -90,7 +93,19 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
 
     @Override
     public void onShowNoMore() {
-        Snackbar.make(scrollView, R.string.no_more_comment, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(scrollView, R.string.no_more_comment, Snackbar.LENGTH_SHORT).show();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (oldItems.size() > 0) {
+                    Items newItems = new Items(oldItems);
+                    newItems.remove(newItems.size() - 1);
+                    adapter.setItems(newItems);
+                    adapter.notifyDataSetChanged();
+                }
+                canLoadMore = false;
+            }
+        });
     }
 
     @Override
@@ -106,6 +121,14 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
     @Override
     public void onShowNetError() {
         Snackbar.make(scrollView, R.string.network_error, Snackbar.LENGTH_SHORT).show();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.setItems(new Items());
+                adapter.notifyDataSetChanged();
+                canLoadMore = false;
+            }
+        });
     }
 
     @Override
@@ -117,28 +140,13 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
 
     @Override
     public void onSetAdapter(List<?> list) {
-        List<NewsCommentMobileBean.DataBean.CommentBean> oldList = adapter.getList();
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.NEWS_COMMENT), true);
-        result.dispatchUpdatesTo(adapter);
-        adapter.setList((List<NewsCommentMobileBean.DataBean.CommentBean>) list);
-
-        canLoading = true;
-        recycler_view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-
-        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                View view = scrollView.getChildAt(scrollView.getChildCount() - 1);
-
-                int diff = (view.getBottom() - (scrollView.getHeight() + scrollView
-                        .getScrollY()));
-
-                if (diff == 0) {
-                    presenter.doLoadMoreComment();
-                    canLoading = false;
-                }
-            }
-        });
+        Items newItems = new Items(list);
+        newItems.add(new FooterBean());
+        DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.NEWS_COMMENT, adapter);
+        oldItems.clear();
+        oldItems.addAll(newItems);
+        canLoadMore = true;
+        recyclerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
     }
 
     @Override
@@ -149,22 +157,45 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
     @Override
     protected void initViews(View view) {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        initToolBar(toolbar, true, "");
         webView = (WebView) view.findViewById(R.id.webview_content);
         scrollView = (NestedScrollView) view.findViewById(R.id.scrollView);
-        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                progressBar.setVisibility(View.GONE);
-            }
-        });
+        progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
+        tv_title = (TextView) view.findViewById(R.id.tv_title);
+        iv_user_avatar = (CircleImageView) view.findViewById(R.id.iv_user_avatar);
+        tv_user_name = (TextView) view.findViewById(R.id.tv_user_name);
+        tv_like_count = (TextView) view.findViewById(R.id.tv_like_count);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+
+        initToolBar(toolbar, true, "");
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 scrollView.smoothScrollTo(0, 0);
             }
         });
-        progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
+
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                View view = scrollView.getChildAt(scrollView.getChildCount() - 1);
+
+                int diff = (view.getBottom() - (scrollView.getHeight() + scrollView
+                        .getScrollY()));
+
+                if (diff == 0) {
+                    canLoadMore = false;
+                    presenter.doLoadMoreComment();
+                }
+            }
+        });
+
         int color = SettingsUtil.getInstance().getColor();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
@@ -175,19 +206,14 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
         }
         progressBar.setVisibility(View.VISIBLE);
 
-        tv_title = (TextView) view.findViewById(R.id.tv_title);
-        iv_user_avatar = (CircleImageView) view.findViewById(R.id.iv_user_avatar);
-        tv_user_name = (TextView) view.findViewById(R.id.tv_user_name);
-        tv_like_count = (TextView) view.findViewById(R.id.tv_like_count);
-
-        recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
-        recycler_view.setHasFixedSize(true);
-        recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         // 禁止嵌套滚动
-        recycler_view.setNestedScrollingEnabled(false);
+        recyclerView.setNestedScrollingEnabled(false);
 
-        adapter = new NewsCommentAdapter(getActivity());
-        recycler_view.setAdapter(adapter);
+        adapter = new MultiTypeAdapter(oldItems);
+        Register.registerNewsCommentItem(adapter);
+        recyclerView.setAdapter(adapter);
 
         setHasOptionsMenu(true);
         initWebClient();

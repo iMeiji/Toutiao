@@ -20,10 +20,8 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -67,34 +65,22 @@ class MediaArticlePresenter implements IMediaArticle.Presenter {
                         return mediaArticleBean.getData();
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
                 .compose(view.<List<MediaArticleBean.DataBean>>bindToLife())
-                .subscribe(new Observer<List<MediaArticleBean.DataBean>>() {
+                .subscribe(new Consumer<List<MediaArticleBean.DataBean>>() {
                     @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(@NonNull List<MediaArticleBean.DataBean> dataBeen) {
+                    public void accept(@NonNull List<MediaArticleBean.DataBean> dataBeen) throws Exception {
                         if (dataBeen.size() > 0) {
                             doSetAdapter(dataBeen);
                         } else {
                             doShowNoMore();
                         }
                     }
-
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void onError(@NonNull Throwable e) {
+                    public void accept(@NonNull Throwable throwable) throws Exception {
                         doShowNetError();
                     }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
                 });
-
     }
 
     @Override
@@ -179,7 +165,7 @@ class MediaArticlePresenter implements IMediaArticle.Presenter {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        view.onShowNetError();
+                        doShowNetError();
                     }
                 });
     }

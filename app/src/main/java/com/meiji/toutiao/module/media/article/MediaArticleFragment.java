@@ -5,11 +5,8 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.util.DiffUtil;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.adapter.media.MediaArticleAdapter;
@@ -25,8 +21,9 @@ import com.meiji.toutiao.bean.media.MediaArticleBean;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
 import com.meiji.toutiao.database.dao.MediaChannelDao;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
-import com.meiji.toutiao.module.base.BaseFragment;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.module.base.BaseListFragment;
+import com.meiji.toutiao.utils.ImageLoader;
+import com.meiji.toutiao.utils.OnLoadMoreListener;
 import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.List;
@@ -35,18 +32,15 @@ import java.util.List;
  * Created by Meiji on 2017/4/11.
  */
 
-public class MediaArticleFragment extends BaseFragment<IMediaArticle.Presenter> implements IMediaArticle.View, SwipeRefreshLayout.OnRefreshListener {
+public class MediaArticleFragment extends BaseListFragment<IMediaArticle.Presenter> implements IMediaArticle.View {
 
     private static final String TAG = "MediaArticleFragment";
-    private RecyclerView recycler_view;
-    private SwipeRefreshLayout refresh_layout;
     private CollapsingToolbarLayout collapsing_toolbar;
     private TextView tv_title;
     private TextView tv_descText;
     private CircleImageView cv_avatar;
     private MediaArticleAdapter adapter;
     private MediaChannelBean bean;
-    private boolean canLoading = false;
     private boolean canDelete = false;
 
     public static MediaArticleFragment newInstance(Parcelable parcelable) {
@@ -65,8 +59,7 @@ public class MediaArticleFragment extends BaseFragment<IMediaArticle.Presenter> 
     @Override
     protected void initData() {
         bean = getArguments().getParcelable(TAG);
-
-        Glide.with(getActivity()).load(bean.getAvatar()).crossFade().centerCrop().into(cv_avatar);
+        ImageLoader.loadCenterCrop(getContext(), bean.getAvatar(), cv_avatar, R.color.viewBackground);
         collapsing_toolbar.setTitle(bean.getName());
         tv_title.setText(bean.getName());
         tv_descText.setText(bean.getDescText());
@@ -76,21 +69,13 @@ public class MediaArticleFragment extends BaseFragment<IMediaArticle.Presenter> 
 
     @Override
     protected void initViews(View view) {
-        recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
-        recycler_view.setHasFixedSize(true);
-        recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
-        // 设置下拉刷新的按钮的颜色
-        refresh_layout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
-        refresh_layout.setOnRefreshListener(this);
-
+        super.initViews(view);
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, "");
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recycler_view.smoothScrollToPosition(0);
+                recyclerView.smoothScrollToPosition(0);
             }
         });
 
@@ -102,11 +87,20 @@ public class MediaArticleFragment extends BaseFragment<IMediaArticle.Presenter> 
         tv_descText = (TextView) view.findViewById(R.id.tv_descText);
 
         adapter = new MediaArticleAdapter(getActivity());
-        recycler_view.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new IOnItemClickListener() {
             @Override
             public void onClick(View view, int position) {
                 presenter.doOnClickItem(position, bean);
+            }
+        });
+        recyclerView.addOnScrollListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                if (canLoadMore) {
+                    canLoadMore = false;
+                    presenter.doLoadMoreData();
+                }
             }
         });
 
@@ -121,51 +115,16 @@ public class MediaArticleFragment extends BaseFragment<IMediaArticle.Presenter> 
     @Override
     public void onSetAdapter(final List<?> list) {
         List<MediaArticleBean.DataBean> oldList = adapter.getList();
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffCallback(oldList, list, DiffCallback.MEDIA), true);
+        DiffCallback diffCallback = new DiffCallback(oldList, list, DiffCallback.MEDIA);
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallback, true);
         result.dispatchUpdatesTo(adapter);
         adapter.setList((List<MediaArticleBean.DataBean>) list);
-
-        canLoading = true;
-
-        recycler_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!recyclerView.canScrollVertically(1)) {
-                        if (canLoading) {
-                            presenter.doLoadMoreData();
-                            canLoading = false;
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onShowLoading() {
-        refresh_layout.post(new Runnable() {
-            @Override
-            public void run() {
-                refresh_layout.setRefreshing(true);
-            }
-        });
-    }
-
-    @Override
-    public void onHideLoading() {
-        refresh_layout.post(new Runnable() {
-            @Override
-            public void run() {
-                refresh_layout.setRefreshing(false);
-            }
-        });
+        canLoadMore = true;
     }
 
     @Override
     public void onShowNetError() {
-        Snackbar.make(refresh_layout, R.string.network_error, Snackbar.LENGTH_SHORT)
+        Snackbar.make(swipeRefreshLayout, R.string.network_error, Snackbar.LENGTH_LONG)
                 .setAction(R.string.retry, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -205,7 +164,7 @@ public class MediaArticleFragment extends BaseFragment<IMediaArticle.Presenter> 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         canDelete = true;
-                        Snackbar.make(recycler_view, getString(R.string.action_unfollow_media_success), Snackbar.LENGTH_LONG)
+                        Snackbar.make(swipeRefreshLayout, getString(R.string.action_unfollow_media_success), Snackbar.LENGTH_LONG)
                                 .setAction(getString(R.string.undo), new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -238,6 +197,23 @@ public class MediaArticleFragment extends BaseFragment<IMediaArticle.Presenter> 
 
     @Override
     public void onShowNoMore() {
-        Snackbar.make(refresh_layout, R.string.no_more_content, Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(swipeRefreshLayout, R.string.no_more_content, Snackbar.LENGTH_SHORT).show();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (oldItems.size() > 1) {
+                    List<MediaArticleBean.DataBean> oldList = adapter.getList();
+                    oldList.remove(oldList.size() - 2);
+                    adapter.setList(oldList);
+                    adapter.notifyDataSetChanged();
+                }
+                canLoadMore = false;
+            }
+        });
+    }
+
+    @Override
+    public void fetchData() {
+
     }
 }

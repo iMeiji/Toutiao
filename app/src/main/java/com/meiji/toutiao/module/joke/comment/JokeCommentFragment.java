@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -62,8 +61,10 @@ public class JokeCommentFragment extends BaseListFragment<IJokeComment.Presenter
         recyclerView.addOnScrollListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                canLoadMore = false;
-                presenter.doLoadMoreData();
+                if (canLoadMore) {
+                    canLoadMore = false;
+                    presenter.doLoadMoreData();
+                }
             }
         });
         setHasOptionsMenu(true);
@@ -125,9 +126,7 @@ public class JokeCommentFragment extends BaseListFragment<IJokeComment.Presenter
         newItems.add(jokeCommentHeaderBean);
         newItems.addAll(list);
         newItems.add(new FooterBean());
-        DiffCallback diffCallback = new DiffCallback(oldItems, newItems, DiffCallback.JOKE_COMMENT);
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallback, true);
-        result.dispatchUpdatesTo(adapter);
+        DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.JOKE_COMMENT, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;
@@ -142,7 +141,20 @@ public class JokeCommentFragment extends BaseListFragment<IJokeComment.Presenter
 
     @Override
     public void onShowNoMore() {
-        Snackbar.make(swipeRefreshLayout, R.string.no_more_comment, Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(swipeRefreshLayout, R.string.no_more_comment, Snackbar.LENGTH_LONG).show();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (oldItems.size() > 1) {
+                    // 保留显示 Header
+                    Items newItems = new Items(oldItems);
+                    newItems.remove(newItems.size() - 1);
+                    adapter.setItems(newItems);
+                    adapter.notifyDataSetChanged();
+                }
+                canLoadMore = false;
+            }
+        });
     }
 
     @Override

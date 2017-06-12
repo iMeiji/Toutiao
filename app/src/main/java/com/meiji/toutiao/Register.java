@@ -5,19 +5,30 @@ import android.support.annotation.NonNull;
 import com.meiji.toutiao.bean.FooterBean;
 import com.meiji.toutiao.bean.joke.JokeCommentBean;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
+import com.meiji.toutiao.bean.media.MediaChannelBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
+import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
+import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
+import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.binder.FooterViewBinder;
 import com.meiji.toutiao.binder.joke.JokeCommentHeaderViewBinder;
 import com.meiji.toutiao.binder.joke.JokeCommentViewBinder;
 import com.meiji.toutiao.binder.joke.JokeContentViewBinder;
+import com.meiji.toutiao.binder.media.MediaChannelViewBinder;
 import com.meiji.toutiao.binder.news.NewsArticleHasVideoViewBinder;
 import com.meiji.toutiao.binder.news.NewsArticleNoPicViewBinder;
 import com.meiji.toutiao.binder.news.NewsArticleViewBinder;
 import com.meiji.toutiao.binder.news.NewsCommentViewBinder;
+import com.meiji.toutiao.binder.photo.PhotoArticleViewBinder;
 import com.meiji.toutiao.binder.video.VideoArticleViewBinder;
 import com.meiji.toutiao.binder.video.VideoContentHeaderViewBinder;
+import com.meiji.toutiao.binder.wenda.WendaArticleNoPicViewBinder;
+import com.meiji.toutiao.binder.wenda.WendaArticleOnePicViewBinder;
+import com.meiji.toutiao.binder.wenda.WendaArticleThreePicViewBinder;
+import com.meiji.toutiao.binder.wenda.WendaContentHeaderViewBinder;
+import com.meiji.toutiao.binder.wenda.WendaContentViewBinder;
 
 import me.drakeet.multitype.ClassLinker;
 import me.drakeet.multitype.ItemViewBinder;
@@ -29,7 +40,7 @@ import me.drakeet.multitype.MultiTypeAdapter;
 
 public class Register {
 
-    public static void registerNewsItem(MultiTypeAdapter adapter) {
+    public static void registerNewsArticleItem(MultiTypeAdapter adapter) {
         // 一个类型对应多个 ItemViewBinder
         adapter.register(MultiNewsArticleDataBean.class)
                 .to(new NewsArticleViewBinder(),
@@ -76,5 +87,42 @@ public class Register {
         adapter.register(JokeContentBean.DataBean.GroupBean.class, new JokeCommentHeaderViewBinder());
         adapter.register(JokeCommentBean.DataBean.RecentCommentsBean.class, new JokeCommentViewBinder());
         adapter.register(FooterBean.class, new FooterViewBinder());
+    }
+
+    public static void registerPhotoArticleItem(MultiTypeAdapter adapter) {
+        adapter.register(PhotoArticleBean.DataBean.class, new PhotoArticleViewBinder());
+        adapter.register(FooterBean.class, new FooterViewBinder());
+    }
+
+    public static void registerWendaArticleItem(MultiTypeAdapter adapter) {
+        // 一个类型对应多个 ItemViewBinder
+        adapter.register(WendaArticleDataBean.class)
+                .to(new WendaArticleNoPicViewBinder(),
+                        new WendaArticleOnePicViewBinder(),
+                        new WendaArticleThreePicViewBinder())
+                .withClassLinker(new ClassLinker<WendaArticleDataBean>() {
+                    @NonNull
+                    @Override
+                    public Class<? extends ItemViewBinder<WendaArticleDataBean, ?>> index(@NonNull WendaArticleDataBean item) {
+                        if (item.getExtraBean().getWenda_image().getThree_image_list().size() > 0) {
+                            return WendaArticleThreePicViewBinder.class;
+                        }
+                        if (item.getExtraBean().getWenda_image().getLarge_image_list().size() > 0) {
+                            return WendaArticleOnePicViewBinder.class;
+                        }
+                        return WendaArticleNoPicViewBinder.class;
+                    }
+                });
+        adapter.register(FooterBean.class, new FooterViewBinder());
+    }
+
+    public static void registerWendaContentItem(MultiTypeAdapter adapter) {
+        adapter.register(WendaContentBean.QuestionBean.class, new WendaContentHeaderViewBinder());
+        adapter.register(WendaContentBean.AnsListBean.class, new WendaContentViewBinder());
+        adapter.register(FooterBean.class, new FooterViewBinder());
+    }
+
+    public static void registerMediaChannelItem(MultiTypeAdapter adapter) {
+        adapter.register(MediaChannelBean.class, new MediaChannelViewBinder());
     }
 }

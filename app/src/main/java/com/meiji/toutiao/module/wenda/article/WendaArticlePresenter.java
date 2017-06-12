@@ -8,7 +8,6 @@ import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileWendaApi;
 import com.meiji.toutiao.bean.wenda.WendaArticleBean;
 import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
-import com.meiji.toutiao.module.wenda.content.WendaContentActivity;
 import com.meiji.toutiao.utils.NetWorkUtil;
 
 import java.util.ArrayList;
@@ -16,10 +15,8 @@ import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
@@ -100,21 +97,15 @@ class WendaArticlePresenter implements IWendaArticle.Presenter {
                 })
                 .toList()
                 .compose(view.<List<WendaArticleDataBean>>bindToLife())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<WendaArticleDataBean>>() {
+                .subscribe(new Consumer<List<WendaArticleDataBean>>() {
                     @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(@NonNull List<WendaArticleDataBean> wendaArticleDataBeen) {
+                    public void accept(@NonNull List<WendaArticleDataBean> wendaArticleDataBeen) throws Exception {
                         doSetAdapter(wendaArticleDataBeen);
                     }
-
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void onError(@NonNull Throwable e) {
-                        e.printStackTrace();
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        throwable.printStackTrace();
                         if (NetWorkUtil.isNetworkConnected(InitApp.AppContext)) {
                             view.onRefresh();
                         } else {
@@ -149,10 +140,5 @@ class WendaArticlePresenter implements IWendaArticle.Presenter {
         dataList.addAll(list);
         view.onSetAdapter(dataList);
         view.onHideLoading();
-    }
-
-    @Override
-    public void doOnClickItem(int position) {
-        WendaContentActivity.launch(dataList.get(position).getQuestionBean().getQid() + "");
     }
 }

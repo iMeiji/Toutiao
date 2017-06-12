@@ -61,6 +61,14 @@ public abstract class BaseListFragment<T extends IBasePresenter> extends LazyLoa
     @Override
     public void onShowNetError() {
         Snackbar.make(swipeRefreshLayout, R.string.network_error, Snackbar.LENGTH_SHORT).show();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.setItems(new Items());
+                adapter.notifyDataSetChanged();
+                canLoadMore = false;
+            }
+        });
     }
 
     @Override

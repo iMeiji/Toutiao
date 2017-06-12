@@ -61,10 +61,5 @@ public interface IWendaContent {
          * 加载完毕
          */
         void doShowNoMore();
-
-        /**
-         * 点击事件跳转
-         */
-        void doOnClickItem(int position);
     }
 }

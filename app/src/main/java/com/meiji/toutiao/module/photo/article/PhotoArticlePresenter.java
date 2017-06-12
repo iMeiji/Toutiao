@@ -3,17 +3,14 @@ package com.meiji.toutiao.module.photo.article;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IPhotoApi;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
-import com.meiji.toutiao.module.photo.content.PhotoContentActivity;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.SingleObserver;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
@@ -73,25 +70,18 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
                     }
                 })
                 .toList()
-                .observeOn(AndroidSchedulers.mainThread())
                 .compose(view.<List<PhotoArticleBean.DataBean>>bindToLife())
-                .subscribe(new SingleObserver<List<PhotoArticleBean.DataBean>>() {
+                .subscribe(new Consumer<List<PhotoArticleBean.DataBean>>() {
                     @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
+                    public void accept(@NonNull List<PhotoArticleBean.DataBean> list) throws Exception {
+                        doSetAdapter(list);
                     }
-
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void onSuccess(@NonNull List<PhotoArticleBean.DataBean> dataBeen) {
-                        doSetAdapter(dataBeen);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
+                    public void accept(@NonNull Throwable throwable) throws Exception {
                         doShowNetError();
                     }
                 });
-
     }
 
     @Override
@@ -123,10 +113,5 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
     public void doShowNetError() {
         view.onHideLoading();
         view.onShowNetError();
-    }
-
-    @Override
-    public void doOnClickItem(int position) {
-        PhotoContentActivity.launch(dataList.get(position));
     }
 }

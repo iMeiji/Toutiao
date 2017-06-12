@@ -44,6 +44,7 @@
     <string name="title_comment">评论</string>
     <string name="title_about">关于</string>
     <string name="title_media">头条号</string>
+    <string name="title_wenda">问答</string>
 
     <!-- Bottom Sheet List -->
     <string name="copy_content">复制内容</string>
@@ -111,5 +112,6 @@
     <string name="nav_share">分享</string>
     <string name="video_landscape">视频横屏</string>
     <string name="video_landscape_summary">开启后强制横屏播放视频(能自动旋转就别开)</string>
+
 
 </resources>

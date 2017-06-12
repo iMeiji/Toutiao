@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by Meiji on 2017/1/2.
  */
-
+@Deprecated
 public class JokeCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_HEADER = 0;

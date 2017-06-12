@@ -2,7 +2,6 @@ package com.meiji.toutiao.module.video.article;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.util.DiffUtil;
 import android.view.View;
 
 import com.meiji.toutiao.Register;
@@ -47,8 +46,10 @@ public class VideoArticleView extends BaseListFragment<IVideoArticle.Presenter> 
         recyclerView.addOnScrollListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                canLoadMore = false;
-                presenter.doLoadMoreData();
+                if (canLoadMore) {
+                    canLoadMore = false;
+                    presenter.doLoadMoreData();
+                }
             }
         });
     }
@@ -73,9 +74,7 @@ public class VideoArticleView extends BaseListFragment<IVideoArticle.Presenter> 
     public void onSetAdapter(final List<?> list) {
         Items newItems = new Items(list);
         newItems.add(new FooterBean());
-        DiffCallback diffCallback = new DiffCallback(oldItems, newItems, DiffCallback.VIDEO);
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallback, true);
-        result.dispatchUpdatesTo(adapter);
+        DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.VIDEO, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;

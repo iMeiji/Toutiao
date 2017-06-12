@@ -1,6 +1,5 @@
 package com.meiji.toutiao.module.joke.content;
 
-import android.support.v7.util.DiffUtil;
 import android.view.View;
 
 import com.meiji.toutiao.Register;
@@ -38,8 +37,10 @@ public class JokeContentView extends BaseListFragment<IJokeContent.Presenter> im
         recyclerView.addOnScrollListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                canLoadMore = false;
-                presenter.doLoadMoreData();
+                if (canLoadMore) {
+                    canLoadMore = false;
+                    presenter.doLoadMoreData();
+                }
             }
         });
     }
@@ -64,9 +65,7 @@ public class JokeContentView extends BaseListFragment<IJokeContent.Presenter> im
     public void onSetAdapter(List<?> list) {
         Items newItems = new Items(list);
         newItems.add(new FooterBean());
-        DiffCallback diffCallback = new DiffCallback(oldItems, newItems, DiffCallback.JOKE);
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallback, true);
-        result.dispatchUpdatesTo(adapter);
+        DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.JOKE, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;

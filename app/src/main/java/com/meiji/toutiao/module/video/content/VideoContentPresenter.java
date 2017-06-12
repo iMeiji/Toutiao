@@ -11,7 +11,6 @@ import com.meiji.toutiao.module.news.comment.NewsCommentPresenter;
 import java.util.Random;
 import java.util.zip.CRC32;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -86,7 +85,6 @@ public class VideoContentPresenter extends NewsCommentPresenter implements IVide
                         return null;
                     }
                 })
-                .observeOn(AndroidSchedulers.mainThread())
                 .compose(view.<String>bindToLife())
                 .subscribe(new Consumer<String>() {
                     @Override

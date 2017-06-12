@@ -14,14 +14,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.adapter.media.MediaChannelAdapter;
+import com.meiji.toutiao.Register;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
 import com.meiji.toutiao.database.dao.MediaChannelDao;
-import com.meiji.toutiao.interfaces.IOnItemClickListener;
-import com.meiji.toutiao.module.media.article.MediaArticleActivity;
 import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.List;
+
+import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
  * Created by Meiji on 2016/12/24.
@@ -31,9 +31,9 @@ public class MediaChannelView extends Fragment implements SwipeRefreshLayout.OnR
 
     private static final String TAG = "MediaChannelView";
     private static MediaChannelView instance = null;
-    private RecyclerView recycler_view;
-    private SwipeRefreshLayout refresh_layout;
-    private MediaChannelAdapter adapter;
+    private RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private MultiTypeAdapter adapter;
     private MediaChannelDao dao = new MediaChannelDao();
     private TextView tv_desc;
     private String isFirstTime = "isFirstTime";
@@ -57,7 +57,7 @@ public class MediaChannelView extends Fragment implements SwipeRefreshLayout.OnR
     @Override
     public void onResume() {
         super.onResume();
-        refresh_layout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
+        swipeRefreshLayout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
         initData();
     }
 
@@ -70,14 +70,9 @@ public class MediaChannelView extends Fragment implements SwipeRefreshLayout.OnR
         }
 
         final List<MediaChannelBean> list = dao.queryAll();
-        adapter = new MediaChannelAdapter(list, getActivity());
-        recycler_view.setAdapter(adapter);
-        adapter.setOnItemClickListener(new IOnItemClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                MediaArticleActivity.startActivity(list.get(position));
-            }
-        });
+        adapter = new MultiTypeAdapter(list);
+        Register.registerMediaChannelItem(adapter);
+        recyclerView.setAdapter(adapter);
         if (list.size() == 0) {
             tv_desc.setVisibility(View.VISIBLE);
         } else {
@@ -86,21 +81,21 @@ public class MediaChannelView extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     private void initView(View view) {
-        recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
-        recycler_view.setHasFixedSize(true);
-        recycler_view.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
-        refresh_layout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
-        refresh_layout.setOnRefreshListener(this);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
+        swipeRefreshLayout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
+        swipeRefreshLayout.setOnRefreshListener(this);
         tv_desc = (TextView) view.findViewById(R.id.tv_desc);
     }
 
     @Override
     public void onRefresh() {
-        refresh_layout.setRefreshing(true);
+        swipeRefreshLayout.setRefreshing(true);
         initData();
-        refresh_layout.setRefreshing(false);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
