@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -115,9 +114,7 @@ public class MediaArticleFragment extends BaseListFragment<IMediaArticle.Present
     @Override
     public void onSetAdapter(final List<?> list) {
         List<MediaArticleBean.DataBean> oldList = adapter.getList();
-        DiffCallback diffCallback = new DiffCallback(oldList, list, DiffCallback.MEDIA);
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallback, true);
-        result.dispatchUpdatesTo(adapter);
+        DiffCallback.notifyDataSetChanged(oldList, list, DiffCallback.MEDIA, adapter);
         adapter.setList((List<MediaArticleBean.DataBean>) list);
         canLoadMore = true;
     }

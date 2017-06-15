@@ -28,6 +28,7 @@ import com.meiji.toutiao.module.media.channel.MediaChannelView;
 import com.meiji.toutiao.module.news.NewsTabLayout;
 import com.meiji.toutiao.module.photo.PhotoTabLayout;
 import com.meiji.toutiao.module.search.SearchActivity;
+import com.meiji.toutiao.module.search.wip.SearchActivity2;
 import com.meiji.toutiao.module.video.VideoTabLayout;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.widget.helper.BottomNavigationViewHelper;
@@ -205,8 +206,16 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
-        setSearchView(menu);
+//        setSearchView(menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_search) {
+            startActivity(new Intent(MainActivity.this, SearchActivity2.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setSearchView(final Menu menu) {
@@ -218,7 +227,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 new ComponentName(getApplicationContext(), SearchActivity.class));
         searchView.setSearchableInfo(searchableInfo);
         searchView.setQueryHint(getString(R.string.search_hint));
-        //searchItem.setActionView(searchView);
+        // searchItem.setActionView(searchView);
 
         // 按一次返回键关闭searchView
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
@@ -236,8 +245,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 // Do something when action item collapses
                 content_main.setVisibility(View.VISIBLE);
-//                menu.findItem(R.id.aciton_setting).setVisible(true);
-//                menu.findItem(R.id.action_switch_night_mode).setVisible(true);
                 return true;     //Return true to collapse action view
             }
 
@@ -245,8 +252,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             public boolean onMenuItemActionExpand(MenuItem item) {
                 // Do something when expanded
                 content_main.setVisibility(View.GONE);
-//                menu.findItem(R.id.aciton_setting).setVisible(false);
-//                menu.findItem(R.id.action_switch_night_mode).setVisible(false);
                 return true;      // Return true to expand action view
             }
         });

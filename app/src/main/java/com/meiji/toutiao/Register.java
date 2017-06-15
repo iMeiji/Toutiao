@@ -9,10 +9,12 @@ import com.meiji.toutiao.bean.media.MediaChannelBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
+import com.meiji.toutiao.bean.search.SearchBean;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.binder.FooterViewBinder;
+import com.meiji.toutiao.binder.SearchViewBinder;
 import com.meiji.toutiao.binder.joke.JokeCommentHeaderViewBinder;
 import com.meiji.toutiao.binder.joke.JokeCommentViewBinder;
 import com.meiji.toutiao.binder.joke.JokeContentViewBinder;
@@ -124,5 +126,10 @@ public class Register {
 
     public static void registerMediaChannelItem(MultiTypeAdapter adapter) {
         adapter.register(MediaChannelBean.class, new MediaChannelViewBinder());
+    }
+
+    public static void registerSearchItem(MultiTypeAdapter adapter) {
+        adapter.register(SearchBean.DataBeanX.class, new SearchViewBinder());
+        adapter.register(FooterBean.class, new FooterViewBinder());
     }
 }

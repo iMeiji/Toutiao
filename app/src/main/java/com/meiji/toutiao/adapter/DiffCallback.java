@@ -1,6 +1,7 @@
 package com.meiji.toutiao.adapter;
 
 import android.support.v7.util.DiffUtil;
+import android.support.v7.widget.RecyclerView;
 
 import com.meiji.toutiao.bean.joke.JokeCommentBean;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
@@ -9,13 +10,12 @@ import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
+import com.meiji.toutiao.bean.search.SearchBean;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 
 import java.util.List;
-
-import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
  * Created by Meiji on 2017/4/18.
@@ -33,6 +33,7 @@ public class DiffCallback extends DiffUtil.Callback {
     public static final int MUlTI_NEWS = 7;
     public static final int WENDA_ARTICLE = 8;
     public static final int WENDA_CONTENT = 9;
+    public static final int SEARCH = 10;
     private List oldList, newList;
     private int type;
 
@@ -42,7 +43,7 @@ public class DiffCallback extends DiffUtil.Callback {
         this.type = type;
     }
 
-    public static void notifyDataSetChanged(List oldList, List newList, int type, MultiTypeAdapter adapter) {
+    public static void notifyDataSetChanged(List oldList, List newList, int type, RecyclerView.Adapter adapter) {
         DiffCallback diffCallback = new DiffCallback(oldList, newList, type);
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallback, true);
         result.dispatchUpdatesTo(adapter);
@@ -92,6 +93,9 @@ public class DiffCallback extends DiffUtil.Callback {
                 case WENDA_CONTENT:
                     return ((WendaContentBean.AnsListBean) oldList.get(oldItemPosition)).getAnsid().equals(
                             ((WendaContentBean.AnsListBean) newList.get(newItemPosition)).getAnsid());
+                case SEARCH:
+                    return ((SearchBean.DataBeanX) oldList.get(oldItemPosition)).getTitle().equals(
+                            ((SearchBean.DataBeanX) newList.get(newItemPosition)).getTitle());
             }
         } catch (Exception e) {
 //            e.printStackTrace();
@@ -130,9 +134,9 @@ public class DiffCallback extends DiffUtil.Callback {
                 case WENDA_ARTICLE:
                     return ((WendaArticleDataBean) oldList.get(oldItemPosition)).getQuestionBean().getContent().equals(
                             ((WendaArticleDataBean) newList.get(newItemPosition)).getQuestionBean().getContent());
-                case WENDA_CONTENT:
-                    return ((WendaContentBean.AnsListBean) oldList.get(oldItemPosition)).getAns_url().equals(
-                            ((WendaContentBean.AnsListBean) newList.get(newItemPosition)).getAns_url());
+                case SEARCH:
+                    return ((SearchBean.DataBeanX) oldList.get(oldItemPosition)).getAbstractX().equals(
+                            ((SearchBean.DataBeanX) newList.get(newItemPosition)).getAbstractX());
             }
         } catch (Exception e) {
 //            e.printStackTrace();
