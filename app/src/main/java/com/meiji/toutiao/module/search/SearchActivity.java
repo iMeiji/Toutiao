@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.module.base.BaseActivity;
 
+@Deprecated
 public class SearchActivity extends BaseActivity {
 
     @Override

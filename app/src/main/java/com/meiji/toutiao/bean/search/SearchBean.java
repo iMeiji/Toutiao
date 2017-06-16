@@ -275,9 +275,9 @@ public class SearchBean {
         private int cell_type;
         private String id_str;
         private String ala_src;
-        private DataBean data;
+        //        private DataBean data;
         private long id;
-        private DisplayBean display;
+        //        private DisplayBean display;
         private String media_name;
         private int repin_count;
         private int ban_comment;
@@ -332,7 +332,7 @@ public class SearchBean {
         private String video_duration_str;
         private int group_flags;
         private int gallery_pic_count;
-        private List<String> tokens;
+        //        private List<String> tokens;
         private List<ImageListBean> image_list;
         private List<QueriesBean> queries;
 
@@ -360,13 +360,13 @@ public class SearchBean {
             this.ala_src = ala_src;
         }
 
-        public DataBean getData() {
-            return data;
-        }
-
-        public void setData(DataBean data) {
-            this.data = data;
-        }
+//        public DataBean getData() {
+//            return data;
+//        }
+//
+//        public void setData(DataBean data) {
+//            this.data = data;
+//        }
 
         public long getId() {
             return id;
@@ -376,13 +376,13 @@ public class SearchBean {
             this.id = id;
         }
 
-        public DisplayBean getDisplay() {
-            return display;
-        }
-
-        public void setDisplay(DisplayBean display) {
-            this.display = display;
-        }
+//        public DisplayBean getDisplay() {
+//            return display;
+//        }
+//
+//        public void setDisplay(DisplayBean display) {
+//            this.display = display;
+//        }
 
         public String getMedia_name() {
             return media_name;
@@ -808,13 +808,13 @@ public class SearchBean {
             this.gallery_pic_count = gallery_pic_count;
         }
 
-        public List<String> getTokens() {
-            return tokens;
-        }
-
-        public void setTokens(List<String> tokens) {
-            this.tokens = tokens;
-        }
+//        public List<String> getTokens() {
+//            return tokens;
+//        }
+//
+//        public void setTokens(List<String> tokens) {
+//            this.tokens = tokens;
+//        }
 
         public List<ImageListBean> getImage_list() {
             return image_list;

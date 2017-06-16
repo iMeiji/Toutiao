@@ -37,7 +37,7 @@ public class SearchViewBinder extends ItemViewBinder<SearchBean.DataBeanX, Searc
     protected void onBindViewHolder(@NonNull SearchViewBinder.ViewHolder holder, @NonNull final SearchBean.DataBeanX item) {
         try {
 
-            if (item.getImage_list().size() > 0) {
+            if (item.getImage_list() != null && item.getImage_list().size() > 0) {
                 String url = item.getImage_list().get(0).getUrl();
                 ImageLoader.loadCenterCrop(holder.itemView.getContext(), url, holder.iv_image, R.color.viewBackground);
             }
@@ -68,7 +68,7 @@ public class SearchViewBinder extends ItemViewBinder<SearchBean.DataBeanX, Searc
                 }
             });
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 

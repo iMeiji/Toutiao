@@ -19,7 +19,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by Meiji on 2017/2/7.
  */
-
+@Deprecated
 class SearchPresenter implements ISearch.Presenter {
 
     private static final String TAG = "SearchPresenter";

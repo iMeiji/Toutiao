@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Created by Meiji on 2017/5/9.
  */
-
+@Deprecated
 public class SearchFragment extends BaseFragment<ISearch.Presenter> implements ISearch.View, SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView recycler_view;

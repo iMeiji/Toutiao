@@ -1,5 +1,7 @@
 package com.meiji.toutiao.module.search.wip;
 
+import android.text.TextUtils;
+
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileSearchApi;
 import com.meiji.toutiao.bean.search.SearchBean;
@@ -7,10 +9,13 @@ import com.meiji.toutiao.bean.search.SearchBean;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -45,12 +50,19 @@ class SearchPresenter2 implements ISearch2.Presenter {
                 .getSearchArticle(this.query, curTab, offset)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .map(new Function<SearchBean, List<SearchBean.DataBeanX>>() {
+                .flatMap(new Function<SearchBean, ObservableSource<SearchBean.DataBeanX>>() {
                     @Override
-                    public List<SearchBean.DataBeanX> apply(@NonNull SearchBean searchBean) throws Exception {
-                        return searchBean.getData();
+                    public ObservableSource<SearchBean.DataBeanX> apply(@NonNull SearchBean searchBean) throws Exception {
+                        return Observable.fromIterable(searchBean.getData());
                     }
                 })
+                .filter(new Predicate<SearchBean.DataBeanX>() {
+                    @Override
+                    public boolean test(@NonNull SearchBean.DataBeanX dataBeanX) throws Exception {
+                        return !TextUtils.isEmpty(dataBeanX.getTitle());
+                    }
+                })
+                .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 // OkHttp: <-- HTTP FAILED: java.io.IOException: Canceled
                 // Fragment 生命周期的祸

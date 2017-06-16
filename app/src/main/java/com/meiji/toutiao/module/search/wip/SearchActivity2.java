@@ -19,13 +19,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView;
-import com.jakewharton.rxbinding2.support.v7.widget.SearchViewQueryTextEvent;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
@@ -36,9 +35,7 @@ import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -52,15 +49,15 @@ import io.reactivex.schedulers.Schedulers;
 public class SearchActivity2 extends BaseActivity {
 
     private static final String TAG = "SearchActivity2";
-    private TabLayout tab_layout;
-    private ViewPager view_pager;
-    private BasePagerAdapter adapter;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private BasePagerAdapter pagerAdapter;
     private List<Fragment> fragmentList = new ArrayList<>();
     private String[] titles = new String[]{"综合", "视频", "图集", "用户", "问答"};
     private SearchView searchView;
-    private LinearLayout search_layout;
-    private ListView listview;
-    private MyAdapter myAdapter;
+    private LinearLayout searchLayout;
+    private ListView listView;
+    private SearchAdapter searchAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,22 +69,33 @@ public class SearchActivity2 extends BaseActivity {
     private void initView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         initToolBar(toolbar, true, "");
-        tab_layout = (TabLayout) findViewById(R.id.tab_layout);
-        view_pager = (ViewPager) findViewById(R.id.view_pager);
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
 
-        tab_layout.setBackgroundColor(SettingsUtil.getInstance().getColor());
-        tab_layout.setupWithViewPager(view_pager);
-        tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        search_layout = (LinearLayout) findViewById(R.id.search_layout);
-        listview = (ListView) findViewById(R.id.listview);
+        tabLayout.setBackgroundColor(SettingsUtil.getInstance().getColor());
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        searchLayout = (LinearLayout) findViewById(R.id.search_layout);
+        listView = (ListView) findViewById(R.id.listview);
 
-        myAdapter = new MyAdapter(this, -1);
-        listview.setAdapter(myAdapter);
+        searchAdapter = new SearchAdapter(this, -1);
+        listView.setAdapter(searchAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String keyWord = searchAdapter.getItem(position).getKeyword();
+                Log.d(TAG, "onItemClick: " + keyWord);
+                initData(keyWord);
+                pagerAdapter.notifyDataSetChanged();
+                searchView.clearFocus();
+                searchView.setQuery(keyWord, true);
+            }
+        });
     }
 
     private void initData(String query) {
-        search_layout.setVisibility(View.VISIBLE);
-        listview.setVisibility(View.GONE);
+        searchLayout.setVisibility(View.VISIBLE);
+        listView.setVisibility(View.GONE);
         if (fragmentList.size() > 0) {
             fragmentList.clear();
         }
@@ -95,9 +103,9 @@ public class SearchActivity2 extends BaseActivity {
             fragmentList.add(SearchFragment2.newInstance(query, i + ""));
         }
         Log.d(TAG, "initData: " + query);
-        adapter = new BasePagerAdapter(getSupportFragmentManager(), fragmentList, titles);
-        view_pager.setAdapter(adapter);
-        view_pager.setOffscreenPageLimit(5);
+        pagerAdapter = new BasePagerAdapter(getSupportFragmentManager(), fragmentList, titles);
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.setOffscreenPageLimit(5);
     }
 
     @Override
@@ -112,27 +120,25 @@ public class SearchActivity2 extends BaseActivity {
         searchView.setSearchableInfo(searchableInfo);
         searchView.onActionViewExpanded();
 
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                Log.d(TAG, "onQueryTextSubmit: " + query);
-                initData(query);
-                adapter.notifyDataSetChanged();
+            public boolean onQueryTextSubmit(String keyWord) {
+                Log.d(TAG, "onQueryTextSubmit: " + keyWord);
+                initData(keyWord);
+                pagerAdapter.notifyDataSetChanged();
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-//                getSearchSuggest();
-                if (!TextUtils.isEmpty(newText)) {
-                    getSearchSuggest2(newText);
+            public boolean onQueryTextChange(String keyWord) {
+                if (!TextUtils.isEmpty(keyWord)) {
+                    getSearchSuggest(keyWord);
                 } else {
-                    if (search_layout.getVisibility() != View.GONE) {
-                        search_layout.setVisibility(View.GONE);
+                    if (searchLayout.getVisibility() != View.GONE) {
+                        searchLayout.setVisibility(View.GONE);
                     }
-                    if (listview.getVisibility() != View.VISIBLE) {
-                        listview.setVisibility(View.VISIBLE);
+                    if (listView.getVisibility() != View.VISIBLE) {
+                        listView.setVisibility(View.VISIBLE);
                     }
                 }
                 return false;
@@ -142,9 +148,9 @@ public class SearchActivity2 extends BaseActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void getSearchSuggest2(String text) {
+    private void getSearchSuggest(String keyWord) {
         RetrofitFactory.getRetrofit().create(IMobileSearchApi.class)
-                .getSearchSuggestion(text.trim())
+                .getSearchSuggestion(keyWord.trim())
                 .subscribeOn(Schedulers.io())
                 .map(new Function<SearchSuggestionBean, List<SearchSuggestionBean.DataBean>>() {
                     @Override
@@ -157,7 +163,7 @@ public class SearchActivity2 extends BaseActivity {
                 .subscribe(new Consumer<List<SearchSuggestionBean.DataBean>>() {
                     @Override
                     public void accept(@NonNull List<SearchSuggestionBean.DataBean> dataBeen) throws Exception {
-                        myAdapter.updateDataSource(dataBeen);
+                        searchAdapter.updateDataSource(dataBeen);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -167,45 +173,18 @@ public class SearchActivity2 extends BaseActivity {
                 });
     }
 
-    private void getSearchSuggest() {
-        RxSearchView.queryTextChangeEvents(searchView)
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .debounce(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-                .observeOn(Schedulers.io())
-                .switchMap(new Function<SearchViewQueryTextEvent, ObservableSource<SearchSuggestionBean>>() {
-                    @Override
-                    public ObservableSource<SearchSuggestionBean> apply(@NonNull SearchViewQueryTextEvent searchViewQueryTextEvent) throws Exception {
-                        return RetrofitFactory.getRetrofit().create(IMobileSearchApi.class)
-                                .getSearchSuggestion(searchViewQueryTextEvent.queryText().toString().trim());
-                    }
-                })
-                .map(new Function<SearchSuggestionBean, List<SearchSuggestionBean.DataBean>>() {
-                    @Override
-                    public List<SearchSuggestionBean.DataBean> apply(@NonNull SearchSuggestionBean searchSuggestionBean) throws Exception {
-                        return searchSuggestionBean.getData();
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<List<SearchSuggestionBean.DataBean>>bindToLifecycle())
-                .subscribe(new Consumer<List<SearchSuggestionBean.DataBean>>() {
-                    @Override
-                    public void accept(@NonNull List<SearchSuggestionBean.DataBean> dataBeen) throws Exception {
-                        myAdapter.updateDataSource(dataBeen);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
-                    }
-                });
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        searchView.clearFocus();
     }
 
-    private class MyAdapter extends ArrayAdapter<SearchSuggestionBean.DataBean> {
+    private class SearchAdapter extends ArrayAdapter<SearchSuggestionBean.DataBean> {
 
         private LayoutInflater inflater;
         private List<SearchSuggestionBean.DataBean> data;
 
-        public MyAdapter(Context context, int resource) {
+        public SearchAdapter(Context context, int resource) {
             super(context, resource);
             inflater = LayoutInflater.from(context);
             data = new ArrayList<>();

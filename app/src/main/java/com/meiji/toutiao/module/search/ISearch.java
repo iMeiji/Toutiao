@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Meiji on 2017/2/7.
  */
-
+@Deprecated
 interface ISearch {
 
     interface View extends IBaseView<Presenter> {
