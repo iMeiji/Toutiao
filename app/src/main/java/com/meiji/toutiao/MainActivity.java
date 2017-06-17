@@ -1,9 +1,5 @@
 package com.meiji.toutiao;
 
-import android.app.SearchManager;
-import android.app.SearchableInfo;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -11,15 +7,12 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -28,7 +21,6 @@ import com.meiji.toutiao.module.media.channel.MediaChannelView;
 import com.meiji.toutiao.module.news.NewsTabLayout;
 import com.meiji.toutiao.module.photo.PhotoTabLayout;
 import com.meiji.toutiao.module.search.SearchActivity;
-import com.meiji.toutiao.module.search.wip.SearchActivity2;
 import com.meiji.toutiao.module.video.VideoTabLayout;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.widget.helper.BottomNavigationViewHelper;
@@ -206,55 +198,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_activity_main, menu);
-//        setSearchView(menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_search) {
-            startActivity(new Intent(MainActivity.this, SearchActivity2.class));
+            startActivity(new Intent(MainActivity.this, SearchActivity.class));
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setSearchView(final Menu menu) {
-        searchItem = menu.findItem(R.id.action_search);
-        // 关联检索配置与 SearchActivity
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        SearchableInfo searchableInfo = searchManager.getSearchableInfo(
-                new ComponentName(getApplicationContext(), SearchActivity.class));
-        searchView.setSearchableInfo(searchableInfo);
-        searchView.setQueryHint(getString(R.string.search_hint));
-        // searchItem.setActionView(searchView);
-
-        // 按一次返回键关闭searchView
-        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (!b) {
-                    searchItem.collapseActionView();
-                }
-            }
-        });
-
-        // 设置监听 当SearchView折叠和扩展时的响应事件
-        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                // Do something when action item collapses
-                content_main.setVisibility(View.VISIBLE);
-                return true;     //Return true to collapse action view
-            }
-
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                // Do something when expanded
-                content_main.setVisibility(View.GONE);
-                return true;      // Return true to expand action view
-            }
-        });
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.meiji.toutiao.module.search.wip;
+package com.meiji.toutiao.module.search.result;
 
 import com.meiji.toutiao.bean.search.SearchBean;
 import com.meiji.toutiao.module.base.IBasePresenter;
@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Meiji on 2017/2/7.
  */
 
-interface ISearch2 {
+interface ISearchResult {
 
     interface View extends IBaseView<Presenter> {
 
@@ -36,10 +36,5 @@ interface ISearch2 {
          * 设置适配器
          */
         void doSetAdapter(List<SearchBean.DataBeanX> dataBeen);
-
-//        /**
-//         * 点击事件跳转
-//         */
-//        void doOnClickItem(int position);
     }
 }

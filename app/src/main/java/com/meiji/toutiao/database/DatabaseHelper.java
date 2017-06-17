@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.database.table.MediaChannelTable;
 import com.meiji.toutiao.database.table.NewsChannelTable;
+import com.meiji.toutiao.database.table.SearchHistoryTable;
 
 /**
  * Created by Meiji on 2017/3/10.
@@ -16,7 +17,7 @@ import com.meiji.toutiao.database.table.NewsChannelTable;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "Toutiao";
-    private static final int DB_VERSION = 4;
+    private static final int DB_VERSION = 5;
     private static final String CLEAR_TABLE_DATA = "delete from ";
     private static final String DROP_TABLE = "drop table if exists ";
     private static DatabaseHelper instance = null;
@@ -50,6 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(NewsChannelTable.CREATE_TABLE);
         db.execSQL(MediaChannelTable.CREATE_TABLE);
+        db.execSQL(SearchHistoryTable.CREATE_TABLE);
     }
 
     @Override
@@ -68,6 +70,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put(NewsChannelTable.IS_ENABLE, 0);
                 values.put(NewsChannelTable.POSITION, 46);
                 db.insert(NewsChannelTable.TABLENAME, null, values);
+                break;
+            case 4:
+                db.execSQL(SearchHistoryTable.CREATE_TABLE);
+                break;
         }
     }
 }

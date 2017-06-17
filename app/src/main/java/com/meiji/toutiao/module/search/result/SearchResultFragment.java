@@ -1,4 +1,4 @@
-package com.meiji.toutiao.module.search.wip;
+package com.meiji.toutiao.module.search.result;
 
 import android.os.Bundle;
 import android.view.View;
@@ -18,16 +18,16 @@ import me.drakeet.multitype.MultiTypeAdapter;
  * Created by Meiji on 2017/6/13.
  */
 
-public class SearchFragment2 extends BaseListFragment<ISearch2.Presenter> implements ISearch2.View {
+public class SearchResultFragment extends BaseListFragment<ISearchResult.Presenter> implements ISearchResult.View {
 
     private String query;
     private String curTab;
 
-    public static SearchFragment2 newInstance(String query, String curTab) {
+    public static SearchResultFragment newInstance(String query, String curTab) {
         Bundle args = new Bundle();
         args.putString("query", query);
         args.putString("curTab", curTab);
-        SearchFragment2 fragment = new SearchFragment2();
+        SearchResultFragment fragment = new SearchResultFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,9 +45,9 @@ public class SearchFragment2 extends BaseListFragment<ISearch2.Presenter> implem
     }
 
     @Override
-    public void setPresenter(ISearch2.Presenter presenter) {
+    public void setPresenter(ISearchResult.Presenter presenter) {
         if (presenter == null) {
-            this.presenter = new SearchPresenter2(this);
+            this.presenter = new SearchResultPresenter(this);
         }
     }
 

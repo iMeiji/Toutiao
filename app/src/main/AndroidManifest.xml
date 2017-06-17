@@ -45,20 +45,6 @@
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
-            android:name=".module.search.SearchActivity"
-            android:configChanges="orientation|screenSize|uiMode"
-            android:label="@string/title_search"
-            android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH"/>
-            </intent-filter>
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
-        </activity>
-
-        <activity
             android:name="com.meiji.toutiao.SettingsActivity"
             android:configChanges="orientation|screenSize|uiMode"
             android:label="@string/title_settings"
@@ -102,7 +88,7 @@
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
-            android:name=".module.search.wip.SearchActivity2"
+            android:name=".module.search.SearchActivity"
             android:configChanges="orientation|screenSize|uiMode"
             android:theme="@style/AppTheme.NoActionBar"/>
 

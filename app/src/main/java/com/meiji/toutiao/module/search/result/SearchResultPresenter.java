@@ -1,4 +1,4 @@
-package com.meiji.toutiao.module.search.wip;
+package com.meiji.toutiao.module.search.result;
 
 import android.text.TextUtils;
 
@@ -22,16 +22,16 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Meiji on 2017/2/7.
  */
 
-class SearchPresenter2 implements ISearch2.Presenter {
+class SearchResultPresenter implements ISearchResult.Presenter {
 
-    private static final String TAG = "SearchPresenter2";
+    private static final String TAG = "SearchResultPresenter";
     private int offset = 0;
     private String query;
     private String curTab;
-    private ISearch2.View view;
+    private ISearchResult.View view;
     private List<SearchBean.DataBeanX> list = new ArrayList<>();
 
-    SearchPresenter2(ISearch2.View view) {
+    SearchResultPresenter(ISearchResult.View view) {
         this.view = view;
     }
 

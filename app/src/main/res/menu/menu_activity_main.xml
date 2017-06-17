@@ -7,15 +7,4 @@
         android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/action_search"
         app:showAsAction="always|collapseActionView"/>
-
-    <!--<item-->
-    <!--android:id="@+id/aciton_setting"-->
-    <!--android:title="@string/action_setting"-->
-    <!--app:showAsAction="never"/>-->
-
-    <!--<item-->
-    <!--android:id="@+id/action_switch_night_mode"-->
-    <!--android:title="@string/action_change_theme"-->
-    <!--app:showAsAction="never"/>-->
-
 </menu>
