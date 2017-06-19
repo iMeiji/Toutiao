@@ -1,5 +1,6 @@
 package com.meiji.toutiao.module.photo.article;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IPhotoApi;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
@@ -39,8 +40,13 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
             if (null == this.category) {
                 this.category = category[0];
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            ErrorAction.print(e);
+        }
+
+        // 释放内存
+        if (dataList.size() > 100) {
+            dataList.clear();
         }
 
         RetrofitFactory.getRetrofit().create(IPhotoApi.class).getPhotoArticle(this.category, time)
@@ -80,6 +86,7 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         doShowNetError();
+                        ErrorAction.print(throwable);
                     }
                 });
     }
@@ -94,10 +101,6 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
         dataList.addAll(dataBeen);
         view.onSetAdapter(dataList);
         view.onHideLoading();
-        // 释放内存
-        if (dataList.size() > 100) {
-            dataList.clear();
-        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.meiji.toutiao.module.wenda.detail;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileNewsApi;
 import com.meiji.toutiao.api.IMobileWendaApi;
@@ -64,9 +65,9 @@ public class WendaDetailPresenter implements IWendaDetail.Presenter {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
                         view.onSetWebView(null, false);
                         view.onHideLoading();
+                        ErrorAction.print(throwable);
                     }
                 });
     }
@@ -109,8 +110,8 @@ public class WendaDetailPresenter implements IWendaDetail.Presenter {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
                         doShowNetError();
+                        ErrorAction.print(throwable);
                     }
                 });
     }

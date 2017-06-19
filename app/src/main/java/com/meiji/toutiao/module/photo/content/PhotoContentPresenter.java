@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.INewsApi;
@@ -79,20 +80,24 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
 
         try {
             this.shareUrl = category[0];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            ErrorAction.print(e);
         }
 
         Observable
                 .create(new ObservableOnSubscribe<String>() {
                     @Override
                     public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
-                        Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(IPhotoApi.class)
-                                .getPhotoContentHTML(shareUrl).execute();
-                        if (response.isSuccessful()) {
-                            e.onNext(response.body().string());
-                        } else {
-                            e.onComplete();
+                        try {
+                            Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(IPhotoApi.class)
+                                    .getPhotoContentHTML(shareUrl).execute();
+                            if (response.isSuccessful()) {
+                                e.onNext(response.body().string());
+                            } else {
+                                e.onComplete();
+                            }
+                        } catch (Exception e1) {
+                            ErrorAction.print(e1);
                         }
                     }
                 })
@@ -127,6 +132,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                     public void onError(@NonNull Throwable e) {
                         // 解析 HTML 失败, 可以用 WebView 加载内容
                         doLoadWebView();
+                        ErrorAction.print(e);
                     }
 
                     @Override
@@ -141,15 +147,19 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                 .create(new ObservableOnSubscribe<String>() {
                     @Override
                     public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
-                        Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(INewsApi.class)
-                                .getNewsContentRedirectUrl(shareUrl).execute();
-                        // 获取重定向后的 URL 用于拼凑API
-                        if (response.isSuccessful()) {
-                            HttpUrl httpUrl = response.raw().request().url();
-                            String api = httpUrl + "info";
-                            e.onNext(api);
-                        } else {
-                            e.onComplete();
+                        try {
+                            Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(INewsApi.class)
+                                    .getNewsContentRedirectUrl(shareUrl).execute();
+                            // 获取重定向后的 URL 用于拼凑API
+                            if (response.isSuccessful()) {
+                                HttpUrl httpUrl = response.raw().request().url();
+                                String api = httpUrl + "info";
+                                e.onNext(api);
+                            } else {
+                                e.onComplete();
+                            }
+                        } catch (Exception e1) {
+                            ErrorAction.print(e1);
                         }
                     }
                 })
@@ -185,6 +195,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                     public void onError(@NonNull Throwable e) {
                         view.onHideLoading();
                         view.onSetWebView(null, false);
+                        ErrorAction.print(e);
                     }
 
                     @Override
@@ -233,6 +244,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         view.onShowNetError();
+                        ErrorAction.print(throwable);
                     }
                 });
     }
@@ -299,7 +311,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                 flag = true;
             }
         } catch (InterruptedException | ExecutionException | IOException e) {
-            e.printStackTrace();
+            ErrorAction.print(e);
         }
         return flag;
     }

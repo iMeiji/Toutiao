@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.meiji.toutiao.Constant;
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
@@ -131,7 +132,7 @@ public class MediaAddActivity extends BaseActivity {
                             handler.obtainMessage(0).sendToTarget();
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        ErrorAction.print(e);
                         handler.obtainMessage(0).sendToTarget();
                     }
                 }

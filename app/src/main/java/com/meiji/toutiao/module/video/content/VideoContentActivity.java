@@ -168,7 +168,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onShowNetError() {
-
+        Snackbar.make(recyclerView, R.string.network_error, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

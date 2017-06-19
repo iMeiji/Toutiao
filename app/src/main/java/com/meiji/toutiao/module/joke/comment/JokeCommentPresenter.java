@@ -1,5 +1,6 @@
 package com.meiji.toutiao.module.joke.comment;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IJokeApi;
 import com.meiji.toutiao.bean.joke.JokeCommentBean;
@@ -39,7 +40,7 @@ class JokeCommentPresenter implements IJokeComment.Presenter {
                 this.count = Integer.parseInt(jokeId_Count[1]);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            ErrorAction.print(e);
         }
 
         RetrofitFactory.getRetrofit().create(IJokeApi.class).getJokeComment(jokeId, offset)
@@ -64,7 +65,8 @@ class JokeCommentPresenter implements IJokeComment.Presenter {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        view.onShowNetError();
+                        doShowNetError();
+                        ErrorAction.print(throwable);
                     }
                 });
     }

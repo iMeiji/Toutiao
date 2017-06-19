@@ -2,11 +2,10 @@ package com.meiji.toutiao.module.wenda.content;
 
 import android.util.Log;
 
-import com.meiji.toutiao.InitApp;
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileWendaApi;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
-import com.meiji.toutiao.utils.NetWorkUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,12 +67,8 @@ class WendaContentPresenter implements IWendaContent.Presenter {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
-                        if (NetWorkUtil.isNetworkConnected(InitApp.AppContext)) {
-                            view.onRefresh();
-                        } else {
-                            doShowNetError();
-                        }
+                        doShowNetError();
+                        ErrorAction.print(throwable);
                     }
                 });
     }
@@ -95,12 +90,8 @@ class WendaContentPresenter implements IWendaContent.Presenter {
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(@NonNull Throwable throwable) throws Exception {
-                            throwable.printStackTrace();
-                            if (NetWorkUtil.isNetworkConnected(InitApp.AppContext)) {
-                                view.onRefresh();
-                            } else {
-                                doShowNetError();
-                            }
+                            doShowNetError();
+                            ErrorAction.print(throwable);
                         }
                     });
         } else if (normalOffset < normalAnsCount) {
@@ -117,12 +108,8 @@ class WendaContentPresenter implements IWendaContent.Presenter {
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(@NonNull Throwable throwable) throws Exception {
-                            throwable.printStackTrace();
-                            if (NetWorkUtil.isNetworkConnected(InitApp.AppContext)) {
-                                view.onRefresh();
-                            } else {
-                                doShowNetError();
-                            }
+                            doShowNetError();
+                            ErrorAction.print(throwable);
                         }
                     });
         } else {

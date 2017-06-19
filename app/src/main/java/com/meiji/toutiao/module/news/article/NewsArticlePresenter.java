@@ -3,12 +3,11 @@ package com.meiji.toutiao.module.news.article;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.meiji.toutiao.InitApp;
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileNewsApi;
 import com.meiji.toutiao.bean.news.MultiNewsArticleBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
-import com.meiji.toutiao.utils.NetWorkUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,7 +59,7 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
                 this.category = category[0];
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            ErrorAction.print(e);
         }
 
         // 释放内存
@@ -139,12 +138,8 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
-                        if (NetWorkUtil.isNetworkConnected(InitApp.AppContext)) {
-                            view.onRefresh();
-                        } else {
-                            doShowNetError();
-                        }
+                        doShowNetError();
+                        ErrorAction.print(throwable);
                     }
                 });
     }
@@ -175,53 +170,4 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
         view.onHideLoading();
         view.onShowNetError();
     }
-
-//    @Override
-//    public void doOnClickItem(final int position) {
-//        Observable.create(new ObservableOnSubscribe<Object>() {
-//            @Override
-//            public void subscribe(@NonNull ObservableEmitter<Object> e) throws Exception {
-//                MultiNewsArticleDataBean bean = dataList.get(position);
-//                if (bean.isHas_video()) {
-//                    VideoArticleBean.DataBean dataBean = new VideoArticleBean.DataBean();
-//                    dataBean.setTitle(bean.getTitle());
-//                    dataBean.setGroup_id(bean.getGroup_id());
-//                    dataBean.setItem_id(bean.getGroup_id());
-//                    dataBean.setVideo_id(bean.getVideo_id());
-//                    dataBean.setAbstractX(bean.getAbstractX());
-//                    dataBean.setSource(bean.getSource());
-//                    dataBean.setVideo_duration_str(bean.getVideo_duration() / 60 + "");
-//                    String url = bean.getVideo_detail_info().getDetail_video_large_image().getUrl();
-//                    Log.d(TAG, "doOnClickItem: " + url);
-//                    VideoContentActivity.launch(dataBean, url);
-//                } else {
-//                    NewsArticleBean.DataBean dataBean = new NewsArticleBean.DataBean();
-//                    dataBean.setDisplay_url(bean.getDisplay_url());
-//                    dataBean.setTitle(bean.getTitle());
-//                    dataBean.setMedia_name(bean.getMedia_name());
-//                    if (bean.getMedia_info() != null) {
-//                        dataBean.setMedia_url("http://toutiao.com/m" + bean.getMedia_info().getMedia_id());
-//                    }
-//                    dataBean.setGroup_id(bean.getGroup_id());
-//                    dataBean.setItem_id(bean.getGroup_id());
-//                    NewsContentActivity.launch(dataBean);
-//                }
-//                Log.d(TAG, "doOnClickItem: " + bean.getTitle());
-//                Log.d(TAG, "doOnClickItem: " + bean.getDisplay_url());
-//            }
-//        }).subscribeOn(Schedulers.io())
-//                .observeOn(Schedulers.io())
-//                .compose(view.bindToLife())
-//                .subscribe(new Consumer<Object>() {
-//                    @Override
-//                    public void accept(@NonNull Object o) throws Exception {
-//
-//                    }
-//                }, new Consumer<Throwable>() {
-//                    @Override
-//                    public void accept(@NonNull Throwable throwable) throws Exception {
-//
-//                    }
-//                });
-//    }
 }

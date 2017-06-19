@@ -3,12 +3,11 @@ package com.meiji.toutiao.module.wenda.article;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.meiji.toutiao.InitApp;
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileWendaApi;
 import com.meiji.toutiao.bean.wenda.WendaArticleBean;
 import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
-import com.meiji.toutiao.utils.NetWorkUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -105,12 +104,8 @@ class WendaArticlePresenter implements IWendaArticle.Presenter {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
-                        if (NetWorkUtil.isNetworkConnected(InitApp.AppContext)) {
-                            view.onRefresh();
-                        } else {
-                            doShowNetError();
-                        }
+                        doShowNetError();
+                        ErrorAction.print(throwable);
                     }
                 });
     }

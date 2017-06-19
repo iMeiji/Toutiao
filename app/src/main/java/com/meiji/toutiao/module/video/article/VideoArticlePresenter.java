@@ -2,6 +2,7 @@ package com.meiji.toutiao.module.video.article;
 
 import android.text.TextUtils;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IVideoApi;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
@@ -40,8 +41,8 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
             if (null == this.category) {
                 this.category = category[0];
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            ErrorAction.print(e);
         }
 
         // 释放内存
@@ -88,8 +89,8 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
                         doShowNetError();
+                        ErrorAction.print(throwable);
                     }
                 });
     }
@@ -120,17 +121,4 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
         view.onHideLoading();
         view.onShowNetError();
     }
-
-//    @Override
-//    public void doOnClickItem(int position) {
-//        VideoArticleBean.DataBean bean = dataList.get(position);
-//        String url = null;
-//        try {
-//            url = bean.getVideo_detail_info().getVideo_detail_info().getDetail_video_large_image().getUrl();
-//        } catch (NullPointerException e) {
-//            e.printStackTrace();
-//        }
-//        VideoContentActivity.launch(bean, url);
-//        Log.d(TAG, "doOnClickItem: " + bean.getVideo_id());
-//    }
 }

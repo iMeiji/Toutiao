@@ -1,5 +1,6 @@
 package com.meiji.toutiao.module.joke.content;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IJokeApi;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
@@ -51,12 +52,7 @@ class JokeContentPresenter implements IJokeContent.Presenter {
                     public void accept(@NonNull List<JokeContentBean.DataBean.GroupBean> groupBeen) throws Exception {
                         doSetAdapter();
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-
-                    }
-                });
+                }, ErrorAction.error());
     }
 
     @Override

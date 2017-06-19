@@ -2,6 +2,7 @@ package com.meiji.toutiao.module.search.result;
 
 import android.text.TextUtils;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileSearchApi;
 import com.meiji.toutiao.bean.search.SearchBean;
@@ -43,7 +44,7 @@ class SearchResultPresenter implements ISearchResult.Presenter {
                 this.curTab = parameter[1];
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            ErrorAction.print(e);
         }
 
         RetrofitFactory.getRetrofit().create(IMobileSearchApi.class)
@@ -66,7 +67,7 @@ class SearchResultPresenter implements ISearchResult.Presenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 // OkHttp: <-- HTTP FAILED: java.io.IOException: Canceled
                 // Fragment 生命周期的祸
-//                .compose(view.<List<SearchBean.DataBean>>bindToLife())
+//                .compose(view.<List<SearchBean.DataBeanX>>bindToLife())
                 .subscribe(new Consumer<List<SearchBean.DataBeanX>>() {
                     @Override
                     public void accept(@NonNull List<SearchBean.DataBeanX> dataBeen) throws Exception {
@@ -75,7 +76,7 @@ class SearchResultPresenter implements ISearchResult.Presenter {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
+                        ErrorAction.print(throwable);
                         doShowNetError();
                     }
                 });
@@ -92,10 +93,6 @@ class SearchResultPresenter implements ISearchResult.Presenter {
         list.addAll(dataBeen);
         view.onSetAdapter(list);
         view.onHideLoading();
-        // 释放内存
-        if (list.size() > 100) {
-            list.clear();
-        }
     }
 
     @Override
@@ -112,12 +109,4 @@ class SearchResultPresenter implements ISearchResult.Presenter {
         view.onHideLoading();
         view.onShowNetError();
     }
-
-//    @Override
-//    public void doOnClickItem(int position) {
-//        NewsArticleBean.DataBean bean = list.get(position);
-//        NewsContentActivity.launch(bean);
-//        // 打印下点击的标题和链接
-//        Log.d(TAG, "doOnClickItem: " + "点击的标题和链接---" + bean.getTitle() + "  " + bean.getDisplay_url());
-//    }
 }

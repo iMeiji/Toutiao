@@ -2,6 +2,7 @@ package com.meiji.toutiao.module.media.article;
 
 import android.util.Log;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMediaApi;
 import com.meiji.toutiao.bean.media.MediaArticleBean;
@@ -51,8 +52,13 @@ class MediaArticlePresenter implements IMediaArticle.Presenter {
             if (null == this.mediaId) {
                 this.mediaId = mediaId[0];
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            ErrorAction.print(e);
+        }
+
+        // 释放内存
+        if (dataList.size() > 100) {
+            dataList.clear();
         }
 
         RetrofitFactory.getRetrofit().create(IMediaApi.class).getMediaArticle(this.mediaId, time)
@@ -79,6 +85,7 @@ class MediaArticlePresenter implements IMediaArticle.Presenter {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         doShowNetError();
+                        ErrorAction.print(throwable);
                     }
                 });
     }

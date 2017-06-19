@@ -20,8 +20,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
@@ -57,12 +57,11 @@ public class SearchActivity extends BaseActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private BasePagerAdapter pagerAdapter;
-    private List<Fragment> fragmentList = new ArrayList<>();
     private String[] titles = new String[]{"综合", "视频", "图集", "用户", "问答"};
     private SearchView searchView;
     private LinearLayout searchLayout;
     private ListView listView;
-    private SearchHistoryAdapter searchHistoryAdapter;
+    private SearchHistoryAdapter adapter;
     private SearchHistoryDao dao = new SearchHistoryDao();
 
     @Override
@@ -85,15 +84,14 @@ public class SearchActivity extends BaseActivity {
         searchLayout = (LinearLayout) findViewById(R.id.search_layout);
         listView = (ListView) findViewById(R.id.listview);
 
-        searchHistoryAdapter = new SearchHistoryAdapter(this, -1);
-        listView.setAdapter(searchHistoryAdapter);
+        adapter = new SearchHistoryAdapter(this, -1);
+        listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String keyWord = searchHistoryAdapter.getItem(position).getKeyWord();
+                String keyWord = adapter.getItem(position).getKeyWord();
                 Log.d(TAG, "onItemClick: " + keyWord);
                 initData(keyWord);
-                pagerAdapter.notifyDataSetChanged();
                 searchView.clearFocus();
                 searchView.setQuery(keyWord, true);
             }
@@ -103,13 +101,10 @@ public class SearchActivity extends BaseActivity {
     private void initData(String query) {
         searchLayout.setVisibility(View.VISIBLE);
         listView.setVisibility(View.GONE);
-        if (fragmentList.size() > 0) {
-            fragmentList.clear();
-        }
+        List<Fragment> fragmentList = new ArrayList<>();
         for (int i = 1; i < titles.length + 1; i++) {
             fragmentList.add(SearchResultFragment.newInstance(query, i + ""));
         }
-        Log.d(TAG, "initData: " + query);
         pagerAdapter = new BasePagerAdapter(getSupportFragmentManager(), fragmentList, titles);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(5);
@@ -132,7 +127,6 @@ public class SearchActivity extends BaseActivity {
             public boolean onQueryTextSubmit(final String keyWord) {
                 Log.d(TAG, "onQueryTextSubmit: " + keyWord);
                 initData(keyWord);
-                pagerAdapter.notifyDataSetChanged();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -173,24 +167,13 @@ public class SearchActivity extends BaseActivity {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<List<SearchHistoryBean>>bindToLifecycle())
                 .subscribe(new Consumer<List<SearchHistoryBean>>() {
                     @Override
                     public void accept(@NonNull final List<SearchHistoryBean> list) throws Exception {
-                        searchHistoryAdapter.updateDataSource(list);
-                        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                            @Override
-                            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                                Toast.makeText(SearchActivity.this, list.get(position).getKeyWord(), Toast.LENGTH_SHORT).show();
-                                return false;
-                            }
-                        });
+                        adapter.updateDataSource(list);
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-
-                    }
-                });
+                }, ErrorAction.error());
     }
 
     private void getSearchSuggest(String keyWord) {
@@ -216,14 +199,9 @@ public class SearchActivity extends BaseActivity {
                 .subscribe(new Consumer<List<SearchHistoryBean>>() {
                     @Override
                     public void accept(@NonNull List<SearchHistoryBean> searchHistoryBeen) throws Exception {
-                        searchHistoryAdapter.updateDataSource(searchHistoryBeen);
+                        adapter.updateDataSource(searchHistoryBeen);
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
-                    }
-                });
+                }, ErrorAction.error());
     }
 
     @Override

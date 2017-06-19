@@ -1,5 +1,6 @@
 package com.meiji.toutiao.module.news.comment;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileNewsApi;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
@@ -40,6 +41,7 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
                 this.itemId = groupId_ItemId[1];
             }
         } catch (Exception e) {
+            ErrorAction.print(e);
         }
 
         RetrofitFactory.getRetrofit().create(IMobileNewsApi.class)
@@ -69,8 +71,8 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        throwable.printStackTrace();
                         doShowNetError();
+                        ErrorAction.print(throwable);
                     }
                 });
     }

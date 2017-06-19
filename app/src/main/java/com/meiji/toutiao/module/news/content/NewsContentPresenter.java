@@ -3,6 +3,7 @@ package com.meiji.toutiao.module.news.content;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.INewsApi;
@@ -50,15 +51,19 @@ class NewsContentPresenter implements INewsContent.Presenter {
                 .create(new ObservableOnSubscribe<String>() {
                     @Override
                     public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
-                        Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(INewsApi.class)
-                                .getNewsContentRedirectUrl(url).execute();
-                        // 获取重定向后的 URL 用于拼凑API
-                        if (response.isSuccessful()) {
-                            HttpUrl httpUrl = response.raw().request().url();
-                            String api = httpUrl + "info";
-                            e.onNext(api);
-                        } else {
-                            e.onComplete();
+                        try {
+                            Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(INewsApi.class)
+                                    .getNewsContentRedirectUrl(url).execute();
+                            // 获取重定向后的 URL 用于拼凑API
+                            if (response.isSuccessful()) {
+                                HttpUrl httpUrl = response.raw().request().url();
+                                String api = httpUrl + "info";
+                                e.onNext(api);
+                            } else {
+                                e.onComplete();
+                            }
+                        } catch (Exception e1) {
+                            ErrorAction.print(e1);
                         }
                     }
                 })
@@ -92,6 +97,7 @@ class NewsContentPresenter implements INewsContent.Presenter {
                     @Override
                     public void onError(@NonNull Throwable e) {
                         view.onSetWebView(null, false);
+                        ErrorAction.print(e);
                     }
 
                     @Override

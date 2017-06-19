@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.search.SearchHistoryBean;
 import com.meiji.toutiao.database.dao.SearchHistoryDao;
@@ -61,29 +62,23 @@ public class SearchHistoryAdapter extends ArrayAdapter<SearchHistoryBean> {
                 viewHolder.iv_close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        final SearchHistoryDao dao = new SearchHistoryDao();
                         Observable
-                                .create(new ObservableOnSubscribe<Boolean>() {
+                                .create(new ObservableOnSubscribe<List<SearchHistoryBean>>() {
                                     @Override
-                                    public void subscribe(@io.reactivex.annotations.NonNull ObservableEmitter<Boolean> e) throws Exception {
-                                        boolean delete = dao.delete(data.get(position).getKeyWord());
-                                        e.onNext(delete);
+                                    public void subscribe(@io.reactivex.annotations.NonNull ObservableEmitter<List<SearchHistoryBean>> e) throws Exception {
+                                        SearchHistoryDao dao = new SearchHistoryDao();
+                                        dao.delete(data.get(position).getKeyWord());
+                                        e.onNext(dao.query());
                                     }
                                 })
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Consumer<Boolean>() {
+                                .subscribe(new Consumer<List<SearchHistoryBean>>() {
                                     @Override
-                                    public void accept(@io.reactivex.annotations.NonNull Boolean b) throws Exception {
-                                        if (b)
-                                            updateDataSource(dao.query());
+                                    public void accept(@io.reactivex.annotations.NonNull List<SearchHistoryBean> list) throws Exception {
+                                        updateDataSource(list);
                                     }
-                                }, new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
-
-                                    }
-                                });
+                                }, ErrorAction.error());
                     }
                 });
                 viewHolder.tv_keyword.setText(data.get(position).getKeyWord());

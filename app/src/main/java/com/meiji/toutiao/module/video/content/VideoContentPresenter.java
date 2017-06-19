@@ -3,6 +3,7 @@ package com.meiji.toutiao.module.video.content;
 import android.util.Base64;
 import android.util.Log;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IVideoApi;
 import com.meiji.toutiao.bean.video.VideoContentBean;
@@ -94,6 +95,8 @@ public class VideoContentPresenter extends NewsCommentPresenter implements IVide
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
+                        view.onShowNetError();
+                        ErrorAction.print(throwable);
                     }
                 });
     }
