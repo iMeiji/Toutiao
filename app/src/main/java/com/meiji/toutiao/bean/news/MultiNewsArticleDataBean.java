@@ -1,5 +1,8 @@
 package com.meiji.toutiao.bean.news;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -8,8 +11,19 @@ import java.util.List;
  * Created by Meiji on 2017/5/18.
  */
 
-public class MultiNewsArticleDataBean {
+public class MultiNewsArticleDataBean implements Parcelable {
 
+    public static final Creator<MultiNewsArticleDataBean> CREATOR = new Creator<MultiNewsArticleDataBean>() {
+        @Override
+        public MultiNewsArticleDataBean createFromParcel(Parcel in) {
+            return new MultiNewsArticleDataBean(in);
+        }
+
+        @Override
+        public MultiNewsArticleDataBean[] newArray(int size) {
+            return new MultiNewsArticleDataBean[size];
+        }
+    };
     /**
      * log_pb : {"impr_id":"20170519112306010003048108480AA6"}
      * read_count : 156694
@@ -159,6 +173,143 @@ public class MultiNewsArticleDataBean {
     private int group_flags;
     private int like_count;
     private List<ImageListBean> image_list;
+
+    public MultiNewsArticleDataBean() {
+    }
+
+    protected MultiNewsArticleDataBean(Parcel in) {
+        read_count = in.readInt();
+        media_name = in.readString();
+        ban_comment = in.readInt();
+        abstractX = in.readString();
+        ban_bury = in.readInt();
+        has_video = in.readByte() != 0;
+        article_type = in.readInt();
+        tag = in.readString();
+        has_m3u8_video = in.readInt();
+        keywords = in.readString();
+        rid = in.readString();
+        label = in.readString();
+        show_portrait_article = in.readByte() != 0;
+        user_verified = in.readInt();
+        aggr_type = in.readInt();
+        cell_type = in.readInt();
+        article_sub_type = in.readInt();
+        bury_count = in.readInt();
+        title = in.readString();
+        ignore_web_transform = in.readInt();
+        source_icon_style = in.readInt();
+        tip = in.readInt();
+        hot = in.readInt();
+        share_url = in.readString();
+        has_mp4_video = in.readInt();
+        source = in.readString();
+        comment_count = in.readInt();
+        article_url = in.readString();
+        share_count = in.readInt();
+        stick_label = in.readString();
+        publish_time = in.readInt();
+        has_image = in.readByte() != 0;
+        cell_layout_style = in.readInt();
+        tag_id = in.readLong();
+        video_style = in.readInt();
+        verified_content = in.readString();
+        display_url = in.readString();
+        item_id = in.readLong();
+        is_subject = in.readByte() != 0;
+        stick_style = in.readInt();
+        show_portrait = in.readByte() != 0;
+        repin_count = in.readInt();
+        cell_flag = in.readInt();
+        source_open_url = in.readString();
+        level = in.readInt();
+        digg_count = in.readInt();
+        behot_time = in.readString();
+        article_alt_url = in.readString();
+        cursor = in.readLong();
+        url = in.readString();
+        preload_web = in.readInt();
+        user_repin = in.readInt();
+        label_style = in.readInt();
+        item_version = in.readInt();
+        media_info = in.readParcelable(MediaInfoBean.class.getClassLoader());
+        group_id = in.readLong();
+        gallary_image_count = in.readInt();
+        video_id = in.readString();
+        video_duration = in.readInt();
+        group_flags = in.readInt();
+        like_count = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(read_count);
+        dest.writeString(media_name);
+        dest.writeInt(ban_comment);
+        dest.writeString(abstractX);
+        dest.writeInt(ban_bury);
+        dest.writeByte((byte) (has_video ? 1 : 0));
+        dest.writeInt(article_type);
+        dest.writeString(tag);
+        dest.writeInt(has_m3u8_video);
+        dest.writeString(keywords);
+        dest.writeString(rid);
+        dest.writeString(label);
+        dest.writeByte((byte) (show_portrait_article ? 1 : 0));
+        dest.writeInt(user_verified);
+        dest.writeInt(aggr_type);
+        dest.writeInt(cell_type);
+        dest.writeInt(article_sub_type);
+        dest.writeInt(bury_count);
+        dest.writeString(title);
+        dest.writeInt(ignore_web_transform);
+        dest.writeInt(source_icon_style);
+        dest.writeInt(tip);
+        dest.writeInt(hot);
+        dest.writeString(share_url);
+        dest.writeInt(has_mp4_video);
+        dest.writeString(source);
+        dest.writeInt(comment_count);
+        dest.writeString(article_url);
+        dest.writeInt(share_count);
+        dest.writeString(stick_label);
+        dest.writeInt(publish_time);
+        dest.writeByte((byte) (has_image ? 1 : 0));
+        dest.writeInt(cell_layout_style);
+        dest.writeLong(tag_id);
+        dest.writeInt(video_style);
+        dest.writeString(verified_content);
+        dest.writeString(display_url);
+        dest.writeLong(item_id);
+        dest.writeByte((byte) (is_subject ? 1 : 0));
+        dest.writeInt(stick_style);
+        dest.writeByte((byte) (show_portrait ? 1 : 0));
+        dest.writeInt(repin_count);
+        dest.writeInt(cell_flag);
+        dest.writeString(source_open_url);
+        dest.writeInt(level);
+        dest.writeInt(digg_count);
+        dest.writeString(behot_time);
+        dest.writeString(article_alt_url);
+        dest.writeLong(cursor);
+        dest.writeString(url);
+        dest.writeInt(preload_web);
+        dest.writeInt(user_repin);
+        dest.writeInt(label_style);
+        dest.writeInt(item_version);
+        dest.writeParcelable(media_info, flags);
+        dest.writeLong(group_id);
+        dest.writeInt(gallary_image_count);
+        dest.writeString(video_id);
+        dest.writeInt(video_duration);
+        dest.writeInt(group_flags);
+        dest.writeInt(like_count);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
     public LogPbBean getLog_pb() {
         return log_pb;
@@ -832,7 +983,18 @@ public class MultiNewsArticleDataBean {
         }
     }
 
-    public static class MediaInfoBean {
+    public static class MediaInfoBean implements Parcelable {
+        public static final Creator<MediaInfoBean> CREATOR = new Creator<MediaInfoBean>() {
+            @Override
+            public MediaInfoBean createFromParcel(Parcel in) {
+                return new MediaInfoBean(in);
+            }
+
+            @Override
+            public MediaInfoBean[] newArray(int size) {
+                return new MediaInfoBean[size];
+            }
+        };
         /**
          * user_id : 50502346173
          * verified_content :
@@ -849,13 +1011,49 @@ public class MultiNewsArticleDataBean {
         private long user_id;
         private String verified_content;
         private String avatar_url;
-        private long media_id;
+        private String media_id;
         private String name;
         private int recommend_type;
         private boolean follow;
         private String recommend_reason;
         private boolean is_star_user;
         private boolean user_verified;
+
+        public MediaInfoBean() {
+
+        }
+
+        protected MediaInfoBean(Parcel in) {
+            user_id = in.readLong();
+            verified_content = in.readString();
+            avatar_url = in.readString();
+            media_id = in.readString();
+            name = in.readString();
+            recommend_type = in.readInt();
+            follow = in.readByte() != 0;
+            recommend_reason = in.readString();
+            is_star_user = in.readByte() != 0;
+            user_verified = in.readByte() != 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeLong(user_id);
+            dest.writeString(verified_content);
+            dest.writeString(avatar_url);
+            dest.writeString(media_id);
+            dest.writeString(name);
+            dest.writeInt(recommend_type);
+            dest.writeByte((byte) (follow ? 1 : 0));
+            dest.writeString(recommend_reason);
+            dest.writeByte((byte) (is_star_user ? 1 : 0));
+            dest.writeByte((byte) (user_verified ? 1 : 0));
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
 
         public long getUser_id() {
             return user_id;
@@ -881,11 +1079,11 @@ public class MultiNewsArticleDataBean {
             this.avatar_url = avatar_url;
         }
 
-        public long getMedia_id() {
+        public String getMedia_id() {
             return media_id;
         }
 
-        public void setMedia_id(long media_id) {
+        public void setMedia_id(String media_id) {
             this.media_id = media_id;
         }
 

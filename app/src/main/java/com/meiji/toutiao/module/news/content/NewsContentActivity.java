@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.bean.news.NewsArticleBean;
+import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.base.BaseActivity;
 
 /**
@@ -17,7 +17,13 @@ public class NewsContentActivity extends BaseActivity {
 
     public static final String TAG = "NewsContentActivity";
 
-    public static void launch(NewsArticleBean.DataBean bean) {
+//    public static void launch(NewsArticleBean.DataBean bean) {
+//        InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, NewsContentActivity.class)
+//                .putExtra(TAG, bean)
+//                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+//    }
+
+    public static void launch(MultiNewsArticleDataBean bean) {
         InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, NewsContentActivity.class)
                 .putExtra(TAG, bean)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));

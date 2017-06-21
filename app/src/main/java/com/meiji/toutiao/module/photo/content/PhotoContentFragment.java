@@ -2,9 +2,8 @@ package com.meiji.toutiao.module.photo.content;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -16,6 +15,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -29,7 +29,6 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.photo.PhotoContentAdapter;
@@ -44,10 +43,17 @@ import com.meiji.toutiao.widget.ViewPagerFixed;
 
 import java.util.List;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
+
 /**
  * Created by Meiji on 2017/3/1.
  */
-
+@RuntimePermissions
 public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> implements IPhotoContent.View, ViewPager.OnPageChangeListener, View.OnClickListener {
 
     public static final String TAG = "PhotoContentFragment";
@@ -188,42 +194,6 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
 
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        if (id == R.id.tv_save) {
-            // 运行时权限处理
-            if (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            } else {
-                presenter.doSaveImage();
-            }
-        }
-    }
-
-    @Override
-    public void onShowSaveSuccess() {
-        Toast.makeText(getActivity(), R.string.saved, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        if (requestCode == 1) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                presenter.doSaveImage();
-            } else {
-                // Permission Denied
-                Toast.makeText(getActivity(), R.string.permission_denied, Toast.LENGTH_SHORT).show();
-            }
-            return;
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_browser, menu);
@@ -300,5 +270,57 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onShowSaveSuccess() {
+        Snackbar.make(photoView, R.string.saved, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.tv_save) {
+            PhotoContentFragmentPermissionsDispatcher.onSaveImageWithCheck(this);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PhotoContentFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void onSaveImage() {
+        presenter.doSaveImage();
+    }
+
+    @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showRationale(final PermissionRequest request) {
+        new AlertDialog.Builder(getActivity())
+                .setMessage(R.string.permission_write_rationale)
+                .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.proceed();
+                    }
+                })
+                .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.cancel();
+                    }
+                })
+                .show();
+    }
+
+    @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showDenied() {
+        Snackbar.make(photoView, R.string.permission_write_denied, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showNeverAsk() {
+        Snackbar.make(photoView, R.string.permission_write_never_ask, Snackbar.LENGTH_SHORT).show();
     }
 }

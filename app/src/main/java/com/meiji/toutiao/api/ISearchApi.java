@@ -1,8 +1,7 @@
 package com.meiji.toutiao.api;
 
-import com.meiji.toutiao.bean.news.NewsArticleBean;
-
-import io.reactivex.Observable;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -17,7 +16,7 @@ public interface ISearchApi {
      * http://www.toutiao.com/search_content/?format=json&keyword=关键词&autoload=true&count=20&cur_tab=1&offset=偏移量
      */
     @GET("search_content/?format=json&autoload=true&count=20&cur_tab=1")
-    Observable<NewsArticleBean> getSearch(
+    Call<ResponseBody> getSearch(
             @Query("keyword") String keyword,
             @Query("offset") int offset);
 }

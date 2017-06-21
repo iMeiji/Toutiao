@@ -114,4 +114,13 @@
     <string name="video_landscape_summary">开启后强制横屏播放视频(能自动旋转就别开)</string>
 
 
+    <string name="button_allow">允许</string>
+    <string name="button_deny">拒绝</string>
+
+    <!-- Permission -->
+    <string name="permission_write_rationale">使用此功能需要打开存储权限</string>
+    <string name="permission_write_denied">你拒绝了权限，该功能不可用</string>
+    <string name="permission_write_never_ask">用户设置不再询问权限申请</string>
+
+
 </resources>

@@ -3,7 +3,7 @@ package com.meiji.toutiao.module.news.content;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
-import com.meiji.toutiao.bean.news.NewsArticleBean;
+import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.base.IBasePresenter;
 import com.meiji.toutiao.module.base.IBaseView;
 
@@ -26,7 +26,7 @@ interface INewsContent {
         /**
          * 请求数据
          */
-        void doLoadData(NewsArticleBean.DataBean dataBean);
+        void doLoadData(MultiNewsArticleDataBean dataBean);
 
         /**
          * 查看评论

@@ -7,7 +7,7 @@ import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMediaApi;
 import com.meiji.toutiao.bean.media.MediaArticleBean;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
-import com.meiji.toutiao.bean.news.NewsArticleBean;
+import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.news.content.NewsContentActivity;
 
 import org.jsoup.Jsoup;
@@ -131,12 +131,17 @@ class MediaArticlePresenter implements IMediaArticle.Presenter {
                 .create(new ObservableOnSubscribe<String>() {
                     @Override
                     public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
-                        Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(IMediaApi.class)
-                                .getCommentParameter(url).execute();
-                        if (response.isSuccessful()) {
-                            e.onNext(response.body().string());
-                        } else {
+                        try {
+                            Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(IMediaApi.class)
+                                    .getCommentParameter(url).execute();
+                            if (response.isSuccessful()) {
+                                e.onNext(response.body().string());
+                            } else {
+                                e.onComplete();
+                            }
+                        } catch (Exception e1) {
                             e.onComplete();
+                            ErrorAction.print(e1);
                         }
                     }
                 })
@@ -148,24 +153,33 @@ class MediaArticlePresenter implements IMediaArticle.Presenter {
                         return parseCommentParameter(s);
                     }
                 })
-                .map(new Function<long[], NewsArticleBean.DataBean>() {
+                .map(new Function<long[], MultiNewsArticleDataBean>() {
                     @Override
-                    public NewsArticleBean.DataBean apply(@NonNull long[] longs) throws Exception {
-                        NewsArticleBean.DataBean bean = new NewsArticleBean.DataBean();
+                    public MultiNewsArticleDataBean apply(@NonNull long[] longs) throws Exception {
+                        MultiNewsArticleDataBean bean = new MultiNewsArticleDataBean();
                         bean.setTitle(dataBean.getTitle());
                         bean.setDisplay_url(dataBean.getSource_url());
                         bean.setMedia_name(mediaChannelBean.getName());
-                        bean.setMedia_url(mediaChannelBean.getUrl());
+                        MultiNewsArticleDataBean.MediaInfoBean mediaInfo = new MultiNewsArticleDataBean.MediaInfoBean();
+                        mediaInfo.setMedia_id(mediaChannelBean.getUrl());
+                        bean.setMedia_info(mediaInfo);
                         bean.setGroup_id(longs[0]);
                         bean.setItem_id(longs[1]);
+//                        NewsArticleBean.DataBean bean = new NewsArticleBean.DataBean();
+//                        bean.setTitle(dataBean.getTitle());
+//                        bean.setDisplay_url(dataBean.getSource_url());
+//                        bean.setMedia_name(mediaChannelBean.getName());
+//                        bean.setMedia_url(mediaChannelBean.getUrl());
+//                        bean.setGroup_id(longs[0]);
+//                        bean.setItem_id(longs[1]);
                         return bean;
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(view.<NewsArticleBean.DataBean>bindToLife())
-                .subscribe(new Consumer<NewsArticleBean.DataBean>() {
+                .compose(view.<MultiNewsArticleDataBean>bindToLife())
+                .subscribe(new Consumer<MultiNewsArticleDataBean>() {
                     @Override
-                    public void accept(@NonNull NewsArticleBean.DataBean bean) throws Exception {
+                    public void accept(@NonNull MultiNewsArticleDataBean bean) throws Exception {
                         // 这里要区分文章类型 新闻/图片/视频 (待写)
                         NewsContentActivity.launch(bean);
                     }
@@ -173,6 +187,7 @@ class MediaArticlePresenter implements IMediaArticle.Presenter {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         doShowNetError();
+                        ErrorAction.print(throwable);
                     }
                 });
     }

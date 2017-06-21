@@ -22,8 +22,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.bean.news.NewsArticleBean;
+import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.module.media.MediaAddActivity;
@@ -64,12 +65,22 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
     @Override
     protected void initData() {
         Bundle bundle = getArguments();
-        NewsArticleBean.DataBean dataBean = bundle.getParcelable(TAG);
-        shareUrl = dataBean.getDisplay_url();
-        shareTitle = dataBean.getTitle();
-        ((BaseActivity) getActivity()).getSupportActionBar().setTitle(dataBean.getMedia_name());
-        mediaUrl = dataBean.getMedia_url();
-        presenter.doLoadData(dataBean);
+//        NewsArticleBean.DataBean dataBean = bundle.getParcelable(TAG);
+//        shareUrl = dataBean.getDisplay_url();
+//        shareTitle = dataBean.getTitle();
+//        ((BaseActivity) getActivity()).getSupportActionBar().setTitle(dataBean.getMedia_name());
+//        mediaUrl = dataBean.getMedia_url();
+//        presenter.doLoadData(dataBean);
+        try {
+            MultiNewsArticleDataBean bean = bundle.getParcelable(TAG);
+            shareUrl = bean.getDisplay_url();
+            shareTitle = bean.getTitle();
+            ((BaseActivity) getActivity()).getSupportActionBar().setTitle(bean.getMedia_name());
+            mediaUrl = "http://toutiao.com/m" + bean.getMedia_info().getMedia_id();
+            presenter.doLoadData(bean);
+        } catch (Exception e) {
+            ErrorAction.print(e);
+        }
     }
 
     @Override

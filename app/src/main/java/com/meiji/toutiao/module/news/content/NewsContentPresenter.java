@@ -7,7 +7,7 @@ import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.INewsApi;
-import com.meiji.toutiao.bean.news.NewsArticleBean;
+import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsContentBean;
 import com.meiji.toutiao.module.news.comment.NewsCommentFragment;
 import com.meiji.toutiao.utils.SettingsUtil;
@@ -42,7 +42,7 @@ class NewsContentPresenter implements INewsContent.Presenter {
     }
 
     @Override
-    public void doLoadData(NewsArticleBean.DataBean dataBean) {
+    public void doLoadData(MultiNewsArticleDataBean dataBean) {
         group_id = dataBean.getGroup_id() + "";
         item_id = dataBean.getItem_id() + "";
         final String url = dataBean.getDisplay_url();
@@ -63,6 +63,7 @@ class NewsContentPresenter implements INewsContent.Presenter {
                                 e.onComplete();
                             }
                         } catch (Exception e1) {
+                            e.onComplete();
                             ErrorAction.print(e1);
                         }
                     }

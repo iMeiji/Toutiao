@@ -97,6 +97,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                                 e.onComplete();
                             }
                         } catch (Exception e1) {
+                            e.onComplete();
                             ErrorAction.print(e1);
                         }
                     }
@@ -159,6 +160,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                                 e.onComplete();
                             }
                         } catch (Exception e1) {
+                            e.onComplete();
                             ErrorAction.print(e1);
                         }
                     }

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
-import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.module.news.content.NewsContentActivity;
 import com.meiji.toutiao.utils.ImageLoader;
 import com.meiji.toutiao.utils.TimeUtil;
@@ -57,16 +56,17 @@ public class NewsArticleNoPicViewBinder extends ItemViewBinder<MultiNewsArticleD
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    NewsArticleBean.DataBean dataBean = new NewsArticleBean.DataBean();
-                    dataBean.setDisplay_url(item.getDisplay_url());
-                    dataBean.setTitle(item.getTitle());
-                    dataBean.setMedia_name(item.getMedia_name());
-                    if (item.getMedia_info() != null) {
-                        dataBean.setMedia_url("http://toutiao.com/m" + item.getMedia_info().getMedia_id());
-                    }
-                    dataBean.setGroup_id(item.getGroup_id());
-                    dataBean.setItem_id(item.getGroup_id());
-                    NewsContentActivity.launch(dataBean);
+//                    NewsArticleBean.DataBean dataBean = new NewsArticleBean.DataBean();
+//                    dataBean.setDisplay_url(item.getDisplay_url());
+//                    dataBean.setTitle(item.getTitle());
+//                    dataBean.setMedia_name(item.getMedia_name());
+//                    if (item.getMedia_info() != null) {
+//                        dataBean.setMedia_url("http://toutiao.com/m" + item.getMedia_info().getMedia_id());
+//                    }
+//                    dataBean.setGroup_id(item.getGroup_id());
+//                    dataBean.setItem_id(item.getGroup_id());
+//                    NewsContentActivity.launch(dataBean);
+                    NewsContentActivity.launch(item);
                 }
             });
         } catch (Exception e) {
