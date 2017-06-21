@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
@@ -77,7 +78,7 @@ public class NewsArticleViewBinder extends ItemViewBinder<MultiNewsArticleDataBe
                 }
             });
         } catch (Exception e) {
-
+            ErrorAction.print(e);
         }
     }
 

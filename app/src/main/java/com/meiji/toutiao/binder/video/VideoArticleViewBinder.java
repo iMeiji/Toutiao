@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.module.video.content.VideoContentActivity;
@@ -103,7 +104,7 @@ public class VideoArticleViewBinder extends ItemViewBinder<VideoArticleBean.Data
                 }
             });
         } catch (Exception e) {
-
+            ErrorAction.print(e);
         }
     }
 

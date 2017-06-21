@@ -33,9 +33,9 @@ import com.meiji.toutiao.database.dao.SearchHistoryDao;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.search.result.SearchResultFragment;
 import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.utils.TimeUtil;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -130,7 +130,11 @@ public class SearchActivity extends BaseActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        dao.add(keyWord);
+                        if (dao.queryisExist(keyWord)) {
+                            dao.update(keyWord);
+                        } else {
+                            dao.add(keyWord);
+                        }
                     }
                 }).start();
                 return false;
@@ -161,7 +165,7 @@ public class SearchActivity extends BaseActivity {
                 .create(new ObservableOnSubscribe<List<SearchHistoryBean>>() {
                     @Override
                     public void subscribe(@NonNull ObservableEmitter<List<SearchHistoryBean>> e) throws Exception {
-                        List<SearchHistoryBean> list = dao.query();
+                        List<SearchHistoryBean> list = dao.queryAll();
                         e.onNext(list);
                     }
                 })
@@ -188,7 +192,7 @@ public class SearchActivity extends BaseActivity {
                             SearchHistoryBean searchHistoryBean = new SearchHistoryBean();
                             searchHistoryBean.setKeyWord(bean.getKeyword());
                             searchHistoryBean.setType(SearchHistoryAdapter.TYPE_SUG);
-                            searchHistoryBean.setTime(String.valueOf(new Date(System.currentTimeMillis()).getTime() / 1000));
+                            searchHistoryBean.setTime(TimeUtil.getTimeStamp());
                             list.add(searchHistoryBean);
                         }
                         return list;

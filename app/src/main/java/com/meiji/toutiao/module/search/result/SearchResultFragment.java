@@ -25,7 +25,7 @@ public class SearchResultFragment extends BaseListFragment<ISearchResult.Present
 
     public static SearchResultFragment newInstance(String query, String curTab) {
         Bundle args = new Bundle();
-        args.putString("query", query);
+        args.putString("queryAll", query);
         args.putString("curTab", curTab);
         SearchResultFragment fragment = new SearchResultFragment();
         fragment.setArguments(args);
@@ -34,7 +34,7 @@ public class SearchResultFragment extends BaseListFragment<ISearchResult.Present
 
     @Override
     protected void initData() {
-        query = getArguments().getString("query");
+        query = getArguments().getString("queryAll");
         curTab = getArguments().getString("curTab");
     }
 

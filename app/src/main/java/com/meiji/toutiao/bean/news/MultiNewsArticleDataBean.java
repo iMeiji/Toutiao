@@ -129,7 +129,7 @@ public class MultiNewsArticleDataBean {
     private String source_open_url;
     private int level;
     private int digg_count;
-    private int behot_time;
+    private String behot_time;
     private String article_alt_url;
     private long cursor;
     private String url;
@@ -560,11 +560,11 @@ public class MultiNewsArticleDataBean {
         this.digg_count = digg_count;
     }
 
-    public int getBehot_time() {
+    public String getBehot_time() {
         return behot_time;
     }
 
-    public void setBehot_time(int behot_time) {
+    public void setBehot_time(String behot_time) {
         this.behot_time = behot_time;
     }
 

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.utils.ImageLoader;
@@ -41,7 +42,7 @@ public class VideoContentHeaderViewBinder extends ItemViewBinder<VideoArticleBea
             holder.tv_abstract.setText(item.getAbstractX());
             holder.tv_source.setText(item.getSource());
         } catch (Exception e) {
-
+            ErrorAction.print(e);
         }
     }
 

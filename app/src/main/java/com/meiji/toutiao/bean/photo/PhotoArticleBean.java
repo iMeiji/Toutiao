@@ -60,13 +60,13 @@ public class PhotoArticleBean {
          * max_behot_time : 1494154227
          */
 
-        private int max_behot_time;
+        private String max_behot_time;
 
-        public int getMax_behot_time() {
+        public String getMax_behot_time() {
             return max_behot_time;
         }
 
-        public void setMax_behot_time(int max_behot_time) {
+        public void setMax_behot_time(String max_behot_time) {
             this.max_behot_time = max_behot_time;
         }
     }

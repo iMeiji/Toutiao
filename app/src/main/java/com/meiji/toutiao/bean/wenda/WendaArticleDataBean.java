@@ -24,7 +24,7 @@ public class WendaArticleDataBean {
     private int cell_type;
     private String extra;
     private String question;
-    private int behot_time;
+    private String behot_time;
     private int cursor;
     private String answer;
     private long id;
@@ -80,11 +80,11 @@ public class WendaArticleDataBean {
         this.question = question;
     }
 
-    public int getBehot_time() {
+    public String getBehot_time() {
         return behot_time;
     }
 
-    public void setBehot_time(int behot_time) {
+    public void setBehot_time(String behot_time) {
         this.behot_time = behot_time;
     }
 

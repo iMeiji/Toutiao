@@ -4,9 +4,9 @@ import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IPhotoApi;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
+import com.meiji.toutiao.utils.TimeUtil;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -26,11 +26,11 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
     private IPhotoArticle.View view;
     private List<PhotoArticleBean.DataBean> dataList = new ArrayList<>();
     private String category;
-    private int time;
+    private String time;
 
     PhotoArticlePresenter(IPhotoArticle.View view) {
         this.view = view;
-        this.time = (int) (new Date(System.currentTimeMillis()).getTime() / 1000);
+        this.time = TimeUtil.getTimeStamp();
     }
 
     @Override
@@ -107,7 +107,7 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
     public void doRefresh() {
         if (dataList.size() != 0) {
             dataList.clear();
-            time = (int) (new Date(System.currentTimeMillis()).getTime() / 1000);
+            time = TimeUtil.getTimeStamp();
         }
         doLoadData();
     }

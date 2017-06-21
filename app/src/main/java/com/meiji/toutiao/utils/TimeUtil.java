@@ -65,4 +65,8 @@ public class TimeUtil {
         }
         return timeAgo(date);
     }
+
+    public static String getTimeStamp() {
+        return String.valueOf(new Date(System.currentTimeMillis()).getTime() / 1000);
+    }
 }

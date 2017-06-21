@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
 import com.meiji.toutiao.bean.search.SearchBean;
@@ -68,7 +69,7 @@ public class SearchViewBinder extends ItemViewBinder<SearchBean.DataBeanX, Searc
                 }
             });
         } catch (Exception e) {
-            e.printStackTrace();
+            ErrorAction.print(e);
         }
     }
 

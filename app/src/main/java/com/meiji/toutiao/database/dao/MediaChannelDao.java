@@ -67,22 +67,14 @@ public class MediaChannelDao {
         return list;
     }
 
-    public List<MediaChannelBean> queryId(String id) {
+    public boolean queryIsExist(String id) {
         Cursor cursor = db.query(MediaChannelTable.TABLENAME, null, MediaChannelTable.ID + "=?", new String[]{id}, null, null, null);
-        List<MediaChannelBean> list = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            MediaChannelBean bean = new MediaChannelBean();
-            bean.setId(cursor.getString(MediaChannelTable.ID_ID));
-            bean.setName(cursor.getString(MediaChannelTable.ID_NAME));
-            bean.setAvatar(cursor.getString(MediaChannelTable.ID_AVATAR));
-            bean.setType(cursor.getString(MediaChannelTable.ID_TYPE));
-            bean.setFollowCount(cursor.getString(MediaChannelTable.ID_FOLLOWCOUNT));
-            bean.setDescText(cursor.getString(MediaChannelTable.ID_DESCTEXT));
-            bean.setUrl(cursor.getString(MediaChannelTable.ID_URL));
-            list.add(bean);
+        if (cursor.moveToNext()) {
+            cursor.close();
+            return true;
         }
         cursor.close();
-        return list;
+        return false;
     }
 
     public boolean delete(String mediaId) {

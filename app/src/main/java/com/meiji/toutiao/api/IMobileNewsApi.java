@@ -37,12 +37,12 @@ public interface IMobileNewsApi {
     @GET("http://is.snssdk.com/api/news/feed/v53/?iid=10344168417&device_id=36394312781&refer=1&count=20")
     Observable<MultiNewsArticleBean> getNewsArticle(
             @Query("category") String category,
-            @Query("max_behot_time") int maxBehotTime);
+            @Query("max_behot_time") String maxBehotTime);
 
     @GET("http://lf.snssdk.com/api/news/feed/v53/?iid=10247804300&device_id=36328180756")
     Observable<MultiNewsArticleBean> getNewsArticle2(
             @Query("category") String category,
-            @Query("max_behot_time") int maxBehotTime);
+            @Query("max_behot_time") String maxBehotTime);
 
     /**
      * 获取新闻评论

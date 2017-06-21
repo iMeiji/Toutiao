@@ -8,11 +8,10 @@ import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileNewsApi;
 import com.meiji.toutiao.bean.news.MultiNewsArticleBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
+import com.meiji.toutiao.utils.TimeUtil;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
@@ -31,25 +30,25 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
     private INewsArticle.View view;
     private List<MultiNewsArticleDataBean> dataList = new ArrayList<>();
     private String category;
-    private int time;
+    private String time;
     private Gson gson = new Gson();
 
     NewsArticlePresenter(INewsArticle.View view) {
         this.view = view;
-        this.time = (int) (new Date(System.currentTimeMillis()).getTime() / 1000);
+        this.time = TimeUtil.getTimeStamp();
     }
 
-    private int getRandom() {
-        if (this.time != 0) {
-            Random random = new Random();
-            StringBuilder result = new StringBuilder();
-            for (int i = 0; i < 6; i++) {
-                result.append(random.nextInt(10));
-            }
-            return this.time - Integer.parseInt(result.toString());
-        }
-        return 0;
-    }
+//    private int getRandom() {
+//        if (this.time != 0) {
+//            Random random = new Random();
+//            StringBuilder result = new StringBuilder();
+//            for (int i = 0; i < 6; i++) {
+//                result.append(random.nextInt(10));
+//            }
+//            return this.time - Integer.parseInt(result.toString());
+//        }
+//        return 0;
+//    }
 
     @Override
     public void doLoadData(String... category) {
@@ -160,7 +159,7 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
     public void doRefresh() {
         if (dataList.size() != 0) {
             dataList.clear();
-            time = (int) (new Date(System.currentTimeMillis()).getTime() / 1000);
+            time = TimeUtil.getTimeStamp();
         }
         doLoadData();
     }

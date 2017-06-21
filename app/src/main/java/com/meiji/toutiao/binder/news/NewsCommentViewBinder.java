@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.module.base.BaseActivity;
@@ -80,7 +81,7 @@ public class NewsCommentViewBinder extends ItemViewBinder<NewsCommentMobileBean.
                 }
             });
         } catch (Exception e) {
-
+            ErrorAction.print(e);
         }
     }
 

@@ -24,7 +24,7 @@ public interface IPhotoApi {
     @GET("api/article/feed/?as=A115C8457F69B85&cp=585F294B8845EE1&count=30")
     Observable<PhotoArticleBean> getPhotoArticle(
             @Query("category") String category,
-            @Query("_") int time);
+            @Query("_") String time);
 
     /**
      * 获取图片内容HTML内容

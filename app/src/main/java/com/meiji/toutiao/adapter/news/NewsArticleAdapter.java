@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created by Meiji on 2016/12/13.
  */
-
+@Deprecated
 public class NewsArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_NORMAL = 0;

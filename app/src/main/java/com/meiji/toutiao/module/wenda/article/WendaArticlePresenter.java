@@ -8,9 +8,9 @@ import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileWendaApi;
 import com.meiji.toutiao.bean.wenda.WendaArticleBean;
 import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
+import com.meiji.toutiao.utils.TimeUtil;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -28,14 +28,14 @@ class WendaArticlePresenter implements IWendaArticle.Presenter {
 
     private static final String TAG = "WendaArticlePresenter";
     private IWendaArticle.View view;
-    private int time;
+    private String time;
     private Gson gson = new Gson();
     private List<WendaArticleDataBean> dataList = new ArrayList<>();
 
 
     WendaArticlePresenter(IWendaArticle.View view) {
         this.view = view;
-        this.time = (int) (new Date(System.currentTimeMillis()).getTime() / 1000);
+        this.time = TimeUtil.getTimeStamp();
     }
 
     @Override
@@ -119,7 +119,7 @@ class WendaArticlePresenter implements IWendaArticle.Presenter {
     public void doRefresh() {
         if (dataList.size() != 0) {
             dataList.clear();
-            time = (int) (new Date(System.currentTimeMillis()).getTime() / 1000);
+            time = TimeUtil.getTimeStamp();
         }
         doLoadData();
     }

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.utils.ImageLoader;
@@ -46,7 +47,7 @@ public class WendaContentHeaderViewBinder extends ItemViewBinder<WendaContentBea
             holder.tv_answer_count.setText(tv_answer_count);
             holder.tv_follow_count.setText(tv_follow_count);
         } catch (Exception e) {
-
+            ErrorAction.print(e);
         }
     }
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
 import com.meiji.toutiao.module.wenda.content.WendaContentActivity;
@@ -52,7 +53,7 @@ public class WendaArticleOnePicViewBinder extends ItemViewBinder<WendaArticleDat
                 }
             });
         } catch (Exception e) {
-
+            ErrorAction.print(e);
         }
     }
 

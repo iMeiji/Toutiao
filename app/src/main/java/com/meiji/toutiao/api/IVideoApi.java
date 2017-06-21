@@ -21,7 +21,7 @@ public interface IVideoApi {
     @GET("api/article/recent/?source=2&as=A105177907376A5&cp=5797C7865AD54E1&count=30")
     Observable<VideoArticleBean> getVideoArticle(
             @Query("category") String category,
-            @Query("_") int time);
+            @Query("_") String time);
 
     /**
      * 获取视频信息

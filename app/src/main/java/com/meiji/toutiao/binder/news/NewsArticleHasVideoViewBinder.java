@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
@@ -38,7 +39,6 @@ public class NewsArticleHasVideoViewBinder extends ItemViewBinder<MultiNewsArtic
     @Override
     protected void onBindViewHolder(@NonNull NewsArticleHasVideoViewBinder.ViewHolder holder, @NonNull final MultiNewsArticleDataBean item) {
         try {
-
             String image = item.getVideo_detail_info().getDetail_video_large_image().getUrl();
             if (!TextUtils.isEmpty(image)) {
                 ImageLoader.loadCenterCrop(holder.itemView.getContext(), image, holder.iv_video_image, R.color.viewBackground);
@@ -83,6 +83,7 @@ public class NewsArticleHasVideoViewBinder extends ItemViewBinder<MultiNewsArtic
                 }
             });
         } catch (Exception e) {
+            ErrorAction.print(e);
         }
     }
 

@@ -68,7 +68,7 @@ public class SearchHistoryAdapter extends ArrayAdapter<SearchHistoryBean> {
                                     public void subscribe(@io.reactivex.annotations.NonNull ObservableEmitter<List<SearchHistoryBean>> e) throws Exception {
                                         SearchHistoryDao dao = new SearchHistoryDao();
                                         dao.delete(data.get(position).getKeyWord());
-                                        e.onNext(dao.query());
+                                        e.onNext(dao.queryAll());
                                     }
                                 })
                                 .subscribeOn(Schedulers.io())

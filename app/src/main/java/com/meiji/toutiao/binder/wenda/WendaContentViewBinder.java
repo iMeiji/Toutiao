@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.module.wenda.detail.WendaDetailActivity;
@@ -46,7 +47,7 @@ public class WendaContentViewBinder extends ItemViewBinder<WendaContentBean.AnsL
                 }
             });
         } catch (Exception e) {
-
+            ErrorAction.print(e);
         }
     }
 

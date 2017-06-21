@@ -14,7 +14,6 @@ import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.bean.media.MediaChannelBean;
 import com.meiji.toutiao.database.dao.MediaChannelDao;
 import com.meiji.toutiao.module.base.BaseActivity;
 
@@ -24,7 +23,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -96,12 +94,10 @@ public class MediaAddActivity extends BaseActivity {
         if (matcher.find()) {
             final String id = matcher.group().replaceAll("[^0-9]", "");
             // 查询是否已添加
-            List<MediaChannelBean> list = dao.queryId(id);
-            for (MediaChannelBean bean : list) {
-                if (TextUtils.equals(bean.getId(), id)) {
-                    onFinish(getString(R.string.has_been_added));
-                    return;
-                }
+            boolean isExist = dao.queryIsExist(id);
+            if (isExist) {
+                onFinish(getString(R.string.has_been_added));
+                return;
             }
 
             new Thread(new Runnable() {

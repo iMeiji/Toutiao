@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsArticleBean;
@@ -69,7 +70,7 @@ public class NewsArticleNoPicViewBinder extends ItemViewBinder<MultiNewsArticleD
                 }
             });
         } catch (Exception e) {
-
+            ErrorAction.print(e);
         }
     }
 

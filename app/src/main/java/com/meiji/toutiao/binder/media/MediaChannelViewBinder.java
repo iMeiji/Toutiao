@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
 import com.meiji.toutiao.module.media.article.MediaArticleActivity;
@@ -30,16 +31,20 @@ public class MediaChannelViewBinder extends ItemViewBinder<MediaChannelBean, Med
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull final MediaChannelBean item) {
-        String url = item.getAvatar();
-        ImageLoader.loadCenterCrop(holder.itemView.getContext(), url, holder.cv_avatar, R.color.viewBackground);
-        holder.tv_mediaName.setText(item.getName());
-        holder.tv_descText.setText(item.getDescText());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MediaArticleActivity.startActivity(item);
-            }
-        });
+        try {
+            String url = item.getAvatar();
+            ImageLoader.loadCenterCrop(holder.itemView.getContext(), url, holder.cv_avatar, R.color.viewBackground);
+            holder.tv_mediaName.setText(item.getName());
+            holder.tv_descText.setText(item.getDescText());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MediaArticleActivity.startActivity(item);
+                }
+            });
+        } catch (Exception e) {
+            ErrorAction.print(e);
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

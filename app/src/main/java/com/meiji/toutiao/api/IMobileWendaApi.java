@@ -28,7 +28,7 @@ public interface IMobileWendaApi {
      */
     @GET("http://is.snssdk.com/wenda/v1/native/feedbrow/?iid=10344168417&device_id=36394312781&category=question_and_answer&wd_version=5&count=20")
     Observable<WendaArticleBean> getWendaArticle(
-            @Query("max_behot_time") int maxBehotTime);
+            @Query("max_behot_time") String maxBehotTime);
 
     /**
      * 获取头条问答优质回答

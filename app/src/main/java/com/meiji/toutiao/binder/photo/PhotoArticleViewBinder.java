@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.module.photo.content.PhotoContentActivity;
@@ -75,7 +76,7 @@ public class PhotoArticleViewBinder extends ItemViewBinder<PhotoArticleBean.Data
                 }
             });
         } catch (Exception e) {
-
+            ErrorAction.print(e);
         }
     }
 

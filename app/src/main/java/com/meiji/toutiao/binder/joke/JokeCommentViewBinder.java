@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.joke.JokeCommentBean;
 import com.meiji.toutiao.module.base.BaseActivity;
@@ -79,7 +80,7 @@ public class JokeCommentViewBinder extends ItemViewBinder<JokeCommentBean.DataBe
                 }
             });
         } catch (Exception e) {
-
+            ErrorAction.print(e);
         }
     }
 
