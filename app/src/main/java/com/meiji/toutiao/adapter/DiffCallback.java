@@ -3,7 +3,6 @@ package com.meiji.toutiao.adapter;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 
-import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.bean.joke.JokeCommentBean;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.bean.media.MediaArticleBean;
@@ -94,7 +93,7 @@ public class DiffCallback extends DiffUtil.Callback {
                             ((SearchBean.DataBeanX) newList.get(newItemPosition)).getTitle());
             }
         } catch (Exception e) {
-            ErrorAction.print(e);
+//            ErrorAction.print(e);
         }
         return false;
     }
@@ -132,7 +131,7 @@ public class DiffCallback extends DiffUtil.Callback {
                             ((SearchBean.DataBeanX) newList.get(newItemPosition)).getAbstractX());
             }
         } catch (Exception e) {
-            ErrorAction.print(e);
+//            ErrorAction.print(e);
         }
         return false;
     }

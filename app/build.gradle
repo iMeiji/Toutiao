@@ -80,14 +80,18 @@ dependencies {
     compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
     compile "com.android.support:recyclerview-v7:$SUPPORT_LIBRARY_VERSION"
     compile "com.android.support:preference-v14:$SUPPORT_LIBRARY_VERSION"
-
+    // 解析JSON
     compile 'com.google.code.gson:gson:2.8.0'
+    // 图片加载
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    // 解析HTML
     compile 'org.jsoup:jsoup:1.10.1'
+    // 图片浏览
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
+    // 协议Dialog
     compile 'de.psdev.licensesdialog:licensesdialog:1.8.2'
+    // 节操播放器
     compile 'fm.jiecao:jiecaovideoplayer:5.5.4'
-
     // retrofit 2
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
@@ -105,11 +109,14 @@ dependencies {
     debugCompile 'com.squareup.okhttp3:logging-interceptor:3.7.0'
     // MD dialog
     compile 'com.afollestad.material-dialogs:commons:0.9.4.4'
-    // PermissionsDispatcher
+    // 权限管理
     compile('com.github.hotchemi:permissionsdispatcher:2.4.0') { exclude module: 'support-v13' }
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
-
+    // 调试工具
     debugCompile 'com.facebook.stetho:stetho:1.5.0'
     testCompile 'junit:junit:4.12'
+    // 简化版 Adapter
     compile 'me.drakeet.multitype:multitype:3.0.0'
+    // RxBinding
+    compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
 }

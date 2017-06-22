@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Meiji on 2016/12/14.
  */
-
+@Deprecated
 public class NewsArticleBean {
 
     /**

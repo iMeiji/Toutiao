@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by Meiji on 2016/12/20.
  */
-
+@Deprecated
 public class NewsCommentBean {
 
     /**

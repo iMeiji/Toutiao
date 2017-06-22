@@ -21,6 +21,8 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView;
+import com.jakewharton.rxbinding2.support.v7.widget.SearchViewQueryTextEvent;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.RetrofitFactory;
@@ -37,6 +39,7 @@ import com.meiji.toutiao.utils.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -91,14 +94,15 @@ public class SearchActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String keyWord = adapter.getItem(position).getKeyWord();
                 Log.d(TAG, "onItemClick: " + keyWord);
-                initData(keyWord);
+//                initSearchLayout(keyWord);
                 searchView.clearFocus();
                 searchView.setQuery(keyWord, true);
             }
         });
     }
 
-    private void initData(String query) {
+    private void initSearchLayout(String query) {
+        Log.d(TAG, "initSearchLayout: ");
         searchLayout.setVisibility(View.VISIBLE);
         listView.setVisibility(View.GONE);
         List<Fragment> fragmentList = new ArrayList<>();
@@ -122,40 +126,79 @@ public class SearchActivity extends BaseActivity {
         searchView.setSearchableInfo(searchableInfo);
         searchView.onActionViewExpanded();
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(final String keyWord) {
-                Log.d(TAG, "onQueryTextSubmit: " + keyWord);
-                initData(keyWord);
-                new Thread(new Runnable() {
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(final String keyWord) {
+//                Log.d(TAG, "onQueryTextSubmit: " + keyWord);
+//                initSearchLayout(keyWord);
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (dao.queryisExist(keyWord)) {
+//                            dao.update(keyWord);
+//                        } else {
+//                            dao.add(keyWord);
+//                        }
+//                    }
+//                }).start();
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String keyWord) {
+//                if (!TextUtils.isEmpty(keyWord)) {
+//                    getSearchSuggest(keyWord);
+//                } else {
+//                    getSearchHistory();
+//                    if (searchLayout.getVisibility() != View.GONE) {
+//                        searchLayout.setVisibility(View.GONE);
+//                    }
+//                    if (listView.getVisibility() != View.VISIBLE) {
+//                        listView.setVisibility(View.VISIBLE);
+//                    }
+//                }
+//                return false;
+//            }
+//        });
+
+        RxSearchView.queryTextChangeEvents(searchView)
+                .throttleLast(100, TimeUnit.MILLISECONDS)
+                .debounce(300, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.<SearchViewQueryTextEvent>bindToLifecycle())
+                .subscribe(new Consumer<SearchViewQueryTextEvent>() {
                     @Override
-                    public void run() {
-                        if (dao.queryisExist(keyWord)) {
-                            dao.update(keyWord);
+                    public void accept(@NonNull SearchViewQueryTextEvent searchViewQueryTextEvent) throws Exception {
+                        final String keyWord = searchViewQueryTextEvent.queryText() + "";
+                        Log.d(TAG, "accept: " + keyWord);
+                        if (searchViewQueryTextEvent.isSubmitted()) {
+                            searchView.clearFocus();
+                            initSearchLayout(keyWord);
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (dao.queryisExist(keyWord)) {
+                                        dao.update(keyWord);
+                                    } else {
+                                        dao.add(keyWord);
+                                    }
+                                }
+                            }).start();
+                            return;
+                        }
+                        if (!TextUtils.isEmpty(keyWord)) {
+                            getSearchSuggest(keyWord);
                         } else {
-                            dao.add(keyWord);
+                            getSearchHistory();
+                            if (searchLayout.getVisibility() != View.GONE) {
+                                searchLayout.setVisibility(View.GONE);
+                            }
+                            if (listView.getVisibility() != View.VISIBLE) {
+                                listView.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
-                }).start();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String keyWord) {
-                if (!TextUtils.isEmpty(keyWord)) {
-                    getSearchSuggest(keyWord);
-                } else {
-                    getSearchHistory();
-                    if (searchLayout.getVisibility() != View.GONE) {
-                        searchLayout.setVisibility(View.GONE);
-                    }
-                    if (listView.getVisibility() != View.VISIBLE) {
-                        listView.setVisibility(View.VISIBLE);
-                    }
-                }
-                return false;
-            }
-        });
+                });
 
         return super.onCreateOptionsMenu(menu);
     }
