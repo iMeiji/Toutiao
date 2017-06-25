@@ -119,4 +119,6 @@ dependencies {
     compile 'me.drakeet.multitype:multitype:3.0.0'
     // RxBinding
     compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
+    // 响应式排版布局
+    compile 'com.google.android:flexbox:0.2.7'
 }

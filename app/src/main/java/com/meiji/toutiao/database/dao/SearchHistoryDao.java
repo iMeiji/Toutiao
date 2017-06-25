@@ -70,4 +70,9 @@ public class SearchHistoryDao {
         int result = db.update(SearchHistoryTable.TABLENAME, values, SearchHistoryTable.KEYWORD + "=?", new String[]{keyWord});
         return result != -1;
     }
+
+    public boolean deleteAll() {
+        int id = db.delete(SearchHistoryTable.TABLENAME, null, null);
+        return id != -1;
+    }
 }
