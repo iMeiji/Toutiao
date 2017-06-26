@@ -30,8 +30,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SearchHistoryAdapter extends ArrayAdapter<SearchHistoryBean> {
 
-    public static final int TYPE_SUG = 0;
-    public static final int TYPE_HIS = 1;
     private static final String TAG = "SearchHistoryAdapter";
     private LayoutInflater inflater;
     private List<SearchHistoryBean> data;
@@ -51,45 +49,42 @@ public class SearchHistoryAdapter extends ArrayAdapter<SearchHistoryBean> {
     @NonNull
     @Override
     public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
-        int itemViewType = getItemViewType(position);
-        switch (itemViewType) {
-            case TYPE_HIS:
-                ViewHolder viewHolder = new ViewHolder();
-                convertView = inflater.inflate(R.layout.item_search_history, null);
-                viewHolder.iv_history = (ImageView) convertView.findViewById(R.id.iv_history);
-                viewHolder.tv_keyword = (TextView) convertView.findViewById(R.id.tv_keyword);
-                viewHolder.iv_close = (ImageView) convertView.findViewById(R.id.iv_close);
-                viewHolder.iv_close.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Observable
-                                .create(new ObservableOnSubscribe<List<SearchHistoryBean>>() {
-                                    @Override
-                                    public void subscribe(@io.reactivex.annotations.NonNull ObservableEmitter<List<SearchHistoryBean>> e) throws Exception {
-                                        SearchHistoryDao dao = new SearchHistoryDao();
-                                        dao.delete(data.get(position).getKeyWord());
-                                        e.onNext(dao.queryAll());
-                                    }
-                                })
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Consumer<List<SearchHistoryBean>>() {
-                                    @Override
-                                    public void accept(@io.reactivex.annotations.NonNull List<SearchHistoryBean> list) throws Exception {
-                                        updateDataSource(list);
-                                    }
-                                }, ErrorAction.error());
-                    }
-                });
-                viewHolder.tv_keyword.setText(data.get(position).getKeyWord());
-                return convertView;
-            case TYPE_SUG:
-                convertView = inflater.inflate(android.R.layout.simple_list_item_1, null);
-                TextView tv_keyword = (TextView) convertView.findViewById(android.R.id.text1);
-                tv_keyword.setText(data.get(position).getKeyWord());
-                return convertView;
+
+        ViewHolder viewHolder;
+        if (convertView == null) {
+            viewHolder = new ViewHolder();
+            convertView = inflater.inflate(R.layout.item_search_history, null);
+            viewHolder.iv_history = (ImageView) convertView.findViewById(R.id.iv_history);
+            viewHolder.tv_keyword = (TextView) convertView.findViewById(R.id.tv_keyword);
+            viewHolder.iv_close = (ImageView) convertView.findViewById(R.id.iv_close);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
-        return null;
+        viewHolder.tv_keyword.setText(data.get(position).getKeyWord());
+        viewHolder.iv_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Observable
+                        .create(new ObservableOnSubscribe<List<SearchHistoryBean>>() {
+                            @Override
+                            public void subscribe(@io.reactivex.annotations.NonNull ObservableEmitter<List<SearchHistoryBean>> e) throws Exception {
+                                SearchHistoryDao dao = new SearchHistoryDao();
+                                dao.delete(data.get(position).getKeyWord());
+                                e.onNext(dao.queryAll());
+                            }
+                        })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<List<SearchHistoryBean>>() {
+                            @Override
+                            public void accept(@io.reactivex.annotations.NonNull List<SearchHistoryBean> list) throws Exception {
+                                updateDataSource(list);
+                            }
+                        }, ErrorAction.error());
+            }
+        });
+        return convertView;
     }
 
     @Override
@@ -102,12 +97,7 @@ public class SearchHistoryAdapter extends ArrayAdapter<SearchHistoryBean> {
         return data.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return data.get(position).getType();
-    }
-
-    public static class ViewHolder {
+    static class ViewHolder {
         ImageView iv_history;
         TextView tv_keyword;
         ImageView iv_close;

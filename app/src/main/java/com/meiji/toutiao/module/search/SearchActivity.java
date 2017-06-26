@@ -29,12 +29,14 @@ import android.widget.TextView;
 import com.google.android.flexbox.FlexboxLayout;
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView;
 import com.jakewharton.rxbinding2.support.v7.widget.SearchViewQueryTextEvent;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.adapter.search.SearchHistoryAdapter;
+import com.meiji.toutiao.adapter.search.SearchSuggestionAdapter;
 import com.meiji.toutiao.api.IMobileSearchApi;
 import com.meiji.toutiao.bean.search.SearchHistoryBean;
 import com.meiji.toutiao.bean.search.SearchRecommentBean;
@@ -43,7 +45,6 @@ import com.meiji.toutiao.database.dao.SearchHistoryDao;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.search.result.SearchResultFragment;
 import com.meiji.toutiao.utils.SettingsUtil;
-import com.meiji.toutiao.utils.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +74,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private LinearLayout resultLayout;
     private ListView suggestionList;
     private ListView historyList;
-    private SearchHistoryAdapter adapter;
+    private SearchHistoryAdapter historyAdapter;
+    private SearchSuggestionAdapter suggestionAdapter;
     private SearchHistoryDao dao = new SearchHistoryDao();
     private FlexboxLayout flexboxLayout;
     private LinearLayout hotWordLayout;
@@ -93,37 +95,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private void initView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         initToolBar(toolbar, true, "");
-        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
-
-        tabLayout.setBackgroundColor(SettingsUtil.getInstance().getColor());
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        resultLayout = (LinearLayout) findViewById(R.id.result_layout);
-        suggestionList = (ListView) findViewById(R.id.suggestion_listview);
-        historyList = (ListView) findViewById(R.id.history_listview);
-
-        adapter = new SearchHistoryAdapter(this, -1);
-        suggestionList.setAdapter(adapter);
-        suggestionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String keyWord = adapter.getItem(position).getKeyWord();
-                Log.d(TAG, "onItemClick: " + keyWord);
-//                initSearchLayout(keyWord);
-                searchView.clearFocus();
-                searchView.setQuery(keyWord, true);
-            }
-        });
-        historyList.setAdapter(adapter);
-        historyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String keyWord = adapter.getItem(position).getKeyWord();
-                searchView.clearFocus();
-                searchView.setQuery(keyWord, true);
-            }
-        });
+        // 热门搜索
         hotWordLayout = (LinearLayout) findViewById(R.id.hotword_layout);
         flexboxLayout = (FlexboxLayout) findViewById(R.id.flexbox_layout);
         flexboxLayout.setFlexDirection(FlexboxLayout.FLEX_DIRECTION_ROW);
@@ -131,14 +103,54 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         tv_clear = (TextView) findViewById(R.id.tv_clear);
         tv_clear.setOnClickListener(this);
         tv_refresh = (TextView) findViewById(R.id.tv_refresh);
-        tv_refresh.setOnClickListener(this);
+        RxView.clicks(tv_refresh)
+                // 防抖
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .compose(this.bindToLifecycle())
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(@NonNull Object o) throws Exception {
+                        flexboxLayout.removeAllViews();
+                        getSearchHotWord();
+                    }
+                });
+        // 搜索结果
+        resultLayout = (LinearLayout) findViewById(R.id.result_layout);
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        tabLayout.setBackgroundColor(SettingsUtil.getInstance().getColor());
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        // 搜索建议
+        suggestionList = (ListView) findViewById(R.id.suggestion_listview);
+        suggestionAdapter = new SearchSuggestionAdapter(this, -1);
+        suggestionList.setAdapter(suggestionAdapter);
+        suggestionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String keyWord = suggestionAdapter.getItem(position).getKeyword();
+                searchView.clearFocus();
+                searchView.setQuery(keyWord, true);
+            }
+        });
+        // 搜索历史
+        historyList = (ListView) findViewById(R.id.history_listview);
+        historyAdapter = new SearchHistoryAdapter(this, -1);
+        historyList.setAdapter(historyAdapter);
+        historyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String keyWord = historyAdapter.getItem(position).getKeyWord();
+                searchView.clearFocus();
+                searchView.setQuery(keyWord, true);
+            }
+        });
     }
 
     private void initSearchLayout(String query) {
-        Log.d(TAG, "initSearchLayout: ");
+        hotWordLayout.setVisibility(View.GONE);
         resultLayout.setVisibility(View.VISIBLE);
         suggestionList.setVisibility(View.GONE);
-        hotWordLayout.setVisibility(View.GONE);
         List<Fragment> fragmentList = new ArrayList<>();
         for (int i = 1; i < titles.length + 1; i++) {
             fragmentList.add(SearchResultFragment.newInstance(query, i + ""));
@@ -160,42 +172,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 new ComponentName(getApplicationContext(), SearchActivity.class));
         searchView.setSearchableInfo(searchableInfo);
         searchView.onActionViewExpanded();
+//        // 设置搜索文字样式
+//        EditText searchEditText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+//        searchEditText.setTextColor(getResources().getColor(R.color.textColorPrimary));
+//        searchEditText.setHintTextColor(getResources().getColor(R.color.textColorPrimary));
+//        searchEditText.setBackgroundColor(Color.WHITE);
         setOnQuenyTextChangeListener();
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(final String keyWord) {
-//                Log.d(TAG, "onQueryTextSubmit: " + keyWord);
-//                initSearchLayout(keyWord);
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        if (dao.queryisExist(keyWord)) {
-//                            dao.update(keyWord);
-//                        } else {
-//                            dao.add(keyWord);
-//                        }
-//                    }
-//                }).start();
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String keyWord) {
-//                if (!TextUtils.isEmpty(keyWord)) {
-//                    getSearchSuggest(keyWord);
-//                } else {
-//                    getSearchHistory();
-//                    if (resultLayout.getVisibility() != View.GONE) {
-//                        resultLayout.setVisibility(View.GONE);
-//                    }
-//                    if (suggestionList.getVisibility() != View.VISIBLE) {
-//                        suggestionList.setVisibility(View.VISIBLE);
-//                    }
-//                }
-//                return false;
-//            }
-//        });
-
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -261,7 +243,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 .subscribe(new Consumer<List<SearchHistoryBean>>() {
                     @Override
                     public void accept(@NonNull final List<SearchHistoryBean> list) throws Exception {
-                        adapter.updateDataSource(list);
+                        historyAdapter.updateDataSource(list);
                     }
                 }, ErrorAction.error());
     }
@@ -270,26 +252,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         RetrofitFactory.getRetrofit().create(IMobileSearchApi.class)
                 .getSearchSuggestion(keyWord.trim())
                 .subscribeOn(Schedulers.io())
-                .map(new Function<SearchSuggestionBean, List<SearchHistoryBean>>() {
-                    @Override
-                    public List<SearchHistoryBean> apply(@NonNull SearchSuggestionBean searchSuggestionBean) throws Exception {
-                        List<SearchHistoryBean> list = new ArrayList<>();
-                        for (SearchSuggestionBean.DataBean bean : searchSuggestionBean.getData()) {
-                            SearchHistoryBean searchHistoryBean = new SearchHistoryBean();
-                            searchHistoryBean.setKeyWord(bean.getKeyword());
-                            searchHistoryBean.setType(SearchHistoryAdapter.TYPE_SUG);
-                            searchHistoryBean.setTime(TimeUtil.getTimeStamp());
-                            list.add(searchHistoryBean);
-                        }
-                        return list;
-                    }
-                })
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<List<SearchHistoryBean>>bindToLifecycle())
-                .subscribe(new Consumer<List<SearchHistoryBean>>() {
+                .compose(this.<SearchSuggestionBean>bindToLifecycle())
+                .subscribe(new Consumer<SearchSuggestionBean>() {
                     @Override
-                    public void accept(@NonNull List<SearchHistoryBean> searchHistoryBeen) throws Exception {
-                        adapter.updateDataSource(searchHistoryBeen);
+                    public void accept(@NonNull SearchSuggestionBean bean) throws Exception {
+                        suggestionAdapter.updateDataSource(bean.getData());
                     }
                 }, ErrorAction.error());
     }
@@ -322,19 +290,19 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                         }
                         if (!TextUtils.isEmpty(keyWord)) {
                             getSearchSuggest(keyWord);
-                            suggestionList.setVisibility(View.VISIBLE);
-                            resultLayout.setVisibility(View.GONE);
                             hotWordLayout.setVisibility(View.GONE);
+                            resultLayout.setVisibility(View.GONE);
+                            suggestionList.setVisibility(View.VISIBLE);
                         } else {
                             getSearchHistory();
+                            if (hotWordLayout.getVisibility() != View.VISIBLE) {
+                                hotWordLayout.setVisibility(View.VISIBLE);
+                            }
                             if (resultLayout.getVisibility() != View.GONE) {
                                 resultLayout.setVisibility(View.GONE);
                             }
                             if (suggestionList.getVisibility() != View.GONE) {
                                 suggestionList.setVisibility(View.GONE);
-                            }
-                            if (hotWordLayout.getVisibility() != View.VISIBLE) {
-                                hotWordLayout.setVisibility(View.VISIBLE);
                             }
                         }
                     }
@@ -344,10 +312,19 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void onRestart() {
         super.onRestart();
-        setOnQuenyTextChangeListener();
-        // 恢复当前搜索结果, 有 bug :会重新刷新
-        searchView.setQuery(this.keyWord, true);
         searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                setOnQuenyTextChangeListener();
+                return false;
+            }
+        });
     }
 
     @Override
@@ -377,9 +354,15 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     })
                     .show();
         }
-        if (id == R.id.tv_refresh) {
-            flexboxLayout.removeAllViews();
-            getSearchHotWord();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (suggestionList.getVisibility() != View.GONE) {
+            suggestionList.setVisibility(View.GONE);
+            hotWordLayout.setVisibility(View.VISIBLE);
+        } else {
+            finish();
         }
     }
 }

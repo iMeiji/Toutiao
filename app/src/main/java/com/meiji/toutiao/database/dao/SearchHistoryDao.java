@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.meiji.toutiao.adapter.search.SearchHistoryAdapter;
 import com.meiji.toutiao.bean.search.SearchHistoryBean;
 import com.meiji.toutiao.database.DatabaseHelper;
 import com.meiji.toutiao.database.table.SearchHistoryTable;
@@ -29,7 +28,6 @@ public class SearchHistoryDao {
         ContentValues values = new ContentValues();
         values.put(SearchHistoryTable.KEYWORD, keyWord);
         values.put(SearchHistoryTable.TIME, TimeUtil.getTimeStamp());
-        values.put(SearchHistoryTable.TYPE, SearchHistoryAdapter.TYPE_HIS);
         long result = db.insert(SearchHistoryTable.TABLENAME, null, values);
         return result != -1;
     }
@@ -41,7 +39,6 @@ public class SearchHistoryDao {
             SearchHistoryBean bean = new SearchHistoryBean();
             bean.setKeyWord(cursor.getString(SearchHistoryTable.ID_KEYWORD));
             bean.setTime(cursor.getString(SearchHistoryTable.ID_TIME));
-            bean.setType(Integer.parseInt(cursor.getString(SearchHistoryTable.ID_TYPE)));
             list.add(bean);
         }
         cursor.close();

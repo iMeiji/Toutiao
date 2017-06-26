@@ -8,9 +8,10 @@
 
     <ImageView
         android:id="@+id/iv_history"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="0.2"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
         android:gravity="center_vertical"
         android:scaleType="center"
         app:srcCompat="@drawable/ic_history_gray_24dp"/>
@@ -19,18 +20,20 @@
         android:id="@+id/tv_keyword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
-        android:text="123"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
+        android:text="123"/>
 
     <ImageView
         android:id="@+id/iv_close"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_weight="0.2"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
         android:background="?attr/selectableItemBackground"
         android:foreground="?attr/selectableItemBackground"
         android:scaleType="center"
