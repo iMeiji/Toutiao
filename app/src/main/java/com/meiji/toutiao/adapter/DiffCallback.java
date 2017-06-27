@@ -9,7 +9,7 @@ import com.meiji.toutiao.bean.media.MediaArticleBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
-import com.meiji.toutiao.bean.search.SearchBean;
+import com.meiji.toutiao.bean.search.SearchResultBean;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
@@ -89,8 +89,8 @@ public class DiffCallback extends DiffUtil.Callback {
                     return ((WendaContentBean.AnsListBean) oldList.get(oldItemPosition)).getAnsid().equals(
                             ((WendaContentBean.AnsListBean) newList.get(newItemPosition)).getAnsid());
                 case SEARCH:
-                    return ((SearchBean.DataBeanX) oldList.get(oldItemPosition)).getTitle().equals(
-                            ((SearchBean.DataBeanX) newList.get(newItemPosition)).getTitle());
+                    return ((SearchResultBean.DataBeanX) oldList.get(oldItemPosition)).getTitle().equals(
+                            ((SearchResultBean.DataBeanX) newList.get(newItemPosition)).getTitle());
             }
         } catch (Exception e) {
 //            ErrorAction.print(e);
@@ -127,8 +127,8 @@ public class DiffCallback extends DiffUtil.Callback {
                     return ((WendaArticleDataBean) oldList.get(oldItemPosition)).getQuestionBean().getContent().equals(
                             ((WendaArticleDataBean) newList.get(newItemPosition)).getQuestionBean().getContent());
                 case SEARCH:
-                    return ((SearchBean.DataBeanX) oldList.get(oldItemPosition)).getAbstractX().equals(
-                            ((SearchBean.DataBeanX) newList.get(newItemPosition)).getAbstractX());
+                    return ((SearchResultBean.DataBeanX) oldList.get(oldItemPosition)).getAbstractX().equals(
+                            ((SearchResultBean.DataBeanX) newList.get(newItemPosition)).getAbstractX());
             }
         } catch (Exception e) {
 //            ErrorAction.print(e);

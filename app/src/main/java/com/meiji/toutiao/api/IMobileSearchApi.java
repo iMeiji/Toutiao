@@ -1,10 +1,11 @@
 package com.meiji.toutiao.api;
 
-import com.meiji.toutiao.bean.search.SearchBean;
 import com.meiji.toutiao.bean.search.SearchRecommentBean;
+import com.meiji.toutiao.bean.search.SearchResultBean;
 import com.meiji.toutiao.bean.search.SearchSuggestionBean;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -32,7 +33,13 @@ public interface IMobileSearchApi {
      * @param offset  偏移量
      */
     @GET("http://is.snssdk.com/api/2/wap/search_content/?from=search_tab&iid=10344168417&device_id=36394312781&count=10&format=json")
-    Observable<SearchBean> getSearchArticle(
+    Observable<SearchResultBean> getSearchResult(
+            @Query("keyword") String keyword,
+            @Query("cur_tab") String curTab,
+            @Query("offset") int offset);
+
+    @GET("http://is.snssdk.com/api/2/wap/search_content/?from=search_tab&iid=10344168417&device_id=36394312781&count=10&format=json")
+    Observable<ResponseBody> getSearchResult2(
             @Query("keyword") String keyword,
             @Query("cur_tab") String curTab,
             @Query("offset") int offset);

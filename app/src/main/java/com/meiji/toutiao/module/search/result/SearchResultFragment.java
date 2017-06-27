@@ -55,6 +55,7 @@ public class SearchResultFragment extends BaseListFragment<ISearchResult.Present
     protected void initViews(View view) {
         super.initViews(view);
         adapter = new MultiTypeAdapter(oldItems);
+        // 区分新闻 和 视频
         Register.registerSearchItem(adapter);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new OnLoadMoreListener() {
@@ -72,7 +73,7 @@ public class SearchResultFragment extends BaseListFragment<ISearchResult.Present
     public void onSetAdapter(List<?> list) {
         Items newItems = new Items(list);
         newItems.add(new FooterBean());
-        DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.SEARCH, adapter);
+        DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.MUlTI_NEWS, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;

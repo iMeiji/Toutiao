@@ -2,11 +2,19 @@ package com.meiji.toutiao.module.search.result;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileSearchApi;
-import com.meiji.toutiao.bean.search.SearchBean;
+import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
+import com.meiji.toutiao.bean.search.SearchResultBean;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +26,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 /**
  * Created by Meiji on 2017/2/7.
@@ -30,7 +39,21 @@ class SearchResultPresenter implements ISearchResult.Presenter {
     private String query;
     private String curTab;
     private ISearchResult.View view;
-    private List<SearchBean.DataBeanX> list = new ArrayList<>();
+    private List<MultiNewsArticleDataBean> list = new ArrayList<>();
+    private Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(SearchResultBean.DataBeanX.MiddleImageBean.class,
+            new JsonDeserializer<SearchResultBean.DataBeanX.MiddleImageBean>() {
+                @Override
+                public SearchResultBean.DataBeanX.MiddleImageBean deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                    if (json.isJsonObject()) {
+                        Gson newGson = new Gson();
+                        return newGson.fromJson(json, typeOfT);
+                    } else {
+                        SearchResultBean.DataBeanX.MiddleImageBean bean = new SearchResultBean.DataBeanX.MiddleImageBean();
+                        bean.setUrl(json.getAsString());
+                        return bean;
+                    }
+                }
+            }).create();
 
     SearchResultPresenter(ISearchResult.View view) {
         this.view = view;
@@ -48,30 +71,41 @@ class SearchResultPresenter implements ISearchResult.Presenter {
         }
 
         RetrofitFactory.getRetrofit().create(IMobileSearchApi.class)
-                .getSearchArticle(this.query, curTab, offset)
+                .getSearchResult2(this.query, curTab, offset)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .flatMap(new Function<SearchBean, ObservableSource<SearchBean.DataBeanX>>() {
+                .flatMap(new Function<ResponseBody, ObservableSource<SearchResultBean.DataBeanX>>() {
                     @Override
-                    public ObservableSource<SearchBean.DataBeanX> apply(@NonNull SearchBean searchBean) throws Exception {
-                        return Observable.fromIterable(searchBean.getData());
+                    public ObservableSource<SearchResultBean.DataBeanX> apply(@NonNull ResponseBody responseBody) throws Exception {
+                        String json = responseBody.string();
+                        SearchResultBean searchResultBean = gson.fromJson(json, SearchResultBean.class);
+                        return Observable.fromIterable(searchResultBean.getData());
                     }
                 })
-                .filter(new Predicate<SearchBean.DataBeanX>() {
+                .filter(new Predicate<SearchResultBean.DataBeanX>() {
                     @Override
-                    public boolean test(@NonNull SearchBean.DataBeanX dataBeanX) throws Exception {
+                    public boolean test(@NonNull SearchResultBean.DataBeanX dataBeanX) throws Exception {
                         return !TextUtils.isEmpty(dataBeanX.getTitle());
                     }
                 })
-                .toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                // OkHttp: <-- HTTP FAILED: java.io.IOException: Canceled
-                // Fragment 生命周期的祸
-//                .compose(view.<List<SearchBean.DataBeanX>>bindToLife())
-                .subscribe(new Consumer<List<SearchBean.DataBeanX>>() {
+                .map(new Function<SearchResultBean.DataBeanX, MultiNewsArticleDataBean>() {
                     @Override
-                    public void accept(@NonNull List<SearchBean.DataBeanX> dataBeen) throws Exception {
-                        doSetAdapter(dataBeen);
+                    public MultiNewsArticleDataBean apply(@NonNull SearchResultBean.DataBeanX dataBeanX) throws Exception {
+                        String json = gson.toJson(dataBeanX);
+                        MultiNewsArticleDataBean bean = gson.fromJson(json, MultiNewsArticleDataBean.class);
+                        MultiNewsArticleDataBean.MediaInfoBean mediaInfo = new MultiNewsArticleDataBean.MediaInfoBean();
+                        mediaInfo.setMedia_id(dataBeanX.getMedia_url());
+                        bean.setMedia_info(mediaInfo);
+                        return bean;
+                    }
+                })
+                .toList()
+                .compose(view.<List<MultiNewsArticleDataBean>>bindToLife())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<MultiNewsArticleDataBean>>() {
+                    @Override
+                    public void accept(@NonNull List<MultiNewsArticleDataBean> list) throws Exception {
+                        doSetAdapter(list);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -89,8 +123,8 @@ class SearchResultPresenter implements ISearchResult.Presenter {
     }
 
     @Override
-    public void doSetAdapter(List<SearchBean.DataBeanX> dataBeen) {
-        list.addAll(dataBeen);
+    public void doSetAdapter(List<MultiNewsArticleDataBean> dataList) {
+        list.addAll(dataList);
         view.onSetAdapter(list);
         view.onHideLoading();
     }

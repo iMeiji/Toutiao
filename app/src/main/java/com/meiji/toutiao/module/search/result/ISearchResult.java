@@ -1,6 +1,6 @@
 package com.meiji.toutiao.module.search.result;
 
-import com.meiji.toutiao.bean.search.SearchBean;
+import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.base.IBasePresenter;
 import com.meiji.toutiao.module.base.IBaseView;
 
@@ -35,6 +35,6 @@ interface ISearchResult {
         /**
          * 设置适配器
          */
-        void doSetAdapter(List<SearchBean.DataBeanX> dataBeen);
+        void doSetAdapter(List<MultiNewsArticleDataBean> dataBeen);
     }
 }

@@ -36,9 +36,11 @@ public class NewsArticleNoPicViewBinder extends ItemViewBinder<MultiNewsArticleD
     protected void onBindViewHolder(@NonNull NewsArticleNoPicViewBinder.ViewHolder holder, @NonNull final MultiNewsArticleDataBean item) {
 
         try {
-            String avatar_url = item.getUser_info().getAvatar_url();
-            if (!TextUtils.isEmpty(avatar_url)) {
-                ImageLoader.loadCenterCrop(holder.itemView.getContext(), avatar_url, holder.iv_media, R.color.viewBackground);
+            if (null != item.getUser_info()) {
+                String avatar_url = item.getUser_info().getAvatar_url();
+                if (!TextUtils.isEmpty(avatar_url)) {
+                    ImageLoader.loadCenterCrop(holder.itemView.getContext(), avatar_url, holder.iv_media, R.color.viewBackground);
+                }
             }
 
             String tv_title = item.getTitle();

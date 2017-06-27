@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Meiji on 2017/6/13.
  */
 
-public class SearchBean {
+public class SearchResultBean {
 
     /**
      * count : 10
@@ -324,7 +324,7 @@ public class SearchBean {
         private boolean has_image;
         private HighlightBean highlight;
         private long group_id;
-        //        private MiddleImageBean middle_image;
+        private MiddleImageBean middle_image;
         private String play_effective_count;
         private int video_duration;
         private String image_url;
@@ -751,13 +751,13 @@ public class SearchBean {
             this.group_id = group_id;
         }
 
-//        public MiddleImageBean getMiddle_image() {
-//            return middle_image;
-//        }
-//
-//        public void setMiddle_image(MiddleImageBean middle_image) {
-//            this.middle_image = middle_image;
-//        }
+        public MiddleImageBean getMiddle_image() {
+            return middle_image;
+        }
+
+        public void setMiddle_image(MiddleImageBean middle_image) {
+            this.middle_image = middle_image;
+        }
 
         public String getPlay_effective_count() {
             return play_effective_count;

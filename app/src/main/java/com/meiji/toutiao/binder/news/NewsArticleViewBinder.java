@@ -44,9 +44,12 @@ public class NewsArticleViewBinder extends ItemViewBinder<MultiNewsArticleDataBe
                 String url = image_list.get(0).getUrl();
                 ImageLoader.loadCenterCrop(holder.itemView.getContext(), url, holder.iv_image, R.color.viewBackground);
             }
-            String avatar_url = item.getUser_info().getAvatar_url();
-            if (!TextUtils.isEmpty(avatar_url)) {
-                ImageLoader.loadCenterCrop(holder.itemView.getContext(), avatar_url, holder.iv_media, R.color.viewBackground);
+
+            if (null != item.getUser_info()) {
+                String avatar_url = item.getUser_info().getAvatar_url();
+                if (!TextUtils.isEmpty(avatar_url)) {
+                    ImageLoader.loadCenterCrop(holder.itemView.getContext(), avatar_url, holder.iv_media, R.color.viewBackground);
+                }
             }
 
             String tv_title = item.getTitle();

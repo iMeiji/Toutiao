@@ -73,11 +73,11 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
 //        presenter.doLoadData(dataBean);
         try {
             MultiNewsArticleDataBean bean = bundle.getParcelable(TAG);
+            presenter.doLoadData(bean);
             shareUrl = bean.getDisplay_url();
             shareTitle = bean.getTitle();
             ((BaseActivity) getActivity()).getSupportActionBar().setTitle(bean.getMedia_name());
             mediaUrl = "http://toutiao.com/m" + bean.getMedia_info().getMedia_id();
-            presenter.doLoadData(bean);
         } catch (Exception e) {
             ErrorAction.print(e);
         }

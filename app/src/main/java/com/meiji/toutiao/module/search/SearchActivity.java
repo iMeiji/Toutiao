@@ -68,7 +68,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private static final String TAG = "SearchActivity";
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private BasePagerAdapter pagerAdapter;
     private String[] titles = new String[]{"综合", "视频", "图集", "用户", "问答"};
     private SearchView searchView;
     private LinearLayout resultLayout;
@@ -79,9 +78,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private SearchHistoryDao dao = new SearchHistoryDao();
     private FlexboxLayout flexboxLayout;
     private LinearLayout hotWordLayout;
-    private TextView tv_clear;
-    private TextView tv_refresh;
-    private String keyWord;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,9 +96,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         flexboxLayout = (FlexboxLayout) findViewById(R.id.flexbox_layout);
         flexboxLayout.setFlexDirection(FlexboxLayout.FLEX_DIRECTION_ROW);
         flexboxLayout.setFlexWrap(FlexboxLayout.FLEX_WRAP_WRAP);
-        tv_clear = (TextView) findViewById(R.id.tv_clear);
+        TextView tv_clear = (TextView) findViewById(R.id.tv_clear);
         tv_clear.setOnClickListener(this);
-        tv_refresh = (TextView) findViewById(R.id.tv_refresh);
+        TextView tv_refresh = (TextView) findViewById(R.id.tv_refresh);
         RxView.clicks(tv_refresh)
                 // 防抖
                 .throttleFirst(1, TimeUnit.SECONDS)
@@ -113,7 +109,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                         flexboxLayout.removeAllViews();
                         getSearchHotWord();
                     }
-                });
+                }, ErrorAction.error());
         // 搜索结果
         resultLayout = (LinearLayout) findViewById(R.id.result_layout);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -155,10 +151,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         for (int i = 1; i < titles.length + 1; i++) {
             fragmentList.add(SearchResultFragment.newInstance(query, i + ""));
         }
-        pagerAdapter = new BasePagerAdapter(getSupportFragmentManager(), fragmentList, titles);
+        BasePagerAdapter pagerAdapter = new BasePagerAdapter(getSupportFragmentManager(), fragmentList, titles);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(5);
-        this.keyWord = query;
     }
 
     @Override
@@ -359,7 +354,14 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onBackPressed() {
         if (suggestionList.getVisibility() != View.GONE) {
+            // 关闭搜索建议
             suggestionList.setVisibility(View.GONE);
+            hotWordLayout.setVisibility(View.VISIBLE);
+        } else if (resultLayout.getVisibility() != View.GONE) {
+            // 关闭搜索结果
+            searchView.setQuery("", false);
+            searchView.clearFocus();
+            resultLayout.setVisibility(View.GONE);
             hotWordLayout.setVisibility(View.VISIBLE);
         } else {
             finish();

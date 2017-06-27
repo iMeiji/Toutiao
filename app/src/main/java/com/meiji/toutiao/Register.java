@@ -9,12 +9,10 @@ import com.meiji.toutiao.bean.media.MediaChannelBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
-import com.meiji.toutiao.bean.search.SearchBean;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.binder.FooterViewBinder;
-import com.meiji.toutiao.binder.SearchViewBinder;
 import com.meiji.toutiao.binder.joke.JokeCommentHeaderViewBinder;
 import com.meiji.toutiao.binder.joke.JokeCommentViewBinder;
 import com.meiji.toutiao.binder.joke.JokeContentViewBinder;
@@ -24,6 +22,7 @@ import com.meiji.toutiao.binder.news.NewsArticleNoPicViewBinder;
 import com.meiji.toutiao.binder.news.NewsArticleViewBinder;
 import com.meiji.toutiao.binder.news.NewsCommentViewBinder;
 import com.meiji.toutiao.binder.photo.PhotoArticleViewBinder;
+import com.meiji.toutiao.binder.search.SearchArticleHasVideoViewBinder;
 import com.meiji.toutiao.binder.video.VideoArticleViewBinder;
 import com.meiji.toutiao.binder.video.VideoContentHeaderViewBinder;
 import com.meiji.toutiao.binder.wenda.WendaArticleNoPicViewBinder;
@@ -129,7 +128,23 @@ public class Register {
     }
 
     public static void registerSearchItem(MultiTypeAdapter adapter) {
-        adapter.register(SearchBean.DataBeanX.class, new SearchViewBinder());
+        adapter.register(MultiNewsArticleDataBean.class)
+                .to(new NewsArticleViewBinder(),
+                        new SearchArticleHasVideoViewBinder(),
+                        new NewsArticleNoPicViewBinder())
+                .withClassLinker(new ClassLinker<MultiNewsArticleDataBean>() {
+                    @NonNull
+                    @Override
+                    public Class<? extends ItemViewBinder<MultiNewsArticleDataBean, ?>> index(@NonNull MultiNewsArticleDataBean item) {
+                        if (item.isHas_video()) {
+                            return SearchArticleHasVideoViewBinder.class;
+                        }
+                        if (item.getImage_list().size() > 0) {
+                            return NewsArticleViewBinder.class;
+                        }
+                        return NewsArticleNoPicViewBinder.class;
+                    }
+                });
         adapter.register(FooterBean.class, new FooterViewBinder());
     }
 }
