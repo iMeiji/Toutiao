@@ -54,7 +54,7 @@ public class Register {
                         if (item.isHas_video()) {
                             return NewsArticleHasVideoViewBinder.class;
                         }
-                        if (item.getImage_list().size() > 0) {
+                        if (null != item.getImage_list() && item.getImage_list().size() > 0) {
                             return NewsArticleViewBinder.class;
                         }
                         return NewsArticleNoPicViewBinder.class;
@@ -105,10 +105,14 @@ public class Register {
                     @NonNull
                     @Override
                     public Class<? extends ItemViewBinder<WendaArticleDataBean, ?>> index(@NonNull WendaArticleDataBean item) {
-                        if (item.getExtraBean().getWenda_image().getThree_image_list().size() > 0) {
+                        if (null != item.getExtraBean().getWenda_image() &&
+                                null != item.getExtraBean().getWenda_image().getThree_image_list() &&
+                                item.getExtraBean().getWenda_image().getThree_image_list().size() > 0) {
                             return WendaArticleThreePicViewBinder.class;
                         }
-                        if (item.getExtraBean().getWenda_image().getLarge_image_list().size() > 0) {
+                        if (null != item.getExtraBean().getWenda_image() &&
+                                null != item.getExtraBean().getWenda_image().getLarge_image_list() &&
+                                item.getExtraBean().getWenda_image().getLarge_image_list().size() > 0) {
                             return WendaArticleOnePicViewBinder.class;
                         }
                         return WendaArticleNoPicViewBinder.class;
@@ -139,7 +143,7 @@ public class Register {
                         if (item.isHas_video()) {
                             return SearchArticleHasVideoViewBinder.class;
                         }
-                        if (item.getImage_list().size() > 0) {
+                        if (null != item.getImage_list() && item.getImage_list().size() > 0) {
                             return NewsArticleViewBinder.class;
                         }
                         return NewsArticleNoPicViewBinder.class;

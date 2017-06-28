@@ -1,5 +1,6 @@
 package com.meiji.toutiao.binder.search;
 
+import android.app.ProgressDialog;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -9,15 +10,38 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.view.RxView;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.RetrofitFactory;
+import com.meiji.toutiao.api.IMobileSearchApi;
+import com.meiji.toutiao.api.INewsApi;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
+import com.meiji.toutiao.bean.search.SearchVideoInfoBean;
+import com.meiji.toutiao.bean.video.VideoArticleBean;
+import com.meiji.toutiao.module.video.content.VideoContentActivity;
 import com.meiji.toutiao.utils.ImageLoader;
 import com.meiji.toutiao.utils.NetWorkUtil;
 import com.meiji.toutiao.utils.TimeUtil;
 import com.meiji.toutiao.widget.CircleImageView;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import me.drakeet.multitype.ItemViewBinder;
+import okhttp3.HttpUrl;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 /**
  * Created by Meiji on 2017/6/8.
@@ -75,26 +99,98 @@ public class SearchArticleHasVideoViewBinder extends ItemViewBinder<MultiNewsArt
             holder.tv_title.setText(tv_title);
             holder.tv_extra.setText(tv_source + " - " + tv_comment_count + " - " + tv_datetime);
             holder.tv_video_time.setText(tv_video_time);
-            // 需要获取视频 ID
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    VideoArticleBean.DataBean dataBean = new VideoArticleBean.DataBean();
-//                    dataBean.setTitle(item.getTitle());
-//                    dataBean.setGroup_id(item.getGroup_id());
-//                    dataBean.setItem_id(item.getGroup_id());
-//                    dataBean.setVideo_id(item.getVideo_id());
-//                    dataBean.setAbstractX(item.getAbstractX());
-//                    dataBean.setSource(item.getSource());
-//                    dataBean.setVideo_duration_str(item.getVideo_duration() / 60 + "");
-//                    String url = item.getVideo_detail_info().getDetail_video_large_image().getUrl();
-//                    VideoContentActivity.launch(dataBean, url);
-//                    Log.d(TAG, "doOnClickItem: " + url);
-//                }
-//            });
+
+            final ProgressDialog dialog = new ProgressDialog(holder.itemView.getContext());
+            dialog.setTitle(R.string.loading);
+
+            RxView.clicks(holder.itemView)
+                    .throttleFirst(1300, TimeUnit.MILLISECONDS)
+                    .doOnNext(new Consumer<Object>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
+                            dialog.show();
+                        }
+                    })
+                    .observeOn(Schedulers.io())
+                    .switchMap(new Function<Object, ObservableSource<String>>() {
+                        @Override
+                        public ObservableSource<String> apply(@io.reactivex.annotations.NonNull Object o) throws Exception {
+                            String url = item.getDisplay_url();
+                            try {
+                                Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(INewsApi.class)
+                                        .getNewsContentRedirectUrl(url).execute();
+                                // 获取重定向后的 URL 用于拼凑API
+                                if (response.isSuccessful()) {
+                                    HttpUrl httpUrl = response.raw().request().url();
+                                    String api = httpUrl + "info";
+                                    return Observable.just(api);
+                                }
+                            } catch (Exception e) {
+                                ErrorAction.print(e);
+                            }
+                            return null;
+                        }
+                    })
+                    .switchMap(new Function<String, ObservableSource<SearchVideoInfoBean>>() {
+                        @Override
+                        public ObservableSource<SearchVideoInfoBean> apply(@io.reactivex.annotations.NonNull String s) throws Exception {
+                            return RetrofitFactory.getRetrofit().create(IMobileSearchApi.class)
+                                    .getSearchVideoInfo(s);
+                        }
+                    })
+                    .map(new Function<SearchVideoInfoBean, VideoArticleBean.DataBean>() {
+                        @Override
+                        public VideoArticleBean.DataBean apply(@io.reactivex.annotations.NonNull SearchVideoInfoBean bean) throws Exception {
+                            VideoArticleBean.DataBean dataBean = new VideoArticleBean.DataBean();
+                            dataBean.setTitle(item.getTitle());
+                            dataBean.setGroup_id(item.getGroup_id());
+                            dataBean.setItem_id(item.getItem_id());
+                            dataBean.setAbstractX(item.getAbstractX());
+                            dataBean.setSource(item.getSource());
+                            dataBean.setVideo_duration_str(item.getVideo_duration() / 60 + "");
+                            // 获取视频 ID
+                            String content = bean.getData().getContent();
+                            if (!TextUtils.isEmpty(content)) {
+                                Map<String, String> map = parseJson(content);
+                                String id = map.get("id");
+                                String imageUrl = map.get("imageUrl");
+                                dataBean.setVideo_id(id);
+                                dataBean.setImage_url(imageUrl);
+                            }
+                            return dataBean;
+                        }
+                    })
+                    .subscribe(new Consumer<VideoArticleBean.DataBean>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull VideoArticleBean.DataBean dataBean) throws Exception {
+                            dialog.dismiss();
+                            VideoContentActivity.launch(dataBean, dataBean.getImage_url());
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                            dialog.dismiss();
+                            ErrorAction.print(throwable);
+                        }
+                    });
         } catch (Exception e) {
             ErrorAction.print(e);
         }
+    }
+
+    private Map<String, String> parseJson(String content) {
+        Document doc = Jsoup.parse(content);
+        Elements elements = doc.getElementsByClass("tt-video-box");
+        String id = elements.get(0).attr("tt-videoid");
+        String imageUrl = elements.get(0).attr("tt-poster");
+        Map<String, String> map = new HashMap<>();
+        if (!TextUtils.isEmpty(id)) {
+            map.put("id", id);
+        }
+        if (!TextUtils.isEmpty(imageUrl)) {
+            map.put("imageUrl", imageUrl);
+        }
+        return map;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

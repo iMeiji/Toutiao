@@ -165,13 +165,6 @@ class MediaArticlePresenter implements IMediaArticle.Presenter {
                         bean.setMedia_info(mediaInfo);
                         bean.setGroup_id(longs[0]);
                         bean.setItem_id(longs[1]);
-//                        NewsArticleBean.DataBean bean = new NewsArticleBean.DataBean();
-//                        bean.setTitle(dataBean.getTitle());
-//                        bean.setDisplay_url(dataBean.getSource_url());
-//                        bean.setMedia_name(mediaChannelBean.getName());
-//                        bean.setMedia_url(mediaChannelBean.getUrl());
-//                        bean.setGroup_id(longs[0]);
-//                        bean.setItem_id(longs[1]);
                         return bean;
                     }
                 })

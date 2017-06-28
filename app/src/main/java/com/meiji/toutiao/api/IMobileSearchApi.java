@@ -3,11 +3,13 @@ package com.meiji.toutiao.api;
 import com.meiji.toutiao.bean.search.SearchRecommentBean;
 import com.meiji.toutiao.bean.search.SearchResultBean;
 import com.meiji.toutiao.bean.search.SearchSuggestionBean;
+import com.meiji.toutiao.bean.search.SearchVideoInfoBean;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 /**
  * Created by Meiji on 2017/6/13.
@@ -50,4 +52,11 @@ public interface IMobileSearchApi {
      */
     @GET("http://is.snssdk.com/search/suggest/wap/initial_page/?from=feed&sug_category=__all__&iid=10344168417&device_id=36394312781&format=json")
     Observable<SearchRecommentBean> getSearchRecomment();
+
+    /**
+     * 获取搜索视频内容
+     * https://m.365yg.com/i6436151402837312001/info/
+     */
+    @GET
+    Observable<SearchVideoInfoBean> getSearchVideoInfo(@Url String url);
 }

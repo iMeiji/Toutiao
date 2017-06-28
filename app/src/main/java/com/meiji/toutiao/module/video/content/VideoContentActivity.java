@@ -55,10 +55,10 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     private IVideoContent.Presenter presenter;
     private Items oldItems = new Items();
 
-    public static void launch(VideoArticleBean.DataBean bean, String url) {
+    public static void launch(VideoArticleBean.DataBean bean, String imageUrl) {
         InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, VideoContentActivity.class)
                 .putExtra(VideoContentActivity.TAG, bean)
-                .putExtra("url", url)
+                .putExtra("imageUrl", imageUrl)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
@@ -77,7 +77,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
         Intent intent = getIntent();
         try {
             videoHeaderData = intent.getParcelableExtra(TAG);
-            String url = intent.getStringExtra("url");
+            String url = intent.getStringExtra("imageUrl");
             if (!TextUtils.isEmpty(url)) {
                 ImageLoader.loadCenterCrop(this, url, iv_image_url, R.color.viewBackground);
             }

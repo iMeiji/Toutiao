@@ -55,7 +55,6 @@ public class SearchResultFragment extends BaseListFragment<ISearchResult.Present
     protected void initViews(View view) {
         super.initViews(view);
         adapter = new MultiTypeAdapter(oldItems);
-        // 区分新闻 和 视频
         Register.registerSearchItem(adapter);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new OnLoadMoreListener() {
