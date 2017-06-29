@@ -67,12 +67,6 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
     @Override
     protected void initData() {
         Bundle bundle = getArguments();
-//        NewsArticleBean.DataBean dataBean = bundle.getParcelable(TAG);
-//        shareUrl = dataBean.getDisplay_url();
-//        shareTitle = dataBean.getTitle();
-//        ((BaseActivity) getActivity()).getSupportActionBar().setTitle(dataBean.getMedia_name());
-//        mediaUrl = dataBean.getMedia_url();
-//        presenter.doLoadData(dataBean);
         try {
             MultiNewsArticleDataBean bean = bundle.getParcelable(TAG);
             presenter.doLoadData(bean);
