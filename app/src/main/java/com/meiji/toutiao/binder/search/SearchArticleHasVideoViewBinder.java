@@ -122,7 +122,7 @@ public class SearchArticleHasVideoViewBinder extends ItemViewBinder<MultiNewsArt
                                 // 获取重定向后的 URL 用于拼凑API
                                 if (response.isSuccessful()) {
                                     HttpUrl httpUrl = response.raw().request().url();
-                                    String api = httpUrl + "info";
+                                    String api = httpUrl + "info/";
                                     return Observable.just(api);
                                 }
                             } catch (Exception e) {

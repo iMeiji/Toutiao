@@ -86,19 +86,19 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
                 })
                 .filter(new Predicate<MultiNewsArticleDataBean>() {
                     @Override
-                    public boolean test(@NonNull MultiNewsArticleDataBean multiNewsArticleDataBean) throws Exception {
-                        time = multiNewsArticleDataBean.getBehot_time();
-                        if (TextUtils.isEmpty(multiNewsArticleDataBean.getSource())) {
+                    public boolean test(@NonNull MultiNewsArticleDataBean dataBean) throws Exception {
+                        time = dataBean.getBehot_time();
+                        if (TextUtils.isEmpty(dataBean.getSource())) {
                             return false;
                         }
                         try {
-                            if (multiNewsArticleDataBean.getSource().contains("头条问答")
-                                    || multiNewsArticleDataBean.getTag().contains("ad")
-                                    || multiNewsArticleDataBean.getSource().contains("话题")) {
+                            if (dataBean.getSource().contains("头条问答")
+                                    || dataBean.getTag().contains("ad")
+                                    || dataBean.getSource().contains("话题")) {
                                 return false;
                             }
                             // 过滤头条问答新闻
-                            if (multiNewsArticleDataBean.getMedia_info() == null) {
+                            if (dataBean.getMedia_info() == null) {
                                 return false;
                             }
                         } catch (NullPointerException e) {
@@ -106,7 +106,7 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
                         }
                         // 过滤重复新闻(与上次刷新的数据比较)
                         for (MultiNewsArticleDataBean bean : dataList) {
-                            if (bean.getTitle().equals(multiNewsArticleDataBean.getTitle())) {
+                            if (bean.getTitle().equals(dataBean.getTitle())) {
                                 return false;
                             }
                         }

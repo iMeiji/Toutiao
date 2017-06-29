@@ -33,6 +33,7 @@
     <color name="gray">#9cffffff</color>
     <color name="dkgray">#8f8989</color>
     <color name="NULL">#00FFFFFF</color>
+    <color name="Grey100">#f5f5f5</color>
 
     <color name="shadow_material_light">#727272</color>
 </resources>

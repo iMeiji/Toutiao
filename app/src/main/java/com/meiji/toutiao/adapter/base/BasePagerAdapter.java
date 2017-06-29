@@ -24,6 +24,12 @@ public class BasePagerAdapter extends FragmentStatePagerAdapter {
         this.titleList = new ArrayList<>(Arrays.asList(titles));
     }
 
+    public BasePagerAdapter(FragmentManager fm, List<Fragment> fragmentList, List<String> titleList) {
+        super(fm);
+        this.fragmentList = fragmentList;
+        this.titleList = titleList;
+    }
+
     @Override
     public Fragment getItem(int position) {
         return fragmentList.get(position);

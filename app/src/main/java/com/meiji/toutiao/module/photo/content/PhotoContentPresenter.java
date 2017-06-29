@@ -154,7 +154,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                             // 获取重定向后的 URL 用于拼凑API
                             if (response.isSuccessful()) {
                                 HttpUrl httpUrl = response.raw().request().url();
-                                String api = httpUrl + "info";
+                                String api = httpUrl + "info/";
                                 e.onNext(api);
                             } else {
                                 e.onComplete();

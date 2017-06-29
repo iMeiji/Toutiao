@@ -85,6 +85,11 @@ class SearchResultPresenter implements ISearchResult.Presenter {
                 .filter(new Predicate<SearchResultBean.DataBeanX>() {
                     @Override
                     public boolean test(@NonNull SearchResultBean.DataBeanX dataBeanX) throws Exception {
+                        // 过滤头条问答新闻
+                        if (TextUtils.isEmpty(dataBeanX.getMedia_name())) {
+                            return false;
+                        }
+                        // 过滤无标题新闻
                         return !TextUtils.isEmpty(dataBeanX.getTitle());
                     }
                 })

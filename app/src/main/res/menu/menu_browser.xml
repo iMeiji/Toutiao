@@ -21,6 +21,11 @@
         app:showAsAction="ifRoom"/>
 
     <item
+        android:id="@+id/action_open_media_info"
+        android:title="查看此头条号主页"
+        app:showAsAction="never"/>
+
+    <item
         android:id="@+id/action_open_in_browser"
         android:title="@string/action_open_in_browser"
         app:showAsAction="never"/>

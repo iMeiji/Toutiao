@@ -28,6 +28,7 @@ import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.module.media.MediaAddActivity;
+import com.meiji.toutiao.module.media.wip.MediaHomeActivity;
 import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.List;
@@ -43,6 +44,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
     private String shareUrl;
     private String shareTitle;
     private String mediaUrl;
+    private String mediaId;
 
     private WebView webView;
     private NestedScrollView scrollView;
@@ -78,6 +80,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
             shareTitle = bean.getTitle();
             ((BaseActivity) getActivity()).getSupportActionBar().setTitle(bean.getMedia_name());
             mediaUrl = "http://toutiao.com/m" + bean.getMedia_info().getMedia_id();
+            mediaId = bean.getMedia_info().getMedia_id();
         } catch (Exception e) {
             ErrorAction.print(e);
         }
@@ -225,6 +228,9 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
 
             case android.R.id.home:
                 getActivity().onBackPressed();
+                break;
+            case R.id.action_open_media_info:
+                MediaHomeActivity.launch(mediaId);
                 break;
         }
         return super.onOptionsItemSelected(item);

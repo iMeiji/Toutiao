@@ -1,5 +1,8 @@
 package com.meiji.toutiao.api;
 
+import com.meiji.toutiao.bean.media.MediaProfileBean;
+
+import io.reactivex.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -18,7 +21,7 @@ public interface IMobileMediaApi {
      * @param mediaId 头条号ID
      */
     @GET("https://is.snssdk.com/user/profile/homepage/v3/json/?to_html=0&source=article_top_author&refer=all")
-    Call<ResponseBody> getMediaProfile(
+    Observable<MediaProfileBean> getMediaProfile(
             @Query("media_id") String mediaId);
 
     /**

@@ -68,7 +68,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private static final String TAG = "SearchActivity";
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private String[] titles = new String[]{"综合", "视频", "图集", "用户", "问答"};
+    private String[] titles = new String[]{"综合", "视频", "图集", "用户(beta)", "问答"};
     private SearchView searchView;
     private LinearLayout resultLayout;
     private ListView suggestionList;
@@ -153,7 +153,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         }
         BasePagerAdapter pagerAdapter = new BasePagerAdapter(getSupportFragmentManager(), fragmentList, titles);
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setOffscreenPageLimit(5);
+        viewPager.setOffscreenPageLimit(fragmentList.size());
     }
 
     @Override

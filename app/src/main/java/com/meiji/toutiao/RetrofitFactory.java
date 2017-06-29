@@ -83,7 +83,7 @@ public class RetrofitFactory {
                         .connectTimeout(10, TimeUnit.SECONDS)
                         .readTimeout(15, TimeUnit.SECONDS)
                         .writeTimeout(15, TimeUnit.SECONDS)
-                        .retryOnConnectionFailure(false);
+                        .retryOnConnectionFailure(true);
 
                 // Log 拦截器
                 if (BuildConfig.DEBUG) {
