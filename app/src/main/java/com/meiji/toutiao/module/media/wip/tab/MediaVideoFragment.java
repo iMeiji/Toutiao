@@ -1,4 +1,4 @@
-package com.meiji.toutiao.module.media.wip;
+package com.meiji.toutiao.module.media.wip.tab;
 
 import android.os.Bundle;
 
@@ -11,15 +11,15 @@ import java.util.List;
  * Created by Meiji on 2017/6/29.
  */
 
-public class MediaWendaFragment extends BaseListFragment<IBasePresenter> {
+public class MediaVideoFragment extends BaseListFragment<IBasePresenter> {
 
     private static final String ARG_MEDIAID = "mediaId";
     private String mediaId;
 
-    public static MediaWendaFragment newInstance(String mediaId) {
+    public static MediaVideoFragment newInstance(String mediaId) {
         Bundle args = new Bundle();
         args.putString(ARG_MEDIAID, mediaId);
-        MediaWendaFragment fragment = new MediaWendaFragment();
+        MediaVideoFragment fragment = new MediaVideoFragment();
         fragment.setArguments(args);
         return fragment;
     }

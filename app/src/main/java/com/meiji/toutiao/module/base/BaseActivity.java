@@ -43,7 +43,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
                     color);
             setTaskDescription(tDesc);
             if (SettingsUtil.getInstance().getNavBar()) {
-                getWindow().setNavigationBarColor(CircleView.shiftColorDown(CircleView.shiftColorDown(color)));
+                getWindow().setNavigationBarColor(CircleView.shiftColorDown(color));
             } else {
                 getWindow().setNavigationBarColor(Color.BLACK);
             }

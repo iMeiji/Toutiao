@@ -1,9 +1,10 @@
 package com.meiji.toutiao;
 
 
-import android.annotation.TargetApi;
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -71,13 +72,20 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
         return super.onOptionsItemSelected(item);
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
         if (getSupportActionBar() != null)
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(selectedColor));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // 状态栏上色
             getWindow().setStatusBarColor(CircleView.shiftColorDown(selectedColor));
+            // 最近任务栏上色
+            ActivityManager.TaskDescription tDesc = new ActivityManager.TaskDescription(
+                    getString(R.string.app_name),
+                    BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher),
+                    selectedColor);
+            setTaskDescription(tDesc);
+            // 导航栏上色
             if (SettingsUtil.getInstance().getNavBar()) {
                 getWindow().setNavigationBarColor(CircleView.shiftColorDown(selectedColor));
             } else {
@@ -115,6 +123,8 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
                             .cancelButton(R.string.cancel)
                             .doneButton(R.string.done)
                             .customButton(R.string.custom)
+                            .presetsButton(R.string.back)
+                            .allowUserColorInputAlpha(false)
                             .show();
                     return false;
                 }

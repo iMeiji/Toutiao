@@ -24,6 +24,10 @@ import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.api.IMobileMediaApi;
 import com.meiji.toutiao.bean.media.MediaProfileBean;
 import com.meiji.toutiao.module.base.BaseActivity;
+import com.meiji.toutiao.module.media.wip.tab.MediaArticleFragment;
+import com.meiji.toutiao.module.media.wip.tab.MediaLatestFragment;
+import com.meiji.toutiao.module.media.wip.tab.MediaVideoFragment;
+import com.meiji.toutiao.module.media.wip.tab.MediaWendaFragment;
 import com.meiji.toutiao.utils.SettingsUtil;
 
 import java.util.ArrayList;

@@ -16,8 +16,8 @@ android {
         applicationId "com.meiji.toutiao"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 5
-        versionName "1.2.7"
+        versionCode 6
+        versionName "1.2.7.1"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }

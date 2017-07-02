@@ -1,6 +1,7 @@
 package com.meiji.toutiao.api;
 
 import com.meiji.toutiao.bean.media.MediaProfileBean;
+import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -32,9 +33,9 @@ public interface IMobileMediaApi {
      * @param maxBehotTime 时间轴
      */
     @GET("https://is.snssdk.com/pgc/ma/?page_type=1&output=json&is_json=1&count=10&from=user_profile_app&version=2&as=479BB4B7254C150&cp=585DB1871ED64E1")
-    Call<ResponseBody> getMediaArticle(
+    Observable<MultiMediaArticleBean> getMediaArticle(
             @Query("media_id") String mediaId,
-            @Query("max_behot_time") int maxBehotTime);
+            @Query("max_behot_time") String maxBehotTime);
 
     /**
      * 获取头条号视频
@@ -46,7 +47,7 @@ public interface IMobileMediaApi {
     @GET("https://is.snssdk.com/pgc/ma/?page_type=0&output=json&is_json=1&count=10&from=user_profile_app&version=2&as=479BB4B7254C150&cp=585DB1871ED64E1")
     Call<ResponseBody> getMediaVideo(
             @Query("media_id") String mediaId,
-            @Query("max_behot_time") int maxBehotTime);
+            @Query("max_behot_time") String maxBehotTime);
 
     /**
      * 获取头条号问答

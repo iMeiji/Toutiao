@@ -1,8 +1,9 @@
-package com.meiji.toutiao.module.media.wip;
+package com.meiji.toutiao.module.media.wip.tab;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -17,9 +18,9 @@ import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MediaProfileBean;
 import com.meiji.toutiao.database.dao.MediaChannelDao;
-import com.meiji.toutiao.module.base.IBasePresenter;
 import com.meiji.toutiao.module.base.LazyLoadFragment;
 import com.meiji.toutiao.utils.ImageLoader;
+import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.List;
@@ -34,11 +35,13 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.meiji.toutiao.module.media.wip.tab.MediaProfilePresenter.KEY_MEDIAID;
+
 /**
  * Created by Meiji on 2017/6/29.
  */
 
-public class MediaLatestFragment extends LazyLoadFragment<IBasePresenter> {
+public class MediaLatestFragment extends LazyLoadFragment<IMediaProfile.Presenter> implements IMediaProfile.View, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "MediaLatestFragment";
     private MediaProfileBean.DataBean dataBean = null;
@@ -50,8 +53,8 @@ public class MediaLatestFragment extends LazyLoadFragment<IBasePresenter> {
     private TextView tv_desc;
     private TextView tv_is_sub;
     private TextView tv_sub_count;
-    private RecyclerView recycler_view;
-    private SwipeRefreshLayout refresh_layout;
+    private RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public static MediaLatestFragment newInstance(Parcelable parcelable) {
         Bundle args = new Bundle();
@@ -77,8 +80,10 @@ public class MediaLatestFragment extends LazyLoadFragment<IBasePresenter> {
     }
 
     @Override
-    public void setPresenter(IBasePresenter presenter) {
-
+    public void setPresenter(IMediaProfile.Presenter presenter) {
+        if (null == presenter) {
+            this.presenter = new MediaProfilePresenter(this);
+        }
     }
 
     @Override
@@ -99,8 +104,11 @@ public class MediaLatestFragment extends LazyLoadFragment<IBasePresenter> {
         this.tv_desc = (TextView) view.findViewById(R.id.tv_desc);
         this.tv_is_sub = (TextView) view.findViewById(R.id.tv_is_sub);
         this.tv_sub_count = (TextView) view.findViewById(R.id.tv_sub_count);
-        this.recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
-        this.refresh_layout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
+        this.recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        this.swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
+        recyclerView.setHasFixedSize(true);
+        swipeRefreshLayout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
+        swipeRefreshLayout.setOnRefreshListener(this);
     }
 
     @Override
@@ -111,6 +119,7 @@ public class MediaLatestFragment extends LazyLoadFragment<IBasePresenter> {
             onShowNetError();
             return;
         }
+
         // 设置头条号信息
         String imgUrl = dataBean.getBg_img_url();
         if (!TextUtils.isEmpty(imgUrl)) {
@@ -124,6 +133,7 @@ public class MediaLatestFragment extends LazyLoadFragment<IBasePresenter> {
         tv_desc.setText(dataBean.getDescription());
         tv_sub_count.setText(dataBean.getFollowers_count() + " 订阅量");
 
+        setIsSub();
 
         RxView.clicks(tv_is_sub)
                 .throttleFirst(1, TimeUnit.SECONDS)
@@ -150,15 +160,15 @@ public class MediaLatestFragment extends LazyLoadFragment<IBasePresenter> {
                                             dao.delete(dataBean.getMedia_id());
                                         }
                                     }).start();
-                                    dialog.dismiss();
                                     tv_is_sub.setText("订阅");
+                                    dialog.dismiss();
                                 }
                             });
                             builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
                                     tv_is_sub.setText("已订阅");
+                                    dialog.dismiss();
                                 }
                             });
                             builder.show();
@@ -192,7 +202,7 @@ public class MediaLatestFragment extends LazyLoadFragment<IBasePresenter> {
 
     @Override
     public void fetchData() {
-        // 加载文章
+        onLoadData();
     }
 
     private void setIsSub() {
@@ -216,5 +226,17 @@ public class MediaLatestFragment extends LazyLoadFragment<IBasePresenter> {
                         }
                     }
                 }, ErrorAction.error());
+    }
+
+    @Override
+    public void onLoadData() {
+        ArrayMap<String, String> map = new ArrayMap<>();
+        map.put(KEY_MEDIAID, dataBean.getMedia_id());
+        presenter.doLoadData(map);
+    }
+
+    @Override
+    public void onRefresh() {
+
     }
 }

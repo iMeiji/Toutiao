@@ -1,6 +1,7 @@
 package com.meiji.toutiao.utils;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 
 import com.meiji.toutiao.InitApp;
@@ -24,7 +25,11 @@ public class SettingsUtil {
 
     public int getColor() {
         int defaultColor = InitApp.AppContext.getResources().getColor(R.color.colorPrimary);
-        return settings.getInt("color", defaultColor);
+        int color = settings.getInt("color", defaultColor);
+        if ((color != 0) && Color.alpha(color) != 255) {
+            return defaultColor;
+        }
+        return color;
     }
 
     public void setColor(int color) {
