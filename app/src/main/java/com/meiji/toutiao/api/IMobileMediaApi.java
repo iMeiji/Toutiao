@@ -45,7 +45,7 @@ public interface IMobileMediaApi {
      * @param maxBehotTime 时间轴
      */
     @GET("https://is.snssdk.com/pgc/ma/?page_type=0&output=json&is_json=1&count=10&from=user_profile_app&version=2&as=479BB4B7254C150&cp=585DB1871ED64E1")
-    Call<ResponseBody> getMediaVideo(
+    Observable<MultiMediaArticleBean> getMediaVideo(
             @Query("media_id") String mediaId,
             @Query("max_behot_time") String maxBehotTime);
 

@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import com.meiji.toutiao.bean.joke.JokeCommentBean;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.bean.media.MediaArticleBean;
+import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
@@ -32,6 +33,7 @@ public class DiffCallback extends DiffUtil.Callback {
     public static final int WENDA_ARTICLE = 8;
     public static final int WENDA_CONTENT = 9;
     public static final int SEARCH = 10;
+    public static final int MUlTI_MEDIA = 11;
     private List oldList, newList;
     private int type;
 
@@ -91,6 +93,9 @@ public class DiffCallback extends DiffUtil.Callback {
                 case SEARCH:
                     return ((SearchResultBean.DataBeanX) oldList.get(oldItemPosition)).getTitle().equals(
                             ((SearchResultBean.DataBeanX) newList.get(newItemPosition)).getTitle());
+                case MUlTI_MEDIA:
+                    return ((MultiMediaArticleBean.DataBean) oldList.get(oldItemPosition)).getTitle().equals(
+                            ((MultiMediaArticleBean.DataBean) newList.get(newItemPosition)).getTitle());
             }
         } catch (Exception e) {
 //            ErrorAction.print(e);
@@ -129,6 +134,9 @@ public class DiffCallback extends DiffUtil.Callback {
                 case SEARCH:
                     return ((SearchResultBean.DataBeanX) oldList.get(oldItemPosition)).getAbstractX().equals(
                             ((SearchResultBean.DataBeanX) newList.get(newItemPosition)).getAbstractX());
+                case MUlTI_MEDIA:
+                    return ((MultiMediaArticleBean.DataBean) oldList.get(oldItemPosition)).getAbstractX().equals(
+                            ((MultiMediaArticleBean.DataBean) newList.get(newItemPosition)).getAbstractX());
             }
         } catch (Exception e) {
 //            ErrorAction.print(e);

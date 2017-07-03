@@ -6,6 +6,8 @@ import com.meiji.toutiao.bean.FooterBean;
 import com.meiji.toutiao.bean.joke.JokeCommentBean;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
+import com.meiji.toutiao.bean.media.MediaProfileBean;
+import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
@@ -16,6 +18,10 @@ import com.meiji.toutiao.binder.FooterViewBinder;
 import com.meiji.toutiao.binder.joke.JokeCommentHeaderViewBinder;
 import com.meiji.toutiao.binder.joke.JokeCommentViewBinder;
 import com.meiji.toutiao.binder.joke.JokeContentViewBinder;
+import com.meiji.toutiao.binder.media.MediaArticleHasVideoViewBinder;
+import com.meiji.toutiao.binder.media.MediaArticleHeaderViewBinder;
+import com.meiji.toutiao.binder.media.MediaArticleNoPicViewBinder;
+import com.meiji.toutiao.binder.media.MediaArticleViewBinder;
 import com.meiji.toutiao.binder.media.MediaChannelViewBinder;
 import com.meiji.toutiao.binder.news.NewsArticleHasVideoViewBinder;
 import com.meiji.toutiao.binder.news.NewsArticleNoPicViewBinder;
@@ -149,6 +155,28 @@ public class Register {
                         return NewsArticleNoPicViewBinder.class;
                     }
                 });
+        adapter.register(FooterBean.class, new FooterViewBinder());
+    }
+
+    public static void registerMediaArticleItem(MultiTypeAdapter adapter) {
+        adapter.register(MultiMediaArticleBean.DataBean.class)
+                .to(new MediaArticleViewBinder(),
+                        new MediaArticleHasVideoViewBinder(),
+                        new MediaArticleNoPicViewBinder())
+                .withClassLinker(new ClassLinker<MultiMediaArticleBean.DataBean>() {
+                    @NonNull
+                    @Override
+                    public Class<? extends ItemViewBinder<MultiMediaArticleBean.DataBean, ?>> index(@NonNull MultiMediaArticleBean.DataBean item) {
+                        if (item.isHas_video()) {
+                            return MediaArticleHasVideoViewBinder.class;
+                        }
+                        if (null != item.getImage_list() && item.getImage_list().size() > 0) {
+                            return MediaArticleViewBinder.class;
+                        }
+                        return MediaArticleNoPicViewBinder.class;
+                    }
+                });
+        adapter.register(MediaProfileBean.DataBean.class, new MediaArticleHeaderViewBinder());
         adapter.register(FooterBean.class, new FooterViewBinder());
     }
 }

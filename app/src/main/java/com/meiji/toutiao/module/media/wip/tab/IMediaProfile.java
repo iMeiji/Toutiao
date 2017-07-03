@@ -1,8 +1,6 @@
 package com.meiji.toutiao.module.media.wip.tab;
 
-import android.support.v4.util.ArrayMap;
-
-import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
+import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
 import com.meiji.toutiao.module.base.IBasePresenter;
 import com.meiji.toutiao.module.base.IBaseView;
 
@@ -32,16 +30,20 @@ public interface IMediaProfile {
         /**
          * 请求数据
          */
-        void doLoadData(ArrayMap<?, ?> map);
+        void doLoadArticle(String... mediaId);
+
+        void doLoadVideo(String... mediaId);
+
+        void doLoadWenda(String... mediaId);
 
         /**
          * 再起请求数据
          */
-        void doLoadMoreData();
+        void doLoadMoreData(int type);
 
         /**
          * 设置适配器
          */
-        void doSetAdapter(List<MultiNewsArticleDataBean> dataBeen);
+        void doSetAdapter(List<MultiMediaArticleBean.DataBean> dataBeen);
     }
 }

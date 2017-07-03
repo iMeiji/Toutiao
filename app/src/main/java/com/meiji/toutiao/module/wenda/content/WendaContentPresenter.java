@@ -52,7 +52,7 @@ class WendaContentPresenter implements IWendaContent.Presenter {
     @Override
     public void doLoadData(String qid) {
         this.qid = qid;
-        Log.d(TAG, "doLoadData: " + qid);
+        Log.d(TAG, "doLoadArticle: " + qid);
 
         RetrofitFactory.getRetrofit().create(IMobileWendaApi.class).getWendaNiceContent(qid)
                 .subscribeOn(Schedulers.io())

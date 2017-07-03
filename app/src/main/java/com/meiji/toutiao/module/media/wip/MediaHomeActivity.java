@@ -25,7 +25,6 @@ import com.meiji.toutiao.api.IMobileMediaApi;
 import com.meiji.toutiao.bean.media.MediaProfileBean;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.media.wip.tab.MediaArticleFragment;
-import com.meiji.toutiao.module.media.wip.tab.MediaLatestFragment;
 import com.meiji.toutiao.module.media.wip.tab.MediaVideoFragment;
 import com.meiji.toutiao.module.media.wip.tab.MediaWendaFragment;
 import com.meiji.toutiao.utils.SettingsUtil;
@@ -125,18 +124,17 @@ public class MediaHomeActivity extends BaseActivity {
         List<String> titleList = new ArrayList<>();
         List<MediaProfileBean.DataBean.TopTabBean> topTab = dataBean.getTop_tab();
         for (MediaProfileBean.DataBean.TopTabBean bean : topTab) {
-            titleList.add(bean.getShow_name());
-            if (bean.getType().equals("dongtai")) {
-                fragmentList.add(MediaLatestFragment.newInstance(dataBean));
-            }
             if (bean.getType().equals("all")) {
-                fragmentList.add(MediaArticleFragment.newInstance(mediaId));
+                fragmentList.add(MediaArticleFragment.newInstance(dataBean));
+                titleList.add(bean.getShow_name());
             }
             if (bean.getType().equals("video")) {
                 fragmentList.add(MediaVideoFragment.newInstance(mediaId));
+                titleList.add(bean.getShow_name());
             }
             if (bean.getType().equals("wenda")) {
                 fragmentList.add(MediaWendaFragment.newInstance(mediaId));
+                titleList.add(bean.getShow_name());
             }
         }
         BasePagerAdapter pagerAdapter = new BasePagerAdapter(getSupportFragmentManager(), fragmentList, titleList);
