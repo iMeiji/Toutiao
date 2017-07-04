@@ -32,6 +32,7 @@ import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.bean.FooterBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.module.base.BaseFragment;
+import com.meiji.toutiao.module.wenda.content.WendaContentActivity;
 import com.meiji.toutiao.utils.ImageLoader;
 import com.meiji.toutiao.utils.SettingsUtil;
 import com.meiji.toutiao.widget.CircleImageView;
@@ -48,7 +49,7 @@ import me.drakeet.multitype.MultiTypeAdapter;
 public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> implements IWendaDetail.View {
 
     private static final String TAG = "WendaDetailFragment";
-    private WendaContentBean.AnsListBean bean;
+    private WendaContentBean.AnsListBean bean = null;
     private String url;
     private String title;
     private String shareTitle;
@@ -59,15 +60,15 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
     private TextView tv_title;
     private CircleImageView iv_user_avatar;
     private TextView tv_user_name;
-    private TextView tv_like_count;
     private RecyclerView recyclerView;
     private MultiTypeAdapter adapter;
     private boolean canLoadMore;
     private Items oldItems = new Items();
+    private LinearLayout header_layout;
 
     public static WendaDetailFragment newInstance(Parcelable bean) {
         Bundle args = new Bundle();
-        args.putParcelable("bean", bean);
+        args.putParcelable(TAG, bean);
         WendaDetailFragment fragment = new WendaDetailFragment();
         fragment.setArguments(args);
         return fragment;
@@ -75,60 +76,30 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
 
     @Override
     protected void initData() {
-        this.bean = getArguments().getParcelable("bean");
+        this.bean = getArguments().getParcelable(TAG);
+        if (null == this.bean) {
+            onShowNetError();
+            return;
+        }
         this.url = bean.getShare_data().getShare_url();
 
         ImageLoader.loadCenterCrop(getActivity(), bean.getUser().getAvatar_url(), iv_user_avatar, R.color.viewBackground);
         this.tv_title.setText(bean.getTitle());
         this.tv_user_name.setText(bean.getUser().getUname());
-        this.tv_like_count.setText(bean.getDigg_count() + "");
         this.shareTitle = bean.getShare_data().getTitle();
         onLoadData();
+
+        header_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WendaContentActivity.launch(bean.getQid());
+            }
+        });
     }
 
     @Override
     public void onLoadData() {
         presenter.doLoadData(url);
-    }
-
-    @Override
-    public void onShowNoMore() {
-        Snackbar.make(scrollView, R.string.no_more_comment, Snackbar.LENGTH_SHORT).show();
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (oldItems.size() > 0) {
-                    Items newItems = new Items(oldItems);
-                    newItems.remove(newItems.size() - 1);
-                    adapter.setItems(newItems);
-                    adapter.notifyDataSetChanged();
-                }
-                canLoadMore = false;
-            }
-        });
-    }
-
-    @Override
-    public void onShowLoading() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onHideLoading() {
-        progressBar.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onShowNetError() {
-        Snackbar.make(scrollView, R.string.network_error, Snackbar.LENGTH_SHORT).show();
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                adapter.setItems(new Items());
-                adapter.notifyDataSetChanged();
-                canLoadMore = false;
-            }
-        });
     }
 
     @Override
@@ -160,19 +131,21 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
         webView = (WebView) view.findViewById(R.id.webview_content);
         scrollView = (NestedScrollView) view.findViewById(R.id.scrollView);
         progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
+        header_layout = (LinearLayout) view.findViewById(R.id.header_layout);
         tv_title = (TextView) view.findViewById(R.id.tv_title);
         iv_user_avatar = (CircleImageView) view.findViewById(R.id.iv_user_avatar);
         tv_user_name = (TextView) view.findViewById(R.id.tv_user_name);
-        tv_like_count = (TextView) view.findViewById(R.id.tv_like_count);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 
-        initToolBar(toolbar, true, "");
+        initToolBar(toolbar, true, getString(R.string.title_wenda_detail));
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 scrollView.smoothScrollTo(0, 0);
             }
         });
+
+        header_layout.setBackgroundColor(SettingsUtil.getInstance().getColor());
 
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -287,5 +260,45 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
             startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onShowNoMore() {
+        Snackbar.make(scrollView, R.string.no_more_comment, Snackbar.LENGTH_SHORT).show();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (oldItems.size() > 0) {
+                    Items newItems = new Items(oldItems);
+                    newItems.remove(newItems.size() - 1);
+                    adapter.setItems(newItems);
+                    adapter.notifyDataSetChanged();
+                }
+                canLoadMore = false;
+            }
+        });
+    }
+
+    @Override
+    public void onShowLoading() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onHideLoading() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onShowNetError() {
+        Snackbar.make(scrollView, R.string.network_error, Snackbar.LENGTH_SHORT).show();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.setItems(new Items());
+                adapter.notifyDataSetChanged();
+                canLoadMore = false;
+            }
+        });
     }
 }

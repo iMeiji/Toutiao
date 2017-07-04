@@ -85,6 +85,7 @@
         <activity
             android:name=".module.wenda.detail.WendaDetailActivity"
             android:configChanges="orientation|screenSize|uiMode"
+            android:label="@string/title_wenda_detail"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity

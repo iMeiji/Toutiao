@@ -50,7 +50,7 @@ class WendaArticlePresenter implements IWendaArticle.Presenter {
                 .getWendaArticle(time)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .flatMap(new Function<WendaArticleBean, Observable<WendaArticleDataBean>>() {
+                .switchMap(new Function<WendaArticleBean, Observable<WendaArticleDataBean>>() {
                     @Override
                     public Observable<WendaArticleDataBean> apply(@NonNull WendaArticleBean wendaArticleBean) throws Exception {
 

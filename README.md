@@ -200,6 +200,7 @@ WebView无图模式(beta)
 - 模拟登陆头条账号
 - 栏目位置调换后不 recreate
 - 滑动返回
+- 新 logo
 
 ## License
 ```

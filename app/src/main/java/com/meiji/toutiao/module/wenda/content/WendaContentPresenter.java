@@ -121,6 +121,7 @@ class WendaContentPresenter implements IWendaContent.Presenter {
     public void doSetAdapter(List<WendaContentBean.AnsListBean> list) {
         for (WendaContentBean.AnsListBean bean : list) {
             bean.setTitle(this.title);
+            bean.setQid(this.qid);
         }
         ansList.addAll(list);
         view.onSetAdapter(ansList);

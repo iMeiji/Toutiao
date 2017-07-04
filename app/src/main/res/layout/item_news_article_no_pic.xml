@@ -4,8 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
     android:layout_marginTop="4dp">
 
     <RelativeLayout
@@ -13,7 +11,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
         android:foreground="?attr/selectableItemBackground"
-        android:padding="8dp">
+        android:padding="16dp">
 
         <LinearLayout
             android:id="@+id/header"

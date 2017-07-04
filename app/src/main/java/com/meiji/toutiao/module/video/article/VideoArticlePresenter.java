@@ -53,7 +53,7 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
         RetrofitFactory.getRetrofit().create(IVideoApi.class).getVideoArticle(this.category, time)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .flatMap(new Function<VideoArticleBean, Observable<VideoArticleBean.DataBean>>() {
+                .switchMap(new Function<VideoArticleBean, Observable<VideoArticleBean.DataBean>>() {
                     @Override
                     public Observable<VideoArticleBean.DataBean> apply(@NonNull VideoArticleBean photoArticleBean) throws Exception {
                         List<VideoArticleBean.DataBean> data = photoArticleBean.getData();

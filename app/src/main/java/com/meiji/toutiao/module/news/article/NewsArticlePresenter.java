@@ -74,7 +74,7 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
         Observable.merge(ob1, ob2)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .flatMap(new Function<MultiNewsArticleBean, Observable<MultiNewsArticleDataBean>>() {
+                .switchMap(new Function<MultiNewsArticleBean, Observable<MultiNewsArticleDataBean>>() {
                     @Override
                     public Observable<MultiNewsArticleDataBean> apply(@NonNull MultiNewsArticleBean multiNewsArticleBean) throws Exception {
                         List<MultiNewsArticleDataBean> dataList = new ArrayList<>();

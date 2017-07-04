@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
 /**
@@ -33,7 +34,7 @@ public abstract class BaseFragment<T extends IBasePresenter> extends RxFragment 
     /**
      * 初始化数据
      */
-    protected abstract void initData();
+    protected abstract void initData() throws NullPointerException;
 
     /**
      * 初始化 Toolbar
@@ -62,6 +63,6 @@ public abstract class BaseFragment<T extends IBasePresenter> extends RxFragment 
      */
     @Override
     public <T> LifecycleTransformer<T> bindToLife() {
-        return this.bindToLifecycle();
+        return bindUntilEvent(FragmentEvent.DESTROY);
     }
 }

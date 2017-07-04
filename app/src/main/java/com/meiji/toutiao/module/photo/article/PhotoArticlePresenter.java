@@ -52,7 +52,7 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
         RetrofitFactory.getRetrofit().create(IPhotoApi.class).getPhotoArticle(this.category, time)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .flatMap(new Function<PhotoArticleBean, Observable<PhotoArticleBean.DataBean>>() {
+                .switchMap(new Function<PhotoArticleBean, Observable<PhotoArticleBean.DataBean>>() {
                     @Override
                     public Observable<PhotoArticleBean.DataBean> apply(@NonNull PhotoArticleBean photoArticleBean) throws Exception {
                         List<PhotoArticleBean.DataBean> data = photoArticleBean.getData();

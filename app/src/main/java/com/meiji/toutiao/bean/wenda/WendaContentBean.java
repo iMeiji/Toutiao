@@ -969,6 +969,7 @@ public class WendaContentBean {
         private ShareDataBeanX share_data;
         private String ans_url;
         private String ansid;
+        private String qid;
         private boolean is_show_bury;
         private boolean is_buryed;
         private int bury_count;
@@ -983,6 +984,7 @@ public class WendaContentBean {
             share_data = in.readParcelable(ShareDataBeanX.class.getClassLoader());
             ans_url = in.readString();
             ansid = in.readString();
+            qid = in.readString();
             is_show_bury = in.readByte() != 0;
             is_buryed = in.readByte() != 0;
             bury_count = in.readInt();
@@ -999,6 +1001,7 @@ public class WendaContentBean {
             dest.writeParcelable(share_data, flags);
             dest.writeString(ans_url);
             dest.writeString(ansid);
+            dest.writeString(qid);
             dest.writeByte((byte) (is_show_bury ? 1 : 0));
             dest.writeByte((byte) (is_buryed ? 1 : 0));
             dest.writeInt(bury_count);
@@ -1019,6 +1022,14 @@ public class WendaContentBean {
 
         public void setContent_abstract(ContentAbstractBean content_abstract) {
             this.content_abstract = content_abstract;
+        }
+
+        public String getQid() {
+            return qid;
+        }
+
+        public void setQid(String qid) {
+            this.qid = qid;
         }
 
         public int getCreate_time() {

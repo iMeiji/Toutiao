@@ -74,7 +74,7 @@ class SearchResultPresenter implements ISearchResult.Presenter {
                 .getSearchResult2(this.query, curTab, offset)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .flatMap(new Function<ResponseBody, ObservableSource<SearchResultBean.DataBeanX>>() {
+                .switchMap(new Function<ResponseBody, ObservableSource<SearchResultBean.DataBeanX>>() {
                     @Override
                     public ObservableSource<SearchResultBean.DataBeanX> apply(@NonNull ResponseBody responseBody) throws Exception {
                         String json = responseBody.string();

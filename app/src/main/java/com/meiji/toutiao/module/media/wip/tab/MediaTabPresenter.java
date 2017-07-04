@@ -22,9 +22,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MediaTabPresenter implements IMediaProfile.Presenter {
 
-    protected static final int TYPE_ARTICLE = 0;
-    protected static final int TYPE_VIDEO = 1;
-    protected static final int TYPE_WENDA = 2;
+    static final int TYPE_ARTICLE = 0;
+    static final int TYPE_VIDEO = 1;
+    static final int TYPE_WENDA = 2;
     private static final String TAG = "MediaTabPresenter";
     private IMediaProfile.View view;
     private String mediaId;

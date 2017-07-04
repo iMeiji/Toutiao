@@ -45,6 +45,7 @@
     <string name="title_about">关于</string>
     <string name="title_media">头条号</string>
     <string name="title_wenda">问答</string>
+    <string name="title_wenda_detail">回答</string>
 
     <!-- Bottom Sheet List -->
     <string name="copy_content">复制内容</string>
