@@ -27,6 +27,7 @@
     <string name="action_open_in_browser">在浏览器中打开</string>
     <string name="action_copy_content">复制内容</string>
     <string name="action_unfollow_media">取消关注</string>
+    <string name="action_open_media_home">查看此头条号主页</string>
 
     <!-- Title -->
     <string name="title_news">新闻</string>

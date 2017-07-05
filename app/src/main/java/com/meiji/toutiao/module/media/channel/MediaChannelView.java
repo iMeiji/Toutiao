@@ -17,7 +17,7 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.Register;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
 import com.meiji.toutiao.database.dao.MediaChannelDao;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.SettingsUtil;
 
 import java.util.List;
 

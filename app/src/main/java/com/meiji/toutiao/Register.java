@@ -7,6 +7,7 @@ import com.meiji.toutiao.bean.joke.JokeCommentBean;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
 import com.meiji.toutiao.bean.media.MediaProfileBean;
+import com.meiji.toutiao.bean.media.MediaWendaBean;
 import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
@@ -23,6 +24,7 @@ import com.meiji.toutiao.binder.media.MediaArticleHeaderViewBinder;
 import com.meiji.toutiao.binder.media.MediaArticleNoPicViewBinder;
 import com.meiji.toutiao.binder.media.MediaArticleViewBinder;
 import com.meiji.toutiao.binder.media.MediaChannelViewBinder;
+import com.meiji.toutiao.binder.media.MediaWendaViewBinder;
 import com.meiji.toutiao.binder.news.NewsArticleHasVideoViewBinder;
 import com.meiji.toutiao.binder.news.NewsArticleNoPicViewBinder;
 import com.meiji.toutiao.binder.news.NewsArticleViewBinder;
@@ -177,6 +179,11 @@ public class Register {
                     }
                 });
         adapter.register(MediaProfileBean.DataBean.class, new MediaArticleHeaderViewBinder());
+        adapter.register(FooterBean.class, new FooterViewBinder());
+    }
+
+    public static void registerMediaWendaItem(MultiTypeAdapter adapter) {
+        adapter.register(MediaWendaBean.AnswerQuestionBean.class, new MediaWendaViewBinder());
         adapter.register(FooterBean.class, new FooterViewBinder());
     }
 }

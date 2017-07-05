@@ -12,8 +12,11 @@ import android.widget.TextView;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
-import com.meiji.toutiao.utils.ImageLoader;
-import com.meiji.toutiao.utils.TimeUtil;
+import com.meiji.toutiao.bean.video.VideoArticleBean;
+import com.meiji.toutiao.module.video.content.VideoContentActivity;
+import com.meiji.toutiao.util.ImageLoader;
+import com.meiji.toutiao.util.NetWorkUtil;
+import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.List;
 
@@ -38,9 +41,16 @@ public class MediaArticleHasVideoViewBinder extends ItemViewBinder<MultiMediaArt
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull final MultiMediaArticleBean.DataBean item) {
         try {
             List<MultiMediaArticleBean.DataBean.ImageListBean> imageList = item.getImage_list();
+            String url = null;
             if (imageList != null && imageList.size() > 0) {
-                String url = imageList.get(0).getUrl();
-                ImageLoader.loadCenterCrop(holder.itemView.getContext(), url, holder.iv_video_image, R.color.viewBackground);
+                url = imageList.get(0).getUrl();
+                if (!TextUtils.isEmpty(url)) {
+                    if (NetWorkUtil.isWifiConnected(holder.itemView.getContext())) {
+                        // 加载高清图
+                        url = url.replace("list", "large");
+                    }
+                    ImageLoader.loadCenterCrop(holder.itemView.getContext(), url, holder.iv_video_image, R.color.viewBackground);
+                }
             }
 
             String title = item.getTitle();
@@ -55,20 +65,19 @@ public class MediaArticleHasVideoViewBinder extends ItemViewBinder<MultiMediaArt
             holder.tv_title.setText(title);
             holder.tv_extra.setText(readCount + " - " + commentCount + " - " + datetime);
             holder.tv_video_time.setText(video_time);
+            final String finalUrl = url;
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    VideoArticleBean.DataBean dataBean = new VideoArticleBean.DataBean();
-//                    dataBean.setTitle(item.getTitle());
-//                    dataBean.setGroup_id(item.getGroup_id());
-//                    dataBean.setItem_id(item.getGroup_id());
-//                    dataBean.setVideo_id(item.getVideo_id());
-//                    dataBean.setAbstractX(item.getAbstractX());
-//                    dataBean.setSource(item.getSource());
-//                    dataBean.setVideo_duration_str(item.getVideo_duration() / 60 + "");
-//                    String url = item.getVideo_detail_info().getDetail_video_large_image().getUrl();
-//                    VideoContentActivity.launch(dataBean, url);
-//                    Log.d(TAG, "doOnClickItem: " + url);
+                    VideoArticleBean.DataBean dataBean = new VideoArticleBean.DataBean();
+                    dataBean.setTitle(item.getTitle());
+                    dataBean.setGroup_id(item.getGroup_id());
+                    dataBean.setItem_id(item.getGroup_id());
+                    dataBean.setVideo_id(item.getVideo_infos().get(0).getVid());
+                    dataBean.setAbstractX(item.getAbstractX());
+                    dataBean.setSource(item.getSource());
+                    dataBean.setVideo_duration_str(item.getVideo_duration_str());
+                    VideoContentActivity.launch(dataBean, finalUrl);
                 }
             });
         } catch (Exception e) {

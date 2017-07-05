@@ -1,8 +1,8 @@
 package com.meiji.toutiao.module.joke.comment;
 
 import com.meiji.toutiao.bean.joke.JokeCommentBean;
+import com.meiji.toutiao.module.base.IBaseListView;
 import com.meiji.toutiao.module.base.IBasePresenter;
-import com.meiji.toutiao.module.base.IBaseView;
 
 import java.util.List;
 
@@ -12,17 +12,17 @@ import java.util.List;
 
 interface IJokeComment {
 
-    interface View extends IBaseView<Presenter> {
+    interface View extends IBaseListView<Presenter> {
 
         /**
          * 请求数据
          */
         void onLoadData();
 
-        /**
-         * 加载完毕
-         */
-        void onShowNoMore();
+//        /**
+//         * 加载完毕
+//         */
+//        void onShowNoMore();
     }
 
     interface Presenter extends IBasePresenter {

@@ -1,4 +1,4 @@
-package com.meiji.toutiao.utils;
+package com.meiji.toutiao.util;
 
 import android.app.Activity;
 import android.content.Context;

@@ -33,8 +33,8 @@ import com.meiji.toutiao.bean.FooterBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.module.wenda.content.WendaContentActivity;
-import com.meiji.toutiao.utils.ImageLoader;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.ImageLoader;
+import com.meiji.toutiao.util.SettingsUtil;
 import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.List;

@@ -11,7 +11,7 @@ import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.module.wenda.detail.WendaDetailActivity;
-import com.meiji.toutiao.utils.ImageLoader;
+import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.widget.CircleImageView;
 
 import me.drakeet.multitype.ItemViewBinder;

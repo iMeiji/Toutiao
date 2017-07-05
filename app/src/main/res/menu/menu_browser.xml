@@ -9,21 +9,22 @@
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/action_follow_media"
-        android:icon="@drawable/ic_favorite_white_24dp"
-        android:title="@string/action_follow_media"
+        android:id="@+id/action_open_media_home"
+        android:icon="@drawable/ic_account_circle_white_24dp"
+        android:title="@string/action_open_media_home"
         app:showAsAction="ifRoom"/>
+
+    <!--<item-->
+    <!--android:id="@+id/action_follow_media"-->
+    <!--android:icon="@drawable/ic_favorite_white_24dp"-->
+    <!--android:title="@string/action_follow_media"-->
+    <!--app:showAsAction="ifRoom"/>-->
 
     <item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_share_white_24dp"
         android:title="@string/action_share"
         app:showAsAction="ifRoom"/>
-
-    <item
-        android:id="@+id/action_open_media_info"
-        android:title="查看此头条号主页"
-        app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_open_in_browser"

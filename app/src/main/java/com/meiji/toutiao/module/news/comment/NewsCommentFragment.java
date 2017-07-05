@@ -1,7 +1,6 @@
 package com.meiji.toutiao.module.news.comment;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,8 +10,8 @@ import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.bean.FooterBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
-import com.meiji.toutiao.utils.OnLoadMoreListener;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.OnLoadMoreListener;
+import com.meiji.toutiao.util.SettingsUtil;
 
 import java.util.List;
 
@@ -118,22 +117,22 @@ public class NewsCommentFragment extends BaseListFragment<INewsComment.Presenter
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onShowNoMore() {
-        Snackbar.make(swipeRefreshLayout, R.string.no_more_comment, Snackbar.LENGTH_LONG).show();
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (oldItems.size() > 0) {
-                    Items newItems = new Items(oldItems);
-                    newItems.remove(newItems.size() - 1);
-                    adapter.setItems(newItems);
-                    adapter.notifyDataSetChanged();
-                }
-                canLoadMore = false;
-            }
-        });
-    }
+//    @Override
+//    public void onShowNoMore() {
+//        Snackbar.make(swipeRefreshLayout, R.string.no_more_comment, Snackbar.LENGTH_LONG).show();
+//        getActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (oldItems.size() > 0) {
+//                    Items newItems = new Items(oldItems);
+//                    newItems.remove(newItems.size() - 1);
+//                    adapter.setItems(newItems);
+//                    adapter.notifyDataSetChanged();
+//                }
+//                canLoadMore = false;
+//            }
+//        });
+//    }
 
     @Override
     public void fetchData() {

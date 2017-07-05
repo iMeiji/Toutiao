@@ -1,4 +1,4 @@
-package com.meiji.toutiao.utils;
+package com.meiji.toutiao.util;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;

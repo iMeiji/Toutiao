@@ -6,7 +6,7 @@ import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IVideoApi;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
-import com.meiji.toutiao.utils.TimeUtil;
+import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
 
     VideoArticlePresenter(IVideoArticle.View view) {
         this.view = view;
-        this.time = TimeUtil.getTimeStamp();
+        this.time = TimeUtil.getCurrentTimeStamp();
     }
 
     @Override
@@ -111,7 +111,7 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
     public void doRefresh() {
         if (dataList.size() != 0) {
             dataList.clear();
-            time = TimeUtil.getTimeStamp();
+            time = TimeUtil.getCurrentTimeStamp();
         }
         doLoadData();
     }

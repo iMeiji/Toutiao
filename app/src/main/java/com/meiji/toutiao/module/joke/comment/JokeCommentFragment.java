@@ -3,7 +3,6 @@ package com.meiji.toutiao.module.joke.comment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +15,7 @@ import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.bean.FooterBean;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
-import com.meiji.toutiao.utils.OnLoadMoreListener;
+import com.meiji.toutiao.util.OnLoadMoreListener;
 
 import java.util.List;
 
@@ -139,23 +138,23 @@ public class JokeCommentFragment extends BaseListFragment<IJokeComment.Presenter
         }
     }
 
-    @Override
-    public void onShowNoMore() {
-        Snackbar.make(swipeRefreshLayout, R.string.no_more_comment, Snackbar.LENGTH_LONG).show();
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (oldItems.size() > 1) {
-                    // 保留显示 Header
-                    Items newItems = new Items(oldItems);
-                    newItems.remove(newItems.size() - 1);
-                    adapter.setItems(newItems);
-                    adapter.notifyDataSetChanged();
-                }
-                canLoadMore = false;
-            }
-        });
-    }
+//    @Override
+//    public void onShowNoMore() {
+//        Snackbar.make(swipeRefreshLayout, R.string.no_more_comment, Snackbar.LENGTH_LONG).show();
+//        getActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (oldItems.size() > 1) {
+//                    // 保留显示 Header
+//                    Items newItems = new Items(oldItems);
+//                    newItems.remove(newItems.size() - 1);
+//                    adapter.setItems(newItems);
+//                    adapter.notifyDataSetChanged();
+//                }
+//                canLoadMore = false;
+//            }
+//        });
+//    }
 
     @Override
     public void fetchData() {

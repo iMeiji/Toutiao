@@ -1,8 +1,8 @@
 package com.meiji.toutiao.module.video.article;
 
 import com.meiji.toutiao.bean.video.VideoArticleBean;
+import com.meiji.toutiao.module.base.IBaseListView;
 import com.meiji.toutiao.module.base.IBasePresenter;
-import com.meiji.toutiao.module.base.IBaseView;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface IVideoArticle {
 
-    interface View extends IBaseView<Presenter> {
+    interface View extends IBaseListView<Presenter> {
 
         /**
          * 请求数据

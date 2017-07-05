@@ -18,7 +18,7 @@ import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.module.base.BaseActivity;
-import com.meiji.toutiao.utils.ImageLoader;
+import com.meiji.toutiao.util.ImageLoader;
 
 import me.drakeet.multitype.ItemViewBinder;
 

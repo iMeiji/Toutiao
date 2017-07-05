@@ -6,7 +6,7 @@ import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.bean.FooterBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
-import com.meiji.toutiao.utils.OnLoadMoreListener;
+import com.meiji.toutiao.util.OnLoadMoreListener;
 
 import java.util.List;
 

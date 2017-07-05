@@ -10,8 +10,8 @@ import android.widget.TextView;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
-import com.meiji.toutiao.module.media.article.MediaArticleActivity;
-import com.meiji.toutiao.utils.ImageLoader;
+import com.meiji.toutiao.module.media.home.MediaHomeActivity;
+import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.widget.CircleImageView;
 
 import me.drakeet.multitype.ItemViewBinder;
@@ -39,7 +39,8 @@ public class MediaChannelViewBinder extends ItemViewBinder<MediaChannelBean, Med
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MediaArticleActivity.startActivity(item);
+                    MediaHomeActivity.launch(item.getId());
+//                    MediaArticleActivity.startActivity(item);
                 }
             });
         } catch (Exception e) {

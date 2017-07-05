@@ -10,7 +10,7 @@ import com.meiji.toutiao.api.INewsApi;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsContentBean;
 import com.meiji.toutiao.module.news.comment.NewsCommentFragment;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.SettingsUtil;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;

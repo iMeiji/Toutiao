@@ -17,7 +17,7 @@ import com.meiji.toutiao.api.INewsApi;
 import com.meiji.toutiao.api.IPhotoApi;
 import com.meiji.toutiao.bean.news.NewsContentBean;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.SettingsUtil;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

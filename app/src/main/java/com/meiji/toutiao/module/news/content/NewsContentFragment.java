@@ -28,10 +28,8 @@ import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.module.media.MediaAddActivity;
-import com.meiji.toutiao.module.media.wip.MediaHomeActivity;
-import com.meiji.toutiao.utils.SettingsUtil;
-
-import java.util.List;
+import com.meiji.toutiao.module.media.home.MediaHomeActivity;
+import com.meiji.toutiao.util.SettingsUtil;
 
 /**
  * Created by Meiji on 2017/2/28.
@@ -176,11 +174,6 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
     }
 
     @Override
-    public void onSetAdapter(List<?> list) {
-
-    }
-
-    @Override
     public void onShowLoading() {
         progressBar.setVisibility(View.VISIBLE);
     }
@@ -223,7 +216,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
             case android.R.id.home:
                 getActivity().onBackPressed();
                 break;
-            case R.id.action_open_media_info:
+            case R.id.action_open_media_home:
                 MediaHomeActivity.launch(mediaId);
                 break;
         }

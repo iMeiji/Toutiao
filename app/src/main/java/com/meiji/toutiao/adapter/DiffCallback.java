@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import com.meiji.toutiao.bean.joke.JokeCommentBean;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.bean.media.MediaArticleBean;
+import com.meiji.toutiao.bean.media.MediaWendaBean;
 import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
@@ -34,6 +35,7 @@ public class DiffCallback extends DiffUtil.Callback {
     public static final int WENDA_CONTENT = 9;
     public static final int SEARCH = 10;
     public static final int MUlTI_MEDIA = 11;
+    public static final int MEDIA_WENDA = 12;
     private List oldList, newList;
     private int type;
 
@@ -96,6 +98,9 @@ public class DiffCallback extends DiffUtil.Callback {
                 case MUlTI_MEDIA:
                     return ((MultiMediaArticleBean.DataBean) oldList.get(oldItemPosition)).getTitle().equals(
                             ((MultiMediaArticleBean.DataBean) newList.get(newItemPosition)).getTitle());
+                case MEDIA_WENDA:
+                    return ((MediaWendaBean.AnswerQuestionBean) oldList.get(oldItemPosition)).getQuestion().getTitle().equals(
+                            ((MediaWendaBean.AnswerQuestionBean) newList.get(newItemPosition)).getQuestion().getTitle());
             }
         } catch (Exception e) {
 //            ErrorAction.print(e);
@@ -137,6 +142,9 @@ public class DiffCallback extends DiffUtil.Callback {
                 case MUlTI_MEDIA:
                     return ((MultiMediaArticleBean.DataBean) oldList.get(oldItemPosition)).getAbstractX().equals(
                             ((MultiMediaArticleBean.DataBean) newList.get(newItemPosition)).getAbstractX());
+                case MEDIA_WENDA:
+                    return ((MediaWendaBean.AnswerQuestionBean) oldList.get(oldItemPosition)).getAnswer().getAnsid().equals(
+                            ((MediaWendaBean.AnswerQuestionBean) newList.get(newItemPosition)).getAnswer().getAnsid());
             }
         } catch (Exception e) {
 //            ErrorAction.print(e);

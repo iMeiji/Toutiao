@@ -1,8 +1,8 @@
 package com.meiji.toutiao.module.wenda.content;
 
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
+import com.meiji.toutiao.module.base.IBaseListView;
 import com.meiji.toutiao.module.base.IBasePresenter;
-import com.meiji.toutiao.module.base.IBaseView;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface IWendaContent {
 
-    interface View extends IBaseView<Presenter> {
+    interface View extends IBaseListView<Presenter> {
 
         /**
          * 请求数据
@@ -29,10 +29,10 @@ public interface IWendaContent {
          */
         void onSetHeader(WendaContentBean.QuestionBean questionBean);
 
-        /**
-         * 加载完毕
-         */
-        void onShowNoMore();
+//        /**
+//         * 加载完毕
+//         */
+//        void onShowNoMore();
     }
 
     interface Presenter extends IBasePresenter {

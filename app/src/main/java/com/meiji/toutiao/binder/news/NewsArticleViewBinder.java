@@ -13,8 +13,8 @@ import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.news.content.NewsContentActivity;
-import com.meiji.toutiao.utils.ImageLoader;
-import com.meiji.toutiao.utils.TimeUtil;
+import com.meiji.toutiao.util.ImageLoader;
+import com.meiji.toutiao.util.TimeUtil;
 import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.List;

@@ -17,13 +17,11 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="169dp"
-                android:paddingTop="8dp">
+                android:layout_height="169dp">
 
                 <ImageView
                     android:id="@+id/iv_video_image"

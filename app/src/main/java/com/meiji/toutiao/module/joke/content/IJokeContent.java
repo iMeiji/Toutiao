@@ -1,7 +1,7 @@
 package com.meiji.toutiao.module.joke.content;
 
+import com.meiji.toutiao.module.base.IBaseListView;
 import com.meiji.toutiao.module.base.IBasePresenter;
-import com.meiji.toutiao.module.base.IBaseView;
 
 /**
  * Created by Meiji on 2016/12/28.
@@ -9,7 +9,7 @@ import com.meiji.toutiao.module.base.IBaseView;
 
 interface IJokeContent {
 
-    interface View extends IBaseView<Presenter> {
+    interface View extends IBaseListView<Presenter> {
 
         /**
          * 请求数据

@@ -1,4 +1,4 @@
-package com.meiji.toutiao.module.media.wip;
+package com.meiji.toutiao.module.media.home;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -24,10 +24,10 @@ import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.api.IMobileMediaApi;
 import com.meiji.toutiao.bean.media.MediaProfileBean;
 import com.meiji.toutiao.module.base.BaseActivity;
-import com.meiji.toutiao.module.media.wip.tab.MediaArticleFragment;
-import com.meiji.toutiao.module.media.wip.tab.MediaVideoFragment;
-import com.meiji.toutiao.module.media.wip.tab.MediaWendaFragment;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.module.media.home.tab.MediaArticleFragment;
+import com.meiji.toutiao.module.media.home.tab.MediaVideoFragment;
+import com.meiji.toutiao.module.media.home.tab.MediaWendaFragment;
+import com.meiji.toutiao.util.SettingsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +104,7 @@ public class MediaHomeActivity extends BaseActivity {
                         String name = bean.getData().getName();
                         initToolBar(toolbar, true, name);
                         List<MediaProfileBean.DataBean.TopTabBean> topTab = bean.getData().getTop_tab();
-                        if (topTab.size() < 0) {
+                        if (null != topTab && topTab.size() < 0) {
                             onError();
                             return;
                         }
@@ -133,7 +133,7 @@ public class MediaHomeActivity extends BaseActivity {
                 titleList.add(bean.getShow_name());
             }
             if (bean.getType().equals("wenda")) {
-                fragmentList.add(MediaWendaFragment.newInstance(mediaId));
+                fragmentList.add(MediaWendaFragment.newInstance(dataBean.getUser_id() + ""));
                 titleList.add(bean.getShow_name());
             }
         }

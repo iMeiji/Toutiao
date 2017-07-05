@@ -1,6 +1,7 @@
 package com.meiji.toutiao.api;
 
 import com.meiji.toutiao.bean.media.MediaProfileBean;
+import com.meiji.toutiao.bean.media.MediaWendaBean;
 import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
 
 import io.reactivex.Observable;
@@ -56,8 +57,20 @@ public interface IMobileMediaApi {
      * @param mediaId 头条号ID
      */
     @GET("https://is.snssdk.com/wenda/profile/wendatab/brow/?format=json&from_channel=media_channel")
-    Call<ResponseBody> getMediaWenda(
+    Observable<MediaWendaBean> getMediaWenda(
             @Query("other_id") String mediaId);
+
+    /**
+     * 获取头条号问答(加载更多)
+     * http://is.snssdk.com/wenda/profile/wendatab/loadmore/?other_id=53294853357&format=json&from_channel=media_channel&cursor=6428177292098273538&count=10&offset=undefined
+     *
+     * @param mediaId 头条号ID
+     * @param cursor  偏移量
+     */
+    @GET("http://is.snssdk.com/wenda/profile/wendatab/loadmore/?format=json&from_channel=media_channel&count=10&offset=undefined")
+    Observable<MediaWendaBean> getMediaWendaLoadMore(
+            @Query("other_id") String mediaId,
+            @Query("cursor") String cursor);
 
     /**
      * 获取头条号动态

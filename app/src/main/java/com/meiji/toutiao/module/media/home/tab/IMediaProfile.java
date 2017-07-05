@@ -1,8 +1,9 @@
-package com.meiji.toutiao.module.media.wip.tab;
+package com.meiji.toutiao.module.media.home.tab;
 
+import com.meiji.toutiao.bean.media.MediaWendaBean;
 import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
+import com.meiji.toutiao.module.base.IBaseListView;
 import com.meiji.toutiao.module.base.IBasePresenter;
-import com.meiji.toutiao.module.base.IBaseView;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 public interface IMediaProfile {
 
-    interface View extends IBaseView<Presenter> {
+    interface View extends IBaseListView<Presenter> {
 
         /**
          * 请求数据
@@ -44,6 +45,12 @@ public interface IMediaProfile {
         /**
          * 设置适配器
          */
-        void doSetAdapter(List<MultiMediaArticleBean.DataBean> dataBeen);
+        void doSetAdapter(List<MultiMediaArticleBean.DataBean> list);
+
+        void doSetWendaAdapter(List<MediaWendaBean.AnswerQuestionBean> list);
+
+        void doRefresh(int type);
+
+        void doShowNoMore();
     }
 }

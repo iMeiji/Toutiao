@@ -20,9 +20,9 @@ import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.search.SearchVideoInfoBean;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.module.video.content.VideoContentActivity;
-import com.meiji.toutiao.utils.ImageLoader;
-import com.meiji.toutiao.utils.NetWorkUtil;
-import com.meiji.toutiao.utils.TimeUtil;
+import com.meiji.toutiao.util.ImageLoader;
+import com.meiji.toutiao.util.NetWorkUtil;
+import com.meiji.toutiao.util.TimeUtil;
 import com.meiji.toutiao.widget.CircleImageView;
 
 import org.jsoup.Jsoup;

@@ -2,7 +2,6 @@ package com.meiji.toutiao.module.wenda.content;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,8 +14,8 @@ import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.bean.FooterBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
-import com.meiji.toutiao.utils.OnLoadMoreListener;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.OnLoadMoreListener;
+import com.meiji.toutiao.util.SettingsUtil;
 
 import java.util.List;
 
@@ -120,22 +119,22 @@ public class WendaContentFragment extends BaseListFragment<IWendaContent.Present
         this.WendaContentHeaderBean = questionBean;
     }
 
-    @Override
-    public void onShowNoMore() {
-        Snackbar.make(swipeRefreshLayout, R.string.no_more_comment, Snackbar.LENGTH_SHORT).show();
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (oldItems.size() > 0) {
-                    Items newItems = new Items(oldItems);
-                    newItems.remove(newItems.size() - 1);
-                    adapter.setItems(newItems);
-                    adapter.notifyDataSetChanged();
-                }
-                canLoadMore = false;
-            }
-        });
-    }
+//    @Override
+//    public void onShowNoMore() {
+//        Snackbar.make(swipeRefreshLayout, R.string.no_more_comment, Snackbar.LENGTH_SHORT).show();
+//        getActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (oldItems.size() > 0) {
+//                    Items newItems = new Items(oldItems);
+//                    newItems.remove(newItems.size() - 1);
+//                    adapter.setItems(newItems);
+//                    adapter.notifyDataSetChanged();
+//                }
+//                canLoadMore = false;
+//            }
+//        });
+//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

@@ -12,8 +12,11 @@ import android.widget.TextView;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
-import com.meiji.toutiao.utils.ImageLoader;
-import com.meiji.toutiao.utils.TimeUtil;
+import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
+import com.meiji.toutiao.module.news.content.NewsContentActivity;
+import com.meiji.toutiao.util.ImageLoader;
+import com.meiji.toutiao.util.NetWorkUtil;
+import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.List;
 
@@ -40,7 +43,13 @@ public class MediaArticleViewBinder extends ItemViewBinder<MultiMediaArticleBean
             List<MultiMediaArticleBean.DataBean.ImageListBean> imageList = item.getImage_list();
             if (imageList != null && imageList.size() > 0) {
                 String url = imageList.get(0).getUrl();
-                ImageLoader.loadCenterCrop(holder.itemView.getContext(), url, holder.iv_image, R.color.viewBackground);
+                if (!TextUtils.isEmpty(url)) {
+                    if (NetWorkUtil.isWifiConnected(holder.itemView.getContext())) {
+                        // 加载高清图
+                        url = url.replace("list", "large");
+                    }
+                    ImageLoader.loadCenterCrop(holder.itemView.getContext(), url, holder.iv_image, R.color.viewBackground);
+                }
             }
 
             String title = item.getTitle();
@@ -58,7 +67,16 @@ public class MediaArticleViewBinder extends ItemViewBinder<MultiMediaArticleBean
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    NewsContentActivity.launch(item);
+                    MultiNewsArticleDataBean bean = new MultiNewsArticleDataBean();
+                    bean.setTitle(item.getTitle());
+                    bean.setDisplay_url(item.getDisplay_url());
+                    bean.setMedia_name(item.getSource());
+                    MultiNewsArticleDataBean.MediaInfoBean mediaInfo = new MultiNewsArticleDataBean.MediaInfoBean();
+                    mediaInfo.setMedia_id(item.getMedia_id() + "");
+                    bean.setMedia_info(mediaInfo);
+                    bean.setGroup_id(item.getGroup_id());
+                    bean.setItem_id(item.getItem_id());
+                    NewsContentActivity.launch(bean);
                 }
             });
         } catch (Exception e) {

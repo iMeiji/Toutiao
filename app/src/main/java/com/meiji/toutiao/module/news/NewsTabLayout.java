@@ -20,7 +20,7 @@ import com.meiji.toutiao.module.joke.content.JokeContentView;
 import com.meiji.toutiao.module.news.article.NewsArticleView;
 import com.meiji.toutiao.module.news.channel.NewsChannelActivity;
 import com.meiji.toutiao.module.wenda.article.WendaArticleView;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.SettingsUtil;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,7 +8,7 @@ import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileNewsApi;
 import com.meiji.toutiao.bean.news.MultiNewsArticleBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
-import com.meiji.toutiao.utils.TimeUtil;
+import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
 
     NewsArticlePresenter(INewsArticle.View view) {
         this.view = view;
-        this.time = TimeUtil.getTimeStamp();
+        this.time = TimeUtil.getCurrentTimeStamp();
     }
 
 //    private int getRandom() {
@@ -159,7 +159,7 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
     public void doRefresh() {
         if (dataList.size() != 0) {
             dataList.clear();
-            time = TimeUtil.getTimeStamp();
+            time = TimeUtil.getCurrentTimeStamp();
         }
         doLoadData();
     }

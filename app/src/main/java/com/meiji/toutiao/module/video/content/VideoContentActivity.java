@@ -22,9 +22,9 @@ import com.meiji.toutiao.bean.FooterBean;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.news.comment.INewsComment;
-import com.meiji.toutiao.utils.ImageLoader;
-import com.meiji.toutiao.utils.OnLoadMoreListener;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.ImageLoader;
+import com.meiji.toutiao.util.OnLoadMoreListener;
+import com.meiji.toutiao.util.SettingsUtil;
 import com.meiji.toutiao.widget.helper.MyJCVideoPlayerStandard;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 

@@ -18,9 +18,9 @@ import android.widget.TextView;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MediaArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
-import com.meiji.toutiao.utils.ImageLoader;
-import com.meiji.toutiao.utils.SettingsUtil;
-import com.meiji.toutiao.utils.TimeUtil;
+import com.meiji.toutiao.util.ImageLoader;
+import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;

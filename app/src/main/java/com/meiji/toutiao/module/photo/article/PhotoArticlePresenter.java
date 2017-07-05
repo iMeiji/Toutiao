@@ -4,7 +4,7 @@ import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IPhotoApi;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
-import com.meiji.toutiao.utils.TimeUtil;
+import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
 
     PhotoArticlePresenter(IPhotoArticle.View view) {
         this.view = view;
-        this.time = TimeUtil.getTimeStamp();
+        this.time = TimeUtil.getCurrentTimeStamp();
     }
 
     @Override
@@ -107,7 +107,7 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
     public void doRefresh() {
         if (dataList.size() != 0) {
             dataList.clear();
-            time = TimeUtil.getTimeStamp();
+            time = TimeUtil.getCurrentTimeStamp();
         }
         doLoadData();
     }

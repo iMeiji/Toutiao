@@ -17,6 +17,8 @@ import com.meiji.toutiao.bean.search.SearchResultBean;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -99,7 +101,11 @@ class SearchResultPresenter implements ISearchResult.Presenter {
                         String json = gson.toJson(dataBeanX);
                         MultiNewsArticleDataBean bean = gson.fromJson(json, MultiNewsArticleDataBean.class);
                         MultiNewsArticleDataBean.MediaInfoBean mediaInfo = new MultiNewsArticleDataBean.MediaInfoBean();
-                        mediaInfo.setMedia_id(dataBeanX.getMedia_url());
+                        String mediaUrl = dataBeanX.getMedia_url();
+                        String regex = "[^0-9]";
+                        Pattern pattern = Pattern.compile(regex);
+                        Matcher matcher = pattern.matcher(mediaUrl);
+                        mediaInfo.setMedia_id(matcher.replaceAll("").trim());
                         bean.setMedia_info(mediaInfo);
                         return bean;
                     }

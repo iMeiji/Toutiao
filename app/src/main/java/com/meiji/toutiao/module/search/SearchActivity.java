@@ -44,7 +44,7 @@ import com.meiji.toutiao.bean.search.SearchSuggestionBean;
 import com.meiji.toutiao.database.dao.SearchHistoryDao;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.search.result.SearchResultFragment;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.SettingsUtil;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -102,6 +102,8 @@ class JokeCommentPresenter implements IJokeComment.Presenter {
     @Override
     public void doShowNoMore() {
         view.onHideLoading();
-        view.onShowNoMore();
+        if (commentsList.size() > 0) {
+            view.onShowNoMore();
+        }
     }
 }

@@ -18,7 +18,7 @@ import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MediaProfileBean;
 import com.meiji.toutiao.database.dao.MediaChannelDao;
-import com.meiji.toutiao.utils.ImageLoader;
+import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.concurrent.TimeUnit;

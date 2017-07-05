@@ -23,8 +23,8 @@ import android.view.MenuItem;
 import com.afollestad.materialdialogs.color.CircleView;
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.meiji.toutiao.module.base.BaseActivity;
-import com.meiji.toutiao.utils.CacheDataManager;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.CacheDataManager;
+import com.meiji.toutiao.util.SettingsUtil;
 
 import de.psdev.licensesdialog.LicensesDialog;
 import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20;

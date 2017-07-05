@@ -139,6 +139,8 @@ class WendaContentPresenter implements IWendaContent.Presenter {
     @Override
     public void doShowNoMore() {
         view.onHideLoading();
-        view.onShowNoMore();
+        if (ansList.size() > 0) {
+            view.onShowNoMore();
+        }
     }
 }

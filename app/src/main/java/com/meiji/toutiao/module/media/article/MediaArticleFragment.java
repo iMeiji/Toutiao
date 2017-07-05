@@ -21,8 +21,8 @@ import com.meiji.toutiao.bean.media.MediaChannelBean;
 import com.meiji.toutiao.database.dao.MediaChannelDao;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.module.base.BaseListFragment;
-import com.meiji.toutiao.utils.ImageLoader;
-import com.meiji.toutiao.utils.OnLoadMoreListener;
+import com.meiji.toutiao.util.ImageLoader;
+import com.meiji.toutiao.util.OnLoadMoreListener;
 import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.List;
@@ -120,17 +120,6 @@ public class MediaArticleFragment extends BaseListFragment<IMediaArticle.Present
     }
 
     @Override
-    public void onShowNetError() {
-        Snackbar.make(swipeRefreshLayout, R.string.network_error, Snackbar.LENGTH_LONG)
-                .setAction(R.string.retry, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        presenter.doLoadData(bean.getId());
-                    }
-                }).show();
-    }
-
-    @Override
     public void setPresenter(IMediaArticle.Presenter presenter) {
         if (null == presenter) {
             this.presenter = new MediaArticlePresenter(this);
@@ -192,22 +181,22 @@ public class MediaArticleFragment extends BaseListFragment<IMediaArticle.Present
         }
     }
 
-    @Override
-    public void onShowNoMore() {
-        Snackbar.make(swipeRefreshLayout, R.string.no_more_content, Snackbar.LENGTH_SHORT).show();
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (oldItems.size() > 1) {
-                    List<MediaArticleBean.DataBean> oldList = adapter.getList();
-                    oldList.remove(oldList.size() - 2);
-                    adapter.setList(oldList);
-                    adapter.notifyDataSetChanged();
-                }
-                canLoadMore = false;
-            }
-        });
-    }
+//    @Override
+//    public void onShowNoMore() {
+//        Snackbar.make(swipeRefreshLayout, R.string.no_more_content, Snackbar.LENGTH_SHORT).show();
+//        getActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (oldItems.size() > 1) {
+//                    List<MediaArticleBean.DataBean> oldList = adapter.getList();
+//                    oldList.remove(oldList.size() - 2);
+//                    adapter.setList(oldList);
+//                    adapter.notifyDataSetChanged();
+//                }
+//                canLoadMore = false;
+//            }
+//        });
+//    }
 
     @Override
     public void fetchData() {

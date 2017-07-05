@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.SettingsUtil;
 
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
@@ -15,7 +15,7 @@ import me.drakeet.multitype.MultiTypeAdapter;
  * Created by Meiji on 2017/6/10.
  */
 
-public abstract class BaseListFragment<T extends IBasePresenter> extends LazyLoadFragment<T> implements SwipeRefreshLayout.OnRefreshListener {
+public abstract class BaseListFragment<T extends IBasePresenter> extends LazyLoadFragment<T> implements IBaseListView<T>, SwipeRefreshLayout.OnRefreshListener {
 
     protected RecyclerView recyclerView;
     protected SwipeRefreshLayout swipeRefreshLayout;
@@ -76,5 +76,22 @@ public abstract class BaseListFragment<T extends IBasePresenter> extends LazyLoa
         super.onResume();
         // 设置下拉刷新的按钮的颜色
         swipeRefreshLayout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
+    }
+
+    @Override
+    public void onShowNoMore() {
+        Snackbar.make(swipeRefreshLayout, R.string.no_more_content, Snackbar.LENGTH_SHORT).show();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (oldItems.size() > 0) {
+                    Items newItems = new Items(oldItems);
+                    newItems.remove(newItems.size() - 1);
+                    adapter.setItems(newItems);
+                    adapter.notifyDataSetChanged();
+                }
+                canLoadMore = false;
+            }
+        });
     }
 }

@@ -5,7 +5,7 @@ import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileNewsApi;
 import com.meiji.toutiao.api.IMobileWendaApi;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.SettingsUtil;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -139,7 +139,9 @@ public class WendaDetailPresenter implements IWendaDetail.Presenter {
     @Override
     public void doShowNoMore() {
         view.onHideLoading();
-        view.onShowNoMore();
+        if (commentsBeanList.size() > 0) {
+            view.onShowNoMore();
+        }
     }
 
     private String getHTML(String response) {

@@ -1,4 +1,4 @@
-package com.meiji.toutiao.module.media.wip.tab;
+package com.meiji.toutiao.module.media.home.tab;
 
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -10,14 +10,14 @@ import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.bean.FooterBean;
 import com.meiji.toutiao.bean.media.MediaProfileBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
-import com.meiji.toutiao.utils.OnLoadMoreListener;
+import com.meiji.toutiao.util.OnLoadMoreListener;
 
 import java.util.List;
 
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 
-import static com.meiji.toutiao.module.media.wip.tab.MediaTabPresenter.TYPE_ARTICLE;
+import static com.meiji.toutiao.module.media.home.tab.MediaTabPresenter.TYPE_ARTICLE;
 
 /**
  * Created by Meiji on 2017/6/29.
@@ -94,6 +94,6 @@ public class MediaArticleFragment extends BaseListFragment<IMediaProfile.Present
     @Override
     public void onRefresh() {
         onShowLoading();
-        presenter.doRefresh();
+        presenter.doRefresh(TYPE_ARTICLE);
     }
 }

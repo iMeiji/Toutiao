@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.FooterBean;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.SettingsUtil;
 
 import me.drakeet.multitype.ItemViewBinder;
 

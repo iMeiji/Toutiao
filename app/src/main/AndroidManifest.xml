@@ -94,7 +94,7 @@
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
-            android:name=".module.media.wip.MediaHomeActivity"
+            android:name=".module.media.home.MediaHomeActivity"
             android:configChanges="orientation|screenSize|uiMode"
             android:theme="@style/AppTheme.NoActionBar"/>
 

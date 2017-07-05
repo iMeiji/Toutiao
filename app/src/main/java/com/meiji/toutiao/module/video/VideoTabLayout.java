@@ -13,7 +13,7 @@ import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.module.video.article.VideoArticleView;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.SettingsUtil;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,8 +2,8 @@ package com.meiji.toutiao.module.media.article;
 
 import com.meiji.toutiao.bean.media.MediaArticleBean;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
+import com.meiji.toutiao.module.base.IBaseListView;
 import com.meiji.toutiao.module.base.IBasePresenter;
-import com.meiji.toutiao.module.base.IBaseView;
 
 import java.util.List;
 
@@ -13,17 +13,12 @@ import java.util.List;
 
 public interface IMediaArticle {
 
-    interface View extends IBaseView<Presenter> {
+    interface View extends IBaseListView<Presenter> {
 
         /**
          * 请求数据
          */
         void onLoadData();
-
-        /**
-         * 加载完毕
-         */
-        void onShowNoMore();
     }
 
     interface Presenter extends IBasePresenter {

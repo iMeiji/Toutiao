@@ -18,7 +18,7 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.joke.comment.JokeCommentActivity;
-import com.meiji.toutiao.utils.ImageLoader;
+import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.widget.CircleImageView;
 
 import me.drakeet.multitype.ItemViewBinder;

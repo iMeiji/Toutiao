@@ -22,7 +22,7 @@ import com.meiji.toutiao.module.news.NewsTabLayout;
 import com.meiji.toutiao.module.photo.PhotoTabLayout;
 import com.meiji.toutiao.module.search.SearchActivity;
 import com.meiji.toutiao.module.video.VideoTabLayout;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.SettingsUtil;
 import com.meiji.toutiao.widget.helper.BottomNavigationViewHelper;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {

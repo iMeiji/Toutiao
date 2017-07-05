@@ -1,8 +1,8 @@
 package com.meiji.toutiao.module.wenda.detail;
 
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
+import com.meiji.toutiao.module.base.IBaseListView;
 import com.meiji.toutiao.module.base.IBasePresenter;
-import com.meiji.toutiao.module.base.IBaseView;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface IWendaDetail {
 
-    interface View extends IBaseView<Presenter> {
+    interface View extends IBaseListView<Presenter> {
 
         /**
          * 加载网页
@@ -23,11 +23,6 @@ public interface IWendaDetail {
          * 请求数据
          */
         void onLoadData();
-
-        /**
-         * 加载完毕
-         */
-        void onShowNoMore();
     }
 
     interface Presenter extends IBasePresenter {

@@ -1,4 +1,4 @@
-package com.meiji.toutiao.utils;
+package com.meiji.toutiao.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -66,7 +66,7 @@ public class TimeUtil {
         return timeAgo(date);
     }
 
-    public static String getTimeStamp() {
+    public static String getCurrentTimeStamp() {
         return String.valueOf(new Date(System.currentTimeMillis()).getTime() / 1000);
     }
 }

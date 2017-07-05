@@ -20,8 +20,8 @@ import com.bumptech.glide.request.target.Target;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
 import com.meiji.toutiao.module.base.BaseActivity;
-import com.meiji.toutiao.utils.ImageLoader;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.ImageLoader;
+import com.meiji.toutiao.util.SettingsUtil;
 
 import java.util.List;
 

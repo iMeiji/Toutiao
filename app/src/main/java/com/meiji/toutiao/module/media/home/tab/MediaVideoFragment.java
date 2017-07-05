@@ -1,4 +1,4 @@
-package com.meiji.toutiao.module.media.wip.tab;
+package com.meiji.toutiao.module.media.home.tab;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,28 +8,28 @@ import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.bean.FooterBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
-import com.meiji.toutiao.utils.OnLoadMoreListener;
+import com.meiji.toutiao.util.OnLoadMoreListener;
 
 import java.util.List;
 
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 
-import static com.meiji.toutiao.module.media.wip.tab.MediaTabPresenter.TYPE_VIDEO;
+import static com.meiji.toutiao.module.media.home.tab.MediaTabPresenter.TYPE_VIDEO;
 
 /**
  * Created by Meiji on 2017/6/29.
  */
 
-public class MediaWendaFragment extends BaseListFragment<IMediaProfile.Presenter> implements IMediaProfile.View {
+public class MediaVideoFragment extends BaseListFragment<IMediaProfile.Presenter> implements IMediaProfile.View {
 
-    private static final String TAG = "MediaWendaFragment";
+    private static final String TAG = "MediaVideoFragment";
     private String mediaId;
 
-    public static MediaWendaFragment newInstance(String mediaId) {
+    public static MediaVideoFragment newInstance(String mediaId) {
         Bundle args = new Bundle();
         args.putString(TAG, mediaId);
-        MediaWendaFragment fragment = new MediaWendaFragment();
+        MediaVideoFragment fragment = new MediaVideoFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -70,12 +70,12 @@ public class MediaWendaFragment extends BaseListFragment<IMediaProfile.Presenter
     @Override
     public void onLoadData() {
         onShowLoading();
-        presenter.doLoadArticle(mediaId);
+        presenter.doLoadVideo(mediaId);
     }
 
     @Override
     public void onRefresh() {
-        presenter.doRefresh();
+        presenter.doRefresh(TYPE_VIDEO);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.meiji.toutiao.utils;
+package com.meiji.toutiao.util;
 
 /**
  * Created by Meiji on 2016/12/14.

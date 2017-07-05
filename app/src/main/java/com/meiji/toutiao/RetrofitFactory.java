@@ -5,7 +5,7 @@ import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.meiji.toutiao.api.INewsApi;
-import com.meiji.toutiao.utils.NetWorkUtil;
+import com.meiji.toutiao.util.NetWorkUtil;
 
 import java.io.File;
 import java.io.IOException;

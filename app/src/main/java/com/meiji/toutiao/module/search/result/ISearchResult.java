@@ -1,8 +1,8 @@
 package com.meiji.toutiao.module.search.result;
 
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
+import com.meiji.toutiao.module.base.IBaseListView;
 import com.meiji.toutiao.module.base.IBasePresenter;
-import com.meiji.toutiao.module.base.IBaseView;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
 
 interface ISearchResult {
 
-    interface View extends IBaseView<Presenter> {
+    interface View extends IBaseListView<Presenter> {
 
         /**
          * 请求数据

@@ -10,7 +10,7 @@ import android.view.MenuItem;
 
 import com.afollestad.materialdialogs.color.CircleView;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.SettingsUtil;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 /**

@@ -108,6 +108,8 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
     @Override
     public void doShowNoMore() {
         view.onHideLoading();
-        view.onShowNoMore();
+        if (commentsBeanList.size() > 0) {
+            view.onShowNoMore();
+        }
     }
 }

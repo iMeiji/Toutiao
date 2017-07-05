@@ -38,10 +38,8 @@ import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
 import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.module.media.MediaAddActivity;
 import com.meiji.toutiao.module.photo.comment.PhotoCommentFragment;
-import com.meiji.toutiao.utils.SettingsUtil;
+import com.meiji.toutiao.util.SettingsUtil;
 import com.meiji.toutiao.widget.ViewPagerFixed;
-
-import java.util.List;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -171,11 +169,6 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
         if (null == presenter) {
             this.presenter = new PhotoContentPresenter(this);
         }
-    }
-
-    @Override
-    public void onSetAdapter(List<?> list) {
-
     }
 
     @Override

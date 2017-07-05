@@ -978,7 +978,7 @@ public class WendaContentBean {
         private boolean is_digg;
         private String schema;
 
-        protected AnsListBean(Parcel in) {
+        public AnsListBean(Parcel in) {
             create_time = in.readInt();
             user = in.readParcelable(UserBeanX.class.getClassLoader());
             share_data = in.readParcelable(ShareDataBeanX.class.getClassLoader());
@@ -992,6 +992,9 @@ public class WendaContentBean {
             digg_count = in.readInt();
             is_digg = in.readByte() != 0;
             schema = in.readString();
+        }
+
+        public AnsListBean() {
         }
 
         @Override
@@ -1370,7 +1373,7 @@ public class WendaContentBean {
             private String user_auth_info;
             private String schema;
 
-            protected UserBeanX(Parcel in) {
+            public UserBeanX(Parcel in) {
                 uname = in.readString();
                 avatar_url = in.readString();
                 user_id = in.readString();
@@ -1379,6 +1382,9 @@ public class WendaContentBean {
                 user_intro = in.readString();
                 user_auth_info = in.readString();
                 schema = in.readString();
+            }
+
+            public UserBeanX() {
             }
 
             @Override
@@ -1487,11 +1493,14 @@ public class WendaContentBean {
             private String share_url;
             private String title;
 
-            protected ShareDataBeanX(Parcel in) {
+            public ShareDataBeanX(Parcel in) {
                 content = in.readString();
                 image_url = in.readString();
                 share_url = in.readString();
                 title = in.readString();
+            }
+
+            public ShareDataBeanX() {
             }
 
             @Override

@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.meiji.toutiao.bean.search.SearchHistoryBean;
 import com.meiji.toutiao.database.DatabaseHelper;
 import com.meiji.toutiao.database.table.SearchHistoryTable;
-import com.meiji.toutiao.utils.TimeUtil;
+import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public class SearchHistoryDao {
     public boolean add(String keyWord) {
         ContentValues values = new ContentValues();
         values.put(SearchHistoryTable.KEYWORD, keyWord);
-        values.put(SearchHistoryTable.TIME, TimeUtil.getTimeStamp());
+        values.put(SearchHistoryTable.TIME, TimeUtil.getCurrentTimeStamp());
         long result = db.insert(SearchHistoryTable.TABLENAME, null, values);
         return result != -1;
     }
@@ -63,7 +63,7 @@ public class SearchHistoryDao {
     public boolean update(String keyWord) {
         ContentValues values = new ContentValues();
         values.put(SearchHistoryTable.KEYWORD, keyWord);
-        values.put(SearchHistoryTable.TIME, TimeUtil.getTimeStamp());
+        values.put(SearchHistoryTable.TIME, TimeUtil.getCurrentTimeStamp());
         int result = db.update(SearchHistoryTable.TABLENAME, values, SearchHistoryTable.KEYWORD + "=?", new String[]{keyWord});
         return result != -1;
     }
