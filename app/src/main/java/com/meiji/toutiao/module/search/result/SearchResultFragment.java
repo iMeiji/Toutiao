@@ -52,8 +52,8 @@ public class SearchResultFragment extends BaseListFragment<ISearchResult.Present
     }
 
     @Override
-    protected void initViews(View view) {
-        super.initViews(view);
+    protected void initView(View view) {
+        super.initView(view);
         adapter = new MultiTypeAdapter(oldItems);
         Register.registerSearchItem(adapter);
         recyclerView.setAdapter(adapter);

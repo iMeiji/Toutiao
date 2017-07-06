@@ -12,7 +12,6 @@ import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
-import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.binder.FooterViewBinder;
@@ -31,13 +30,13 @@ import com.meiji.toutiao.binder.news.NewsArticleViewBinder;
 import com.meiji.toutiao.binder.news.NewsCommentViewBinder;
 import com.meiji.toutiao.binder.photo.PhotoArticleViewBinder;
 import com.meiji.toutiao.binder.search.SearchArticleHasVideoViewBinder;
-import com.meiji.toutiao.binder.video.VideoArticleViewBinder;
 import com.meiji.toutiao.binder.video.VideoContentHeaderViewBinder;
 import com.meiji.toutiao.binder.wenda.WendaArticleNoPicViewBinder;
 import com.meiji.toutiao.binder.wenda.WendaArticleOnePicViewBinder;
 import com.meiji.toutiao.binder.wenda.WendaArticleThreePicViewBinder;
 import com.meiji.toutiao.binder.wenda.WendaContentHeaderViewBinder;
 import com.meiji.toutiao.binder.wenda.WendaContentViewBinder;
+import com.meiji.toutiao.interfaces.IOnItemLongClickListener;
 
 import me.drakeet.multitype.ClassLinker;
 import me.drakeet.multitype.ItemViewBinder;
@@ -77,13 +76,13 @@ public class Register {
     }
 
     public static void registerVideoContentItem(MultiTypeAdapter adapter) {
-        adapter.register(VideoArticleBean.DataBean.class, new VideoContentHeaderViewBinder());
+        adapter.register(MultiNewsArticleDataBean.class, new VideoContentHeaderViewBinder());
         adapter.register(NewsCommentMobileBean.DataBean.CommentBean.class, new NewsCommentViewBinder());
         adapter.register(FooterBean.class, new FooterViewBinder());
     }
 
     public static void registerVideoArticleItem(MultiTypeAdapter adapter) {
-        adapter.register(VideoArticleBean.DataBean.class, new VideoArticleViewBinder());
+        adapter.register(MultiNewsArticleDataBean.class, new NewsArticleHasVideoViewBinder());
         adapter.register(FooterBean.class, new FooterViewBinder());
     }
 
@@ -135,8 +134,8 @@ public class Register {
         adapter.register(FooterBean.class, new FooterViewBinder());
     }
 
-    public static void registerMediaChannelItem(MultiTypeAdapter adapter) {
-        adapter.register(MediaChannelBean.class, new MediaChannelViewBinder());
+    public static void registerMediaChannelItem(MultiTypeAdapter adapter, IOnItemLongClickListener listener) {
+        adapter.register(MediaChannelBean.class, new MediaChannelViewBinder(listener));
     }
 
     public static void registerSearchItem(MultiTypeAdapter adapter) {

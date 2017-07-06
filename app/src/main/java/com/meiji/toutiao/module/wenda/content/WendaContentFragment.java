@@ -15,7 +15,7 @@ import com.meiji.toutiao.bean.FooterBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
 import com.meiji.toutiao.util.OnLoadMoreListener;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 
 import java.util.List;
 
@@ -67,8 +67,8 @@ public class WendaContentFragment extends BaseListFragment<IWendaContent.Present
     }
 
     @Override
-    protected void initViews(View view) {
-        super.initViews(view);
+    protected void initView(View view) {
+        super.initView(view);
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, getString(R.string.title_wenda));
         toolbar.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +77,7 @@ public class WendaContentFragment extends BaseListFragment<IWendaContent.Present
                 recyclerView.smoothScrollToPosition(0);
             }
         });
-        toolbar.setBackgroundColor(SettingsUtil.getInstance().getColor());
+        toolbar.setBackgroundColor(SettingUtil.getInstance().getColor());
 
         adapter = new MultiTypeAdapter(oldItems);
         Register.registerWendaContentItem(adapter);

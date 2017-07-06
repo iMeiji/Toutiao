@@ -19,7 +19,7 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MediaArticleBean;
 import com.meiji.toutiao.interfaces.IOnItemClickListener;
 import com.meiji.toutiao.util.ImageLoader;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Created by Meiji on 2017/4/11.
  */
-
+@Deprecated
 public class MediaArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_NORMAL = 0;
@@ -173,7 +173,7 @@ public class MediaArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         FooterViewHolder(View itemView) {
             super(itemView);
             this.progressBar = (ProgressBar) itemView.findViewById(R.id.progress_footer);
-            int color = SettingsUtil.getInstance().getColor();
+            int color = SettingUtil.getInstance().getColor();
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
                 DrawableCompat.setTint(wrapDrawable, color);

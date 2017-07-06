@@ -12,7 +12,7 @@ import com.meiji.toutiao.module.base.BaseActivity;
 /**
  * Created by Meiji on 2017/4/10.
  */
-
+@Deprecated
 public class MediaArticleActivity extends BaseActivity {
 
     private static final String TAG = "MediaArticleActivity";

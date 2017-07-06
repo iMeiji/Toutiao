@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.FooterBean;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 
 import me.drakeet.multitype.ItemViewBinder;
 
@@ -32,7 +32,7 @@ public class FooterViewBinder extends ItemViewBinder<FooterBean, FooterViewBinde
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull FooterBean item) {
-        int color = SettingsUtil.getInstance().getColor();
+        int color = SettingUtil.getInstance().getColor();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Drawable wrapDrawable = DrawableCompat.wrap(holder.progressBar.getIndeterminateDrawable());
             DrawableCompat.setTint(wrapDrawable, color);

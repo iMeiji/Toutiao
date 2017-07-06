@@ -20,7 +20,7 @@ import com.meiji.toutiao.module.joke.content.JokeContentView;
 import com.meiji.toutiao.module.news.article.NewsArticleView;
 import com.meiji.toutiao.module.news.channel.NewsChannelActivity;
 import com.meiji.toutiao.module.wenda.article.WendaArticleView;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +60,7 @@ public class NewsTabLayout extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        header_layout.setBackgroundColor(SettingsUtil.getInstance().getColor());
+        header_layout.setBackgroundColor(SettingUtil.getInstance().getColor());
     }
 
     private void initView(View view) {
@@ -78,7 +78,7 @@ public class NewsTabLayout extends Fragment {
             }
         });
         header_layout = (LinearLayout) view.findViewById(R.id.header_layout);
-        header_layout.setBackgroundColor(SettingsUtil.getInstance().getColor());
+        header_layout.setBackgroundColor(SettingUtil.getInstance().getColor());
     }
 
     /**

@@ -34,7 +34,7 @@ import static com.meiji.toutiao.module.video.content.VideoContentActivity.TAG;
 /**
  * Created by Meiji on 2017/4/11.
  */
-
+@Deprecated
 class MediaArticlePresenter implements IMediaArticle.Presenter {
 
     private IMediaArticle.View view;

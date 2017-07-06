@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.video.VideoArticleBean;
-import com.meiji.toutiao.module.video.content.VideoContentActivity;
 import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.util.TimeUtil;
 import com.meiji.toutiao.widget.CircleImageView;
@@ -27,7 +26,7 @@ import me.drakeet.multitype.ItemViewBinder;
 /**
  * Created by Meiji on 2017/6/10.
  */
-
+@Deprecated
 public class VideoArticleViewBinder extends ItemViewBinder<VideoArticleBean.DataBean, VideoArticleViewBinder.ViewHolder> {
 
     @NonNull
@@ -99,8 +98,8 @@ public class VideoArticleViewBinder extends ItemViewBinder<VideoArticleBean.Data
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String url = item.getVideo_detail_info().getVideo_detail_info().getDetail_video_large_image().getUrl();
-                    VideoContentActivity.launch(item, url);
+//                    String url = item.getVideo_detail_info().getVideo_detail_info().getDetail_video_large_image().getUrl();
+//                    VideoContentActivity.launch(item, url);
                 }
             });
         } catch (Exception e) {

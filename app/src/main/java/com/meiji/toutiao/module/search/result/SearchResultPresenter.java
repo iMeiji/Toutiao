@@ -13,12 +13,11 @@ import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileSearchApi;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.search.SearchResultBean;
+import com.meiji.toutiao.util.StringUtil;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -102,10 +101,8 @@ class SearchResultPresenter implements ISearchResult.Presenter {
                         MultiNewsArticleDataBean bean = gson.fromJson(json, MultiNewsArticleDataBean.class);
                         MultiNewsArticleDataBean.MediaInfoBean mediaInfo = new MultiNewsArticleDataBean.MediaInfoBean();
                         String mediaUrl = dataBeanX.getMedia_url();
-                        String regex = "[^0-9]";
-                        Pattern pattern = Pattern.compile(regex);
-                        Matcher matcher = pattern.matcher(mediaUrl);
-                        mediaInfo.setMedia_id(matcher.replaceAll("").trim());
+                        String mediaId = StringUtil.getStringNum(mediaUrl);
+                        mediaInfo.setMedia_id(mediaId);
                         bean.setMedia_info(mediaInfo);
                         return bean;
                     }

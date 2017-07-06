@@ -13,7 +13,7 @@ import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.module.photo.article.PhotoArticleView;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public class PhotoTabLayout extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        tab_layout.setBackgroundColor(SettingsUtil.getInstance().getColor());
+        tab_layout.setBackgroundColor(SettingUtil.getInstance().getColor());
     }
 
     private void initView(View view) {
@@ -62,7 +62,7 @@ public class PhotoTabLayout extends Fragment {
 
         tab_layout.setupWithViewPager(view_pager);
         tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tab_layout.setBackgroundColor(SettingsUtil.getInstance().getColor());
+        tab_layout.setBackgroundColor(SettingUtil.getInstance().getColor());
         view_pager.setOffscreenPageLimit(pageSize);
     }
 

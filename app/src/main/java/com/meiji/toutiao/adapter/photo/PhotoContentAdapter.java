@@ -21,7 +21,7 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.util.ImageLoader;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 
 import java.util.List;
 
@@ -58,7 +58,7 @@ public class PhotoContentAdapter extends PagerAdapter {
             final TextView tv_abstract = (TextView) view.findViewById(R.id.tv_abstract);
             final TextView tv_onclick = (TextView) view.findViewById(R.id.tv_onclick);
             final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
-            int color = SettingsUtil.getInstance().getColor();
+            int color = SettingUtil.getInstance().getColor();
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
                 DrawableCompat.setTint(wrapDrawable, color);
@@ -93,7 +93,7 @@ public class PhotoContentAdapter extends PagerAdapter {
                 }
             };
 
-            if (!SettingsUtil.getInstance().getIsNoPhotoMode()) {
+            if (!SettingUtil.getInstance().getIsNoPhotoMode()) {
                 ImageLoader.loadCenterCrop(context, sub_images.get(position).getUrl(), iv_image, listener);
             } else {
                 progressBar.setVisibility(View.GONE);

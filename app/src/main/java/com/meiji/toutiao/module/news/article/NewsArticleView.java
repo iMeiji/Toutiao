@@ -37,8 +37,8 @@ public class NewsArticleView extends BaseListFragment<INewsArticle.Presenter> im
     }
 
     @Override
-    protected void initViews(View view) {
-        super.initViews(view);
+    protected void initView(View view) {
+        super.initView(view);
         adapter = new MultiTypeAdapter(oldItems);
         Register.registerNewsArticleItem(adapter);
         recyclerView.setAdapter(adapter);

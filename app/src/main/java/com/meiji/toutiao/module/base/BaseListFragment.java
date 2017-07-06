@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
@@ -29,12 +29,12 @@ public abstract class BaseListFragment<T extends IBasePresenter> extends LazyLoa
     }
 
     @Override
-    protected void initViews(View view) {
+    protected void initView(View view) {
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
-        swipeRefreshLayout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
+        swipeRefreshLayout.setColorSchemeColors(SettingUtil.getInstance().getColor());
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
@@ -75,7 +75,7 @@ public abstract class BaseListFragment<T extends IBasePresenter> extends LazyLoa
     public void onResume() {
         super.onResume();
         // 设置下拉刷新的按钮的颜色
-        swipeRefreshLayout.setColorSchemeColors(SettingsUtil.getInstance().getColor());
+        swipeRefreshLayout.setColorSchemeColors(SettingUtil.getInstance().getColor());
     }
 
     @Override

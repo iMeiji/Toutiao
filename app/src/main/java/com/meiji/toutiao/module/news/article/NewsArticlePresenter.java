@@ -12,6 +12,7 @@ import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
@@ -32,6 +33,7 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
     private String category;
     private String time;
     private Gson gson = new Gson();
+    private Random random = new Random();
 
     NewsArticlePresenter(INewsArticle.View view) {
         this.view = view;
@@ -66,12 +68,13 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
             dataList.clear();
         }
 
-        Observable<MultiNewsArticleBean> ob1 = RetrofitFactory.getRetrofit().create(IMobileNewsApi.class)
-                .getNewsArticle(this.category, this.time);
-        Observable<MultiNewsArticleBean> ob2 = RetrofitFactory.getRetrofit().create(IMobileNewsApi.class)
-                .getNewsArticle2(this.category, this.time);
+//        Observable<MultiNewsArticleBean> ob1 = RetrofitFactory.getRetrofit().create(IMobileNewsApi.class)
+//                .getNewsArticle(this.category, this.time);
+//        Observable<MultiNewsArticleBean> ob2 = RetrofitFactory.getRetrofit().create(IMobileNewsApi.class)
+//                .getNewsArticle2(this.category, this.time);
 
-        Observable.merge(ob1, ob2)
+//        Observable.merge(ob1, ob2)
+        getRanmod()
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .switchMap(new Function<MultiNewsArticleBean, Observable<MultiNewsArticleDataBean>>() {
@@ -102,7 +105,7 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
                                 return false;
                             }
                         } catch (NullPointerException e) {
-                            e.printStackTrace();
+                            ErrorAction.print(e);
                         }
                         // 过滤重复新闻(与上次刷新的数据比较)
                         for (MultiNewsArticleDataBean bean : dataList) {
@@ -168,5 +171,19 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
     public void doShowNetError() {
         view.onHideLoading();
         view.onShowNetError();
+    }
+
+    private Observable<MultiNewsArticleBean> getRanmod() {
+
+        int i = random.nextInt(10);
+        if (i % 2 == 0) {
+            Observable<MultiNewsArticleBean> ob1 = RetrofitFactory.getRetrofit().create(IMobileNewsApi.class)
+                    .getNewsArticle(this.category, this.time);
+            return ob1;
+        } else {
+            Observable<MultiNewsArticleBean> ob2 = RetrofitFactory.getRetrofit().create(IMobileNewsApi.class)
+                    .getNewsArticle2(this.category, this.time);
+            return ob2;
+        }
     }
 }

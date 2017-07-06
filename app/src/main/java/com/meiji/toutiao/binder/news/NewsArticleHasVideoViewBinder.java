@@ -3,7 +3,6 @@ package com.meiji.toutiao.binder.news;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
-import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.module.video.content.VideoContentActivity;
 import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.util.TimeUtil;
@@ -78,17 +76,18 @@ public class NewsArticleHasVideoViewBinder extends ItemViewBinder<MultiNewsArtic
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    VideoArticleBean.DataBean dataBean = new VideoArticleBean.DataBean();
-                    dataBean.setTitle(item.getTitle());
-                    dataBean.setGroup_id(item.getGroup_id());
-                    dataBean.setItem_id(item.getGroup_id());
-                    dataBean.setVideo_id(item.getVideo_id());
-                    dataBean.setAbstractX(item.getAbstractX());
-                    dataBean.setSource(item.getSource());
-                    dataBean.setVideo_duration_str(item.getVideo_duration() / 60 + "");
-                    String url = item.getVideo_detail_info().getDetail_video_large_image().getUrl();
-                    VideoContentActivity.launch(dataBean, url);
-                    Log.d(TAG, "doOnClickItem: " + url);
+//                    VideoArticleBean.DataBean dataBean = new VideoArticleBean.DataBean();
+//                    dataBean.setTitle(item.getTitle());
+//                    dataBean.setGroup_id(item.getGroup_id());
+//                    dataBean.setItem_id(item.getGroup_id());
+//                    dataBean.setVideo_id(item.getVideo_id());
+//                    dataBean.setAbstractX(item.getAbstractX());
+//                    dataBean.setSource(item.getSource());
+//                    dataBean.setVideo_duration_str(item.getVideo_duration() / 60 + "");
+//                    String url = item.getVideo_detail_info().getDetail_video_large_image().getUrl();
+//                    VideoContentActivity.launch(dataBean, url);
+//                    Log.d(TAG, "doOnClickItem: " + url);
+                    VideoContentActivity.launch(item);
                 }
             });
         } catch (Exception e) {

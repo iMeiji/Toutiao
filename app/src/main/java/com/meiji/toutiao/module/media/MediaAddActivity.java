@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Meiji on 2017/4/10.
  */
-
+@Deprecated
 public class MediaAddActivity extends BaseActivity {
 
     private static final String TAG = "MediaAddActivity";

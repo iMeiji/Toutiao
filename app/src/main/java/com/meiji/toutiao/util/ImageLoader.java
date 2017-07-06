@@ -13,7 +13,7 @@ import com.bumptech.glide.request.RequestListener;
 public class ImageLoader {
 
     public static void loadCenterCrop(Context context, String url, ImageView view, int defaultResId) {
-        if (SettingsUtil.getInstance().getIsNoPhotoMode() && NetWorkUtil.isMobileConnected(context)) {
+        if (SettingUtil.getInstance().getIsNoPhotoMode() && NetWorkUtil.isMobileConnected(context)) {
             view.setImageResource(defaultResId);
         } else {
             Glide.with(context).load(url).crossFade().centerCrop().into(view);
@@ -24,7 +24,7 @@ public class ImageLoader {
      * 带加载异常图片
      */
     public static void loadCenterCrop(Context context, String url, ImageView view, int defaultResId, int errorResId) {
-        if (SettingsUtil.getInstance().getIsNoPhotoMode() && NetWorkUtil.isMobileConnected(context)) {
+        if (SettingUtil.getInstance().getIsNoPhotoMode() && NetWorkUtil.isMobileConnected(context)) {
             view.setImageResource(defaultResId);
         } else {
             Glide.with(context).load(url).crossFade().centerCrop().error(errorResId).into(view);

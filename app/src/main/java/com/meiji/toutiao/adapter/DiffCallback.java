@@ -12,7 +12,6 @@ import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.bean.search.SearchResultBean;
-import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 
@@ -26,7 +25,7 @@ public class DiffCallback extends DiffUtil.Callback {
 
     public static final int JOKE = 1;
     public static final int PHOTO = 2;
-    public static final int VIDEO = 3;
+    //    public static final int VIDEO = 3;
     public static final int MEDIA = 4;
     public static final int NEWS_COMMENT = 5;
     public static final int JOKE_COMMENT = 6;
@@ -71,9 +70,9 @@ public class DiffCallback extends DiffUtil.Callback {
                 case PHOTO:
                     return ((PhotoArticleBean.DataBean) oldList.get(oldItemPosition)).getTitle().equals(
                             ((PhotoArticleBean.DataBean) newList.get(newItemPosition)).getTitle());
-                case VIDEO:
-                    return ((VideoArticleBean.DataBean) oldList.get(oldItemPosition)).getTitle().equals(
-                            ((VideoArticleBean.DataBean) newList.get(newItemPosition)).getTitle());
+//                case VIDEO:
+//                    return ((VideoArticleBean.DataBean) oldList.get(oldItemPosition)).getTitle().equals(
+//                            ((VideoArticleBean.DataBean) newList.get(newItemPosition)).getTitle());
                 case MEDIA:
                     return ((MediaArticleBean.DataBean) oldList.get(oldItemPosition)).getTitle().equals(
                             ((MediaArticleBean.DataBean) newList.get(newItemPosition)).getTitle());
@@ -118,9 +117,9 @@ public class DiffCallback extends DiffUtil.Callback {
                 case PHOTO:
                     return ((PhotoArticleBean.DataBean) oldList.get(oldItemPosition)).getSource_url().equals(
                             ((PhotoArticleBean.DataBean) newList.get(newItemPosition)).getSource_url());
-                case VIDEO:
-                    return ((VideoArticleBean.DataBean) oldList.get(oldItemPosition)).getShare_url().equals(
-                            ((VideoArticleBean.DataBean) newList.get(newItemPosition)).getShare_url());
+//                case VIDEO:
+//                    return ((VideoArticleBean.DataBean) oldList.get(oldItemPosition)).getShare_url().equals(
+//                            ((VideoArticleBean.DataBean) newList.get(newItemPosition)).getShare_url());
                 case MEDIA:
                     return ((MediaArticleBean.DataBean) oldList.get(oldItemPosition)).getSource_url().equals(
                             ((MediaArticleBean.DataBean) newList.get(newItemPosition)).getSource_url());

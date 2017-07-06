@@ -29,7 +29,7 @@ public abstract class BaseFragment<T extends IBasePresenter> extends RxFragment 
     /**
      * 初始化视图控件
      */
-    protected abstract void initViews(View view);
+    protected abstract void initView(View view);
 
     /**
      * 初始化数据
@@ -53,7 +53,7 @@ public abstract class BaseFragment<T extends IBasePresenter> extends RxFragment 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(attachLayoutId(), container, false);
-        initViews(view);
+        initView(view);
         initData();
         return view;
     }

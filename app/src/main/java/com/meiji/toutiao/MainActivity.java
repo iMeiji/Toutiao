@@ -22,7 +22,7 @@ import com.meiji.toutiao.module.news.NewsTabLayout;
 import com.meiji.toutiao.module.photo.PhotoTabLayout;
 import com.meiji.toutiao.module.search.SearchActivity;
 import com.meiji.toutiao.module.video.VideoTabLayout;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.widget.helper.BottomNavigationViewHelper;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -220,10 +220,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.nav_switch_night_mode:
                 int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
                 if (mode == Configuration.UI_MODE_NIGHT_YES) {
-                    SettingsUtil.getInstance().setIsNightMode(false);
+                    SettingUtil.getInstance().setIsNightMode(false);
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 } else {
-                    SettingsUtil.getInstance().setIsNightMode(true);
+                    SettingUtil.getInstance().setIsNightMode(true);
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 }
                 getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
@@ -231,7 +231,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 return false;
 
             case R.id.nav_setting:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivity(new Intent(this, SettingActivity.class));
                 drawer_layout.closeDrawers();
                 return false;
 

@@ -18,6 +18,7 @@
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_gravity="center"
+            android:scaleType="centerCrop"
             android:src="@color/textColorPrimary"/>
 
         <LinearLayout

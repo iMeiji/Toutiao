@@ -27,9 +27,8 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.base.BaseFragment;
-import com.meiji.toutiao.module.media.MediaAddActivity;
 import com.meiji.toutiao.module.media.home.MediaHomeActivity;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 
 /**
  * Created by Meiji on 2017/2/28.
@@ -79,7 +78,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
     }
 
     @Override
-    protected void initViews(View view) {
+    protected void initView(View view) {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, "");
         webView = (WebView) view.findViewById(R.id.webview_content);
@@ -97,7 +96,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
             }
         });
         progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
-        int color = SettingsUtil.getInstance().getColor();
+        int color = SettingUtil.getInstance().getColor();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
             DrawableCompat.setTint(wrapDrawable, color);
@@ -123,7 +122,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
         // 开启application Cache功能
         settings.setAppCacheEnabled(false);
         // 判断是否为无图模式
-        settings.setBlockNetworkImage(SettingsUtil.getInstance().getIsNoPhotoMode());
+        settings.setBlockNetworkImage(SettingUtil.getInstance().getIsNoPhotoMode());
         // 不调用第三方浏览器即可进行页面反应
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -197,9 +196,9 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
                 presenter.doShowComment(getActivity(), this);
                 break;
 
-            case R.id.action_follow_media:
-                MediaAddActivity.launch(mediaUrl, "news");
-                break;
+//            case R.id.action_follow_media:
+//                MediaAddActivity.launch(mediaUrl, "news");
+//                break;
 
             case R.id.action_share:
                 Intent shareIntent = new Intent()
@@ -216,6 +215,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
             case android.R.id.home:
                 getActivity().onBackPressed();
                 break;
+
             case R.id.action_open_media_home:
                 MediaHomeActivity.launch(mediaId);
                 break;

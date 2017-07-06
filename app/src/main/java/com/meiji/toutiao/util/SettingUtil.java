@@ -11,21 +11,21 @@ import com.meiji.toutiao.R;
  * Created by Meiji on 2017/2/20.
  */
 
-public class SettingsUtil {
+public class SettingUtil {
 
-    private SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(InitApp.AppContext);
+    private SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(InitApp.AppContext);
 
-    public static SettingsUtil getInstance() {
+    public static SettingUtil getInstance() {
         return SettingsUtilInstance.instance;
     }
 
     public boolean getIsNoPhotoMode() {
-        return settings.getBoolean("switch_noPhotoMode", false) && NetWorkUtil.isMobileConnected(InitApp.AppContext);
+        return setting.getBoolean("switch_noPhotoMode", false) && NetWorkUtil.isMobileConnected(InitApp.AppContext);
     }
 
     public int getColor() {
         int defaultColor = InitApp.AppContext.getResources().getColor(R.color.colorPrimary);
-        int color = settings.getInt("color", defaultColor);
+        int color = setting.getInt("color", defaultColor);
         if ((color != 0) && Color.alpha(color) != 255) {
             return defaultColor;
         }
@@ -33,26 +33,26 @@ public class SettingsUtil {
     }
 
     public void setColor(int color) {
-        settings.edit().putInt("color", color).apply();
+        setting.edit().putInt("color", color).apply();
     }
 
     public boolean getIsNightMode() {
-        return settings.getBoolean("switch_nightMode", false);
+        return setting.getBoolean("switch_nightMode", false);
     }
 
     public void setIsNightMode(boolean flag) {
-        settings.edit().putBoolean("switch_nightMode", flag).apply();
+        setting.edit().putBoolean("switch_nightMode", flag).apply();
     }
 
     public boolean getNavBar() {
-        return settings.getBoolean("nav_bar", false);
+        return setting.getBoolean("nav_bar", false);
     }
 
     public boolean getVideoOrientation() {
-        return settings.getBoolean("video_force_landscape", false);
+        return setting.getBoolean("video_force_landscape", false);
     }
 
     private static final class SettingsUtilInstance {
-        private static final SettingsUtil instance = new SettingsUtil();
+        private static final SettingUtil instance = new SettingUtil();
     }
 }

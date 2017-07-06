@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Meiji on 2017/3/29.
  */
-
+@Deprecated
 public class VideoArticleBean {
 
     /**

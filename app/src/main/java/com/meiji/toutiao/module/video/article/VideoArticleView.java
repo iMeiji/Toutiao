@@ -26,7 +26,7 @@ public class VideoArticleView extends BaseListFragment<IVideoArticle.Presenter> 
 
     public static VideoArticleView newInstance(String categoryId) {
         Bundle bundle = new Bundle();
-        bundle.putString("categoryId", categoryId);
+        bundle.putString(TAG, categoryId);
         VideoArticleView videoArticleView = new VideoArticleView();
         videoArticleView.setArguments(bundle);
         return videoArticleView;
@@ -34,12 +34,12 @@ public class VideoArticleView extends BaseListFragment<IVideoArticle.Presenter> 
 
     @Override
     protected void initData() {
-        categoryId = getArguments().getString("categoryId");
+        categoryId = getArguments().getString(TAG);
     }
 
     @Override
-    protected void initViews(View view) {
-        super.initViews(view);
+    protected void initView(View view) {
+        super.initView(view);
         adapter = new MultiTypeAdapter(oldItems);
         Register.registerVideoArticleItem(adapter);
         recyclerView.setAdapter(adapter);
@@ -74,7 +74,7 @@ public class VideoArticleView extends BaseListFragment<IVideoArticle.Presenter> 
     public void onSetAdapter(final List<?> list) {
         Items newItems = new Items(list);
         newItems.add(new FooterBean());
-        DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.VIDEO, adapter);
+        DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.MUlTI_NEWS, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;

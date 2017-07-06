@@ -14,17 +14,18 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.bean.FooterBean;
-import com.meiji.toutiao.bean.video.VideoArticleBean;
+import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.news.comment.INewsComment;
 import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.util.OnLoadMoreListener;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.widget.helper.MyJCVideoPlayerStandard;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 
@@ -48,17 +49,16 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     private String videoId;
     private String videoUrls;
     private String videoTitle;
-    private VideoArticleBean.DataBean videoHeaderData;
     private ImageView iv_image_url;
     private FloatingActionButton fabPlay;
     private RecyclerView recyclerView;
     private IVideoContent.Presenter presenter;
     private Items oldItems = new Items();
+    private MultiNewsArticleDataBean dataBean;
 
-    public static void launch(VideoArticleBean.DataBean bean, String imageUrl) {
+    public static void launch(MultiNewsArticleDataBean bean) {
         InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, VideoContentActivity.class)
                 .putExtra(VideoContentActivity.TAG, bean)
-                .putExtra("imageUrl", imageUrl)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
@@ -76,18 +76,22 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     private void initData() {
         Intent intent = getIntent();
         try {
-            videoHeaderData = intent.getParcelableExtra(TAG);
-            String url = intent.getStringExtra("imageUrl");
-            if (!TextUtils.isEmpty(url)) {
-                ImageLoader.loadCenterCrop(this, url, iv_image_url, R.color.viewBackground);
+            dataBean = intent.getParcelableExtra(TAG);
+            if (null != dataBean.getVideo_detail_info()) {
+                if (null != dataBean.getVideo_detail_info().getDetail_video_large_image()) {
+                    String image = dataBean.getVideo_detail_info().getDetail_video_large_image().getUrl();
+                    if (!TextUtils.isEmpty(image)) {
+                        ImageLoader.loadCenterCrop(this, image, iv_image_url, R.color.viewBackground, R.mipmap.error_image);
+                    }
+                }
             }
-            this.groupId = videoHeaderData.getGroup_id() + "";
-            this.itemId = videoHeaderData.getItem_id() + "";
-            this.videoId = videoHeaderData.getVideo_id();
-            this.videoTitle = videoHeaderData.getTitle();
-            oldItems.add(videoHeaderData);
+            this.groupId = dataBean.getGroup_id() + "";
+            this.itemId = dataBean.getItem_id() + "";
+            this.videoId = dataBean.getVideo_id();
+            this.videoTitle = dataBean.getTitle();
+            oldItems.add(dataBean);
         } catch (NullPointerException e) {
-            e.printStackTrace();
+            ErrorAction.print(e);
         }
     }
 
@@ -95,7 +99,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
         iv_image_url = (ImageView) findViewById(R.id.iv_image_url);
         fabPlay = (FloatingActionButton) findViewById(R.id.fab_play);
         fabPlay.setOnClickListener(this);
-        fabPlay.setBackgroundTintList(ColorStateList.valueOf(SettingsUtil.getInstance().getColor()));
+        fabPlay.setBackgroundTintList(ColorStateList.valueOf(SettingUtil.getInstance().getColor()));
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -131,7 +135,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
                             | View.SYSTEM_UI_FLAG_FULLSCREEN;
                 }
                 decorView.setSystemUiVisibility(uiOptions);
-                if (SettingsUtil.getInstance().getVideoOrientation()) {
+                if (SettingUtil.getInstance().getVideoOrientation()) {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 }
                 break;
@@ -147,7 +151,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onSetAdapter(final List<?> list) {
         Items newItems = new Items();
-        newItems.add(videoHeaderData);
+        newItems.add(dataBean);
         newItems.addAll(list);
         newItems.add(new FooterBean());
         DiffCallback.notifyDataSetChanged(newItems, newItems, DiffCallback.NEWS_COMMENT, adapter);

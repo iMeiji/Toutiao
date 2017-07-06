@@ -10,7 +10,7 @@ import com.meiji.toutiao.api.INewsApi;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsContentBean;
 import com.meiji.toutiao.module.news.comment.NewsCommentFragment;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -114,7 +114,7 @@ class NewsContentPresenter implements INewsContent.Presenter {
         if (content != null) {
 
             String css = "<link rel=\"stylesheet\" href=\"file:///android_asset/toutiao_light.css\" type=\"text/css\">";
-            if (SettingsUtil.getInstance().getIsNightMode()) {
+            if (SettingUtil.getInstance().getIsNightMode()) {
                 css = css.replace("toutiao_light", "toutiao_dark");
             }
 

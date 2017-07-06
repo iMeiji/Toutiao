@@ -2,10 +2,12 @@ package com.meiji.toutiao.module.video.article;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
-import com.meiji.toutiao.api.IVideoApi;
-import com.meiji.toutiao.bean.video.VideoArticleBean;
+import com.meiji.toutiao.api.IMobileVideoApi;
+import com.meiji.toutiao.bean.news.MultiNewsArticleBean;
+import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.ArrayList;
@@ -28,7 +30,8 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
     private IVideoArticle.View view;
     private String category;
     private String time;
-    private List<VideoArticleBean.DataBean> dataList = new ArrayList<>();
+    private Gson gson = new Gson();
+    private List<MultiNewsArticleDataBean> dataList = new ArrayList<>();
 
     VideoArticlePresenter(IVideoArticle.View view) {
         this.view = view;
@@ -50,29 +53,43 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
             dataList.clear();
         }
 
-        RetrofitFactory.getRetrofit().create(IVideoApi.class).getVideoArticle(this.category, time)
+        RetrofitFactory.getRetrofit().create(IMobileVideoApi.class)
+                .getVideoArticle(this.category, time)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .switchMap(new Function<VideoArticleBean, Observable<VideoArticleBean.DataBean>>() {
+                .switchMap(new Function<MultiNewsArticleBean, Observable<MultiNewsArticleDataBean>>() {
                     @Override
-                    public Observable<VideoArticleBean.DataBean> apply(@NonNull VideoArticleBean photoArticleBean) throws Exception {
-                        List<VideoArticleBean.DataBean> data = photoArticleBean.getData();
-                        // 移除最后一项 数据有重复
-                        if (data.size() > 0)
-                            data.remove(data.size() - 1);
-                        time = photoArticleBean.getNext().getMax_behot_time();
-                        return Observable.fromIterable(data);
+                    public Observable<MultiNewsArticleDataBean> apply(@NonNull MultiNewsArticleBean multiNewsArticleBean) throws Exception {
+                        List<MultiNewsArticleDataBean> dataList = new ArrayList<>();
+                        for (MultiNewsArticleBean.DataBean dataBean : multiNewsArticleBean.getData()) {
+                            dataList.add(gson.fromJson(dataBean.getContent(), MultiNewsArticleDataBean.class));
+                        }
+                        return Observable.fromIterable(dataList);
                     }
                 })
-                .filter(new Predicate<VideoArticleBean.DataBean>() {
+                .filter(new Predicate<MultiNewsArticleDataBean>() {
                     @Override
-                    public boolean test(@NonNull VideoArticleBean.DataBean dataBean) throws Exception {
-                        if (TextUtils.isEmpty(dataBean.getVideo_id())) {
+                    public boolean test(@NonNull MultiNewsArticleDataBean dataBean) throws Exception {
+                        time = dataBean.getBehot_time();
+                        if (TextUtils.isEmpty(dataBean.getSource())) {
                             return false;
                         }
-                        // 去除重复新闻
-                        for (VideoArticleBean.DataBean bean : dataList) {
-                            if (dataBean.getTitle().equals(bean.getTitle())) {
+                        try {
+                            if (dataBean.getSource().contains("头条问答")
+                                    || dataBean.getTag().contains("ad")
+                                    || dataBean.getSource().contains("话题")) {
+                                return false;
+                            }
+                            // 过滤头条问答新闻
+                            if (dataBean.getMedia_info() == null) {
+                                return false;
+                            }
+                        } catch (NullPointerException e) {
+                            ErrorAction.print(e);
+                        }
+                        // 过滤重复新闻(与上次刷新的数据比较)
+                        for (MultiNewsArticleDataBean bean : dataList) {
+                            if (bean.getTitle().equals(dataBean.getTitle())) {
                                 return false;
                             }
                         }
@@ -80,10 +97,10 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
                     }
                 })
                 .toList()
-                .compose(view.<List<VideoArticleBean.DataBean>>bindToLife())
-                .subscribe(new Consumer<List<VideoArticleBean.DataBean>>() {
+                .compose(view.<List<MultiNewsArticleDataBean>>bindToLife())
+                .subscribe(new Consumer<List<MultiNewsArticleDataBean>>() {
                     @Override
-                    public void accept(@NonNull List<VideoArticleBean.DataBean> list) throws Exception {
+                    public void accept(@NonNull List<MultiNewsArticleDataBean> list) throws Exception {
                         doSetAdapter(list);
                     }
                 }, new Consumer<Throwable>() {
@@ -101,7 +118,7 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
     }
 
     @Override
-    public void doSetAdapter(List<VideoArticleBean.DataBean> dataBeen) {
+    public void doSetAdapter(List<MultiNewsArticleDataBean> dataBeen) {
         dataList.addAll(dataBeen);
         view.onSetAdapter(dataList);
         view.onHideLoading();

@@ -33,8 +33,8 @@ public class PhotoArticleView extends BaseListFragment<IPhotoArticle.Presenter> 
     }
 
     @Override
-    protected void initViews(View view) {
-        super.initViews(view);
+    protected void initView(View view) {
+        super.initView(view);
         adapter = new MultiTypeAdapter(oldItems);
         Register.registerPhotoArticleItem(adapter);
         recyclerView.setAdapter(adapter);

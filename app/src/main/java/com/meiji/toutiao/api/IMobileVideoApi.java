@@ -1,9 +1,9 @@
 package com.meiji.toutiao.api;
 
+import com.meiji.toutiao.bean.news.MultiNewsArticleBean;
 import com.meiji.toutiao.bean.video.VideoContentBean;
 
 import io.reactivex.Observable;
-import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -12,16 +12,16 @@ import retrofit2.http.Url;
  * Created by Meiji on 2017/5/9.
  */
 
-public interface IVideoApi {
+public interface IMobileVideoApi {
 
     /**
      * 获取视频标题等信息
-     * http://toutiao.com/api/article/recent/?source=2&category=类型&as=A105177907376A5&cp=5797C7865AD54E1&count=20"
+     * http://is.snssdk.com/api/news/feed/v53/?category=subv_cute&refer=1&count=20&max_behot_time=1499321562&iid=11776029171&device_id=36394312781
      */
-    @GET("api/article/recent/?source=2&as=A105177907376A5&cp=5797C7865AD54E1&count=30")
-    Observable<ResponseBody> getVideoArticle(
+    @GET("http://is.snssdk.com/api/news/feed/v53/?iid=10344168417&device_id=36394312781&refer=1&count=20")
+    Observable<MultiNewsArticleBean> getVideoArticle(
             @Query("category") String category,
-            @Query("_") String time);
+            @Query("max_behot_time") String maxBehotTime);
 
     /**
      * 获取视频信息
@@ -30,5 +30,4 @@ public interface IVideoApi {
      */
     @GET
     Observable<VideoContentBean> getVideoContent(@Url String url);
-
 }

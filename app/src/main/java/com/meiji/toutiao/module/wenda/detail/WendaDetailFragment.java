@@ -34,7 +34,7 @@ import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.module.wenda.content.WendaContentActivity;
 import com.meiji.toutiao.util.ImageLoader;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.List;
@@ -126,7 +126,7 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
     }
 
     @Override
-    protected void initViews(View view) {
+    protected void initView(View view) {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         webView = (WebView) view.findViewById(R.id.webview_content);
         scrollView = (NestedScrollView) view.findViewById(R.id.scrollView);
@@ -145,7 +145,7 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
             }
         });
 
-        header_layout.setBackgroundColor(SettingsUtil.getInstance().getColor());
+        header_layout.setBackgroundColor(SettingUtil.getInstance().getColor());
 
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -169,7 +169,7 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
             }
         });
 
-        int color = SettingsUtil.getInstance().getColor();
+        int color = SettingUtil.getInstance().getColor();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
             DrawableCompat.setTint(wrapDrawable, color);
@@ -216,7 +216,7 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
         // 开启application Cache功能
         settings.setAppCacheEnabled(false);
         // 判断是否为无图模式
-        settings.setBlockNetworkImage(SettingsUtil.getInstance().getIsNoPhotoMode());
+        settings.setBlockNetworkImage(SettingUtil.getInstance().getIsNoPhotoMode());
         // 不调用第三方浏览器即可进行页面反应
         webView.setWebViewClient(new WebViewClient() {
             @Override

@@ -75,6 +75,7 @@
     <string name="action_unfollow_media_success">取消关注成功</string>
     <string name="undo">撤回</string>
     <string name="cancel">取消</string>
+    <string name="error">发生错误</string>
 
     <!-- About -->
     <string name="changelog">更新日志</string>

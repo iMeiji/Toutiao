@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
+import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
+import com.meiji.toutiao.module.news.content.NewsContentActivity;
 import com.meiji.toutiao.util.TimeUtil;
 
 import me.drakeet.multitype.ItemViewBinder;
@@ -48,7 +50,16 @@ public class MediaArticleNoPicViewBinder extends ItemViewBinder<MultiMediaArticl
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    NewsContentActivity.launch(item);
+                    MultiNewsArticleDataBean bean = new MultiNewsArticleDataBean();
+                    bean.setTitle(item.getTitle());
+                    bean.setDisplay_url(item.getDisplay_url());
+                    bean.setMedia_name(item.getSource());
+                    MultiNewsArticleDataBean.MediaInfoBean mediaInfo = new MultiNewsArticleDataBean.MediaInfoBean();
+                    mediaInfo.setMedia_id(item.getMedia_id() + "");
+                    bean.setMedia_info(mediaInfo);
+                    bean.setGroup_id(item.getGroup_id());
+                    bean.setItem_id(item.getItem_id());
+                    NewsContentActivity.launch(bean);
                 }
             });
         } catch (Exception e) {

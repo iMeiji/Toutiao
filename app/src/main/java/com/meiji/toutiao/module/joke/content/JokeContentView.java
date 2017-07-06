@@ -29,8 +29,8 @@ public class JokeContentView extends BaseListFragment<IJokeContent.Presenter> im
     }
 
     @Override
-    protected void initViews(View view) {
-        super.initViews(view);
+    protected void initView(View view) {
+        super.initView(view);
         adapter = new MultiTypeAdapter(oldItems);
         Register.registerJokeContentItem(adapter);
         recyclerView.setAdapter(adapter);

@@ -236,6 +236,7 @@ public class MultiNewsArticleDataBean implements Parcelable {
         group_id = in.readLong();
         gallary_image_count = in.readInt();
         video_id = in.readString();
+        video_detail_info = in.readParcelable(VideoDetailInfoBean.class.getClassLoader());
         video_duration = in.readInt();
         group_flags = in.readInt();
         like_count = in.readInt();
@@ -301,6 +302,7 @@ public class MultiNewsArticleDataBean implements Parcelable {
         dest.writeLong(group_id);
         dest.writeInt(gallary_image_count);
         dest.writeString(video_id);
+        dest.writeParcelable(video_detail_info, flags);
         dest.writeInt(video_duration);
         dest.writeInt(group_flags);
         dest.writeInt(like_count);
@@ -1208,7 +1210,18 @@ public class MultiNewsArticleDataBean implements Parcelable {
         }
     }
 
-    public static class VideoDetailInfoBean {
+    public static class VideoDetailInfoBean implements Parcelable {
+        public static final Creator<VideoDetailInfoBean> CREATOR = new Creator<VideoDetailInfoBean>() {
+            @Override
+            public VideoDetailInfoBean createFromParcel(Parcel in) {
+                return new VideoDetailInfoBean(in);
+            }
+
+            @Override
+            public VideoDetailInfoBean[] newArray(int size) {
+                return new VideoDetailInfoBean[size];
+            }
+        };
         /**
          * group_flags : 32832
          * video_type : 0
@@ -1234,6 +1247,41 @@ public class MultiNewsArticleDataBean implements Parcelable {
         private int video_watching_count;
         private int video_watch_count;
         private List<?> video_url;
+
+        public VideoDetailInfoBean(Parcel in) {
+            group_flags = in.readInt();
+            video_type = in.readInt();
+            video_preloading_flag = in.readInt();
+            direct_play = in.readInt();
+            detail_video_large_image = in.readParcelable(DetailVideoLargeImageBean.class.getClassLoader());
+            show_pgc_subscribe = in.readInt();
+            video_third_monitor_url = in.readString();
+            video_id = in.readString();
+            video_watching_count = in.readInt();
+            video_watch_count = in.readInt();
+        }
+
+        public VideoDetailInfoBean() {
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(group_flags);
+            dest.writeInt(video_type);
+            dest.writeInt(video_preloading_flag);
+            dest.writeInt(direct_play);
+            dest.writeParcelable(detail_video_large_image, flags);
+            dest.writeInt(show_pgc_subscribe);
+            dest.writeString(video_third_monitor_url);
+            dest.writeString(video_id);
+            dest.writeInt(video_watching_count);
+            dest.writeInt(video_watch_count);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
 
         public int getGroup_flags() {
             return group_flags;
@@ -1323,7 +1371,18 @@ public class MultiNewsArticleDataBean implements Parcelable {
             this.video_url = video_url;
         }
 
-        public static class DetailVideoLargeImageBean {
+        public static class DetailVideoLargeImageBean implements Parcelable {
+            public static final Creator<DetailVideoLargeImageBean> CREATOR = new Creator<DetailVideoLargeImageBean>() {
+                @Override
+                public DetailVideoLargeImageBean createFromParcel(Parcel in) {
+                    return new DetailVideoLargeImageBean(in);
+                }
+
+                @Override
+                public DetailVideoLargeImageBean[] newArray(int size) {
+                    return new DetailVideoLargeImageBean[size];
+                }
+            };
             /**
              * url : http://p3.pstatp.com/video1609/17600009fb1bb36ce3ee
              * width : 580
@@ -1337,6 +1396,29 @@ public class MultiNewsArticleDataBean implements Parcelable {
             private String uri;
             private int height;
             private List<MiddleImageBean> url_list;
+
+            public DetailVideoLargeImageBean(Parcel in) {
+                url = in.readString();
+                width = in.readInt();
+                uri = in.readString();
+                height = in.readInt();
+            }
+
+            public DetailVideoLargeImageBean() {
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(url);
+                dest.writeInt(width);
+                dest.writeString(uri);
+                dest.writeInt(height);
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
 
             public String getUrl() {
                 return url;
@@ -1377,81 +1459,6 @@ public class MultiNewsArticleDataBean implements Parcelable {
             public void setUrl_list(List<MiddleImageBean> url_list) {
                 this.url_list = url_list;
             }
-        }
-    }
-
-    public static class FilterWordsBean {
-        /**
-         * id : 8:0
-         * name : 重复、旧闻
-         * is_selected : false
-         */
-
-        private String id;
-        private String name;
-        private boolean is_selected;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public boolean isIs_selected() {
-            return is_selected;
-        }
-
-        public void setIs_selected(boolean is_selected) {
-            this.is_selected = is_selected;
-        }
-    }
-
-    public static class ActionListBean {
-        /**
-         * action : 1
-         * extra : {}
-         * desc :
-         */
-
-        private int action;
-        private ExtraBean extra;
-        private String desc;
-
-        public int getAction() {
-            return action;
-        }
-
-        public void setAction(int action) {
-            this.action = action;
-        }
-
-        public ExtraBean getExtra() {
-            return extra;
-        }
-
-        public void setExtra(ExtraBean extra) {
-            this.extra = extra;
-        }
-
-        public String getDesc() {
-            return desc;
-        }
-
-        public void setDesc(String desc) {
-            this.desc = desc;
-        }
-
-        public static class ExtraBean {
         }
     }
 

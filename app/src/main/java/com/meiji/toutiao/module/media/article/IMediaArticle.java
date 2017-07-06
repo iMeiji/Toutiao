@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Meiji on 2017/4/11.
  */
-
+@Deprecated
 public interface IMediaArticle {
 
     interface View extends IBaseListView<Presenter> {

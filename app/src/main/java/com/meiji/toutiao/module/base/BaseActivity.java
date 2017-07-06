@@ -10,7 +10,7 @@ import android.view.MenuItem;
 
 import com.afollestad.materialdialogs.color.CircleView;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 /**
@@ -31,7 +31,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        int color = SettingsUtil.getInstance().getColor();
+        int color = SettingUtil.getInstance().getColor();
         if (getSupportActionBar() != null)
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(color));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -42,7 +42,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
                     BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher),
                     color);
             setTaskDescription(tDesc);
-            if (SettingsUtil.getInstance().getNavBar()) {
+            if (SettingUtil.getInstance().getNavBar()) {
                 getWindow().setNavigationBarColor(CircleView.shiftColorDown(color));
             } else {
                 getWindow().setNavigationBarColor(Color.BLACK);

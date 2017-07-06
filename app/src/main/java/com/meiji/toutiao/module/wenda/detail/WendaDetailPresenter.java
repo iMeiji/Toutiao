@@ -5,7 +5,7 @@ import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileNewsApi;
 import com.meiji.toutiao.api.IMobileWendaApi;
 import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -155,7 +155,7 @@ public class WendaDetailPresenter implements IWendaDetail.Presenter {
         if (content != null) {
 
             String css = "<link rel=\"stylesheet\" href=\"file:///android_asset/toutiao_light.css\" type=\"text/css\">";
-            if (SettingsUtil.getInstance().getIsNightMode()) {
+            if (SettingUtil.getInstance().getIsNightMode()) {
                 css = css.replace("toutiao_light", "toutiao_dark");
             }
 

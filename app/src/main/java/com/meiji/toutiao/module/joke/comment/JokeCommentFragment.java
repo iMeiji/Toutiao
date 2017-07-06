@@ -43,8 +43,8 @@ public class JokeCommentFragment extends BaseListFragment<IJokeComment.Presenter
     }
 
     @Override
-    protected void initViews(View view) {
-        super.initViews(view);
+    protected void initView(View view) {
+        super.initView(view);
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, "");
         toolbar.setOnClickListener(new View.OnClickListener() {

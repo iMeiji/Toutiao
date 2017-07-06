@@ -13,7 +13,7 @@ import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.module.video.article.VideoArticleView;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +25,9 @@ import java.util.List;
 public class VideoTabLayout extends Fragment {
 
     private static VideoTabLayout instance = null;
-    private static int pageSize = InitApp.AppContext.getResources().getStringArray(R.array.video_id).length;
-    private String categoryId[] = InitApp.AppContext.getResources().getStringArray(R.array.video_id);
-    private String categoryName[] = InitApp.AppContext.getResources().getStringArray(R.array.video_name);
+    private static int pageSize = InitApp.AppContext.getResources().getStringArray(R.array.mobile_video_id).length;
+    private String categoryId[] = InitApp.AppContext.getResources().getStringArray(R.array.mobile_video_id);
+    private String categoryName[] = InitApp.AppContext.getResources().getStringArray(R.array.mobile_video_name);
     private TabLayout tab_layout;
     private ViewPager view_pager;
     private List<Fragment> list = new ArrayList<>();
@@ -52,7 +52,7 @@ public class VideoTabLayout extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        tab_layout.setBackgroundColor(SettingsUtil.getInstance().getColor());
+        tab_layout.setBackgroundColor(SettingUtil.getInstance().getColor());
     }
 
     private void initView(View view) {
@@ -61,7 +61,7 @@ public class VideoTabLayout extends Fragment {
 
         tab_layout.setupWithViewPager(view_pager);
         tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tab_layout.setBackgroundColor(SettingsUtil.getInstance().getColor());
+        tab_layout.setBackgroundColor(SettingUtil.getInstance().getColor());
         view_pager.setOffscreenPageLimit(pageSize);
     }
 

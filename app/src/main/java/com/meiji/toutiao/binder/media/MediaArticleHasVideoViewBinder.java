@@ -1,5 +1,6 @@
 package com.meiji.toutiao.binder.media;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -8,18 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.jakewharton.rxbinding2.view.RxView;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
-import com.meiji.toutiao.bean.video.VideoArticleBean;
+import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.video.content.VideoContentActivity;
 import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.util.NetWorkUtil;
 import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -38,22 +44,23 @@ public class MediaArticleHasVideoViewBinder extends ItemViewBinder<MultiMediaArt
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull final MultiMediaArticleBean.DataBean item) {
+    protected void onBindViewHolder(@NonNull final ViewHolder holder, @NonNull final MultiMediaArticleBean.DataBean item) {
         try {
+            final Context context = holder.itemView.getContext();
             List<MultiMediaArticleBean.DataBean.ImageListBean> imageList = item.getImage_list();
             String url = null;
             if (imageList != null && imageList.size() > 0) {
                 url = imageList.get(0).getUrl();
                 if (!TextUtils.isEmpty(url)) {
-                    if (NetWorkUtil.isWifiConnected(holder.itemView.getContext())) {
+                    if (NetWorkUtil.isWifiConnected(context)) {
                         // 加载高清图
                         url = url.replace("list", "large");
                     }
-                    ImageLoader.loadCenterCrop(holder.itemView.getContext(), url, holder.iv_video_image, R.color.viewBackground);
+                    ImageLoader.loadCenterCrop(context, url, holder.iv_video_image, R.color.viewBackground);
                 }
             }
 
-            String title = item.getTitle();
+            final String title = item.getTitle();
             String readCount = item.getTotal_read_count() + "阅读量";
             String commentCount = item.getComment_count() + "评论";
             String datetime = item.getBehot_time() + "";
@@ -65,21 +72,54 @@ public class MediaArticleHasVideoViewBinder extends ItemViewBinder<MultiMediaArt
             holder.tv_title.setText(title);
             holder.tv_extra.setText(readCount + " - " + commentCount + " - " + datetime);
             holder.tv_video_time.setText(video_time);
+
             final String finalUrl = url;
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    VideoArticleBean.DataBean dataBean = new VideoArticleBean.DataBean();
-                    dataBean.setTitle(item.getTitle());
-                    dataBean.setGroup_id(item.getGroup_id());
-                    dataBean.setItem_id(item.getGroup_id());
-                    dataBean.setVideo_id(item.getVideo_infos().get(0).getVid());
-                    dataBean.setAbstractX(item.getAbstractX());
-                    dataBean.setSource(item.getSource());
-                    dataBean.setVideo_duration_str(item.getVideo_duration_str());
-                    VideoContentActivity.launch(dataBean, finalUrl);
-                }
-            });
+            RxView.clicks(holder.itemView)
+                    .throttleFirst(1, TimeUnit.SECONDS)
+                    .observeOn(Schedulers.io())
+                    .subscribe(new Consumer<Object>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
+                            MultiNewsArticleDataBean bean = new MultiNewsArticleDataBean();
+                            bean.setTitle(title);
+                            bean.setGroup_id(item.getGroup_id());
+                            bean.setItem_id(item.getItem_id());
+                            bean.setVideo_id(item.getVideo_infos().get(0).getVid());
+                            bean.setAbstractX(item.getAbstractX());
+                            bean.setSource(item.getSource());
+
+                            String s = item.getVideo_duration_str();
+                            int time = 0;
+                            if (s.contains(":")) {
+                                String[] split = s.split(":");
+                                for (int i = 0; i < split.length; i++) {
+                                    if (i == 0) {
+                                        time = Integer.parseInt(split[i]) * 60;
+                                    }
+                                    time += Integer.parseInt(split[i]);
+                                }
+                            }
+                            bean.setVideo_duration(time);
+
+                            MultiNewsArticleDataBean.MediaInfoBean mediaInfoBean = new MultiNewsArticleDataBean.MediaInfoBean();
+                            mediaInfoBean.setMedia_id(item.getMedia_id() + "");
+                            bean.setMedia_info(mediaInfoBean);
+
+                            MultiNewsArticleDataBean.VideoDetailInfoBean.DetailVideoLargeImageBean videobean = new MultiNewsArticleDataBean.VideoDetailInfoBean.DetailVideoLargeImageBean();
+                            MultiNewsArticleDataBean.VideoDetailInfoBean videoDetail = new MultiNewsArticleDataBean.VideoDetailInfoBean();
+                            videobean.setUrl(finalUrl);
+                            videoDetail.setDetail_video_large_image(videobean);
+                            bean.setVideo_detail_info(videoDetail);
+
+                            VideoContentActivity.launch(bean);
+                        }
+                    }, new Consumer<Throwable>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                            Toast.makeText(context, context.getString(R.string.error), Toast.LENGTH_SHORT).show();
+                            ErrorAction.print(throwable);
+                        }
+                    });
         } catch (Exception e) {
             ErrorAction.print(e);
         }

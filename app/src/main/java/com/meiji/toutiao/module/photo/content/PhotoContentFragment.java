@@ -36,9 +36,10 @@ import com.meiji.toutiao.api.INewsApi;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
 import com.meiji.toutiao.module.base.BaseFragment;
-import com.meiji.toutiao.module.media.MediaAddActivity;
+import com.meiji.toutiao.module.media.home.MediaHomeActivity;
 import com.meiji.toutiao.module.photo.comment.PhotoCommentFragment;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
+import com.meiji.toutiao.util.StringUtil;
 import com.meiji.toutiao.widget.ViewPagerFixed;
 
 import permissions.dispatcher.NeedsPermission;
@@ -68,6 +69,7 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
     private String itemId;
     private PhotoContentAdapter adapter;
     private String mediaUrl;
+    private String mediaId;
 
     public static PhotoContentFragment newInstance(Parcelable dataBean) {
         PhotoContentFragment instance = new PhotoContentFragment();
@@ -92,11 +94,12 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
         groupId = dataBean.getGroup_id() + "";
         itemId = dataBean.getGroup_id() + "";
         mediaUrl = dataBean.getMedia_url();
+        mediaId = StringUtil.getStringNum(mediaUrl);
         presenter.doLoadData(shareUrl);
     }
 
     @Override
-    protected void initViews(View view) {
+    protected void initView(View view) {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, "");
         tv_hint = (TextView) view.findViewById(R.id.tv_hint);
@@ -107,7 +110,7 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
         webView = (WebView) view.findViewById(R.id.webview_content);
         scrollView = (NestedScrollView) view.findViewById(R.id.scrollView);
         progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
-        int color = SettingsUtil.getInstance().getColor();
+        int color = SettingUtil.getInstance().getColor();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
             DrawableCompat.setTint(wrapDrawable, color);
@@ -205,8 +208,12 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
                         .commit();
                 break;
 
-            case R.id.action_follow_media:
-                MediaAddActivity.launch(mediaUrl, "photo");
+//            case R.id.action_follow_media:
+//                MediaAddActivity.launch(mediaUrl, "photo");
+//                break;
+
+            case R.id.action_open_media_home:
+                MediaHomeActivity.launch(mediaId);
                 break;
 
             case R.id.action_open_in_browser:
@@ -237,7 +244,7 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
         // 开启application Cache功能
         settings.setAppCacheEnabled(false);
         // 判断是否为无图模式
-        settings.setBlockNetworkImage(SettingsUtil.getInstance().getIsNoPhotoMode());
+        settings.setBlockNetworkImage(SettingUtil.getInstance().getIsNoPhotoMode());
         // 不调用第三方浏览器即可进行页面反应
         webView.setWebViewClient(new WebViewClient() {
             @Override

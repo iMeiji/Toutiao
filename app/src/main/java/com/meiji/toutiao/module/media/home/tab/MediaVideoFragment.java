@@ -42,8 +42,8 @@ public class MediaVideoFragment extends BaseListFragment<IMediaProfile.Presenter
     }
 
     @Override
-    protected void initViews(View view) {
-        super.initViews(view);
+    protected void initView(View view) {
+        super.initView(view);
         adapter = new MultiTypeAdapter(oldItems);
         Register.registerMediaArticleItem(adapter);
         recyclerView.setAdapter(adapter);

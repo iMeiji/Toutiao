@@ -1,6 +1,6 @@
 package com.meiji.toutiao.module.video.article;
 
-import com.meiji.toutiao.bean.video.VideoArticleBean;
+import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.base.IBaseListView;
 import com.meiji.toutiao.module.base.IBasePresenter;
 
@@ -35,11 +35,6 @@ public interface IVideoArticle {
         /**
          * 设置适配器
          */
-        void doSetAdapter(List<VideoArticleBean.DataBean> dataBeen);
-
-//        /**
-//         * 点击事件跳转
-//         */
-//        void doOnClickItem(int position);
+        void doSetAdapter(List<MultiNewsArticleDataBean> dataBeen);
     }
 }

@@ -18,7 +18,6 @@ import com.meiji.toutiao.api.IMobileSearchApi;
 import com.meiji.toutiao.api.INewsApi;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.search.SearchVideoInfoBean;
-import com.meiji.toutiao.bean.video.VideoArticleBean;
 import com.meiji.toutiao.module.video.content.VideoContentActivity;
 import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.util.NetWorkUtil;
@@ -61,8 +60,9 @@ public class SearchArticleHasVideoViewBinder extends ItemViewBinder<MultiNewsArt
     @Override
     protected void onBindViewHolder(@NonNull SearchArticleHasVideoViewBinder.ViewHolder holder, @NonNull final MultiNewsArticleDataBean item) {
         try {
+            String image = null;
             if (null != item.getMiddle_image()) {
-                String image = item.getMiddle_image().getUrl();
+                image = item.getMiddle_image().getUrl();
                 if (!TextUtils.isEmpty(image)) {
                     if (NetWorkUtil.isWifiConnected(holder.itemView.getContext())) {
                         // 加载高清图
@@ -103,6 +103,7 @@ public class SearchArticleHasVideoViewBinder extends ItemViewBinder<MultiNewsArt
             final ProgressDialog dialog = new ProgressDialog(holder.itemView.getContext());
             dialog.setTitle(R.string.loading);
 
+            final String finalImage = image;
             RxView.clicks(holder.itemView)
                     .throttleFirst(1300, TimeUnit.MILLISECONDS)
                     .doOnNext(new Consumer<Object>() {
@@ -138,33 +139,30 @@ public class SearchArticleHasVideoViewBinder extends ItemViewBinder<MultiNewsArt
                                     .getSearchVideoInfo(s);
                         }
                     })
-                    .map(new Function<SearchVideoInfoBean, VideoArticleBean.DataBean>() {
+                    .map(new Function<SearchVideoInfoBean, MultiNewsArticleDataBean>() {
                         @Override
-                        public VideoArticleBean.DataBean apply(@io.reactivex.annotations.NonNull SearchVideoInfoBean bean) throws Exception {
-                            VideoArticleBean.DataBean dataBean = new VideoArticleBean.DataBean();
-                            dataBean.setTitle(item.getTitle());
-                            dataBean.setGroup_id(item.getGroup_id());
-                            dataBean.setItem_id(item.getItem_id());
-                            dataBean.setAbstractX(item.getAbstractX());
-                            dataBean.setSource(item.getSource());
-                            dataBean.setVideo_duration_str(item.getVideo_duration() / 60 + "");
+                        public MultiNewsArticleDataBean apply(@io.reactivex.annotations.NonNull SearchVideoInfoBean bean) throws Exception {
                             // 获取视频 ID
                             String content = bean.getData().getContent();
                             if (!TextUtils.isEmpty(content)) {
                                 Map<String, String> map = parseJson(content);
                                 String id = map.get("id");
                                 String imageUrl = map.get("imageUrl");
-                                dataBean.setVideo_id(id);
-                                dataBean.setImage_url(imageUrl);
+                                item.setVideo_id(id);
+                                MultiNewsArticleDataBean.VideoDetailInfoBean.DetailVideoLargeImageBean videobean = new MultiNewsArticleDataBean.VideoDetailInfoBean.DetailVideoLargeImageBean();
+                                MultiNewsArticleDataBean.VideoDetailInfoBean videoDetail = new MultiNewsArticleDataBean.VideoDetailInfoBean();
+                                videobean.setUrl(finalImage);
+                                videoDetail.setDetail_video_large_image(videobean);
+                                item.setVideo_detail_info(videoDetail);
                             }
-                            return dataBean;
+                            return item;
                         }
                     })
-                    .subscribe(new Consumer<VideoArticleBean.DataBean>() {
+                    .subscribe(new Consumer<MultiNewsArticleDataBean>() {
                         @Override
-                        public void accept(@io.reactivex.annotations.NonNull VideoArticleBean.DataBean dataBean) throws Exception {
+                        public void accept(@io.reactivex.annotations.NonNull MultiNewsArticleDataBean dataBean) throws Exception {
                             dialog.dismiss();
-                            VideoContentActivity.launch(dataBean, dataBean.getImage_url());
+                            VideoContentActivity.launch(dataBean);
                         }
                     }, new Consumer<Throwable>() {
                         @Override

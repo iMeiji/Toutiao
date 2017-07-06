@@ -24,7 +24,7 @@ import com.afollestad.materialdialogs.color.CircleView;
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.util.CacheDataManager;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 
 import de.psdev.licensesdialog.LicensesDialog;
 import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20;
@@ -33,7 +33,7 @@ import de.psdev.licensesdialog.licenses.MITLicense;
 import de.psdev.licensesdialog.model.Notice;
 import de.psdev.licensesdialog.model.Notices;
 
-public class SettingsActivity extends BaseActivity implements ColorChooserDialog.ColorCallback {
+public class SettingActivity extends BaseActivity implements ColorChooserDialog.ColorCallback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,14 +86,14 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
                     selectedColor);
             setTaskDescription(tDesc);
             // 导航栏上色
-            if (SettingsUtil.getInstance().getNavBar()) {
+            if (SettingUtil.getInstance().getNavBar()) {
                 getWindow().setNavigationBarColor(CircleView.shiftColorDown(selectedColor));
             } else {
                 getWindow().setNavigationBarColor(Color.BLACK);
             }
         }
         if (!dialog.isAccentMode()) {
-            SettingsUtil.getInstance().setColor(selectedColor);
+            SettingUtil.getInstance().setColor(selectedColor);
         }
     }
 
@@ -117,7 +117,7 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
             findPreference("color").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    final SettingsActivity context = (SettingsActivity) getActivity();
+                    final SettingActivity context = (SettingActivity) getActivity();
                     new ColorChooserDialog.Builder(context, R.string.choose_theme_color)
                             .backButton(R.string.back)
                             .cancelButton(R.string.cancel)
@@ -133,9 +133,9 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
             findPreference("nav_bar").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    int color = SettingsUtil.getInstance().getColor();
+                    int color = SettingUtil.getInstance().getColor();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        if (SettingsUtil.getInstance().getNavBar()) {
+                        if (SettingUtil.getInstance().getNavBar()) {
                             getActivity().getWindow().setNavigationBarColor(CircleView.shiftColorDown(CircleView.shiftColorDown(color)));
                         } else {
                             getActivity().getWindow().setNavigationBarColor(Color.BLACK);
@@ -247,7 +247,7 @@ public class SettingsActivity extends BaseActivity implements ColorChooserDialog
 //        public boolean onOptionsItemSelected(MenuItem item) {
 //            int id = item.getItemId();
 //            if (id == android.R.id.home) {
-//                launch(new Intent(getActivity(), SettingsActivity.class));
+//                launch(new Intent(getActivity(), SettingActivity.class));
 //                return true;
 //            }
 //            return super.onOptionsItemSelected(item);

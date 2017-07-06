@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <!--<android.support.v4.widget.Space-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="192dp"/>-->
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="8dp"
-        android:paddingEnd="16dp"
-        android:paddingStart="16dp"
-        android:paddingTop="24dp"
+        android:paddingTop="8dp"
         android:text="毒舌马丁催泪讲述中国式父亲，母亲曾给他下跪，现场观众感动落泪"
         android:textSize="20sp"/>
 
@@ -26,8 +21,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="8dp"
-        android:paddingEnd="16dp"
-        android:paddingStart="16dp"
         android:paddingTop="8dp"
         android:text="时长 3:35"/>
 
@@ -35,35 +28,36 @@
         android:id="@+id/tv_abstract"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
         android:text="97年驻港部队第一次进驻香港，万人空巷欢迎，场面壮观"
         android:textSize="16sp"/>
 
     <LinearLayout
+        android:id="@+id/media_layout"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_gravity="end"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/selectableItemBackground"
+        android:foreground="?attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        tools:visibility="visible">
-
-        <TextView
-            android:id="@+id/tv_extra"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:textStyle="bold"
-            tools:text="龙猫公社"/>
+        android:padding="8dp">
 
         <com.meiji.toutiao.widget.CircleImageView
             android:id="@+id/iv_media_avatar_url"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_margin="16dp"
             android:scaleType="centerCrop"
+            app:srcCompat="@color/viewBackground"
             tools:ignore="ContentDescription"/>
+
+        <TextView
+            android:id="@+id/tv_extra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:textStyle="bold"
+            tools:text="龙猫公社"/>
 
     </LinearLayout>
 

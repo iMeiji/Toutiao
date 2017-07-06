@@ -44,7 +44,7 @@ import com.meiji.toutiao.bean.search.SearchSuggestionBean;
 import com.meiji.toutiao.database.dao.SearchHistoryDao;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.search.result.SearchResultFragment;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,7 +114,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         resultLayout = (LinearLayout) findViewById(R.id.result_layout);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-        tabLayout.setBackgroundColor(SettingsUtil.getInstance().getColor());
+        tabLayout.setBackgroundColor(SettingUtil.getInstance().getColor());
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         // 搜索建议

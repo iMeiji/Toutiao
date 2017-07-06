@@ -27,7 +27,7 @@ import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.media.home.tab.MediaArticleFragment;
 import com.meiji.toutiao.module.media.home.tab.MediaVideoFragment;
 import com.meiji.toutiao.module.media.home.tab.MediaWendaFragment;
-import com.meiji.toutiao.util.SettingsUtil;
+import com.meiji.toutiao.util.SettingUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,15 +66,15 @@ public class MediaHomeActivity extends BaseActivity {
 
     private void initView() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(SettingsUtil.getInstance().getColor());
+        toolbar.setBackgroundColor(SettingUtil.getInstance().getColor());
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-        tabLayout.setBackgroundColor(SettingsUtil.getInstance().getColor());
+        tabLayout.setBackgroundColor(SettingUtil.getInstance().getColor());
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 
         progressBar = (ProgressBar) findViewById(R.id.pb_progress);
-        int color = SettingsUtil.getInstance().getColor();
+        int color = SettingUtil.getInstance().getColor();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
             DrawableCompat.setTint(wrapDrawable, color);
@@ -145,6 +145,6 @@ public class MediaHomeActivity extends BaseActivity {
 
     private void onError() {
         progressBar.setVisibility(View.GONE);
-        Snackbar.make(progressBar, "error", Snackbar.LENGTH_INDEFINITE).show();
+        Snackbar.make(progressBar, getString(R.string.error), Snackbar.LENGTH_INDEFINITE).show();
     }
 }
