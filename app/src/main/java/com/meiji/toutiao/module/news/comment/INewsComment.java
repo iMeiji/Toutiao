@@ -1,6 +1,6 @@
 package com.meiji.toutiao.module.news.comment;
 
-import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
+import com.meiji.toutiao.bean.news.NewsCommentBean;
 import com.meiji.toutiao.module.base.IBaseListView;
 import com.meiji.toutiao.module.base.IBasePresenter;
 
@@ -18,11 +18,6 @@ public interface INewsComment {
          * 请求数据
          */
         void onLoadData();
-
-//        /**
-//         * 加载完毕
-//         */
-//        void onShowNoMore();
     }
 
     interface Presenter extends IBasePresenter {
@@ -40,7 +35,7 @@ public interface INewsComment {
         /**
          * 设置适配器
          */
-        void doSetAdapter(List<NewsCommentMobileBean.DataBean.CommentBean> list);
+        void doSetAdapter(List<NewsCommentBean.DataBean.CommentBean> list);
 
         /**
          * 加载完毕

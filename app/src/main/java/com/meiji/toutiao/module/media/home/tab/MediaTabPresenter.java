@@ -217,7 +217,12 @@ public class MediaTabPresenter implements IMediaProfile.Presenter {
                                 }
                             });
                 } else {
-                    doShowNoMore();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            doShowNoMore();
+                        }
+                    }).start();
                 }
                 break;
         }

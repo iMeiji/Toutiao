@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
+import com.meiji.toutiao.bean.news.NewsCommentBean;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.util.ImageLoader;
 
@@ -26,7 +26,7 @@ import me.drakeet.multitype.ItemViewBinder;
  * Created by Meiji on 2017/6/9.
  */
 
-public class NewsCommentViewBinder extends ItemViewBinder<NewsCommentMobileBean.DataBean.CommentBean, NewsCommentViewBinder.ViewHolder> {
+public class NewsCommentViewBinder extends ItemViewBinder<NewsCommentBean.DataBean.CommentBean, NewsCommentViewBinder.ViewHolder> {
 
 
     @NonNull
@@ -37,7 +37,7 @@ public class NewsCommentViewBinder extends ItemViewBinder<NewsCommentMobileBean.
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull final ViewHolder holder, @NonNull final NewsCommentMobileBean.DataBean.CommentBean item) {
+    protected void onBindViewHolder(@NonNull final ViewHolder holder, @NonNull final NewsCommentBean.DataBean.CommentBean item) {
         try {
             String iv_avatar = item.getUser_profile_image_url();
             String tv_username = item.getUser_name();

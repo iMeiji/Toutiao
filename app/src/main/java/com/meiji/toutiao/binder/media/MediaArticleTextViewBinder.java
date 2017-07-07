@@ -22,17 +22,17 @@ import me.drakeet.multitype.ItemViewBinder;
  * 不带图片的 item
  */
 
-public class MediaArticleNoPicViewBinder extends ItemViewBinder<MultiMediaArticleBean.DataBean, MediaArticleNoPicViewBinder.ViewHolder> {
+public class MediaArticleTextViewBinder extends ItemViewBinder<MultiMediaArticleBean.DataBean, MediaArticleTextViewBinder.ViewHolder> {
 
     @NonNull
     @Override
-    protected MediaArticleNoPicViewBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View view = inflater.inflate(R.layout.item_media_article_new_no_pic, parent, false);
+    protected MediaArticleTextViewBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        View view = inflater.inflate(R.layout.item_media_article_text, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull MediaArticleNoPicViewBinder.ViewHolder holder, @NonNull final MultiMediaArticleBean.DataBean item) {
+    protected void onBindViewHolder(@NonNull MediaArticleTextViewBinder.ViewHolder holder, @NonNull final MultiMediaArticleBean.DataBean item) {
 
         try {
             String title = item.getTitle();

@@ -27,17 +27,17 @@ import me.drakeet.multitype.ItemViewBinder;
  * 带图片的 item
  */
 
-public class MediaArticleViewBinder extends ItemViewBinder<MultiMediaArticleBean.DataBean, MediaArticleViewBinder.ViewHolder> {
+public class MediaArticleImgViewBinder extends ItemViewBinder<MultiMediaArticleBean.DataBean, MediaArticleImgViewBinder.ViewHolder> {
 
     @NonNull
     @Override
-    protected MediaArticleViewBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View view = inflater.inflate(R.layout.item_media_article_new, parent, false);
+    protected MediaArticleImgViewBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        View view = inflater.inflate(R.layout.item_media_article_img, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull MediaArticleViewBinder.ViewHolder holder, @NonNull final MultiMediaArticleBean.DataBean item) {
+    protected void onBindViewHolder(@NonNull MediaArticleImgViewBinder.ViewHolder holder, @NonNull final MultiMediaArticleBean.DataBean item) {
 
         try {
             List<MultiMediaArticleBean.DataBean.ImageListBean> imageList = item.getImage_list();

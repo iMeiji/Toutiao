@@ -20,12 +20,12 @@ import me.drakeet.multitype.ItemViewBinder;
  * Created by Meiji on 2017/6/11.
  */
 
-public class WendaArticleNoPicViewBinder extends ItemViewBinder<WendaArticleDataBean, WendaArticleNoPicViewBinder.ViewHolder> {
+public class WendaArticleTextViewBinder extends ItemViewBinder<WendaArticleDataBean, WendaArticleTextViewBinder.ViewHolder> {
 
     @NonNull
     @Override
-    protected WendaArticleNoPicViewBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View view = inflater.inflate(R.layout.item_wenda_article_no_pic, parent, false);
+    protected WendaArticleTextViewBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        View view = inflater.inflate(R.layout.item_wenda_article_text, parent, false);
         return new ViewHolder(view);
     }
 

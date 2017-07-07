@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -21,7 +22,7 @@
         android:layout_marginLeft="18dp"
         android:layout_marginStart="18dp"
         android:layout_marginTop="84dp"
-        android:src="@color/Black"/>
+        app:srcCompat="@color/viewBackground"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,11 +60,12 @@
 
             <TextView
                 android:id="@+id/tv_is_sub"
-                android:layout_width="48dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
+                android:padding="8dp"
                 android:text="订阅"
                 android:textColor="@color/textColorPrimary"
                 android:textSize="16sp"

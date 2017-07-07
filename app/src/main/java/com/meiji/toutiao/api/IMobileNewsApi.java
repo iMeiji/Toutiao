@@ -1,7 +1,7 @@
 package com.meiji.toutiao.api;
 
 import com.meiji.toutiao.bean.news.MultiNewsArticleBean;
-import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
+import com.meiji.toutiao.bean.news.NewsCommentBean;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
@@ -55,7 +55,7 @@ public interface IMobileNewsApi {
      * @param offset  偏移量
      */
     @GET("http://is.snssdk.com/article/v53/tab_comments/")
-    Observable<NewsCommentMobileBean> getNewsComment(
+    Observable<NewsCommentBean> getNewsComment(
             @Query("group_id") String groupId,
             @Query("offset") int offset);
 }

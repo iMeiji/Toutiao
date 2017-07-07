@@ -5,6 +5,7 @@ package com.meiji.toutiao.interfaces;
  */
 
 public interface IOnDragVHListener {
+
     /**
      * Item被选中时触发
      */

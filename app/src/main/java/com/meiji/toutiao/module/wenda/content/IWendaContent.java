@@ -28,11 +28,6 @@ public interface IWendaContent {
          * 设置顶部信息
          */
         void onSetHeader(WendaContentBean.QuestionBean questionBean);
-
-//        /**
-//         * 加载完毕
-//         */
-//        void onShowNoMore();
     }
 
     interface Presenter extends IBasePresenter {

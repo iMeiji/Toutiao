@@ -21,7 +21,7 @@ public class PhotoArticleView extends BaseListFragment<IPhotoArticle.Presenter> 
 
     public static PhotoArticleView newInstance(String categoryId) {
         Bundle bundle = new Bundle();
-        bundle.putString("categoryId", categoryId);
+        bundle.putString(TAG, categoryId);
         PhotoArticleView instance = new PhotoArticleView();
         instance.setArguments(bundle);
         return instance;
@@ -29,7 +29,7 @@ public class PhotoArticleView extends BaseListFragment<IPhotoArticle.Presenter> 
 
     @Override
     protected void initData() {
-        categoryId = getArguments().getString("categoryId");
+        categoryId = getArguments().getString(TAG);
     }
 
     @Override

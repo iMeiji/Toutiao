@@ -33,10 +33,5 @@ interface IJokeContent {
          * 设置适配器
          */
         void doSetAdapter();
-
-//        /**
-//         * 点击事件跳转
-//         */
-//        void doOnClickItem(int position);
     }
 }

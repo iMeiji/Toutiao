@@ -6,5 +6,6 @@ package com.meiji.toutiao.interfaces;
  */
 
 public interface IOnItemMoveListener {
+
     void onItemMove(int fromPosition, int toPosition);
 }

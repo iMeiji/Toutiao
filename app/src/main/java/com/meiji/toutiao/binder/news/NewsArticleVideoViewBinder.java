@@ -23,19 +23,19 @@ import me.drakeet.multitype.ItemViewBinder;
  * Created by Meiji on 2017/6/8.
  */
 
-public class NewsArticleHasVideoViewBinder extends ItemViewBinder<MultiNewsArticleDataBean, NewsArticleHasVideoViewBinder.ViewHolder> {
+public class NewsArticleVideoViewBinder extends ItemViewBinder<MultiNewsArticleDataBean, NewsArticleVideoViewBinder.ViewHolder> {
 
     private static final String TAG = "NewsArticleHasVideoView";
 
     @NonNull
     @Override
-    protected NewsArticleHasVideoViewBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View view = inflater.inflate(R.layout.item_news_article_has_video, parent, false);
+    protected NewsArticleVideoViewBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        View view = inflater.inflate(R.layout.item_news_article_video, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull NewsArticleHasVideoViewBinder.ViewHolder holder, @NonNull final MultiNewsArticleDataBean item) {
+    protected void onBindViewHolder(@NonNull NewsArticleVideoViewBinder.ViewHolder holder, @NonNull final MultiNewsArticleDataBean item) {
         try {
             if (null != item.getVideo_detail_info()) {
                 if (null != item.getVideo_detail_info().getDetail_video_large_image()) {

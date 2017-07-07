@@ -1,6 +1,6 @@
 package com.meiji.toutiao.module.wenda.detail;
 
-import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
+import com.meiji.toutiao.bean.news.NewsCommentBean;
 import com.meiji.toutiao.module.base.IBaseListView;
 import com.meiji.toutiao.module.base.IBasePresenter;
 
@@ -45,12 +45,11 @@ public interface IWendaDetail {
         /**
          * 设置适配器
          */
-        void doSetAdapter(List<NewsCommentMobileBean.DataBean.CommentBean> list);
+        void doSetAdapter(List<NewsCommentBean.DataBean.CommentBean> list);
 
         /**
          * 加载完毕
          */
         void doShowNoMore();
     }
-
 }

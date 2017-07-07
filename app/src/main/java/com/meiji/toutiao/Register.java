@@ -10,7 +10,7 @@ import com.meiji.toutiao.bean.media.MediaProfileBean;
 import com.meiji.toutiao.bean.media.MediaWendaBean;
 import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
-import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
+import com.meiji.toutiao.bean.news.NewsCommentBean;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
@@ -18,22 +18,22 @@ import com.meiji.toutiao.binder.FooterViewBinder;
 import com.meiji.toutiao.binder.joke.JokeCommentHeaderViewBinder;
 import com.meiji.toutiao.binder.joke.JokeCommentViewBinder;
 import com.meiji.toutiao.binder.joke.JokeContentViewBinder;
-import com.meiji.toutiao.binder.media.MediaArticleHasVideoViewBinder;
 import com.meiji.toutiao.binder.media.MediaArticleHeaderViewBinder;
-import com.meiji.toutiao.binder.media.MediaArticleNoPicViewBinder;
-import com.meiji.toutiao.binder.media.MediaArticleViewBinder;
+import com.meiji.toutiao.binder.media.MediaArticleImgViewBinder;
+import com.meiji.toutiao.binder.media.MediaArticleTextViewBinder;
+import com.meiji.toutiao.binder.media.MediaArticleVideoViewBinder;
 import com.meiji.toutiao.binder.media.MediaChannelViewBinder;
 import com.meiji.toutiao.binder.media.MediaWendaViewBinder;
-import com.meiji.toutiao.binder.news.NewsArticleHasVideoViewBinder;
-import com.meiji.toutiao.binder.news.NewsArticleNoPicViewBinder;
-import com.meiji.toutiao.binder.news.NewsArticleViewBinder;
+import com.meiji.toutiao.binder.news.NewsArticleImgViewBinder;
+import com.meiji.toutiao.binder.news.NewsArticleTextViewBinder;
+import com.meiji.toutiao.binder.news.NewsArticleVideoViewBinder;
 import com.meiji.toutiao.binder.news.NewsCommentViewBinder;
 import com.meiji.toutiao.binder.photo.PhotoArticleViewBinder;
-import com.meiji.toutiao.binder.search.SearchArticleHasVideoViewBinder;
+import com.meiji.toutiao.binder.search.SearchArticleVideoViewBinder;
 import com.meiji.toutiao.binder.video.VideoContentHeaderViewBinder;
-import com.meiji.toutiao.binder.wenda.WendaArticleNoPicViewBinder;
-import com.meiji.toutiao.binder.wenda.WendaArticleOnePicViewBinder;
-import com.meiji.toutiao.binder.wenda.WendaArticleThreePicViewBinder;
+import com.meiji.toutiao.binder.wenda.WendaArticleOneImgViewBinder;
+import com.meiji.toutiao.binder.wenda.WendaArticleTextViewBinder;
+import com.meiji.toutiao.binder.wenda.WendaArticleThreeImgViewBinder;
 import com.meiji.toutiao.binder.wenda.WendaContentHeaderViewBinder;
 import com.meiji.toutiao.binder.wenda.WendaContentViewBinder;
 import com.meiji.toutiao.interfaces.IOnItemLongClickListener;
@@ -51,38 +51,38 @@ public class Register {
     public static void registerNewsArticleItem(MultiTypeAdapter adapter) {
         // 一个类型对应多个 ItemViewBinder
         adapter.register(MultiNewsArticleDataBean.class)
-                .to(new NewsArticleViewBinder(),
-                        new NewsArticleHasVideoViewBinder(),
-                        new NewsArticleNoPicViewBinder())
+                .to(new NewsArticleImgViewBinder(),
+                        new NewsArticleVideoViewBinder(),
+                        new NewsArticleTextViewBinder())
                 .withClassLinker(new ClassLinker<MultiNewsArticleDataBean>() {
                     @NonNull
                     @Override
                     public Class<? extends ItemViewBinder<MultiNewsArticleDataBean, ?>> index(@NonNull MultiNewsArticleDataBean item) {
                         if (item.isHas_video()) {
-                            return NewsArticleHasVideoViewBinder.class;
+                            return NewsArticleVideoViewBinder.class;
                         }
                         if (null != item.getImage_list() && item.getImage_list().size() > 0) {
-                            return NewsArticleViewBinder.class;
+                            return NewsArticleImgViewBinder.class;
                         }
-                        return NewsArticleNoPicViewBinder.class;
+                        return NewsArticleTextViewBinder.class;
                     }
                 });
         adapter.register(FooterBean.class, new FooterViewBinder());
     }
 
     public static void registerNewsCommentItem(MultiTypeAdapter adapter) {
-        adapter.register(NewsCommentMobileBean.DataBean.CommentBean.class, new NewsCommentViewBinder());
+        adapter.register(NewsCommentBean.DataBean.CommentBean.class, new NewsCommentViewBinder());
         adapter.register(FooterBean.class, new FooterViewBinder());
     }
 
     public static void registerVideoContentItem(MultiTypeAdapter adapter) {
         adapter.register(MultiNewsArticleDataBean.class, new VideoContentHeaderViewBinder());
-        adapter.register(NewsCommentMobileBean.DataBean.CommentBean.class, new NewsCommentViewBinder());
+        adapter.register(NewsCommentBean.DataBean.CommentBean.class, new NewsCommentViewBinder());
         adapter.register(FooterBean.class, new FooterViewBinder());
     }
 
     public static void registerVideoArticleItem(MultiTypeAdapter adapter) {
-        adapter.register(MultiNewsArticleDataBean.class, new NewsArticleHasVideoViewBinder());
+        adapter.register(MultiNewsArticleDataBean.class, new NewsArticleVideoViewBinder());
         adapter.register(FooterBean.class, new FooterViewBinder());
     }
 
@@ -105,9 +105,9 @@ public class Register {
     public static void registerWendaArticleItem(MultiTypeAdapter adapter) {
         // 一个类型对应多个 ItemViewBinder
         adapter.register(WendaArticleDataBean.class)
-                .to(new WendaArticleNoPicViewBinder(),
-                        new WendaArticleOnePicViewBinder(),
-                        new WendaArticleThreePicViewBinder())
+                .to(new WendaArticleTextViewBinder(),
+                        new WendaArticleOneImgViewBinder(),
+                        new WendaArticleThreeImgViewBinder())
                 .withClassLinker(new ClassLinker<WendaArticleDataBean>() {
                     @NonNull
                     @Override
@@ -115,14 +115,14 @@ public class Register {
                         if (null != item.getExtraBean().getWenda_image() &&
                                 null != item.getExtraBean().getWenda_image().getThree_image_list() &&
                                 item.getExtraBean().getWenda_image().getThree_image_list().size() > 0) {
-                            return WendaArticleThreePicViewBinder.class;
+                            return WendaArticleThreeImgViewBinder.class;
                         }
                         if (null != item.getExtraBean().getWenda_image() &&
                                 null != item.getExtraBean().getWenda_image().getLarge_image_list() &&
                                 item.getExtraBean().getWenda_image().getLarge_image_list().size() > 0) {
-                            return WendaArticleOnePicViewBinder.class;
+                            return WendaArticleOneImgViewBinder.class;
                         }
-                        return WendaArticleNoPicViewBinder.class;
+                        return WendaArticleTextViewBinder.class;
                     }
                 });
         adapter.register(FooterBean.class, new FooterViewBinder());
@@ -140,20 +140,20 @@ public class Register {
 
     public static void registerSearchItem(MultiTypeAdapter adapter) {
         adapter.register(MultiNewsArticleDataBean.class)
-                .to(new NewsArticleViewBinder(),
-                        new SearchArticleHasVideoViewBinder(),
-                        new NewsArticleNoPicViewBinder())
+                .to(new NewsArticleImgViewBinder(),
+                        new SearchArticleVideoViewBinder(),
+                        new NewsArticleTextViewBinder())
                 .withClassLinker(new ClassLinker<MultiNewsArticleDataBean>() {
                     @NonNull
                     @Override
                     public Class<? extends ItemViewBinder<MultiNewsArticleDataBean, ?>> index(@NonNull MultiNewsArticleDataBean item) {
                         if (item.isHas_video()) {
-                            return SearchArticleHasVideoViewBinder.class;
+                            return SearchArticleVideoViewBinder.class;
                         }
                         if (null != item.getImage_list() && item.getImage_list().size() > 0) {
-                            return NewsArticleViewBinder.class;
+                            return NewsArticleImgViewBinder.class;
                         }
-                        return NewsArticleNoPicViewBinder.class;
+                        return NewsArticleTextViewBinder.class;
                     }
                 });
         adapter.register(FooterBean.class, new FooterViewBinder());
@@ -161,20 +161,20 @@ public class Register {
 
     public static void registerMediaArticleItem(MultiTypeAdapter adapter) {
         adapter.register(MultiMediaArticleBean.DataBean.class)
-                .to(new MediaArticleViewBinder(),
-                        new MediaArticleHasVideoViewBinder(),
-                        new MediaArticleNoPicViewBinder())
+                .to(new MediaArticleImgViewBinder(),
+                        new MediaArticleVideoViewBinder(),
+                        new MediaArticleTextViewBinder())
                 .withClassLinker(new ClassLinker<MultiMediaArticleBean.DataBean>() {
                     @NonNull
                     @Override
                     public Class<? extends ItemViewBinder<MultiMediaArticleBean.DataBean, ?>> index(@NonNull MultiMediaArticleBean.DataBean item) {
                         if (item.isHas_video()) {
-                            return MediaArticleHasVideoViewBinder.class;
+                            return MediaArticleVideoViewBinder.class;
                         }
                         if (null != item.getImage_list() && item.getImage_list().size() > 0) {
-                            return MediaArticleViewBinder.class;
+                            return MediaArticleImgViewBinder.class;
                         }
-                        return MediaArticleNoPicViewBinder.class;
+                        return MediaArticleTextViewBinder.class;
                     }
                 });
         adapter.register(MediaProfileBean.DataBean.class, new MediaArticleHeaderViewBinder());

@@ -201,7 +201,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     @Override
                     public void accept(@NonNull final List<String> list) throws Exception {
                         for (int i = 0; i < list.size(); i++) {
-                            final TextView tv = (TextView) LayoutInflater.from(SearchActivity.this).inflate(R.layout.item_textview, flexboxLayout, false);
+                            final TextView tv = (TextView) LayoutInflater.from(SearchActivity.this).inflate(R.layout.item_search_sug_text, flexboxLayout, false);
                             final String keyWord = list.get(i);
                             int color = Constant.tagColors[i % Constant.tagColors.length];
                             tv.setText(keyWord);

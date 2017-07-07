@@ -31,7 +31,7 @@ public class JokeCommentHeaderViewBinder extends ItemViewBinder<JokeContentBean.
     @NonNull
     @Override
     protected JokeCommentHeaderViewBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View view = inflater.inflate(R.layout.item_news_joke_content, parent, false);
+        View view = inflater.inflate(R.layout.item_joke_content, parent, false);
         return new ViewHolder(view);
     }
 

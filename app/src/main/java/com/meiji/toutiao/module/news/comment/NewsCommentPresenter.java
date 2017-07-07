@@ -3,7 +3,7 @@ package com.meiji.toutiao.module.news.comment;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileNewsApi;
-import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
+import com.meiji.toutiao.bean.news.NewsCommentBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
     private String groupId;
     private String itemId;
     private int offset = 0;
-    private List<NewsCommentMobileBean.DataBean.CommentBean> commentsBeanList = new ArrayList<>();
+    private List<NewsCommentBean.DataBean.CommentBean> commentsBeanList = new ArrayList<>();
 
     public NewsCommentPresenter(INewsComment.View view) {
         this.view = view;
@@ -48,20 +48,20 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
                 .getNewsComment(groupId, offset)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .map(new Function<NewsCommentMobileBean, List<NewsCommentMobileBean.DataBean.CommentBean>>() {
+                .map(new Function<NewsCommentBean, List<NewsCommentBean.DataBean.CommentBean>>() {
                     @Override
-                    public List<NewsCommentMobileBean.DataBean.CommentBean> apply(@NonNull NewsCommentMobileBean newsCommentMobileBean) throws Exception {
-                        List<NewsCommentMobileBean.DataBean.CommentBean> data = new ArrayList<>();
-                        for (NewsCommentMobileBean.DataBean bean : newsCommentMobileBean.getData()) {
+                    public List<NewsCommentBean.DataBean.CommentBean> apply(@NonNull NewsCommentBean newsCommentBean) throws Exception {
+                        List<NewsCommentBean.DataBean.CommentBean> data = new ArrayList<>();
+                        for (NewsCommentBean.DataBean bean : newsCommentBean.getData()) {
                             data.add(bean.getComment());
                         }
                         return data;
                     }
                 })
-                .compose(view.<List<NewsCommentMobileBean.DataBean.CommentBean>>bindToLife())
-                .subscribe(new Consumer<List<NewsCommentMobileBean.DataBean.CommentBean>>() {
+                .compose(view.<List<NewsCommentBean.DataBean.CommentBean>>bindToLife())
+                .subscribe(new Consumer<List<NewsCommentBean.DataBean.CommentBean>>() {
                     @Override
-                    public void accept(@NonNull List<NewsCommentMobileBean.DataBean.CommentBean> list) throws Exception {
+                    public void accept(@NonNull List<NewsCommentBean.DataBean.CommentBean> list) throws Exception {
                         if (list.size() > 0) {
                             doSetAdapter(list);
                         } else {
@@ -79,12 +79,12 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
 
     @Override
     public void doLoadMoreData() {
-        offset += 10;
+        offset += 20;
         doLoadData();
     }
 
     @Override
-    public void doSetAdapter(List<NewsCommentMobileBean.DataBean.CommentBean> list) {
+    public void doSetAdapter(List<NewsCommentBean.DataBean.CommentBean> list) {
         commentsBeanList.addAll(list);
         view.onSetAdapter(commentsBeanList);
         view.onHideLoading();

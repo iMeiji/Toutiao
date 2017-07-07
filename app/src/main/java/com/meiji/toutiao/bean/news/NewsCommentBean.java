@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Meiji on 2017/5/18.
  */
 
-public class NewsCommentMobileBean {
+public class NewsCommentBean {
 
     /**
      * detail_no_comment : 0

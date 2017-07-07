@@ -18,11 +18,6 @@ interface IJokeComment {
          * 请求数据
          */
         void onLoadData();
-
-//        /**
-//         * 加载完毕
-//         */
-//        void onShowNoMore();
     }
 
     interface Presenter extends IBasePresenter {

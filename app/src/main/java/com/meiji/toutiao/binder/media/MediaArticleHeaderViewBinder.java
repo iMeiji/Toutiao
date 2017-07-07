@@ -43,7 +43,7 @@ public class MediaArticleHeaderViewBinder extends ItemViewBinder<MediaProfileBea
     @NonNull
     @Override
     protected MediaArticleHeaderViewBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View view = inflater.inflate(R.layout.item_media_home_header, parent, false);
+        View view = inflater.inflate(R.layout.item_media_article_header, parent, false);
         return new ViewHolder(view);
     }
 

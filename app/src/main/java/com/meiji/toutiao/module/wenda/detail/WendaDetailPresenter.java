@@ -4,7 +4,7 @@ import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileNewsApi;
 import com.meiji.toutiao.api.IMobileWendaApi;
-import com.meiji.toutiao.bean.news.NewsCommentMobileBean;
+import com.meiji.toutiao.bean.news.NewsCommentBean;
 import com.meiji.toutiao.util.SettingUtil;
 
 import org.jsoup.Jsoup;
@@ -31,7 +31,7 @@ public class WendaDetailPresenter implements IWendaDetail.Presenter {
     private IWendaDetail.View view;
     private String groupId;
     private int offset = 0;
-    private List<NewsCommentMobileBean.DataBean.CommentBean> commentsBeanList = new ArrayList<>();
+    private List<NewsCommentBean.DataBean.CommentBean> commentsBeanList = new ArrayList<>();
 
     WendaDetailPresenter(IWendaDetail.View view) {
         this.view = view;
@@ -88,20 +88,20 @@ public class WendaDetailPresenter implements IWendaDetail.Presenter {
                 .getNewsComment(groupId, offset)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(new Function<NewsCommentMobileBean, List<NewsCommentMobileBean.DataBean.CommentBean>>() {
+                .map(new Function<NewsCommentBean, List<NewsCommentBean.DataBean.CommentBean>>() {
                     @Override
-                    public List<NewsCommentMobileBean.DataBean.CommentBean> apply(@NonNull NewsCommentMobileBean newsCommentMobileBean) throws Exception {
-                        List<NewsCommentMobileBean.DataBean.CommentBean> data = new ArrayList<>();
-                        for (NewsCommentMobileBean.DataBean bean : newsCommentMobileBean.getData()) {
+                    public List<NewsCommentBean.DataBean.CommentBean> apply(@NonNull NewsCommentBean newsCommentBean) throws Exception {
+                        List<NewsCommentBean.DataBean.CommentBean> data = new ArrayList<>();
+                        for (NewsCommentBean.DataBean bean : newsCommentBean.getData()) {
                             data.add(bean.getComment());
                         }
                         return data;
                     }
                 })
-                .compose(view.<List<NewsCommentMobileBean.DataBean.CommentBean>>bindToLife())
-                .subscribe(new Consumer<List<NewsCommentMobileBean.DataBean.CommentBean>>() {
+                .compose(view.<List<NewsCommentBean.DataBean.CommentBean>>bindToLife())
+                .subscribe(new Consumer<List<NewsCommentBean.DataBean.CommentBean>>() {
                     @Override
-                    public void accept(@NonNull List<NewsCommentMobileBean.DataBean.CommentBean> list) throws Exception {
+                    public void accept(@NonNull List<NewsCommentBean.DataBean.CommentBean> list) throws Exception {
                         if (list.size() > 0) {
                             doSetAdapter(list);
                         } else {
@@ -124,7 +124,7 @@ public class WendaDetailPresenter implements IWendaDetail.Presenter {
     }
 
     @Override
-    public void doSetAdapter(List<NewsCommentMobileBean.DataBean.CommentBean> list) {
+    public void doSetAdapter(List<NewsCommentBean.DataBean.CommentBean> list) {
         commentsBeanList.addAll(list);
         view.onSetAdapter(commentsBeanList);
         view.onHideLoading();

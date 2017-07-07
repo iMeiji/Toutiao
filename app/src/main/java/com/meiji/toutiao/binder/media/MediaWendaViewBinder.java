@@ -29,7 +29,7 @@ public class MediaWendaViewBinder extends ItemViewBinder<MediaWendaBean.AnswerQu
     @NonNull
     @Override
     protected MediaWendaViewBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View view = inflater.inflate(R.layout.item_media_article_new, parent, false);
+        View view = inflater.inflate(R.layout.item_media_article_img, parent, false);
         return new ViewHolder(view);
     }
 
@@ -70,8 +70,6 @@ public class MediaWendaViewBinder extends ItemViewBinder<MediaWendaBean.AnswerQu
                     ansBean.setShare_data(shareBean);
                     ansBean.setUser(userBean);
                     WendaDetailActivity.launch(ansBean);
-
-//                    NewsContentActivity.launch(item);
                 }
             });
         } catch (Exception e) {

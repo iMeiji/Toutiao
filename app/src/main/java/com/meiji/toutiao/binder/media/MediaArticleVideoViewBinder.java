@@ -32,14 +32,14 @@ import me.drakeet.multitype.ItemViewBinder;
  * Created by Meiji on 2017/6/8.
  */
 
-public class MediaArticleHasVideoViewBinder extends ItemViewBinder<MultiMediaArticleBean.DataBean, MediaArticleHasVideoViewBinder.ViewHolder> {
+public class MediaArticleVideoViewBinder extends ItemViewBinder<MultiMediaArticleBean.DataBean, MediaArticleVideoViewBinder.ViewHolder> {
 
     private static final String TAG = "NewsArticleHasVideoView";
 
     @NonNull
     @Override
-    protected MediaArticleHasVideoViewBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View view = inflater.inflate(R.layout.item_media_article_new_has_video, parent, false);
+    protected MediaArticleVideoViewBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        View view = inflater.inflate(R.layout.item_media_article_video, parent, false);
         return new ViewHolder(view);
     }
 
