@@ -50,5 +50,6 @@ interface IPhotoContent {
          */
         void doSaveImage();
 
+        void doGoMediaHome(String media_url);
     }
 }

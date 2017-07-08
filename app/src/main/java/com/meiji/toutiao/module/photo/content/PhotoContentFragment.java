@@ -32,14 +32,11 @@ import android.widget.TextView;
 
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.photo.PhotoContentAdapter;
-import com.meiji.toutiao.api.INewsApi;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
 import com.meiji.toutiao.module.base.BaseFragment;
-import com.meiji.toutiao.module.media.home.MediaHomeActivity;
 import com.meiji.toutiao.module.photo.comment.PhotoCommentFragment;
 import com.meiji.toutiao.util.SettingUtil;
-import com.meiji.toutiao.util.StringUtil;
 import com.meiji.toutiao.widget.ViewPagerFixed;
 
 import permissions.dispatcher.NeedsPermission;
@@ -88,13 +85,12 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
     protected void initData() {
         Bundle bundle = getArguments();
         PhotoArticleBean.DataBean dataBean = bundle.getParcelable(TAG);
-        shareUrl = INewsApi.HOST + dataBean.getSource_url();
+        shareUrl = dataBean.getSource_url();
         shareTitle = dataBean.getTitle();
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(shareTitle);
         groupId = dataBean.getGroup_id() + "";
         itemId = dataBean.getGroup_id() + "";
         mediaUrl = dataBean.getMedia_url();
-        mediaId = StringUtil.getStringNum(mediaUrl);
         presenter.doLoadData(shareUrl);
     }
 
@@ -208,12 +204,8 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
                         .commit();
                 break;
 
-//            case R.id.action_follow_media:
-//                MediaAddActivity.launch(mediaUrl, "photo");
-//                break;
-
             case R.id.action_open_media_home:
-                MediaHomeActivity.launch(mediaId);
+                presenter.doGoMediaHome(mediaUrl);
                 break;
 
             case R.id.action_open_in_browser:

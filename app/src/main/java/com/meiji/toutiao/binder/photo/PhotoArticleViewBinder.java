@@ -64,11 +64,12 @@ public class PhotoArticleViewBinder extends ItemViewBinder<PhotoArticleBean.Data
             }
             String tv_source = item.getSource();
             String tv_datetime = item.getBehot_time() + "";
+            String comments_count = item.getComments_count() + "评论";
             if (!TextUtils.isEmpty(tv_datetime)) {
                 tv_datetime = TimeUtil.getTimeStampAgo(tv_datetime);
             }
             holder.tv_title.setText(tv_title);
-            holder.tv_extra.setText(tv_source + " - " + tv_datetime);
+            holder.tv_extra.setText(tv_source + " - " + comments_count + " - " + tv_datetime);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

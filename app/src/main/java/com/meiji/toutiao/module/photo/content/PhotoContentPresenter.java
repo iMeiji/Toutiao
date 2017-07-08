@@ -17,6 +17,7 @@ import com.meiji.toutiao.api.INewsApi;
 import com.meiji.toutiao.api.IPhotoApi;
 import com.meiji.toutiao.bean.news.NewsContentBean;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
+import com.meiji.toutiao.module.media.home.MediaHomeActivity;
 import com.meiji.toutiao.util.SettingUtil;
 
 import org.jsoup.Jsoup;
@@ -30,6 +31,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -349,5 +351,47 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public void doGoMediaHome(final String media_url) {
+        Observable
+                .create(new ObservableOnSubscribe<String>() {
+                    @Override
+                    public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
+                        try {
+                            Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(INewsApi.class)
+                                    .getNewsContentRedirectUrl(shareUrl).execute();
+                            // 获取重定向后的 URL 用于拼凑API
+                            if (response.isSuccessful()) {
+                                HttpUrl httpUrl = response.raw().request().url();
+                                String api = httpUrl + "info/";
+                                e.onNext(api);
+                            } else {
+                                e.onComplete();
+                            }
+                        } catch (Exception e1) {
+                            e.onComplete();
+                            ErrorAction.print(e1);
+                        }
+                    }
+                })
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .switchMap(new Function<String, ObservableSource<NewsContentBean>>() {
+                    @Override
+                    public ObservableSource<NewsContentBean> apply(@NonNull String s) throws Exception {
+                        return RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsContent(s);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(view.<NewsContentBean>bindToLife())
+                .subscribe(new Consumer<NewsContentBean>() {
+                    @Override
+                    public void accept(@NonNull NewsContentBean bean) throws Exception {
+                        String id = bean.getData().getMedia_user().getId() + "";
+                        MediaHomeActivity.launch(id);
+                    }
+                }, ErrorAction.error());
     }
 }
