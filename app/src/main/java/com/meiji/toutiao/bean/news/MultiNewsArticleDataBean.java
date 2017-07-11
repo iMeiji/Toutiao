@@ -857,6 +857,79 @@ public class MultiNewsArticleDataBean implements Parcelable {
         this.like_count = like_count;
     }
 
+    @Override
+    public String toString() {
+        return "MultiNewsArticleDataBean{" +
+                "log_pb=" + log_pb +
+                ", read_count=" + read_count +
+                ", media_name='" + media_name + '\'' +
+                ", ban_comment=" + ban_comment +
+                ", abstractX='" + abstractX + '\'' +
+                ", ban_bury=" + ban_bury +
+                ", has_video=" + has_video +
+                ", article_type=" + article_type +
+                ", tag='" + tag + '\'' +
+                ", forward_info=" + forward_info +
+                ", has_m3u8_video=" + has_m3u8_video +
+                ", keywords='" + keywords + '\'' +
+                ", rid='" + rid + '\'' +
+                ", label='" + label + '\'' +
+                ", show_portrait_article=" + show_portrait_article +
+                ", user_verified=" + user_verified +
+                ", aggr_type=" + aggr_type +
+                ", cell_type=" + cell_type +
+                ", article_sub_type=" + article_sub_type +
+                ", bury_count=" + bury_count +
+                ", title='" + title + '\'' +
+                ", ignore_web_transform=" + ignore_web_transform +
+                ", source_icon_style=" + source_icon_style +
+                ", tip=" + tip +
+                ", hot=" + hot +
+                ", share_url='" + share_url + '\'' +
+                ", has_mp4_video=" + has_mp4_video +
+                ", source='" + source + '\'' +
+                ", comment_count=" + comment_count +
+                ", article_url='" + article_url + '\'' +
+                ", share_count=" + share_count +
+                ", stick_label='" + stick_label + '\'' +
+                ", publish_time=" + publish_time +
+                ", has_image=" + has_image +
+                ", cell_layout_style=" + cell_layout_style +
+                ", tag_id=" + tag_id +
+                ", video_style=" + video_style +
+                ", verified_content='" + verified_content + '\'' +
+                ", display_url='" + display_url + '\'' +
+                ", item_id=" + item_id +
+                ", is_subject=" + is_subject +
+                ", stick_style=" + stick_style +
+                ", show_portrait=" + show_portrait +
+                ", repin_count=" + repin_count +
+                ", cell_flag=" + cell_flag +
+                ", user_info=" + user_info +
+                ", source_open_url='" + source_open_url + '\'' +
+                ", level=" + level +
+                ", digg_count=" + digg_count +
+                ", behot_time='" + behot_time + '\'' +
+                ", article_alt_url='" + article_alt_url + '\'' +
+                ", cursor=" + cursor +
+                ", url='" + url + '\'' +
+                ", preload_web=" + preload_web +
+                ", user_repin=" + user_repin +
+                ", label_style=" + label_style +
+                ", item_version=" + item_version +
+                ", media_info=" + media_info +
+                ", group_id=" + group_id +
+                ", middle_image=" + middle_image +
+                ", gallary_image_count=" + gallary_image_count +
+                ", video_id='" + video_id + '\'' +
+                ", video_detail_info=" + video_detail_info +
+                ", video_duration=" + video_duration +
+                ", group_flags=" + group_flags +
+                ", like_count=" + like_count +
+                ", image_list=" + image_list +
+                '}';
+    }
+
     public static class LogPbBean {
         /**
          * impr_id : 20170519112306010003048108480AA6

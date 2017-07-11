@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:text="新京报"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/cardview_dark_background"/>
+            android:textColor="@color/textColorPrimary"/>
 
         <TextView
             android:id="@+id/tv_desc"

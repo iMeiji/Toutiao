@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -66,6 +67,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
         Bundle bundle = getArguments();
         try {
             MultiNewsArticleDataBean bean = bundle.getParcelable(TAG);
+            Log.d(TAG, "initData: " + bean.toString());
             presenter.doLoadData(bean);
             shareUrl = bean.getDisplay_url();
             shareTitle = bean.getTitle();
@@ -79,10 +81,10 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
 
     @Override
     protected void initView(View view) {
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, "");
-        webView = (WebView) view.findViewById(R.id.webview_content);
-        scrollView = (NestedScrollView) view.findViewById(R.id.scrollView);
+        webView = view.findViewById(R.id.webview_content);
+        scrollView = view.findViewById(R.id.scrollView);
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -95,7 +97,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
                 scrollView.smoothScrollTo(0, 0);
             }
         });
-        progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
+        progressBar = view.findViewById(R.id.pb_progress);
         int color = SettingUtil.getInstance().getColor();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
@@ -162,7 +164,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
 
     @Override
     public void onShowNetError() {
-        Snackbar.make(scrollView, R.string.network_error, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(scrollView, R.string.network_error, Snackbar.LENGTH_INDEFINITE).show();
     }
 
     @Override

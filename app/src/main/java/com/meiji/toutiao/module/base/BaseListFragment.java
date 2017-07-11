@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.bean.LoadingEndBean;
 import com.meiji.toutiao.util.SettingUtil;
 
 import me.drakeet.multitype.Items;
@@ -30,10 +31,10 @@ public abstract class BaseListFragment<T extends IBasePresenter> extends LazyLoa
 
     @Override
     protected void initView(View view) {
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
+        swipeRefreshLayout = view.findViewById(R.id.refresh_layout);
         swipeRefreshLayout.setColorSchemeColors(SettingUtil.getInstance().getColor());
         swipeRefreshLayout.setOnRefreshListener(this);
     }
@@ -80,14 +81,19 @@ public abstract class BaseListFragment<T extends IBasePresenter> extends LazyLoa
 
     @Override
     public void onShowNoMore() {
-        Snackbar.make(swipeRefreshLayout, R.string.no_more_content, Snackbar.LENGTH_SHORT).show();
+//        Snackbar.make(swipeRefreshLayout, R.string.no_more_content, Snackbar.LENGTH_SHORT).show();
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (oldItems.size() > 0) {
                     Items newItems = new Items(oldItems);
                     newItems.remove(newItems.size() - 1);
+                    newItems.add(new LoadingEndBean());
                     adapter.setItems(newItems);
+                    adapter.notifyDataSetChanged();
+                } else if (oldItems.size() == 0) {
+                    oldItems.add(new LoadingEndBean());
+                    adapter.setItems(oldItems);
                     adapter.notifyDataSetChanged();
                 }
                 canLoadMore = false;

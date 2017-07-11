@@ -3,12 +3,14 @@ package com.meiji.toutiao.module.video.content;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,7 +21,8 @@ import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
-import com.meiji.toutiao.bean.FooterBean;
+import com.meiji.toutiao.bean.LoadingBean;
+import com.meiji.toutiao.bean.LoadingEndBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.news.comment.INewsComment;
@@ -65,7 +68,9 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
         setContentView(R.layout.fragment_video_content);
         presenter = new VideoContentPresenter(this);
         initView();
@@ -96,7 +101,10 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void initView() {
+        initToolBar((Toolbar) findViewById(R.id.toolbar), true, "");
+
         iv_image_url = (ImageView) findViewById(R.id.iv_image_url);
+        iv_image_url.setOnClickListener(this);
         fabPlay = (FloatingActionButton) findViewById(R.id.fab_play);
         fabPlay.setOnClickListener(this);
         fabPlay.setBackgroundTintList(ColorStateList.valueOf(SettingUtil.getInstance().getColor()));
@@ -121,24 +129,21 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fab_play:
-                MyJCVideoPlayerStandard.startFullscreen(this, MyJCVideoPlayerStandard.class, videoUrls, videoTitle);
-                View decorView = getWindow().getDecorView();
-                int uiOptions = 0;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                    uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-                } else {
-                    uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN;
-                }
-                decorView.setSystemUiVisibility(uiOptions);
-                if (SettingUtil.getInstance().getVideoOrientation()) {
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                }
-                break;
+        int id = v.getId();
+        if (id == R.id.fab_play || id == R.id.iv_image_url) {
+            MyJCVideoPlayerStandard.startFullscreen(this, MyJCVideoPlayerStandard.class, videoUrls, videoTitle);
+            View decorView = getWindow().getDecorView();
+            int uiOptions = 0;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            } else {
+                uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+            }
+            decorView.setSystemUiVisibility(uiOptions);
+            if (SettingUtil.getInstance().getVideoOrientation()) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            }
         }
     }
 
@@ -153,7 +158,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
         Items newItems = new Items();
         newItems.add(dataBean);
         newItems.addAll(list);
-        newItems.add(new FooterBean());
+        newItems.add(new LoadingBean());
         DiffCallback.notifyDataSetChanged(newItems, newItems, DiffCallback.NEWS_COMMENT, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);
@@ -187,15 +192,18 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onShowNoMore() {
-        Snackbar.make(fabPlay, R.string.no_more_comment, Snackbar.LENGTH_LONG).show();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // 保留显示 Header
                 if (oldItems.size() > 1) {
                     Items newItems = new Items(oldItems);
                     newItems.remove(newItems.size() - 1);
+                    newItems.add(new LoadingEndBean());
                     adapter.setItems(newItems);
+                    adapter.notifyDataSetChanged();
+                } else if (oldItems.size() == 0) {
+                    oldItems.add(new LoadingEndBean());
+                    adapter.setItems(oldItems);
                     adapter.notifyDataSetChanged();
                 }
                 canLoadMore = false;
@@ -219,7 +227,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
         if (JCVideoPlayer.backPress()) {
             View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(0);
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             return;
         }
         super.onBackPressed();

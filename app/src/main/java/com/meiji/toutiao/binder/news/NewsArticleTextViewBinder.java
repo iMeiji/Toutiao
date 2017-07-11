@@ -25,6 +25,8 @@ import me.drakeet.multitype.ItemViewBinder;
 
 public class NewsArticleTextViewBinder extends ItemViewBinder<MultiNewsArticleDataBean, NewsArticleTextViewBinder.ViewHolder> {
 
+    private static final String TAG = "NewsArticleTextViewBind";
+
     @NonNull
     @Override
     protected NewsArticleTextViewBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
@@ -75,10 +77,10 @@ public class NewsArticleTextViewBinder extends ItemViewBinder<MultiNewsArticleDa
 
         ViewHolder(View itemView) {
             super(itemView);
-            this.iv_media = (CircleImageView) itemView.findViewById(R.id.iv_media);
-            this.tv_extra = (TextView) itemView.findViewById(R.id.tv_extra);
-            this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
-            this.tv_abstract = (TextView) itemView.findViewById(R.id.tv_abstract);
+            this.iv_media = itemView.findViewById(R.id.iv_media);
+            this.tv_extra = itemView.findViewById(R.id.tv_extra);
+            this.tv_title = itemView.findViewById(R.id.tv_title);
+            this.tv_abstract = itemView.findViewById(R.id.tv_abstract);
         }
     }
 }

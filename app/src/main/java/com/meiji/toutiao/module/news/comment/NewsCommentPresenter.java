@@ -62,7 +62,7 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
                 .subscribe(new Consumer<List<NewsCommentBean.DataBean.CommentBean>>() {
                     @Override
                     public void accept(@NonNull List<NewsCommentBean.DataBean.CommentBean> list) throws Exception {
-                        if (list.size() > 0) {
+                        if (null != list && list.size() > 0) {
                             doSetAdapter(list);
                         } else {
                             doShowNoMore();
@@ -108,8 +108,6 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
     @Override
     public void doShowNoMore() {
         view.onHideLoading();
-        if (commentsBeanList.size() > 0) {
-            view.onShowNoMore();
-        }
+        view.onShowNoMore();
     }
 }

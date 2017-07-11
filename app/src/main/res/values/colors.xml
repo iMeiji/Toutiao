@@ -6,6 +6,12 @@
     <color name="textColorPrimary">#616161</color>
     <color name="viewBackground">@android:color/white</color>
 
+    <color name="colorPrimary_night">#35464e</color>
+    <color name="colorPrimaryDark_night">#212a2f</color>
+    <color name="colorAccent_night">#212a2f</color>
+    <color name="textColorPrimary_night">#616161</color>
+    <color name="viewBackground_night">#212a2f</color>
+
     <color name="White">#FFFFFF</color>
     <color name="Black">#000000</color>
 

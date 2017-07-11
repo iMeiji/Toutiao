@@ -11,7 +11,7 @@ import android.view.View;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
-import com.meiji.toutiao.bean.FooterBean;
+import com.meiji.toutiao.bean.LoadingBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
 import com.meiji.toutiao.util.OnLoadMoreListener;
@@ -36,7 +36,7 @@ public class WendaContentFragment extends BaseListFragment<IWendaContent.Present
 
     public static WendaContentFragment newInstance(String qid) {
         Bundle args = new Bundle();
-        args.putString("qid", qid);
+        args.putString(TAG, qid);
         WendaContentFragment fragment = new WendaContentFragment();
         fragment.setArguments(args);
         return fragment;
@@ -54,7 +54,7 @@ public class WendaContentFragment extends BaseListFragment<IWendaContent.Present
         Items newItems = new Items();
         newItems.add(WendaContentHeaderBean);
         newItems.addAll(list);
-        newItems.add(new FooterBean());
+        newItems.add(new LoadingBean());
         DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.WENDA_CONTENT, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);
@@ -69,7 +69,7 @@ public class WendaContentFragment extends BaseListFragment<IWendaContent.Present
     @Override
     protected void initView(View view) {
         super.initView(view);
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, getString(R.string.title_wenda));
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +96,7 @@ public class WendaContentFragment extends BaseListFragment<IWendaContent.Present
 
     @Override
     protected void initData() {
-        this.qid = getArguments().getString("qid");
+        this.qid = getArguments().getString(TAG);
         onLoadData();
     }
 
@@ -118,23 +118,6 @@ public class WendaContentFragment extends BaseListFragment<IWendaContent.Present
         this.shareUrl = questionBean.getShare_data().getShare_url();
         this.WendaContentHeaderBean = questionBean;
     }
-
-//    @Override
-//    public void onShowNoMore() {
-//        Snackbar.make(swipeRefreshLayout, R.string.no_more_comment, Snackbar.LENGTH_SHORT).show();
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (oldItems.size() > 0) {
-//                    Items newItems = new Items(oldItems);
-//                    newItems.remove(newItems.size() - 1);
-//                    adapter.setItems(newItems);
-//                    adapter.notifyDataSetChanged();
-//                }
-//                canLoadMore = false;
-//            }
-//        });
-//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

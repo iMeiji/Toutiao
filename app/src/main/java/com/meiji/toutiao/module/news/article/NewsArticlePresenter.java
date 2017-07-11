@@ -64,7 +64,7 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
         }
 
         // 释放内存
-        if (dataList.size() > 100) {
+        if (dataList.size() > 150) {
             dataList.clear();
         }
 
@@ -74,7 +74,7 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
 //                .getNewsArticle2(this.category, this.time);
 
 //        Observable.merge(ob1, ob2)
-        getRanmod()
+        getRandom()
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .switchMap(new Function<MultiNewsArticleBean, Observable<MultiNewsArticleDataBean>>() {
@@ -135,7 +135,11 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
                 .subscribe(new Consumer<List<MultiNewsArticleDataBean>>() {
                     @Override
                     public void accept(@NonNull List<MultiNewsArticleDataBean> list) throws Exception {
-                        doSetAdapter(list);
+                        if (null != list && list.size() > 0) {
+                            doSetAdapter(list);
+                        } else {
+                            doShowNoMore();
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -173,7 +177,13 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
         view.onShowNetError();
     }
 
-    private Observable<MultiNewsArticleBean> getRanmod() {
+    @Override
+    public void doShowNoMore() {
+        view.onHideLoading();
+        view.onShowNoMore();
+    }
+
+    private Observable<MultiNewsArticleBean> getRandom() {
 
         int i = random.nextInt(10);
         if (i % 2 == 0) {

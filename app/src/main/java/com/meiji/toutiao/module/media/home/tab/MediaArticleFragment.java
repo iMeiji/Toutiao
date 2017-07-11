@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
-import com.meiji.toutiao.bean.FooterBean;
+import com.meiji.toutiao.bean.LoadingBean;
 import com.meiji.toutiao.bean.media.MediaProfileBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
 import com.meiji.toutiao.util.OnLoadMoreListener;
@@ -74,7 +74,7 @@ public class MediaArticleFragment extends BaseListFragment<IMediaProfile.Present
         Items newItems = new Items();
         newItems.add(dataBean);
         newItems.addAll(list);
-        newItems.add(new FooterBean());
+        newItems.add(new LoadingBean());
         DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.MUlTI_MEDIA, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);

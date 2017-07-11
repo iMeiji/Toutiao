@@ -2,7 +2,8 @@ package com.meiji.toutiao;
 
 import android.support.annotation.NonNull;
 
-import com.meiji.toutiao.bean.FooterBean;
+import com.meiji.toutiao.bean.LoadingBean;
+import com.meiji.toutiao.bean.LoadingEndBean;
 import com.meiji.toutiao.bean.joke.JokeCommentBean;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.bean.media.MediaChannelBean;
@@ -14,7 +15,8 @@ import com.meiji.toutiao.bean.news.NewsCommentBean;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
-import com.meiji.toutiao.binder.FooterViewBinder;
+import com.meiji.toutiao.binder.LoadingEndViewBinder;
+import com.meiji.toutiao.binder.LoadingViewBinder;
 import com.meiji.toutiao.binder.joke.JokeCommentHeaderViewBinder;
 import com.meiji.toutiao.binder.joke.JokeCommentViewBinder;
 import com.meiji.toutiao.binder.joke.JokeContentViewBinder;
@@ -67,39 +69,46 @@ public class Register {
                         return NewsArticleTextViewBinder.class;
                     }
                 });
-        adapter.register(FooterBean.class, new FooterViewBinder());
+        adapter.register(LoadingBean.class, new LoadingViewBinder());
+        adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
     public static void registerNewsCommentItem(MultiTypeAdapter adapter) {
         adapter.register(NewsCommentBean.DataBean.CommentBean.class, new NewsCommentViewBinder());
-        adapter.register(FooterBean.class, new FooterViewBinder());
+        adapter.register(LoadingBean.class, new LoadingViewBinder());
+        adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
     public static void registerVideoContentItem(MultiTypeAdapter adapter) {
         adapter.register(MultiNewsArticleDataBean.class, new VideoContentHeaderViewBinder());
         adapter.register(NewsCommentBean.DataBean.CommentBean.class, new NewsCommentViewBinder());
-        adapter.register(FooterBean.class, new FooterViewBinder());
+        adapter.register(LoadingBean.class, new LoadingViewBinder());
+        adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
     public static void registerVideoArticleItem(MultiTypeAdapter adapter) {
         adapter.register(MultiNewsArticleDataBean.class, new NewsArticleVideoViewBinder());
-        adapter.register(FooterBean.class, new FooterViewBinder());
+        adapter.register(LoadingBean.class, new LoadingViewBinder());
+        adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
     public static void registerJokeContentItem(MultiTypeAdapter adapter) {
         adapter.register(JokeContentBean.DataBean.GroupBean.class, new JokeContentViewBinder());
-        adapter.register(FooterBean.class, new FooterViewBinder());
+        adapter.register(LoadingBean.class, new LoadingViewBinder());
+        adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
     public static void registerJokeCommentItem(MultiTypeAdapter adapter) {
         adapter.register(JokeContentBean.DataBean.GroupBean.class, new JokeCommentHeaderViewBinder());
         adapter.register(JokeCommentBean.DataBean.RecentCommentsBean.class, new JokeCommentViewBinder());
-        adapter.register(FooterBean.class, new FooterViewBinder());
+        adapter.register(LoadingBean.class, new LoadingViewBinder());
+        adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
     public static void registerPhotoArticleItem(MultiTypeAdapter adapter) {
         adapter.register(PhotoArticleBean.DataBean.class, new PhotoArticleViewBinder());
-        adapter.register(FooterBean.class, new FooterViewBinder());
+        adapter.register(LoadingBean.class, new LoadingViewBinder());
+        adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
     public static void registerWendaArticleItem(MultiTypeAdapter adapter) {
@@ -125,13 +134,15 @@ public class Register {
                         return WendaArticleTextViewBinder.class;
                     }
                 });
-        adapter.register(FooterBean.class, new FooterViewBinder());
+        adapter.register(LoadingBean.class, new LoadingViewBinder());
+        adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
     public static void registerWendaContentItem(MultiTypeAdapter adapter) {
         adapter.register(WendaContentBean.QuestionBean.class, new WendaContentHeaderViewBinder());
         adapter.register(WendaContentBean.AnsListBean.class, new WendaContentViewBinder());
-        adapter.register(FooterBean.class, new FooterViewBinder());
+        adapter.register(LoadingBean.class, new LoadingViewBinder());
+        adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
     public static void registerMediaChannelItem(MultiTypeAdapter adapter, IOnItemLongClickListener listener) {
@@ -156,7 +167,8 @@ public class Register {
                         return NewsArticleTextViewBinder.class;
                     }
                 });
-        adapter.register(FooterBean.class, new FooterViewBinder());
+        adapter.register(LoadingBean.class, new LoadingViewBinder());
+        adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
     public static void registerMediaArticleItem(MultiTypeAdapter adapter) {
@@ -178,11 +190,13 @@ public class Register {
                     }
                 });
         adapter.register(MediaProfileBean.DataBean.class, new MediaArticleHeaderViewBinder());
-        adapter.register(FooterBean.class, new FooterViewBinder());
+        adapter.register(LoadingBean.class, new LoadingViewBinder());
+        adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
     public static void registerMediaWendaItem(MultiTypeAdapter adapter) {
         adapter.register(MediaWendaBean.AnswerQuestionBean.class, new MediaWendaViewBinder());
-        adapter.register(FooterBean.class, new FooterViewBinder());
+        adapter.register(LoadingBean.class, new LoadingViewBinder());
+        adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 }

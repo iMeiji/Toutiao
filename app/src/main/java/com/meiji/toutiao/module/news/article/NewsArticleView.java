@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
-import com.meiji.toutiao.bean.FooterBean;
+import com.meiji.toutiao.bean.LoadingBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
 import com.meiji.toutiao.util.OnLoadMoreListener;
 
@@ -25,7 +25,7 @@ public class NewsArticleView extends BaseListFragment<INewsArticle.Presenter> im
 
     public static NewsArticleView newInstance(String categoryId) {
         Bundle bundle = new Bundle();
-        bundle.putString("categoryId", categoryId);
+        bundle.putString(TAG, categoryId);
         NewsArticleView view = new NewsArticleView();
         view.setArguments(bundle);
         return view;
@@ -33,7 +33,7 @@ public class NewsArticleView extends BaseListFragment<INewsArticle.Presenter> im
 
     @Override
     protected void initData() {
-        categoryId = getArguments().getString("categoryId");
+        categoryId = getArguments().getString(TAG);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class NewsArticleView extends BaseListFragment<INewsArticle.Presenter> im
     @Override
     public void onSetAdapter(final List<?> list) {
         Items newItems = new Items(list);
-        newItems.add(new FooterBean());
+        newItems.add(new LoadingBean());
         DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.MUlTI_NEWS, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);

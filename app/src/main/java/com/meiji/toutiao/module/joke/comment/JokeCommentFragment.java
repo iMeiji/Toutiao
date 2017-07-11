@@ -12,7 +12,7 @@ import android.view.View;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
-import com.meiji.toutiao.bean.FooterBean;
+import com.meiji.toutiao.bean.LoadingBean;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
 import com.meiji.toutiao.util.OnLoadMoreListener;
@@ -45,7 +45,7 @@ public class JokeCommentFragment extends BaseListFragment<IJokeComment.Presenter
     @Override
     protected void initView(View view) {
         super.initView(view);
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, "");
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +124,7 @@ public class JokeCommentFragment extends BaseListFragment<IJokeComment.Presenter
         Items newItems = new Items();
         newItems.add(jokeCommentHeaderBean);
         newItems.addAll(list);
-        newItems.add(new FooterBean());
+        newItems.add(new LoadingBean());
         DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.JOKE_COMMENT, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);
@@ -137,24 +137,6 @@ public class JokeCommentFragment extends BaseListFragment<IJokeComment.Presenter
             this.presenter = new JokeCommentPresenter(this);
         }
     }
-
-//    @Override
-//    public void onShowNoMore() {
-//        Snackbar.make(swipeRefreshLayout, R.string.no_more_comment, Snackbar.LENGTH_LONG).show();
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (oldItems.size() > 1) {
-//                    // 保留显示 Header
-//                    Items newItems = new Items(oldItems);
-//                    newItems.remove(newItems.size() - 1);
-//                    adapter.setItems(newItems);
-//                    adapter.notifyDataSetChanged();
-//                }
-//                canLoadMore = false;
-//            }
-//        });
-//    }
 
     @Override
     public void fetchData() {

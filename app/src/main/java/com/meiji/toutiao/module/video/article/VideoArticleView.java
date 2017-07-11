@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
-import com.meiji.toutiao.bean.FooterBean;
+import com.meiji.toutiao.bean.LoadingBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
 import com.meiji.toutiao.util.OnLoadMoreListener;
 
@@ -73,7 +73,7 @@ public class VideoArticleView extends BaseListFragment<IVideoArticle.Presenter> 
     @Override
     public void onSetAdapter(final List<?> list) {
         Items newItems = new Items(list);
-        newItems.add(new FooterBean());
+        newItems.add(new LoadingBean());
         DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.MUlTI_NEWS, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);

@@ -41,5 +41,10 @@ public interface INewsArticle {
          * 设置适配器
          */
         void doSetAdapter(List<MultiNewsArticleDataBean> dataBeen);
+
+        /**
+         * 加载完毕
+         */
+        void doShowNoMore();
     }
 }

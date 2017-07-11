@@ -157,6 +157,7 @@ class NewsContentPresenter implements INewsContent.Presenter {
 
     @Override
     public void doShowNetError() {
+        view.onHideLoading();
         view.onShowNetError();
     }
 }

@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.bean.FooterBean;
+import com.meiji.toutiao.bean.LoadingBean;
 import com.meiji.toutiao.util.SettingUtil;
 
 import me.drakeet.multitype.ItemViewBinder;
@@ -21,17 +21,17 @@ import me.drakeet.multitype.ItemViewBinder;
  * Created by Meiji on 2017/6/8.
  */
 
-public class FooterViewBinder extends ItemViewBinder<FooterBean, FooterViewBinder.ViewHolder> {
+public class LoadingViewBinder extends ItemViewBinder<LoadingBean, LoadingViewBinder.ViewHolder> {
 
     @NonNull
     @Override
-    protected FooterViewBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View view = inflater.inflate(R.layout.item_footer, parent, false);
+    protected LoadingViewBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        View view = inflater.inflate(R.layout.item_loading, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull FooterBean item) {
+    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull LoadingBean item) {
         int color = SettingUtil.getInstance().getColor();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Drawable wrapDrawable = DrawableCompat.wrap(holder.progressBar.getIndeterminateDrawable());
@@ -48,7 +48,7 @@ public class FooterViewBinder extends ItemViewBinder<FooterBean, FooterViewBinde
 
         ViewHolder(View itemView) {
             super(itemView);
-            this.progressBar = (ProgressBar) itemView.findViewById(R.id.progress_footer);
+            this.progressBar = itemView.findViewById(R.id.progress_footer);
         }
     }
 }

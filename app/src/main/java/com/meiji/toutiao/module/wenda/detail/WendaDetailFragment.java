@@ -29,7 +29,8 @@ import android.widget.TextView;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
-import com.meiji.toutiao.bean.FooterBean;
+import com.meiji.toutiao.bean.LoadingBean;
+import com.meiji.toutiao.bean.LoadingEndBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.module.wenda.content.WendaContentActivity;
@@ -112,7 +113,7 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
     @Override
     public void onSetAdapter(List<?> list) {
         Items newItems = new Items(list);
-        newItems.add(new FooterBean());
+        newItems.add(new LoadingBean());
         DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.NEWS_COMMENT, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);
@@ -127,15 +128,15 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
 
     @Override
     protected void initView(View view) {
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        webView = (WebView) view.findViewById(R.id.webview_content);
-        scrollView = (NestedScrollView) view.findViewById(R.id.scrollView);
-        progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
-        header_layout = (LinearLayout) view.findViewById(R.id.header_layout);
-        tv_title = (TextView) view.findViewById(R.id.tv_title);
-        iv_user_avatar = (CircleImageView) view.findViewById(R.id.iv_user_avatar);
-        tv_user_name = (TextView) view.findViewById(R.id.tv_user_name);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        webView = view.findViewById(R.id.webview_content);
+        scrollView = view.findViewById(R.id.scrollView);
+        progressBar = view.findViewById(R.id.pb_progress);
+        header_layout = view.findViewById(R.id.header_layout);
+        tv_title = view.findViewById(R.id.tv_title);
+        iv_user_avatar = view.findViewById(R.id.iv_user_avatar);
+        tv_user_name = view.findViewById(R.id.tv_user_name);
+        recyclerView = view.findViewById(R.id.recycler_view);
 
         initToolBar(toolbar, true, getString(R.string.title_wenda_detail));
         toolbar.setOnClickListener(new View.OnClickListener() {
@@ -264,14 +265,18 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
 
     @Override
     public void onShowNoMore() {
-        Snackbar.make(scrollView, R.string.no_more_comment, Snackbar.LENGTH_SHORT).show();
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (oldItems.size() > 0) {
                     Items newItems = new Items(oldItems);
                     newItems.remove(newItems.size() - 1);
+                    newItems.add(new LoadingEndBean());
                     adapter.setItems(newItems);
+                    adapter.notifyDataSetChanged();
+                } else if (oldItems.size() == 0) {
+                    oldItems.add(new LoadingEndBean());
+                    adapter.setItems(oldItems);
                     adapter.notifyDataSetChanged();
                 }
                 canLoadMore = false;
