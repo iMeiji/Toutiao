@@ -8,6 +8,8 @@ import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.bean.LoadingBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
+import com.meiji.toutiao.module.news.article.INewsArticle;
+import com.meiji.toutiao.module.news.article.NewsArticlePresenter;
 import com.meiji.toutiao.util.OnLoadMoreListener;
 
 import java.util.List;
@@ -19,9 +21,9 @@ import me.drakeet.multitype.MultiTypeAdapter;
  * Created by Meiji on 2017/3/29.
  */
 
-public class VideoArticleView extends BaseListFragment<IVideoArticle.Presenter> implements IVideoArticle.View, SwipeRefreshLayout.OnRefreshListener {
+public class VideoArticleView extends BaseListFragment<INewsArticle.Presenter> implements INewsArticle.View, SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String TAG = "NewsArticleView";
+    private static final String TAG = "VideoArticleView";
     private String categoryId;
 
     public static VideoArticleView newInstance(String categoryId) {
@@ -80,10 +82,15 @@ public class VideoArticleView extends BaseListFragment<IVideoArticle.Presenter> 
         canLoadMore = true;
     }
 
+    /**
+     * API 跟新闻的一样 所以采用新闻的 presenter
+     *
+     * @param presenter
+     */
     @Override
-    public void setPresenter(IVideoArticle.Presenter presenter) {
+    public void setPresenter(INewsArticle.Presenter presenter) {
         if (null == presenter) {
-            this.presenter = new VideoArticlePresenter(this);
+            this.presenter = new NewsArticlePresenter(this);
         }
     }
 }

@@ -113,7 +113,11 @@ class SearchResultPresenter implements ISearchResult.Presenter {
                 .subscribe(new Consumer<List<MultiNewsArticleDataBean>>() {
                     @Override
                     public void accept(@NonNull List<MultiNewsArticleDataBean> list) throws Exception {
-                        doSetAdapter(list);
+                        if (null != list && list.size() > 0) {
+                            doSetAdapter(list);
+                        } else {
+                            doShowNoMore();
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -150,5 +154,11 @@ class SearchResultPresenter implements ISearchResult.Presenter {
     public void doShowNetError() {
         view.onHideLoading();
         view.onShowNetError();
+    }
+
+    @Override
+    public void doShowNoMore() {
+        view.onHideLoading();
+        view.onShowNoMore();
     }
 }

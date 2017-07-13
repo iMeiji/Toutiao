@@ -35,7 +35,7 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
     private Gson gson = new Gson();
     private Random random = new Random();
 
-    NewsArticlePresenter(INewsArticle.View view) {
+    public NewsArticlePresenter(INewsArticle.View view) {
         this.view = view;
         this.time = TimeUtil.getCurrentTimeStamp();
     }
@@ -95,13 +95,10 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
                             return false;
                         }
                         try {
+                            // 过滤头条问答新闻
                             if (dataBean.getSource().contains("头条问答")
                                     || dataBean.getTag().contains("ad")
-                                    || dataBean.getSource().contains("话题")) {
-                                return false;
-                            }
-                            // 过滤头条问答新闻
-                            if (dataBean.getMedia_info() == null) {
+                                    || dataBean.getSource().contains("悟空问答")) {
                                 return false;
                             }
                         } catch (NullPointerException e) {

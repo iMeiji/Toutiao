@@ -23,7 +23,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by Meiji on 2017/3/29.
  */
-
+@Deprecated
 public class VideoArticlePresenter implements IVideoArticle.Presenter {
 
     private static final String TAG = "VideoArticlePresenter";
@@ -75,13 +75,10 @@ public class VideoArticlePresenter implements IVideoArticle.Presenter {
                             return false;
                         }
                         try {
+                            // 过滤头条问答新闻
                             if (dataBean.getSource().contains("头条问答")
                                     || dataBean.getTag().contains("ad")
                                     || dataBean.getSource().contains("话题")) {
-                                return false;
-                            }
-                            // 过滤头条问答新闻
-                            if (dataBean.getMedia_info() == null) {
                                 return false;
                             }
                         } catch (NullPointerException e) {
