@@ -201,11 +201,11 @@ public class SearchArticleVideoViewBinder extends ItemViewBinder<MultiNewsArticl
 
         ViewHolder(View itemView) {
             super(itemView);
-            this.iv_media = (CircleImageView) itemView.findViewById(R.id.iv_media);
-            this.tv_extra = (TextView) itemView.findViewById(R.id.tv_extra);
-            this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
-            this.iv_video_image = (ImageView) itemView.findViewById(R.id.iv_video_image);
-            this.tv_video_time = (TextView) itemView.findViewById(R.id.tv_video_time);
+            this.iv_media = itemView.findViewById(R.id.iv_media);
+            this.tv_extra = itemView.findViewById(R.id.tv_extra);
+            this.tv_title = itemView.findViewById(R.id.tv_title);
+            this.iv_video_image = itemView.findViewById(R.id.iv_video_image);
+            this.tv_video_time = itemView.findViewById(R.id.tv_video_time);
         }
     }
 }

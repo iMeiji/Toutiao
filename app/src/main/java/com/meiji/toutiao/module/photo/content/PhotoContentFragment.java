@@ -96,16 +96,16 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
 
     @Override
     protected void initView(View view) {
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, "");
-        tv_hint = (TextView) view.findViewById(R.id.tv_hint);
-        tv_save = (TextView) view.findViewById(R.id.tv_save);
+        tv_hint = view.findViewById(R.id.tv_hint);
+        tv_save = view.findViewById(R.id.tv_save);
         tv_save.setOnClickListener(this);
-        viewPager = (ViewPagerFixed) view.findViewById(R.id.viewPager);
-        photoView = (RelativeLayout) view.findViewById(R.id.photoView);
-        webView = (WebView) view.findViewById(R.id.webview_content);
-        scrollView = (NestedScrollView) view.findViewById(R.id.scrollView);
-        progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
+        viewPager = view.findViewById(R.id.viewPager);
+        photoView = view.findViewById(R.id.photoView);
+        webView = view.findViewById(R.id.webview_content);
+        scrollView = view.findViewById(R.id.scrollView);
+        progressBar = view.findViewById(R.id.pb_progress);
         int color = SettingUtil.getInstance().getColor();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());

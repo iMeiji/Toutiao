@@ -60,10 +60,10 @@ public class WendaContentViewBinder extends ItemViewBinder<WendaContentBean.AnsL
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.iv_user_avatar = (CircleImageView) itemView.findViewById(R.id.iv_user_avatar);
-            this.tv_user_name = (TextView) itemView.findViewById(R.id.tv_user_name);
-            this.tv_like_count = (TextView) itemView.findViewById(R.id.tv_like_count);
-            this.tv_abstract = (TextView) itemView.findViewById(R.id.tv_abstract);
+            this.iv_user_avatar = itemView.findViewById(R.id.iv_user_avatar);
+            this.tv_user_name = itemView.findViewById(R.id.tv_user_name);
+            this.tv_like_count = itemView.findViewById(R.id.tv_like_count);
+            this.tv_abstract = itemView.findViewById(R.id.tv_abstract);
         }
     }
 }

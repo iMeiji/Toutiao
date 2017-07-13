@@ -63,10 +63,10 @@ public class WendaArticleTextViewBinder extends ItemViewBinder<WendaArticleDataB
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
-            this.tv_content = (TextView) itemView.findViewById(R.id.tv_content);
-            this.tv_answer_count = (TextView) itemView.findViewById(R.id.tv_answer_count);
-            this.tv_time = (TextView) itemView.findViewById(R.id.tv_time);
+            this.tv_title = itemView.findViewById(R.id.tv_title);
+            this.tv_content = itemView.findViewById(R.id.tv_content);
+            this.tv_answer_count = itemView.findViewById(R.id.tv_answer_count);
+            this.tv_time = itemView.findViewById(R.id.tv_time);
         }
     }
 }

@@ -66,10 +66,10 @@ public class MediaChannelViewBinder extends ItemViewBinder<MediaChannelBean, Med
 
         public ViewHolder(View itemView, IOnItemLongClickListener listener) {
             super(itemView);
-            this.cv_avatar = (CircleImageView) itemView.findViewById(R.id.cv_avatar);
-            this.tv_mediaName = (TextView) itemView.findViewById(R.id.tv_mediaName);
-            this.tv_followCount = (TextView) itemView.findViewById(R.id.tv_followCount);
-            this.tv_descText = (TextView) itemView.findViewById(R.id.tv_descText);
+            this.cv_avatar = itemView.findViewById(R.id.cv_avatar);
+            this.tv_mediaName = itemView.findViewById(R.id.tv_mediaName);
+            this.tv_followCount = itemView.findViewById(R.id.tv_followCount);
+            this.tv_descText = itemView.findViewById(R.id.tv_descText);
             this.listener = listener;
             itemView.setOnLongClickListener(this);
         }

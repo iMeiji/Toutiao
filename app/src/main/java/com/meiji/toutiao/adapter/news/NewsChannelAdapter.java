@@ -162,7 +162,7 @@ public class NewsChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             // header 按钮文字 改成 "完成"
                             View view = recyclerView.getChildAt(0);
                             if (view == recyclerView.getLayoutManager().findViewByPosition(0)) {
-                                TextView tvBtnEdit = (TextView) view.findViewById(R.id.tv_btn_edit);
+                                TextView tvBtnEdit = view.findViewById(R.id.tv_btn_edit);
                                 tvBtnEdit.setText(R.string.finish);
                             }
                         }
@@ -458,7 +458,7 @@ public class NewsChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         int visibleChildCount = parent.getChildCount();
         for (int i = 0; i < visibleChildCount; i++) {
             View view = parent.getChildAt(i);
-            ImageView imgEdit = (ImageView) view.findViewById(R.id.img_edit);
+            ImageView imgEdit = view.findViewById(R.id.img_edit);
             if (imgEdit != null) {
                 imgEdit.setVisibility(View.VISIBLE);
             }
@@ -476,7 +476,7 @@ public class NewsChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         int visibleChildCount = parent.getChildCount();
         for (int i = 0; i < visibleChildCount; i++) {
             View view = parent.getChildAt(i);
-            ImageView imgEdit = (ImageView) view.findViewById(R.id.img_edit);
+            ImageView imgEdit = view.findViewById(R.id.img_edit);
             if (imgEdit != null) {
                 imgEdit.setVisibility(View.INVISIBLE);
             }
@@ -515,8 +515,8 @@ public class NewsChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.tv);
-            imgEdit = (ImageView) itemView.findViewById(R.id.img_edit);
+            textView = itemView.findViewById(R.id.tv);
+            imgEdit = itemView.findViewById(R.id.img_edit);
         }
 
         /**
@@ -544,7 +544,7 @@ public class NewsChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public OtherViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.tv);
+            textView = itemView.findViewById(R.id.tv);
         }
     }
 
@@ -556,7 +556,7 @@ public class NewsChannelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public MyChannelHeaderViewHolder(View itemView) {
             super(itemView);
-            tvBtnEdit = (TextView) itemView.findViewById(R.id.tv_btn_edit);
+            tvBtnEdit = itemView.findViewById(R.id.tv_btn_edit);
         }
     }
 }

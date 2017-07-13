@@ -61,11 +61,11 @@ public class WendaContentHeaderViewBinder extends ItemViewBinder<WendaContentBea
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
-            this.tv_abstract = (TextView) itemView.findViewById(R.id.tv_abstract);
-            this.iv_image = (ImageView) itemView.findViewById(R.id.iv_image);
-            this.tv_answer_count = (TextView) itemView.findViewById(R.id.tv_answer_count);
-            this.tv_follow_count = (TextView) itemView.findViewById(R.id.tv_follow_count);
+            this.tv_title = itemView.findViewById(R.id.tv_title);
+            this.tv_abstract = itemView.findViewById(R.id.tv_abstract);
+            this.iv_image = itemView.findViewById(R.id.iv_image);
+            this.tv_answer_count = itemView.findViewById(R.id.tv_answer_count);
+            this.tv_follow_count = itemView.findViewById(R.id.tv_follow_count);
         }
     }
 }

@@ -42,7 +42,7 @@ public class SearchSuggestionAdapter extends ArrayAdapter<SearchSuggestionBean.D
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = inflater.inflate(android.R.layout.simple_list_item_1, null);
-            viewHolder.tv_keyword = (TextView) convertView.findViewById(android.R.id.text1);
+            viewHolder.tv_keyword = convertView.findViewById(android.R.id.text1);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();

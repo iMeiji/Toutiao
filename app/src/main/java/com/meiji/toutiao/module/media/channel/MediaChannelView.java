@@ -112,14 +112,14 @@ public class MediaChannelView extends RxFragment implements SwipeRefreshLayout.O
     }
 
     private void initView(View view) {
-        recyclerView = (RecyclerView) view.findViewById(recycler_view);
+        recyclerView = view.findViewById(recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
+        swipeRefreshLayout = view.findViewById(R.id.refresh_layout);
         swipeRefreshLayout.setColorSchemeColors(SettingUtil.getInstance().getColor());
         swipeRefreshLayout.setOnRefreshListener(this);
-        tv_desc = (TextView) view.findViewById(R.id.tv_desc);
+        tv_desc = view.findViewById(R.id.tv_desc);
 
         IOnItemLongClickListener listener = new IOnItemLongClickListener() {
             @Override

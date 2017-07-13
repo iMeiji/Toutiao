@@ -57,8 +57,8 @@ public class PhotoTabLayout extends Fragment {
     }
 
     private void initView(View view) {
-        tab_layout = (TabLayout) view.findViewById(R.id.tab_layout_photo);
-        view_pager = (ViewPager) view.findViewById(R.id.view_pager_photo);
+        tab_layout = view.findViewById(R.id.tab_layout_photo);
+        view_pager = view.findViewById(R.id.view_pager_photo);
 
         tab_layout.setupWithViewPager(view_pager);
         tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);

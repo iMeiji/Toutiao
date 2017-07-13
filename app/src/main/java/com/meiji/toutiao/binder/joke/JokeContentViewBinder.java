@@ -107,12 +107,12 @@ public class JokeContentViewBinder extends ItemViewBinder<JokeContentBean.DataBe
 
         ViewHolder(View itemView) {
             super(itemView);
-            this.iv_avatar = (CircleImageView) itemView.findViewById(R.id.iv_avatar);
-            this.tv_username = (TextView) itemView.findViewById(R.id.tv_username);
-            this.tv_text = (TextView) itemView.findViewById(R.id.tv_text);
-            this.tv_digg_count = (TextView) itemView.findViewById(R.id.tv_digg_count);
-            this.tv_bury_count = (TextView) itemView.findViewById(R.id.tv_bury_count);
-            this.tv_comment_count = (TextView) itemView.findViewById(R.id.tv_comment_count);
+            this.iv_avatar = itemView.findViewById(R.id.iv_avatar);
+            this.tv_username = itemView.findViewById(R.id.tv_username);
+            this.tv_text = itemView.findViewById(R.id.tv_text);
+            this.tv_digg_count = itemView.findViewById(R.id.tv_digg_count);
+            this.tv_bury_count = itemView.findViewById(R.id.tv_bury_count);
+            this.tv_comment_count = itemView.findViewById(R.id.tv_comment_count);
         }
     }
 }

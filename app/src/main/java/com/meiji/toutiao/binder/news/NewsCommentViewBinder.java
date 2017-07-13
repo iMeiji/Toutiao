@@ -94,10 +94,10 @@ public class NewsCommentViewBinder extends ItemViewBinder<NewsCommentBean.DataBe
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.iv_avatar = (ImageView) itemView.findViewById(R.id.iv_avatar);
-            this.tv_username = (TextView) itemView.findViewById(R.id.tv_username);
-            this.tv_text = (TextView) itemView.findViewById(R.id.tv_text);
-            this.tv_likes = (TextView) itemView.findViewById(R.id.tv_likes);
+            this.iv_avatar = itemView.findViewById(R.id.iv_avatar);
+            this.tv_username = itemView.findViewById(R.id.tv_username);
+            this.tv_text = itemView.findViewById(R.id.tv_text);
+            this.tv_likes = itemView.findViewById(R.id.tv_likes);
         }
     }
 }

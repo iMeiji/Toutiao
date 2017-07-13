@@ -64,12 +64,12 @@ public class NewsTabLayout extends Fragment {
     }
 
     private void initView(View view) {
-        TabLayout tab_layout = (TabLayout) view.findViewById(R.id.tab_layout_news);
-        view_pager = (ViewPager) view.findViewById(R.id.view_pager_news);
+        TabLayout tab_layout = view.findViewById(R.id.tab_layout_news);
+        view_pager = view.findViewById(R.id.view_pager_news);
 
         tab_layout.setupWithViewPager(view_pager);
         tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        ImageView add_channel_iv = (ImageView) view.findViewById(R.id.add_channel_iv);
+        ImageView add_channel_iv = view.findViewById(R.id.add_channel_iv);
         add_channel_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +77,7 @@ public class NewsTabLayout extends Fragment {
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
-        header_layout = (LinearLayout) view.findViewById(R.id.header_layout);
+        header_layout = view.findViewById(R.id.header_layout);
         header_layout.setBackgroundColor(SettingUtil.getInstance().getColor());
     }
 

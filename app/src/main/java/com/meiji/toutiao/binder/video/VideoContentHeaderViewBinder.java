@@ -79,12 +79,12 @@ public class VideoContentHeaderViewBinder extends ItemViewBinder<MultiNewsArticl
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
-            this.tv_tv_video_duration_str = (TextView) itemView.findViewById(R.id.tv_tv_video_duration_str);
-            this.tv_abstract = (TextView) itemView.findViewById(R.id.tv_abstract);
-            this.tv_source = (TextView) itemView.findViewById(R.id.tv_extra);
-            this.iv_media_avatar_url = (CircleImageView) itemView.findViewById(R.id.iv_media_avatar_url);
-            this.media_layout = (LinearLayout) itemView.findViewById(R.id.media_layout);
+            this.tv_title = itemView.findViewById(R.id.tv_title);
+            this.tv_tv_video_duration_str = itemView.findViewById(R.id.tv_tv_video_duration_str);
+            this.tv_abstract = itemView.findViewById(R.id.tv_abstract);
+            this.tv_source = itemView.findViewById(R.id.tv_extra);
+            this.iv_media_avatar_url = itemView.findViewById(R.id.iv_media_avatar_url);
+            this.media_layout = itemView.findViewById(R.id.media_layout);
         }
     }
 }

@@ -66,10 +66,10 @@ public class WendaArticleOneImgViewBinder extends ItemViewBinder<WendaArticleDat
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
-            this.iv_image_big = (ImageView) itemView.findViewById(R.id.iv_image_big);
-            this.tv_answer_count = (TextView) itemView.findViewById(R.id.tv_answer_count);
-            this.tv_time = (TextView) itemView.findViewById(R.id.tv_time);
+            this.tv_title = itemView.findViewById(R.id.tv_title);
+            this.iv_image_big = itemView.findViewById(R.id.iv_image_big);
+            this.tv_answer_count = itemView.findViewById(R.id.tv_answer_count);
+            this.tv_time = itemView.findViewById(R.id.tv_time);
         }
     }
 }

@@ -134,10 +134,10 @@ public class MediaArticleVideoViewBinder extends ItemViewBinder<MultiMediaArticl
 
         ViewHolder(View itemView) {
             super(itemView);
-            this.tv_extra = (TextView) itemView.findViewById(R.id.tv_extra);
-            this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
-            this.iv_video_image = (ImageView) itemView.findViewById(R.id.iv_video_image);
-            this.tv_video_time = (TextView) itemView.findViewById(R.id.tv_video_time);
+            this.tv_extra = itemView.findViewById(R.id.tv_extra);
+            this.tv_title = itemView.findViewById(R.id.tv_title);
+            this.iv_video_image = itemView.findViewById(R.id.iv_video_image);
+            this.tv_video_time = itemView.findViewById(R.id.tv_video_time);
         }
     }
 }

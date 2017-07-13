@@ -75,9 +75,9 @@ public class MediaArticleTextViewBinder extends ItemViewBinder<MultiMediaArticle
 
         ViewHolder(View itemView) {
             super(itemView);
-            this.tv_extra = (TextView) itemView.findViewById(R.id.tv_extra);
-            this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
-            this.tv_abstract = (TextView) itemView.findViewById(R.id.tv_abstract);
+            this.tv_extra = itemView.findViewById(R.id.tv_extra);
+            this.tv_title = itemView.findViewById(R.id.tv_title);
+            this.tv_abstract = itemView.findViewById(R.id.tv_abstract);
         }
     }
 }

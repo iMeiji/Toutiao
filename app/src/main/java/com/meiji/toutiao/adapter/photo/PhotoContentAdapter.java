@@ -54,10 +54,10 @@ public class PhotoContentAdapter extends PagerAdapter {
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.item_photo_content, container, false);
             view.setTag(position);
-            final ImageView iv_image = (ImageView) view.findViewById(R.id.iv_image);
-            final TextView tv_abstract = (TextView) view.findViewById(R.id.tv_abstract);
-            final TextView tv_onclick = (TextView) view.findViewById(R.id.tv_onclick);
-            final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.pb_progress);
+            final ImageView iv_image = view.findViewById(R.id.iv_image);
+            final TextView tv_abstract = view.findViewById(R.id.tv_abstract);
+            final TextView tv_onclick = view.findViewById(R.id.tv_onclick);
+            final ProgressBar progressBar = view.findViewById(R.id.pb_progress);
             int color = SettingUtil.getInstance().getColor();
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                 Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());

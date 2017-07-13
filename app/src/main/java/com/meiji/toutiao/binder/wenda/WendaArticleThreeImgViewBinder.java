@@ -85,12 +85,12 @@ public class WendaArticleThreeImgViewBinder extends ItemViewBinder<WendaArticleD
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
-            this.iv_0 = (ImageView) itemView.findViewById(R.id.iv_0);
-            this.iv_1 = (ImageView) itemView.findViewById(R.id.iv_1);
-            this.iv_2 = (ImageView) itemView.findViewById(R.id.iv_2);
-            this.tv_answer_count = (TextView) itemView.findViewById(R.id.tv_answer_count);
-            this.tv_time = (TextView) itemView.findViewById(R.id.tv_time);
+            this.tv_title = itemView.findViewById(R.id.tv_title);
+            this.iv_0 = itemView.findViewById(R.id.iv_0);
+            this.iv_1 = itemView.findViewById(R.id.iv_1);
+            this.iv_2 = itemView.findViewById(R.id.iv_2);
+            this.tv_answer_count = itemView.findViewById(R.id.tv_answer_count);
+            this.tv_time = itemView.findViewById(R.id.tv_time);
         }
     }
 }

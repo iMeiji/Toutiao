@@ -92,12 +92,12 @@ public class PhotoArticleViewBinder extends ItemViewBinder<PhotoArticleBean.Data
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.iv_media = (CircleImageView) itemView.findViewById(R.id.iv_media);
-            this.tv_extra = (TextView) itemView.findViewById(R.id.tv_extra);
-            this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
-            this.iv_0 = (ImageView) itemView.findViewById(R.id.iv_0);
-            this.iv_1 = (ImageView) itemView.findViewById(R.id.iv_1);
-            this.iv_2 = (ImageView) itemView.findViewById(R.id.iv_2);
+            this.iv_media = itemView.findViewById(R.id.iv_media);
+            this.tv_extra = itemView.findViewById(R.id.tv_extra);
+            this.tv_title = itemView.findViewById(R.id.tv_title);
+            this.iv_0 = itemView.findViewById(R.id.iv_0);
+            this.iv_1 = itemView.findViewById(R.id.iv_1);
+            this.iv_2 = itemView.findViewById(R.id.iv_2);
         }
     }
 }

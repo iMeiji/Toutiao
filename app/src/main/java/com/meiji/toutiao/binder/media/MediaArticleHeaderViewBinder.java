@@ -149,12 +149,12 @@ public class MediaArticleHeaderViewBinder extends ItemViewBinder<MediaProfileBea
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.iv_bg = (ImageView) itemView.findViewById(R.id.iv_bg);
-            this.cv_avatar = (CircleImageView) itemView.findViewById(R.id.cv_avatar);
-            this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
-            this.tv_desc = (TextView) itemView.findViewById(R.id.tv_desc);
-            this.tv_is_sub = (TextView) itemView.findViewById(R.id.tv_is_sub);
-            this.tv_sub_count = (TextView) itemView.findViewById(R.id.tv_sub_count);
+            this.iv_bg = itemView.findViewById(R.id.iv_bg);
+            this.cv_avatar = itemView.findViewById(R.id.cv_avatar);
+            this.tv_name = itemView.findViewById(R.id.tv_name);
+            this.tv_desc = itemView.findViewById(R.id.tv_desc);
+            this.tv_is_sub = itemView.findViewById(R.id.tv_is_sub);
+            this.tv_sub_count = itemView.findViewById(R.id.tv_sub_count);
         }
 
         private void setIsSub(final String mediaId) {

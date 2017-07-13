@@ -54,9 +54,9 @@ public class SearchHistoryAdapter extends ArrayAdapter<SearchHistoryBean> {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             convertView = inflater.inflate(R.layout.item_search_history, null);
-            viewHolder.iv_history = (ImageView) convertView.findViewById(R.id.iv_history);
-            viewHolder.tv_keyword = (TextView) convertView.findViewById(R.id.tv_keyword);
-            viewHolder.iv_close = (ImageView) convertView.findViewById(R.id.iv_close);
+            viewHolder.iv_history = convertView.findViewById(R.id.iv_history);
+            viewHolder.tv_keyword = convertView.findViewById(R.id.tv_keyword);
+            viewHolder.iv_close = convertView.findViewById(R.id.iv_close);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
