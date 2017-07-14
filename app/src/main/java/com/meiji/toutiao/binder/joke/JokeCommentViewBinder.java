@@ -5,7 +5,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,6 +17,7 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.joke.JokeCommentBean;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.util.ImageLoader;
+import com.meiji.toutiao.widget.BottomSheetDialogFixed;
 import com.meiji.toutiao.widget.CircleImageView;
 
 import me.drakeet.multitype.ItemViewBinder;
@@ -52,7 +52,8 @@ public class JokeCommentViewBinder extends ItemViewBinder<JokeCommentBean.DataBe
                 public void onClick(View v) {
                     final BaseActivity context = (BaseActivity) holder.itemView.getContext();
                     final String content = item.getText();
-                    final BottomSheetDialog dialog = new BottomSheetDialog(context);
+                    final BottomSheetDialogFixed dialog = new BottomSheetDialogFixed(context);
+                    dialog.setOwnerActivity(context);
                     View view = context.getLayoutInflater().inflate(R.layout.item_comment_action_sheet, null);
                     view.findViewById(R.id.layout_copy_text).setOnClickListener(new View.OnClickListener() {
                         @Override

@@ -9,6 +9,8 @@
     android:layout_height="match_parent"
     android:background="@color/viewBackground"
     android:orientation="vertical"
+    android:paddingBottom="8dp"
+    android:paddingTop="8dp"
     app:behavior_hideable="true"
     app:behavior_peekHeight="0dp"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
