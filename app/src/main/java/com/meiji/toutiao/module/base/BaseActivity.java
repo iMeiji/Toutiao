@@ -39,7 +39,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
             // 最近任务栏上色
             ActivityManager.TaskDescription tDesc = new ActivityManager.TaskDescription(
                     getString(R.string.app_name),
-                    BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher),
+                    BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_rect),
                     color);
             setTaskDescription(tDesc);
             if (SettingUtil.getInstance().getNavBar()) {

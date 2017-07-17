@@ -14,4 +14,8 @@
     <attr name="textColorPrimary" format="color"/>
     <attr name="viewBackground" format="color"/>
 
+    <declare-styleable name="IconListPreference">
+        <attr name="iconsDrawables" format="reference"/>
+    </declare-styleable>
+
 </resources>

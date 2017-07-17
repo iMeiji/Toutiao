@@ -10,12 +10,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceFragment;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,17 +41,14 @@ public class SettingActivity extends BaseActivity implements ColorChooserDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         initView();
-        getSupportFragmentManager().beginTransaction()
+        getFragmentManager().beginTransaction()
                 .add(R.id.container, GeneralPreferenceFragment.newInstance())
                 .commit();
     }
 
     private void initView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        initToolBar(toolbar, true, getString(R.string.title_settings));
     }
 
     @Override
@@ -82,7 +80,7 @@ public class SettingActivity extends BaseActivity implements ColorChooserDialog.
             // 最近任务栏上色
             ActivityManager.TaskDescription tDesc = new ActivityManager.TaskDescription(
                     getString(R.string.app_name),
-                    BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher),
+                    BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_rect),
                     selectedColor);
             setTaskDescription(tDesc);
             // 导航栏上色
@@ -102,17 +100,25 @@ public class SettingActivity extends BaseActivity implements ColorChooserDialog.
 
     }
 
-    public static class GeneralPreferenceFragment extends PreferenceFragmentCompat {
+    public static class GeneralPreferenceFragment extends PreferenceFragment {
 
         public static GeneralPreferenceFragment newInstance() {
             return new GeneralPreferenceFragment();
         }
 
         @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.pref_general, rootKey);
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
             setText();
+
+            findPreference("custom_icon").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object o) {
+                    return false;
+                }
+            });
 
             findPreference("color").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -198,6 +204,12 @@ public class SettingActivity extends BaseActivity implements ColorChooserDialog.
                 }
             });
         }
+
+//        @Override
+//        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+//            setPreferencesFromResource(R.xml.pref_general, rootKey);
+//
+//        }
 
         private void setText() {
             try {

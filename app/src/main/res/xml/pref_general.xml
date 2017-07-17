@@ -1,5 +1,6 @@
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
         android:title="@string/basic_settings">
@@ -20,6 +21,15 @@
 
     <PreferenceCategory
         android:title="@string/other_settings">
+
+        <com.meiji.toutiao.widget.IconListPreference
+            android:defaultValue="0"
+            android:entries="@array/icons"
+            android:entryValues="@array/iconsValues"
+            android:key="custom_icon"
+            android:summary="@string/choose_icon"
+            android:title="@string/custom_icon"
+            app:iconsDrawables="@array/iconsDrawables"/>
 
         <Preference
             android:key="color"

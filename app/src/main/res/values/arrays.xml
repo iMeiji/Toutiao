@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="icons">
+        <item>原形</item>
+        <item>矩形</item>
+        <item>方形</item>
+    </string-array>
+
+    <string-array name="iconsValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="iconsDrawables">
+        <item>ic_launcher_circle</item>
+        <item>ic_launcher_rect</item>
+        <item>ic_launcher_square</item>
+    </string-array>
+
+</resources>
