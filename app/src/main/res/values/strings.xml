@@ -18,6 +18,7 @@
     <string name="nav_bar_coloration_summary">导航栏颜色跟随主题颜色</string>
     <string name="choose_icon">选择一个图标</string>
     <string name="custom_icon">自定义图标</string>
+    <string name="choose_icon_summary">重启App生效(可以将App从最近任务列表删除来重启)</string>
 
     <!-- Menu Action -->
     <string name="action_search">搜索</string>

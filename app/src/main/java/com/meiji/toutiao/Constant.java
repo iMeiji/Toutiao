@@ -22,4 +22,10 @@ public class Constant {
             Color.parseColor("#F6BC7E")
     };
 
+    public static final int[] iconsDrawables = new int[]{
+            R.mipmap.ic_launcher_circle,
+            R.mipmap.ic_launcher_rect,
+            R.mipmap.ic_launcher_square};
+
+    public static final String[] iconsType = new String[]{"circle", "rect", "square"};
 }

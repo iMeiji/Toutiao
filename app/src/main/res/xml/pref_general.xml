@@ -27,11 +27,11 @@
             android:entries="@array/icons"
             android:entryValues="@array/iconsValues"
             android:key="custom_icon"
-            android:summary="@string/choose_icon"
-            android:title="@string/custom_icon"
+            android:summary="@string/choose_icon_summary"
+            android:title="@string/choose_icon"
             app:iconsDrawables="@array/iconsDrawables"/>
 
-        <Preference
+        <com.meiji.toutiao.widget.IconPreference
             android:key="color"
             android:summary="@string/choose_theme_color_summary"
             android:title="@string/choose_theme_color"/>

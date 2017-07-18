@@ -3,6 +3,7 @@ package com.meiji.toutiao;
 
 import android.app.ActivityManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -26,6 +27,7 @@ import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.util.CacheDataManager;
 import com.meiji.toutiao.util.SettingUtil;
+import com.meiji.toutiao.widget.IconPreference;
 
 import de.psdev.licensesdialog.LicensesDialog;
 import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20;
@@ -100,7 +102,9 @@ public class SettingActivity extends BaseActivity implements ColorChooserDialog.
 
     }
 
-    public static class GeneralPreferenceFragment extends PreferenceFragment {
+    public static class GeneralPreferenceFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+        private IconPreference color;
 
         public static GeneralPreferenceFragment newInstance() {
             return new GeneralPreferenceFragment();
@@ -115,8 +119,20 @@ public class SettingActivity extends BaseActivity implements ColorChooserDialog.
 
             findPreference("custom_icon").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
-                public boolean onPreferenceChange(Preference preference, Object o) {
-                    return false;
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                    int selectValue = Integer.parseInt((String) newValue);
+                    int drawable = Constant.iconsDrawables[selectValue];
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        ActivityManager.TaskDescription tDesc = new ActivityManager.TaskDescription(
+                                getString(R.string.app_name),
+                                BitmapFactory.decodeResource(getResources(), drawable),
+                                SettingUtil.getInstance().getColor());
+                        getActivity().setTaskDescription(tDesc);
+                    }
+
+                    return true;
                 }
             });
 
@@ -135,6 +151,8 @@ public class SettingActivity extends BaseActivity implements ColorChooserDialog.
                     return false;
                 }
             });
+
+            color = (IconPreference) findPreference("color");
 
             findPreference("nav_bar").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -205,12 +223,6 @@ public class SettingActivity extends BaseActivity implements ColorChooserDialog.
             });
         }
 
-//        @Override
-//        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-//            setPreferencesFromResource(R.xml.pref_general, rootKey);
-//
-//        }
-
         private void setText() {
             try {
                 findPreference("clearCache").setSummary(CacheDataManager.getTotalCacheSize(getActivity()));
@@ -234,6 +246,25 @@ public class SettingActivity extends BaseActivity implements ColorChooserDialog.
                     .setIncludeOwnLicense(true)
                     .build()
                     .show();
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+            if (s.equals("color")) {
+                color.setView();
+            }
         }
     }
 

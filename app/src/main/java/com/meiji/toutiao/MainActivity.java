@@ -122,7 +122,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         position = index;
         switch (index) {
             case FRAGMENT_NEWS:
-                toolbar.setTitle(R.string.title_news);
+                toolbar.setTitle(R.string.app_name);
                 /**
                  * 如果Fragment为空，就新建一个实例
                  * 如果不为空，就将它从栈中显示出来
