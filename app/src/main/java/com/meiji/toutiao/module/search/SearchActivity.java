@@ -45,6 +45,11 @@ import com.meiji.toutiao.database.dao.SearchHistoryDao;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.search.result.SearchResultFragment;
 import com.meiji.toutiao.util.SettingUtil;
+import com.r0adkll.slidr.Slidr;
+import com.r0adkll.slidr.model.SlidrConfig;
+import com.r0adkll.slidr.model.SlidrListener;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +91,38 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         initView();
         getSearchHotWord();
         getSearchHistory();
+    }
+
+    @Override
+    protected void initSlidable() {
+        int isSlidable = SettingUtil.getInstance().getSlidable();
+        if (isSlidable != Constant.SLIDABLE_DISABLE) {
+            SlidrConfig config = new SlidrConfig.Builder()
+                    .edge(isSlidable == Constant.SLIDABLE_EDGE)
+                    .listener(new SlidrListener() {
+                        @Override
+                        public void onSlideStateChanged(int state) {
+
+                        }
+
+                        @Override
+                        public void onSlideChange(float percent) {
+
+                        }
+
+                        @Override
+                        public void onSlideOpened() {
+                            Log.d(TAG, "onSlideOpened: ");
+                        }
+
+                        @Override
+                        public void onSlideClosed() {
+                            Log.d(TAG, "onSlideClosed: ");
+                        }
+                    })
+                    .build();
+            slidrInterface = Slidr.attach(this, config);
+        }
     }
 
     private void initView() {
@@ -154,6 +191,30 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         BasePagerAdapter pagerAdapter = new BasePagerAdapter(getSupportFragmentManager(), fragmentList, titles);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(fragmentList.size());
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    if (slidrInterface != null) {
+                        slidrInterface.unlock();
+                    }
+                } else {
+                    if (slidrInterface != null) {
+                        slidrInterface.lock();
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -195,7 +256,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                         return hotList;
                     }
                 })
-                .compose(this.<List<String>>bindToLifecycle())
+                .compose(this.<List<String>>bindToLife())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<String>>() {
                     @Override
@@ -203,7 +264,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                         for (int i = 0; i < list.size(); i++) {
                             final TextView tv = (TextView) LayoutInflater.from(SearchActivity.this).inflate(R.layout.item_search_sug_text, flexboxLayout, false);
                             final String keyWord = list.get(i);
-                            int color = Constant.tagColors[i % Constant.tagColors.length];
+                            int color = Constant.TAG_COLORS[i % Constant.TAG_COLORS.length];
                             tv.setText(keyWord);
                             tv.setBackgroundColor(color);
                             tv.setTextColor(Color.WHITE);
@@ -234,7 +295,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<List<SearchHistoryBean>>bindToLifecycle())
+                .compose(this.<List<SearchHistoryBean>>bindToLife())
                 .subscribe(new Consumer<List<SearchHistoryBean>>() {
                     @Override
                     public void accept(@NonNull final List<SearchHistoryBean> list) throws Exception {
@@ -248,7 +309,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 .getSearchSuggestion(keyWord.trim())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<SearchSuggestionBean>bindToLifecycle())
+                .compose(this.<SearchSuggestionBean>bindToLife())
                 .subscribe(new Consumer<SearchSuggestionBean>() {
                     @Override
                     public void accept(@NonNull SearchSuggestionBean bean) throws Exception {
@@ -262,7 +323,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 .throttleLast(100, TimeUnit.MILLISECONDS)
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<SearchViewQueryTextEvent>bindToLifecycle())
+                .compose(this.<SearchViewQueryTextEvent>bindToLife())
                 .subscribe(new Consumer<SearchViewQueryTextEvent>() {
                     @Override
                     public void accept(@NonNull SearchViewQueryTextEvent searchViewQueryTextEvent) throws Exception {
@@ -305,22 +366,28 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onPause() {
+        super.onPause();
         searchView.clearFocus();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                setOnQuenyTextChangeListener();
-                return false;
-            }
-        });
     }
+
+    //    @Override
+//    protected void onRestart() {
+//        super.onRestart();
+//        searchView.clearFocus();
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                setOnQuenyTextChangeListener();
+//                return false;
+//            }
+//        });
+//    }
 
     @Override
     public void onClick(View v) {
@@ -366,5 +433,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         } else {
             finish();
         }
+    }
+
+    public <T> LifecycleTransformer<T> bindToLife() {
+        return this.bindUntilEvent(ActivityEvent.DESTROY);
     }
 }

@@ -36,6 +36,15 @@
             android:summary="@string/choose_theme_color_summary"
             android:title="@string/choose_theme_color"/>
 
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/slidable"
+            android:entryValues="@array/slidableValues"
+            android:key="slidable"
+            android:negativeButtonText="@string/cancel"
+            android:summary="@string/slidable_summary"
+            android:title="@string/slidable_title"/>
+
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="nav_bar"

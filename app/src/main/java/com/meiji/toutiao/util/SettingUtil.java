@@ -73,8 +73,19 @@ public class SettingUtil {
         return setting.getBoolean("video_force_landscape", false);
     }
 
+    /**
+     * 获取图标值
+     */
     public int getCustomIconValue() {
         String s = setting.getString("custom_icon", "0");
+        return Integer.parseInt(s);
+    }
+
+    /**
+     * 获取滑动返回值
+     */
+    public int getSlidable() {
+        String s = setting.getString("slidable", "1");
         return Integer.parseInt(s);
     }
 

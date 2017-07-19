@@ -19,4 +19,16 @@
         <item>ic_launcher_square</item>
     </string-array>
 
+    <string-array name="slidable">
+        <item>禁用</item>
+        <item>边缘触发</item>
+        <item>全屏触发</item>
+    </string-array>
+
+    <string-array name="slidableValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
 </resources>

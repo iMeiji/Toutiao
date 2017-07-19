@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.RxBus;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.bean.news.NewsChannelBean;
 import com.meiji.toutiao.database.dao.NewsChannelDao;
@@ -25,7 +26,8 @@ import com.meiji.toutiao.util.SettingUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.app.Activity.RESULT_OK;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by Meiji on 2016/12/12.
@@ -35,11 +37,13 @@ public class NewsTabLayout extends Fragment {
 
     private static final String TAG = "NewsTabLayout";
     private static NewsTabLayout instance = null;
-    private final int REQUEST_CODE = 1;
     private ViewPager view_pager;
     private BasePagerAdapter adapter;
-    private LinearLayout header_layout;
+    private LinearLayout linearLayout;
     private NewsChannelDao dao = new NewsChannelDao();
+    private List<Fragment> fragmentList;
+    private List<String> titleList;
+    private Observable<Boolean> observable;
 
     public static NewsTabLayout getInstance() {
         if (instance == null) {
@@ -60,7 +64,7 @@ public class NewsTabLayout extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        header_layout.setBackgroundColor(SettingUtil.getInstance().getColor());
+        linearLayout.setBackgroundColor(SettingUtil.getInstance().getColor());
     }
 
     private void initView(View view) {
@@ -73,80 +77,61 @@ public class NewsTabLayout extends Fragment {
         add_channel_iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), NewsChannelActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
+                startActivity(new Intent(getActivity(), NewsChannelActivity.class));
             }
         });
-        header_layout = view.findViewById(R.id.header_layout);
-        header_layout.setBackgroundColor(SettingUtil.getInstance().getColor());
+        linearLayout = view.findViewById(R.id.header_layout);
+        linearLayout.setBackgroundColor(SettingUtil.getInstance().getColor());
     }
 
-    /**
-     * 初始化 NewsArticleView 数据
-     */
     private void initData() {
+        initTabs();
+        adapter = new BasePagerAdapter(getChildFragmentManager(), fragmentList, titleList);
+        view_pager.setAdapter(adapter);
+        view_pager.setOffscreenPageLimit(15);
+
+        observable = RxBus.getInstance().register(Boolean.class);
+        observable.subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean isRefresh) throws Exception {
+                if (isRefresh) {
+                    initTabs();
+                    adapter.recreateItems(fragmentList, titleList);
+                }
+            }
+        });
+    }
+
+    private void initTabs() {
         List<NewsChannelBean> channelList = dao.query(1);
-        List<Fragment> fragmentList = new ArrayList<>();
+        fragmentList = new ArrayList<>();
+        titleList = new ArrayList<>();
         if (channelList.size() == 0) {
             dao.addInitData();
             channelList = dao.query(1);
         }
-        String[] categoryName = new String[channelList.size()];
-        for (int i = 0; i < channelList.size(); i++) {
-            if (channelList.get(i).getChannelId().equals("essay_joke")) {
-                Fragment jokeContentView = JokeContentView.newInstance();
-                fragmentList.add(jokeContentView);
-            } else if (channelList.get(i).getChannelId().equals("question_and_answer")) {
-                WendaArticleView wendaArticleView = WendaArticleView.newInstance();
-                fragmentList.add(wendaArticleView);
+
+        for (NewsChannelBean bean : channelList) {
+
+            if (bean.getChannelId().equals("essay_joke")) {
+                fragmentList.add(JokeContentView.newInstance());
+
+            } else if (bean.getChannelId().equals("question_and_answer")) {
+                fragmentList.add(WendaArticleView.newInstance());
+
             } else {
-                Fragment fragment = NewsArticleView.newInstance(channelList.get(i).getChannelId());
-                fragmentList.add(fragment);
+                fragmentList.add(NewsArticleView.newInstance(bean.getChannelId()));
             }
-            categoryName[i] = channelList.get(i).getChannelName();
+            titleList.add(bean.getChannelName());
         }
-        adapter = new BasePagerAdapter(getChildFragmentManager(), fragmentList, categoryName);
-        view_pager.setAdapter(adapter);
-        view_pager.setOffscreenPageLimit(15);
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        RxBus.getInstance().unregister(Boolean.class, observable);
         if (instance != null) {
             instance = null;
         }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-//                getActivity().getWindow().setWindowAnimations(R.style.WindowAnimationFadeInOut);
-//                getActivity().recreate();
-                List<NewsChannelBean> channelList = dao.query(1);
-                List<Fragment> fragmentList = new ArrayList<>();
-                if (channelList.size() == 0) {
-                    dao.addInitData();
-                    channelList = dao.query(1);
-                }
-                String[] categoryName = new String[channelList.size()];
-                for (int i = 0; i < channelList.size(); i++) {
-                    if (channelList.get(i).getChannelId().equals("essay_joke")) {
-                        Fragment jokeContentView = JokeContentView.newInstance();
-                        fragmentList.add(jokeContentView);
-                    } else if (channelList.get(i).getChannelId().equals("question_and_answer")) {
-                        WendaArticleView wendaArticleView = WendaArticleView.newInstance();
-                        fragmentList.add(wendaArticleView);
-                    } else {
-                        Fragment fragment = NewsArticleView.newInstance(channelList.get(i).getChannelId());
-                        fragmentList.add(fragment);
-                    }
-                    categoryName[i] = channelList.get(i).getChannelName();
-                }
-                adapter.recreateItems(fragmentList, categoryName);
-            }
-        }
+        super.onDestroy();
     }
 }

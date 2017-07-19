@@ -16,9 +16,10 @@
     <string name="back">返回</string>
     <string name="nav_bar_coloration">导航栏着色</string>
     <string name="nav_bar_coloration_summary">导航栏颜色跟随主题颜色</string>
-    <string name="choose_icon">选择一个图标</string>
-    <string name="custom_icon">自定义图标</string>
+    <string name="choose_icon">更换图标</string>
     <string name="choose_icon_summary">重启App生效(可以将App从最近任务列表删除来重启)</string>
+    <string name="slidable_title">滑动返回</string>
+    <string name="slidable_summary">类似 iOS 左侧滑动返回</string>
 
     <!-- Menu Action -->
     <string name="action_search">搜索</string>

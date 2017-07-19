@@ -83,6 +83,30 @@ public class MediaHomeActivity extends BaseActivity {
             this.progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         }
         progressBar.setVisibility(View.VISIBLE);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    if (slidrInterface != null) {
+                        slidrInterface.unlock();
+                    }
+                } else {
+                    if (slidrInterface != null) {
+                        slidrInterface.lock();
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void initData() {

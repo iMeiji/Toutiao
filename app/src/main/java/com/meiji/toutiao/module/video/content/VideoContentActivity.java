@@ -31,6 +31,7 @@ import com.meiji.toutiao.util.OnLoadMoreListener;
 import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.widget.helper.MyJCVideoPlayerStandard;
 import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import java.util.List;
 
@@ -144,6 +145,9 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
             if (SettingUtil.getInstance().getVideoOrientation()) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             }
+            if (slidrInterface != null) {
+                slidrInterface.lock();
+            }
         }
     }
 
@@ -187,7 +191,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public <T> LifecycleTransformer<T> bindToLife() {
-        return this.bindToLifecycle();
+        return this.bindUntilEvent(ActivityEvent.DESTROY);
     }
 
     @Override
@@ -227,6 +231,9 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
         if (JCVideoPlayer.backPress()) {
             View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(0);
+            if (slidrInterface != null) {
+                slidrInterface.unlock();
+            }
 //            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             return;
         }

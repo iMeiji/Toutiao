@@ -50,9 +50,9 @@ public class BasePagerAdapter extends FragmentStatePagerAdapter {
         return PagerAdapter.POSITION_NONE;
     }
 
-    public void recreateItems(List<Fragment> list, String[] titles) {
-        this.fragmentList = list;
-        this.titleList = new ArrayList<>(Arrays.asList(titles));
+    public void recreateItems(List<Fragment> fragmentList, List<String> titleList) {
+        this.fragmentList = fragmentList;
+        this.titleList = titleList;
         notifyDataSetChanged();
     }
 }

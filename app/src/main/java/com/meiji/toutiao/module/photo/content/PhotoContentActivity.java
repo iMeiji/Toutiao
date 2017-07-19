@@ -27,10 +27,16 @@ public class PhotoContentActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.container);
-        PhotoContentFragment photoContentFragment =
-                PhotoContentFragment.newInstance(getIntent().getParcelableExtra(TAG));
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, photoContentFragment)
+                .replace(R.id.container, PhotoContentFragment.newInstance(getIntent().getParcelableExtra(TAG)))
                 .commit();
+    }
+
+    /**
+     * 禁用滑动返回
+     */
+    @Override
+    protected void initSlidable() {
+
     }
 }

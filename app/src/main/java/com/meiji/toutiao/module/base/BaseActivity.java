@@ -16,6 +16,9 @@ import com.afollestad.materialdialogs.color.CircleView;
 import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.util.SettingUtil;
+import com.r0adkll.slidr.Slidr;
+import com.r0adkll.slidr.model.SlidrConfig;
+import com.r0adkll.slidr.model.SlidrInterface;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 /**
@@ -25,6 +28,7 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 public abstract class BaseActivity extends RxAppCompatActivity {
 
     private static final String TAG = "BaseActivity";
+    protected SlidrInterface slidrInterface;
     private int iconType = -1;
 
     /**
@@ -36,17 +40,31 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(homeAsUpEnabled);
     }
 
+    /**
+     * 初始化滑动返回
+     */
+    protected void initSlidable() {
+        int isSlidable = SettingUtil.getInstance().getSlidable();
+        if (isSlidable != Constant.SLIDABLE_DISABLE) {
+            SlidrConfig config = new SlidrConfig.Builder()
+                    .edge(isSlidable == Constant.SLIDABLE_EDGE)
+                    .build();
+            slidrInterface = Slidr.attach(this, config);
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.iconType = SettingUtil.getInstance().getCustomIconValue();
+        initSlidable();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         int color = SettingUtil.getInstance().getColor();
-        int drawable = Constant.iconsDrawables[SettingUtil.getInstance().getCustomIconValue()];
+        int drawable = Constant.ICONS_DRAWABLES[SettingUtil.getInstance().getCustomIconValue()];
         if (getSupportActionBar() != null)
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(color));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -105,13 +123,13 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
                     String act = ".MainActivity-";
 
-                    for (String s : Constant.iconsType) {
+                    for (String s : Constant.ICONS_TYPE) {
                         getPackageManager().setComponentEnabledSetting(new ComponentName(BaseActivity.this, getPackageName() + act + s),
                                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                                 PackageManager.DONT_KILL_APP);
                     }
 
-                    act += Constant.iconsType[SettingUtil.getInstance().getCustomIconValue()];
+                    act += Constant.ICONS_TYPE[SettingUtil.getInstance().getCustomIconValue()];
 
                     getPackageManager().setComponentEnabledSetting(new ComponentName(BaseActivity.this, getPackageName() + act),
                             PackageManager.COMPONENT_ENABLED_STATE_ENABLED,

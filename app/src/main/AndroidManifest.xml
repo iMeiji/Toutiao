@@ -71,19 +71,19 @@
             android:name=".module.news.content.NewsContentActivity"
             android:configChanges="orientation|screenSize|uiMode"
             android:label="@string/title_news_content"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar.Slidable"/>
 
         <activity
             android:name=".module.joke.comment.JokeCommentActivity"
             android:configChanges="orientation|screenSize|uiMode"
             android:label="@string/title_joke_comment"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar.Slidable"/>
 
         <activity
             android:name="com.meiji.toutiao.SettingActivity"
             android:configChanges="orientation|screenSize|uiMode"
             android:label="@string/title_settings"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar.Slidable">
             <intent-filter>
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -100,34 +100,34 @@
             android:name=".module.news.channel.NewsChannelActivity"
             android:configChanges="orientation|screenSize|uiMode"
             android:label="@string/title_item_drag"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar.Slidable"/>
 
         <activity
             android:name=".module.video.content.VideoContentActivity"
             android:configChanges="orientation|screenSize|uiMode"
             android:label="@string/title_video_content"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar.Slidable"/>
 
         <activity
             android:name=".module.wenda.content.WendaContentActivity"
             android:configChanges="orientation|screenSize|uiMode"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar.Slidable"/>
 
         <activity
             android:name=".module.wenda.detail.WendaDetailActivity"
             android:configChanges="orientation|screenSize|uiMode"
             android:label="@string/title_wenda_detail"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar.Slidable"/>
 
         <activity
             android:name=".module.search.SearchActivity"
             android:configChanges="orientation|screenSize|uiMode"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar.Slidable"/>
 
         <activity
             android:name=".module.media.home.MediaHomeActivity"
             android:configChanges="orientation|screenSize|uiMode"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar.Slidable"/>
 
     </application>
 

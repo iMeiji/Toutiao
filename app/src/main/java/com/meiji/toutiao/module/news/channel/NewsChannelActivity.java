@@ -6,11 +6,12 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.RxBus;
 import com.meiji.toutiao.adapter.news.NewsChannelAdapter;
 import com.meiji.toutiao.bean.news.NewsChannelBean;
 import com.meiji.toutiao.database.dao.NewsChannelDao;
@@ -19,13 +20,21 @@ import com.meiji.toutiao.widget.helper.ItemDragHelperCallback;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 /**
  * Created by Meiji on 2017/3/10.
  */
 
 public class NewsChannelActivity extends BaseActivity {
 
-    private RecyclerView recycler_view;
+    private RecyclerView recyclerView;
     private NewsChannelAdapter adapter;
     private NewsChannelDao dao = new NewsChannelDao();
     private List<NewsChannelBean> items = dao.query(1);
@@ -39,31 +48,14 @@ public class NewsChannelActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            if (onSaveData()) {
-                setResult(RESULT_OK);
-            }
-            onBackPressed();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (onSaveData()) {
-            setResult(RESULT_OK);
-        }
-        super.onBackPressed();
+    protected void onStop() {
+        super.onStop();
+        onSaveData();
     }
 
     private void initView() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        initToolBar((Toolbar) findViewById(R.id.toolbar), true, getString(R.string.title_item_drag));
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
     }
 
     private void initData() {
@@ -71,11 +63,11 @@ public class NewsChannelActivity extends BaseActivity {
         final List<NewsChannelBean> otherItems = dao.query(0);
 
         GridLayoutManager manager = new GridLayoutManager(this, 4);
-        recycler_view.setLayoutManager(manager);
+        recyclerView.setLayoutManager(manager);
 
         ItemDragHelperCallback callback = new ItemDragHelperCallback();
         final ItemTouchHelper helper = new ItemTouchHelper(callback);
-        helper.attachToRecyclerView(recycler_view);
+        helper.attachToRecyclerView(recyclerView);
 
         adapter = new NewsChannelAdapter(this, helper, items, otherItems);
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -85,7 +77,7 @@ public class NewsChannelActivity extends BaseActivity {
                 return viewType == NewsChannelAdapter.TYPE_MY || viewType == NewsChannelAdapter.TYPE_OTHER ? 1 : 4;
             }
         });
-        recycler_view.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
         adapter.setOnMyChannelItemClickListener(new NewsChannelAdapter.OnMyChannelItemClickListener() {
             @Override
@@ -95,22 +87,41 @@ public class NewsChannelActivity extends BaseActivity {
         });
     }
 
-    public boolean onSaveData() {
-        if (!compare(items, adapter.getmMyChannelItems())) {
-            List<NewsChannelBean> items = adapter.getmMyChannelItems();
-            List<NewsChannelBean> otherItems = adapter.getmOtherChannelItems();
-            dao.removeAll();
-            for (int i = 0; i < items.size(); i++) {
-                NewsChannelBean bean = items.get(i);
-                dao.add(bean.getChannelId(), bean.getChannelName(), 1, i);
-            }
-            for (int i = 0; i < otherItems.size(); i++) {
-                NewsChannelBean bean = otherItems.get(i);
-                dao.add(bean.getChannelId(), bean.getChannelName(), 0, i);
-            }
-            return true;
-        }
-        return false;
+    public void onSaveData() {
+
+        Observable
+                .create(new ObservableOnSubscribe<Boolean>() {
+                    @Override
+                    public void subscribe(@NonNull ObservableEmitter<Boolean> e) throws Exception {
+                        e.onNext(!compare(items, adapter.getmMyChannelItems()));
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .doOnNext(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(@NonNull Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            List<NewsChannelBean> items = adapter.getmMyChannelItems();
+                            List<NewsChannelBean> otherItems = adapter.getmOtherChannelItems();
+                            dao.removeAll();
+                            for (int i = 0; i < items.size(); i++) {
+                                NewsChannelBean bean = items.get(i);
+                                dao.add(bean.getChannelId(), bean.getChannelName(), 1, i);
+                            }
+                            for (int i = 0; i < otherItems.size(); i++) {
+                                NewsChannelBean bean = otherItems.get(i);
+                                dao.add(bean.getChannelId(), bean.getChannelName(), 0, i);
+                            }
+                        }
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(@NonNull Boolean isRefresh) throws Exception {
+                        RxBus.getInstance().post(isRefresh);
+                    }
+                }, ErrorAction.error());
     }
 
     public synchronized <T extends Comparable<T>> boolean compare(List<T> a, List<T> b) {

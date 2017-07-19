@@ -12,7 +12,7 @@ public class Constant {
 
     public static final String USER_AGENT_PC = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
 
-    public static final int[] tagColors = new int[]{
+    public static final int[] TAG_COLORS = new int[]{
             Color.parseColor("#90C5F0"),
             Color.parseColor("#91CED5"),
             Color.parseColor("#F88F55"),
@@ -22,10 +22,14 @@ public class Constant {
             Color.parseColor("#F6BC7E")
     };
 
-    public static final int[] iconsDrawables = new int[]{
+    public static final int[] ICONS_DRAWABLES = new int[]{
             R.mipmap.ic_launcher_circle,
             R.mipmap.ic_launcher_rect,
             R.mipmap.ic_launcher_square};
 
-    public static final String[] iconsType = new String[]{"circle", "rect", "square"};
+    public static final String[] ICONS_TYPE = new String[]{"circle", "rect", "square"};
+
+    public static final int SLIDABLE_DISABLE = 0;
+    public static final int SLIDABLE_EDGE = 1;
+    public static final int SLIDABLE_FULL = 2;
 }

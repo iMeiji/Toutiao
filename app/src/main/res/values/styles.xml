@@ -13,6 +13,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.NoActionBar.Slidable" parent="AppTheme.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
     <style name="NightTheme" parent="AppTheme.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary_night</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_night</item>

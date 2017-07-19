@@ -120,4 +120,6 @@ dependencies {
     compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
     // 响应式排版布局
     compile 'com.google.android:flexbox:0.2.7'
+    // 滑动返回 https://oss.sonatype.org/content/repositories/snapshots/com/r0adkll/slidableactivity/
+    compile 'com.r0adkll:slidableactivity:2.0.7-SNAPSHOT'
 }

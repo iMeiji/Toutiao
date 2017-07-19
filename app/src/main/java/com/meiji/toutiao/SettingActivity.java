@@ -122,7 +122,7 @@ public class SettingActivity extends BaseActivity implements ColorChooserDialog.
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
 
                     int selectValue = Integer.parseInt((String) newValue);
-                    int drawable = Constant.iconsDrawables[selectValue];
+                    int drawable = Constant.ICONS_DRAWABLES[selectValue];
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         ActivityManager.TaskDescription tDesc = new ActivityManager.TaskDescription(

@@ -5,4 +5,5 @@
     <color name="colorAccent">#212a2f</color>
     <color name="textColorPrimary">#616161</color>
     <color name="viewBackground">#212a2f</color>
+    <color name="windowBackground">@color/Grey800</color>
 </resources>

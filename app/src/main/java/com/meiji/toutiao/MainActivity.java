@@ -65,6 +65,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
+    protected void initSlidable() {
+
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         // 屏幕旋转时记录位置
         outState.putInt(POSITION, position);
