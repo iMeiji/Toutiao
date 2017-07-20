@@ -35,7 +35,7 @@ import com.meiji.toutiao.adapter.photo.PhotoContentAdapter;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
 import com.meiji.toutiao.module.base.BaseFragment;
-import com.meiji.toutiao.module.photo.comment.PhotoCommentFragment;
+import com.meiji.toutiao.module.news.comment.NewsCommentActivity;
 import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.widget.ViewPagerFixed;
 
@@ -197,11 +197,12 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
         int id = item.getItemId();
         switch (id) {
             case R.id.action_open_comment:
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .add(R.id.container, PhotoCommentFragment.newInstance(groupId, itemId), PhotoCommentFragment.class.getName())
-                        .addToBackStack(PhotoCommentFragment.class.getName())
-                        .hide(this)
-                        .commit();
+                NewsCommentActivity.launch(groupId, itemId);
+//                getActivity().getSupportFragmentManager().beginTransaction()
+//                        .add(R.id.container, PhotoCommentFragment.newInstance(groupId, itemId), PhotoCommentFragment.class.getName())
+//                        .addToBackStack(PhotoCommentFragment.class.getName())
+//                        .hide(this)
+//                        .commit();
                 break;
 
             case R.id.action_open_media_home:

@@ -2,12 +2,15 @@ package com.meiji.toutiao.module.news.content;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -18,18 +21,21 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
-import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.module.media.home.MediaHomeActivity;
+import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.util.SettingUtil;
+import com.meiji.toutiao.widget.helper.AppBarStateChangeListener;
 
 /**
  * Created by Meiji on 2017/2/28.
@@ -38,21 +44,28 @@ import com.meiji.toutiao.util.SettingUtil;
 public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> implements INewsContent.View {
 
     private static final String TAG = "NewsContentFragment";
+    private static final String IMG = "img";
     // 新闻链接 标题 头条号 文章号 媒体名
     private String shareUrl;
     private String shareTitle;
     private String mediaUrl;
     private String mediaId;
+    private String mediaName;
 
+    private Toolbar toolbar;
     private WebView webView;
     private NestedScrollView scrollView;
     private INewsContent.Presenter presenter;
     private ProgressBar progressBar;
+    private AppBarLayout appBarLayout;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private ImageView imageView;
 
-    public static NewsContentFragment newInstance(Parcelable dataBean) {
+    public static NewsContentFragment newInstance(Parcelable dataBean, String imgUrl) {
         NewsContentFragment instance = new NewsContentFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(TAG, dataBean);
+        bundle.putString(IMG, imgUrl);
         instance.setArguments(bundle);
         return instance;
     }
@@ -69,19 +82,52 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
             MultiNewsArticleDataBean bean = bundle.getParcelable(TAG);
             Log.d(TAG, "initData: " + bean.toString());
             presenter.doLoadData(bean);
-            shareUrl = bean.getDisplay_url();
+            shareUrl = bean.getShare_url();
             shareTitle = bean.getTitle();
-            ((BaseActivity) getActivity()).getSupportActionBar().setTitle(bean.getMedia_name());
+//            ((BaseActivity) getActivity()).getSupportActionBar().setTitle(bean.getMedia_name());
+            mediaName = bean.getMedia_name();
             mediaUrl = "http://toutiao.com/m" + bean.getMedia_info().getMedia_id();
             mediaId = bean.getMedia_info().getMedia_id();
+
+            ImageLoader.loadCenterCrop(getActivity(), bundle.getString(IMG), imageView, R.mipmap.error_image, R.mipmap.error_image);
         } catch (Exception e) {
             ErrorAction.print(e);
         }
+        appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
+            @Override
+            public void onStateChanged(AppBarLayout appBarLayout, AppBarStateChangeListener.State state) {
+                if (state == State.EXPANDED) {
+                    // 展开状态
+                    collapsingToolbarLayout.setTitle("");
+                    toolbar.setBackgroundColor(Color.TRANSPARENT);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                    }
+                } else if (state == State.COLLAPSED) {
+                    // 折叠状态
+//                    collapsingToolbarLayout.setTitle("折叠");
+
+                } else {
+                    // 中间状态
+                    collapsingToolbarLayout.setTitle(mediaName);
+                    toolbar.setBackgroundColor(SettingUtil.getInstance().getColor());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        appBarLayout.setExpanded(false);
     }
 
     @Override
     protected void initView(View view) {
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar = view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, "");
         webView = view.findViewById(R.id.webview_content);
         scrollView = view.findViewById(R.id.scrollView);
@@ -109,6 +155,10 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
         progressBar.setVisibility(View.VISIBLE);
         setHasOptionsMenu(true);
         initWebClient();
+
+        appBarLayout = view.findViewById(R.id.app_bar_layout);
+        collapsingToolbarLayout = view.findViewById(R.id.collapsing_toolbar);
+        imageView = view.findViewById(R.id.iv_image);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -197,10 +247,6 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
             case R.id.action_open_comment:
                 presenter.doShowComment(getActivity(), this);
                 break;
-
-//            case R.id.action_follow_media:
-//                MediaAddActivity.launch(mediaUrl, "news");
-//                break;
 
             case R.id.action_share:
                 Intent shareIntent = new Intent()

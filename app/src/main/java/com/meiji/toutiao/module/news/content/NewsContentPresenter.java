@@ -4,12 +4,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
 import com.meiji.toutiao.ErrorAction;
-import com.meiji.toutiao.R;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.INewsApi;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsContentBean;
-import com.meiji.toutiao.module.news.comment.NewsCommentFragment;
+import com.meiji.toutiao.module.news.comment.NewsCommentActivity;
 import com.meiji.toutiao.util.SettingUtil;
 
 import io.reactivex.Observable;
@@ -34,8 +33,8 @@ class NewsContentPresenter implements INewsContent.Presenter {
 
     private static final String TAG = "NewsContentPresenter";
     private INewsContent.View view;
-    private String group_id;
-    private String item_id;
+    private String groupId;
+    private String itemId;
 
     NewsContentPresenter(INewsContent.View view) {
         this.view = view;
@@ -43,8 +42,8 @@ class NewsContentPresenter implements INewsContent.Presenter {
 
     @Override
     public void doLoadData(MultiNewsArticleDataBean dataBean) {
-        group_id = dataBean.getGroup_id() + "";
-        item_id = dataBean.getItem_id() + "";
+        groupId = dataBean.getGroup_id() + "";
+        itemId = dataBean.getItem_id() + "";
         final String url = dataBean.getDisplay_url();
 
         Observable
@@ -60,7 +59,7 @@ class NewsContentPresenter implements INewsContent.Presenter {
                                 String api = httpUrl + "info/";
                                 e.onNext(api);
                             } else {
-                                e.onComplete();
+                                e.onError(new Throwable());
                             }
                         } catch (Exception e1) {
                             e.onComplete();
@@ -69,8 +68,7 @@ class NewsContentPresenter implements INewsContent.Presenter {
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .flatMap(new Function<String, ObservableSource<NewsContentBean>>() {
+                .switchMap(new Function<String, ObservableSource<NewsContentBean>>() {
                     @Override
                     public ObservableSource<NewsContentBean> apply(@NonNull String s) throws Exception {
                         return RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsContent(s);
@@ -143,11 +141,7 @@ class NewsContentPresenter implements INewsContent.Presenter {
 
     @Override
     public void doShowComment(FragmentActivity context, Fragment fragment) {
-        context.getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, NewsCommentFragment.newInstance(group_id, item_id), NewsCommentFragment.class.getName())
-                .addToBackStack(NewsCommentFragment.class.getName())
-                .hide(fragment)
-                .commit();
+        NewsCommentActivity.launch(groupId, itemId);
     }
 
     @Override

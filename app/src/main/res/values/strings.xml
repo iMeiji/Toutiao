@@ -131,5 +131,6 @@
     <string name="permission_write_denied">你拒绝了权限，该功能不可用</string>
     <string name="permission_write_never_ask">用户设置不再询问权限申请</string>
 
+    <string name="delete_all_search_history">是否删除所有搜索历史记录?</string>
 
 </resources>

@@ -19,7 +19,7 @@ public class MultiMediaArticleBean {
      */
 
     private long media_id;
-    private int has_more;
+    private String has_more;
     private NextBean next;
     private int page_type;
     private String message;
@@ -33,11 +33,11 @@ public class MultiMediaArticleBean {
         this.media_id = media_id;
     }
 
-    public int getHas_more() {
+    public String getHas_more() {
         return has_more;
     }
 
-    public void setHas_more(int has_more) {
+    public void setHas_more(String has_more) {
         this.has_more = has_more;
     }
 

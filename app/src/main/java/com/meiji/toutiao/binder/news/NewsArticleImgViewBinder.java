@@ -39,10 +39,12 @@ public class NewsArticleImgViewBinder extends ItemViewBinder<MultiNewsArticleDat
     protected void onBindViewHolder(@NonNull NewsArticleImgViewBinder.ViewHolder holder, @NonNull final MultiNewsArticleDataBean item) {
 
         try {
+            String imgUrl = "http://p3.pstatp.com/";
             List<MultiNewsArticleDataBean.ImageListBean> image_list = item.getImage_list();
             if (image_list != null && image_list.size() != 0) {
                 String url = image_list.get(0).getUrl();
                 ImageLoader.loadCenterCrop(holder.itemView.getContext(), url, holder.iv_image, R.color.viewBackground);
+                imgUrl += image_list.get(0).getUri().replace("list", "large");
             }
 
             if (null != item.getUser_info()) {
@@ -64,10 +66,11 @@ public class NewsArticleImgViewBinder extends ItemViewBinder<MultiNewsArticleDat
             holder.tv_title.setText(tv_title);
             holder.tv_abstract.setText(tv_abstract);
             holder.tv_extra.setText(tv_source + " - " + tv_comment_count + " - " + tv_datetime);
+            final String finalImgUrl = imgUrl;
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    NewsContentActivity.launch(item);
+                    NewsContentActivity.launch(item, finalImgUrl);
                 }
             });
         } catch (Exception e) {

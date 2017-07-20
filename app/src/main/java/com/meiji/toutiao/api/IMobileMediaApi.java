@@ -22,7 +22,7 @@ public interface IMobileMediaApi {
      *
      * @param mediaId 头条号ID
      */
-    @GET("https://is.snssdk.com/user/profile/homepage/v3/json/?to_html=0&source=article_top_author&refer=all")
+    @GET("https://is.snssdk.com/user/profile/homepage/v3/json/?to_html=0&source=article_top_author&refer=all&aid=13")
     Observable<MediaProfileBean> getMediaProfile(
             @Query("media_id") String mediaId);
 
@@ -33,7 +33,7 @@ public interface IMobileMediaApi {
      * @param mediaId      头条号ID
      * @param maxBehotTime 时间轴
      */
-    @GET("https://is.snssdk.com/pgc/ma/?page_type=1&output=json&is_json=1&count=10&from=user_profile_app&version=2&as=479BB4B7254C150&cp=585DB1871ED64E1")
+    @GET("https://is.snssdk.com/pgc/ma/?page_type=1&output=json&is_json=1&count=20&from=user_profile_app&version=2&as=479BB4B7254C150&cp=585DB1871ED64E1")
     Observable<MultiMediaArticleBean> getMediaArticle(
             @Query("media_id") String mediaId,
             @Query("max_behot_time") String maxBehotTime);

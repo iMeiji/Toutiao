@@ -15,7 +15,8 @@ import com.meiji.toutiao.module.base.BaseActivity;
 
 public class NewsContentActivity extends BaseActivity {
 
-    public static final String TAG = "NewsContentActivity";
+    private static final String TAG = "NewsContentActivity";
+    private static final String IMG = "img";
 
     public static void launch(MultiNewsArticleDataBean bean) {
         InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, NewsContentActivity.class)
@@ -23,13 +24,21 @@ public class NewsContentActivity extends BaseActivity {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
+    public static void launch(MultiNewsArticleDataBean bean, String imgUrl) {
+        InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, NewsContentActivity.class)
+                .putExtra(TAG, bean)
+                .putExtra(IMG, imgUrl)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.container);
-        NewsContentFragment newsContentFragment = NewsContentFragment.newInstance(getIntent().getParcelableExtra(TAG));
+        Intent intent = getIntent();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, newsContentFragment)
+                .replace(R.id.container,
+                        NewsContentFragment.newInstance(intent.getParcelableExtra(TAG), intent.getStringExtra(IMG)))
                 .commit();
     }
 }

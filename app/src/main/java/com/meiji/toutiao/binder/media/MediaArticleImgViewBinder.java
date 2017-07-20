@@ -40,6 +40,7 @@ public class MediaArticleImgViewBinder extends ItemViewBinder<MultiMediaArticleB
     protected void onBindViewHolder(@NonNull MediaArticleImgViewBinder.ViewHolder holder, @NonNull final MultiMediaArticleBean.DataBean item) {
 
         try {
+            String imgUrl = "";
             List<MultiMediaArticleBean.DataBean.ImageListBean> imageList = item.getImage_list();
             if (imageList != null && imageList.size() > 0) {
                 String url = imageList.get(0).getUrl();
@@ -49,6 +50,7 @@ public class MediaArticleImgViewBinder extends ItemViewBinder<MultiMediaArticleB
                         url = url.replace("list", "large");
                     }
                     ImageLoader.loadCenterCrop(holder.itemView.getContext(), url, holder.iv_image, R.color.viewBackground);
+                    imgUrl = imageList.get(0).getUrl().replace("list", "large");
                 }
             }
 
@@ -64,6 +66,7 @@ public class MediaArticleImgViewBinder extends ItemViewBinder<MultiMediaArticleB
             holder.tv_title.setText(title);
             holder.tv_abstract.setText(abstractX);
             holder.tv_extra.setText(readCount + " - " + countmmentCount + " - " + time);
+            final String finalImgUrl = imgUrl;
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -71,12 +74,12 @@ public class MediaArticleImgViewBinder extends ItemViewBinder<MultiMediaArticleB
                     bean.setTitle(item.getTitle());
                     bean.setDisplay_url(item.getDisplay_url());
                     bean.setMedia_name(item.getSource());
+                    bean.setGroup_id(item.getGroup_id());
+                    bean.setItem_id(item.getItem_id());
                     MultiNewsArticleDataBean.MediaInfoBean mediaInfo = new MultiNewsArticleDataBean.MediaInfoBean();
                     mediaInfo.setMedia_id(item.getMedia_id() + "");
                     bean.setMedia_info(mediaInfo);
-                    bean.setGroup_id(item.getGroup_id());
-                    bean.setItem_id(item.getItem_id());
-                    NewsContentActivity.launch(bean);
+                    NewsContentActivity.launch(bean, finalImgUrl);
                 }
             });
         } catch (Exception e) {

@@ -20,9 +20,10 @@ public interface IMobileNewsApi {
 
     /**
      * 获取个性化新闻
-     * http://is.snssdk.com/api/news/feed/v53/?iid=5034850950&device_id=6096495334&category=news_society
-     * http://lf.snssdk.com/api/news/feed/v53/?iid=10247804300&device_id=36328180756&category=news_society
-     * http://ib.snssdk.com/api/news/feed/v53/?
+     * 深圳 http://is.snssdk.com/api/news/feed/v53/?iid=5034850950&device_id=6096495334&category=news_society
+     * 深圳 http://lf.snssdk.com/api/news/feed/v53/?iid=10247804300&device_id=36328180756&category=news_society
+     * 天津 http://ib.snssdk.com/api/news/feed/v53/?
+     * 北京 http://iu.snssdk.com/api/news/feed/v53/?
      *
      * @param iid      用户ID
      * @param deviceId 设备ID

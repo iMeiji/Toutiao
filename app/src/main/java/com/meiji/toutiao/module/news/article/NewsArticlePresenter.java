@@ -101,6 +101,13 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
                                     || dataBean.getSource().contains("悟空问答")) {
                                 return false;
                             }
+                            // 过滤头条问答新闻
+                            if (dataBean.getRead_count() == 0 || TextUtils.isEmpty(dataBean.getMedia_name())) {
+                                String title = dataBean.getTitle();
+                                if (title.lastIndexOf("？") == title.length() - 1) {
+                                    return false;
+                                }
+                            }
                         } catch (NullPointerException e) {
                             ErrorAction.print(e);
                         }

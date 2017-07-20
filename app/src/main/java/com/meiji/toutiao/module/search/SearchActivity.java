@@ -45,9 +45,6 @@ import com.meiji.toutiao.database.dao.SearchHistoryDao;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.search.result.SearchResultFragment;
 import com.meiji.toutiao.util.SettingUtil;
-import com.r0adkll.slidr.Slidr;
-import com.r0adkll.slidr.model.SlidrConfig;
-import com.r0adkll.slidr.model.SlidrListener;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
@@ -91,38 +88,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         initView();
         getSearchHotWord();
         getSearchHistory();
-    }
-
-    @Override
-    protected void initSlidable() {
-        int isSlidable = SettingUtil.getInstance().getSlidable();
-        if (isSlidable != Constant.SLIDABLE_DISABLE) {
-            SlidrConfig config = new SlidrConfig.Builder()
-                    .edge(isSlidable == Constant.SLIDABLE_EDGE)
-                    .listener(new SlidrListener() {
-                        @Override
-                        public void onSlideStateChanged(int state) {
-
-                        }
-
-                        @Override
-                        public void onSlideChange(float percent) {
-
-                        }
-
-                        @Override
-                        public void onSlideOpened() {
-                            Log.d(TAG, "onSlideOpened: ");
-                        }
-
-                        @Override
-                        public void onSlideClosed() {
-                            Log.d(TAG, "onSlideClosed: ");
-                        }
-                    })
-                    .build();
-            slidrInterface = Slidr.attach(this, config);
-        }
     }
 
     private void initView() {
@@ -371,30 +336,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         searchView.clearFocus();
     }
 
-    //    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-//        searchView.clearFocus();
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                setOnQuenyTextChangeListener();
-//                return false;
-//            }
-//        });
-//    }
-
     @Override
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.tv_clear) {
             new AlertDialog.Builder(this)
-                    .setMessage("是否删除所有搜索历史记录?")
+                    .setMessage(R.string.delete_all_search_history)
                     .setPositiveButton(R.string.button_enter, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
