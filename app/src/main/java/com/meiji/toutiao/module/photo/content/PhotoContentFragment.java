@@ -198,11 +198,6 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
         switch (id) {
             case R.id.action_open_comment:
                 NewsCommentActivity.launch(groupId, itemId);
-//                getActivity().getSupportFragmentManager().beginTransaction()
-//                        .add(R.id.container, PhotoCommentFragment.newInstance(groupId, itemId), PhotoCommentFragment.class.getName())
-//                        .addToBackStack(PhotoCommentFragment.class.getName())
-//                        .hide(this)
-//                        .commit();
                 break;
 
             case R.id.action_open_media_home:

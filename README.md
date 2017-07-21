@@ -10,8 +10,9 @@
 [8]:https://github.com/iMeiji/Toutiao/blob/master/LICENSE
 
 
-## Toutiao
-一款第三方今日头条客户端, 不断完善中, MVP + RxJava + Retrofit
+## 头条
+<img src="./art/logo.png" width="128" alt="logo">
+头条是一款遵循材料设计(Material Design)的第三方今日头条客户端, 聚合了新闻/段子/图片/视频/头条号内容, 没有广告, 仅仅只有存粹的阅读, 不断完善中, 采用 MVP + RxJava + Retrofit 架构的项目
 
 其中API来自 [今日头条Api分析](https://github.com/iMeiji/Toutiao/wiki/%E4%BB%8A%E6%97%A5%E5%A4%B4%E6%9D%A1Api%E5%88%86%E6%9E%90)
 
@@ -19,23 +20,21 @@
 ## Statement
 以下所有 API 均由 `今日头条` 提供, 本人采取非正常手段获取. 本程序仅供学习交流, 不可用于任何商业用途
 
+
 ## Features
 - 首页五大模块: 新闻 / 图片 / 视频 / 头条号 / 问答
 - 实现首页的布局和数据的显示
 - 实现自定义新闻栏目顺序
 - 新闻详情页面支持日夜两种主题
 - 显示新闻评论
-- 头条号订阅 查看头条号历史文章
+- 头条号订阅 查看头条号历史文章 / 视频
 - 搜索功能 热门搜索推荐 搜索历史记录
 - 自定义主题颜色 无缝切换日夜皮肤
 - 视频播放
+- 内置3款 logo 随意互换
 
 
 ## Screenshots
-<img src="/art/news.gif" width="360" height="640"/>
-<img src="/art/other.gif" width="360" height="640"/>
-<img src="/art/photo.gif" width="360" height="640"/>
-
 <a href="art/1.png"><img src="art/1.png" width="30%"/>
 <a href="art/2.png"><img src="art/2.png" width="30%"/>
 <a href="art/3.png"><img src="art/3.png" width="30%"/>
@@ -50,11 +49,43 @@
 
 <a href="art/10.png"><img src="art/10.png" width="30%"/>
 <a href="art/11.png"><img src="art/11.png" width="30%"/>
+<a href="art/12.png"><img src="art/11.png" width="30%"/>
+
+<a href="art/13.png"><img src="art/11.png" width="30%"/>
+<a href="art/14.png"><img src="art/11.png" width="30%"/>
+
+
+## Preview
+<img src="/art/preview.gif" width="360" height="640"/>
 
 
 ## Download
 [酷安](http://www.coolapk.com/apk/com.meiji.toutiao)  
 [GitHub Release](https://github.com/iMeiji/Toutiao/releases)
+
+
+## Points
+- 基本遵循 Material Design 设计风格
+- 抓包获取今日头条API
+- 使用 [Google 官方 MVP 架构](https://github.com/googlesamples/android-architecture/tree/todo-mvp/) 
+- 'DrawerLayout' + 'NavigationView' + 'BottomNavigationView' 搭配使用
+- 'RxBus' 代替 'EventBus' 进行组件之间通讯
+- 'ViewPager' 搭配 'Fragment' 懒加载
+- 'SwipeRefreshLayout' 搭配 'RecyclerView' 下拉刷新上拉加载
+- 自定义 'BottomNavigationBehavior' 实现上滑隐藏下滑显示
+- 'RxJava' + 'Retrofit2' + 'OkHttp3' 做网络请求
+- 'OkHttp3' 对网络返回内容做缓存, 还有日志、超时重连、头部消息的配置
+- V层基类的构建, 包括 'BaseActivity' 和 'BaseFragment' , 对外提供了相同的接口
+- 使用原生的夜间模式
+- 解决侧滑返回与 'View' 冲突问题
+- 内置 3 款 Logo, 随意切换
+- 使用 'CoordinatorLayout' + 'AppBarLayout' + 'CollapsingToolbarLayout' + 'BottomSheetDialog' 等等新控件
+- 使用 7.0 新工具 'DiffUtil' , 并适当封装
+- 使用 'ItemTouchHelper' 实现今日头条的频道排序、频道移动, 参考 [ItemTouchHelperDemo](https://github.com/YoKeyword/ItemTouchHelperDemo)
+- 使用 'RxBinding' 优雅实现搜索请求
+- 使用 'RxLifecycle' 绑定 'RxJava' 生命周期
+- 使用 'Travis Cl' 持续集成
+
 
 ## Changelog
 ```
@@ -214,13 +245,39 @@ WebView无图模式(beta)
 - 本地缓存(待定)
 - 视频支持切换分辨率
 - 本地新闻
-- 订阅号要分类 新闻 / 图片 / 视频
 - 视频离线缓存
-- 更新视频 API 
 - 模拟登陆头条账号
 - 栏目位置调换后不 recreate
-- 滑动返回
-- 新 logo
+- 浏览历史
+- 收藏夹
+
+
+## Libraries
+- [Android Support Libraries](https://developer.android.com/topic/libraries/support-library/index.html)
+- [Gson](https://github.com/google/gson)
+- [Glide](https://github.com/bumptech/glide)
+- [jsoup](https://jsoup.org/)
+- [PhotoView](https://github.com/chrisbanes/PhotoView)
+- [LicensesDialog](https://github.com/PSDev/LicensesDialog)
+- [JieCaoVideoPlayer](https://github.com/lipangit/JieCaoVideoPlayer)
+- [Retrofit](https://github.com/square/retrofit)
+- [PersistentCookieJar](https://github.com/franmontiel/PersistentCookieJar)
+- [RxJava](https://github.com/ReactiveX/RxJava)
+- [RxAndroid](https://github.com/ReactiveX/RxAndroid)
+- [RxLifecycle](https://github.com/trello/RxLifecycle)
+- [OkHttp](https://github.com/square/okhttp)
+- [Material Dialogs](https://github.com/afollestad/material-dialogs)
+- [PermissionsDispatcher](https://github.com/hotchemi/PermissionsDispatcher)
+- [Stetho](https://github.com/facebook/stetho)
+- [MultiType](https://github.com/drakeet/MultiType)
+- [RxBinding](https://github.com/JakeWharton/RxBinding)
+- [FlexboxLayout](https://github.com/google/flexbox-layout)
+- [Slidr](https://github.com/r0adkll/Slidr)
+
+
+## End
+注意：此开源项目仅做学习交流使用, 不可用于任何商业用途. 如果你觉得不错, 对你有帮助, 欢迎点个 fork, star, follow , 也可以帮忙分享给你更多的朋友, 这是给作者最大的动力与支持
+
 
 ## License
 ```

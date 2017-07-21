@@ -15,6 +15,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -51,6 +52,8 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
     private String mediaUrl;
     private String mediaId;
     private String mediaName;
+    private String imgUrl;
+    private boolean isHasImage;
 
     private Toolbar toolbar;
     private WebView webView;
@@ -72,7 +75,9 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
 
     @Override
     protected int attachLayoutId() {
-        return R.layout.fragment_news_content;
+        imgUrl = getArguments().getString(IMG);
+        isHasImage = !TextUtils.isEmpty(imgUrl);
+        return isHasImage ? R.layout.fragment_news_content_img : R.layout.fragment_news_content;
     }
 
     @Override
@@ -84,7 +89,6 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
             presenter.doLoadData(bean);
             shareUrl = bean.getShare_url();
             shareTitle = bean.getTitle();
-//            ((BaseActivity) getActivity()).getSupportActionBar().setTitle(bean.getMedia_name());
             mediaName = bean.getMedia_name();
             mediaUrl = "http://toutiao.com/m" + bean.getMedia_info().getMedia_id();
             mediaId = bean.getMedia_info().getMedia_id();
@@ -93,36 +97,41 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
         } catch (Exception e) {
             ErrorAction.print(e);
         }
-        appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
-            @Override
-            public void onStateChanged(AppBarLayout appBarLayout, AppBarStateChangeListener.State state) {
-                if (state == State.EXPANDED) {
-                    // 展开状态
-                    collapsingToolbarLayout.setTitle("");
-                    toolbar.setBackgroundColor(Color.TRANSPARENT);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                    }
-                } else if (state == State.COLLAPSED) {
-                    // 折叠状态
-//                    collapsingToolbarLayout.setTitle("折叠");
+        if (isHasImage) {
+            appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
+                @Override
+                public void onStateChanged(AppBarLayout appBarLayout, AppBarStateChangeListener.State state) {
+                    if (state == State.EXPANDED) {
+                        // 展开状态
+                        collapsingToolbarLayout.setTitle("");
+                        toolbar.setBackgroundColor(Color.TRANSPARENT);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                        }
+                    } else if (state == State.COLLAPSED) {
+                        // 折叠状态
 
-                } else {
-                    // 中间状态
-                    collapsingToolbarLayout.setTitle(mediaName);
-                    toolbar.setBackgroundColor(SettingUtil.getInstance().getColor());
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                    } else {
+                        // 中间状态
+                        collapsingToolbarLayout.setTitle(mediaName);
+                        toolbar.setBackgroundColor(SettingUtil.getInstance().getColor());
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                        }
                     }
                 }
-            }
-        });
+            });
+        } else {
+            toolbar.setTitle(mediaName);
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        appBarLayout.setExpanded(false);
+        if (isHasImage) {
+            appBarLayout.setExpanded(false);
+        }
     }
 
     @Override
@@ -156,9 +165,11 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
         setHasOptionsMenu(true);
         initWebClient();
 
-        appBarLayout = view.findViewById(R.id.app_bar_layout);
-        collapsingToolbarLayout = view.findViewById(R.id.collapsing_toolbar);
-        imageView = view.findViewById(R.id.iv_image);
+        if (isHasImage) {
+            appBarLayout = view.findViewById(R.id.app_bar_layout);
+            collapsingToolbarLayout = view.findViewById(R.id.collapsing_toolbar);
+            imageView = view.findViewById(R.id.iv_image);
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")

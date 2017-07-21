@@ -96,7 +96,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                             if (response.isSuccessful()) {
                                 e.onNext(response.body().string());
                             } else {
-                                e.onComplete();
+                                e.onError(new Throwable());
                             }
                         } catch (Exception e1) {
                             e.onComplete();
@@ -105,7 +105,6 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
                 .map(new Function<String, Boolean>() {
                     @Override
                     public Boolean apply(@NonNull String s) throws Exception {
@@ -159,7 +158,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                                 String api = httpUrl + "info/";
                                 e.onNext(api);
                             } else {
-                                e.onComplete();
+                                e.onError(new Throwable());
                             }
                         } catch (Exception e1) {
                             e.onComplete();
