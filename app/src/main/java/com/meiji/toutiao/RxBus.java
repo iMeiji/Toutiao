@@ -11,7 +11,7 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
 /**
- * Created by Administrator on 2017/5/16 0016.
+ * https://juejin.im/entry/58ff2e26a0bb9f0065d2c5f2
  */
 
 

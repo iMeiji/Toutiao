@@ -44,7 +44,9 @@ public class NewsArticleImgViewBinder extends ItemViewBinder<MultiNewsArticleDat
             if (image_list != null && image_list.size() != 0) {
                 String url = image_list.get(0).getUrl();
                 ImageLoader.loadCenterCrop(holder.itemView.getContext(), url, holder.iv_image, R.color.viewBackground);
-                imgUrl += image_list.get(0).getUri().replace("list", "large");
+                if (!TextUtils.isEmpty(image_list.get(0).getUri())) {
+                    imgUrl += image_list.get(0).getUri().replace("list", "large");
+                }
             }
 
             if (null != item.getUser_info()) {

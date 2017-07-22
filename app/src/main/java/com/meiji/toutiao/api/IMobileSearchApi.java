@@ -34,13 +34,13 @@ public interface IMobileSearchApi {
      * @param curTab  搜索栏目 1综合 2视频 3图集 4用户 5问答
      * @param offset  偏移量
      */
-    @GET("http://is.snssdk.com/api/2/wap/search_content/?from=search_tab&iid=10344168417&device_id=36394312781&count=10&format=json")
+    @GET("http://is.snssdk.com/api/2/wap/search_content/?from=search_tab&iid=12507202490&device_id=37487219424&count=10&format=json")
     Observable<SearchResultBean> getSearchResult(
             @Query("keyword") String keyword,
             @Query("cur_tab") String curTab,
             @Query("offset") int offset);
 
-    @GET("http://is.snssdk.com/api/2/wap/search_content/?from=search_tab&iid=10344168417&device_id=36394312781&count=10&format=json")
+    @GET("http://is.snssdk.com/api/2/wap/search_content/?from=search_tab&iid=12507202490&device_id=37487219424&count=10&format=json")
     Observable<ResponseBody> getSearchResult2(
             @Query("keyword") String keyword,
             @Query("cur_tab") String curTab,

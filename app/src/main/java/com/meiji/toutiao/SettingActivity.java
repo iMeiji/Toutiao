@@ -43,9 +43,11 @@ public class SettingActivity extends BaseActivity implements ColorChooserDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         initView();
-        getFragmentManager().beginTransaction()
-                .add(R.id.container, GeneralPreferenceFragment.newInstance())
-                .commit();
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.container, GeneralPreferenceFragment.newInstance())
+                    .commit();
+        }
     }
 
     private void initView() {
@@ -261,9 +263,12 @@ public class SettingActivity extends BaseActivity implements ColorChooserDialog.
         }
 
         @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-            if (s.equals("color")) {
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (key.equals("color")) {
                 color.setView();
+            }
+            if (key.equals("slidable")) {
+                getActivity().recreate();
             }
         }
     }

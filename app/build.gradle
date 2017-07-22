@@ -16,8 +16,8 @@ android {
         applicationId "com.meiji.toutiao"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 9
-        versionName "1.2.11"
+        versionCode 10
+        versionName "1.2.12"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
@@ -90,7 +90,7 @@ dependencies {
     // 协议Dialog
     compile 'de.psdev.licensesdialog:licensesdialog:1.8.2'
     // 节操播放器
-    compile 'fm.jiecao:jiecaovideoplayer:5.5.4'
+    compile 'fm.jiecao:jiecaovideoplayer:5.7'
     // retrofit 2
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'

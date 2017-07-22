@@ -35,7 +35,7 @@ import io.reactivex.functions.Consumer;
 
 public class NewsTabLayout extends Fragment {
 
-    private static final String TAG = "NewsTabLayout";
+    public static final String TAG = "NewsTabLayout";
     private static NewsTabLayout instance = null;
     private ViewPager view_pager;
     private BasePagerAdapter adapter;
@@ -90,7 +90,7 @@ public class NewsTabLayout extends Fragment {
         view_pager.setAdapter(adapter);
         view_pager.setOffscreenPageLimit(15);
 
-        observable = RxBus.getInstance().register(Boolean.class);
+        observable = RxBus.getInstance().register(NewsTabLayout.TAG);
         observable.subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean isRefresh) throws Exception {
@@ -128,7 +128,7 @@ public class NewsTabLayout extends Fragment {
 
     @Override
     public void onDestroy() {
-        RxBus.getInstance().unregister(Boolean.class, observable);
+        RxBus.getInstance().unregister(NewsTabLayout.TAG, observable);
         if (instance != null) {
             instance = null;
         }

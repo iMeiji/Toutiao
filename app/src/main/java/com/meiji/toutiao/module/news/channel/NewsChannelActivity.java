@@ -16,6 +16,7 @@ import com.meiji.toutiao.adapter.news.NewsChannelAdapter;
 import com.meiji.toutiao.bean.news.NewsChannelBean;
 import com.meiji.toutiao.database.dao.NewsChannelDao;
 import com.meiji.toutiao.module.base.BaseActivity;
+import com.meiji.toutiao.module.news.NewsTabLayout;
 import com.meiji.toutiao.widget.helper.ItemDragHelperCallback;
 
 import java.util.List;
@@ -119,7 +120,7 @@ public class NewsChannelActivity extends BaseActivity {
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(@NonNull Boolean isRefresh) throws Exception {
-                        RxBus.getInstance().post(isRefresh);
+                        RxBus.getInstance().post(NewsTabLayout.TAG, isRefresh);
                     }
                 }, ErrorAction.error());
     }
