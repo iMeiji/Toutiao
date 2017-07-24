@@ -20,7 +20,6 @@ import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.Register;
-import com.meiji.toutiao.RxBus;
 import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.bean.LoadingBean;
 import com.meiji.toutiao.bean.LoadingEndBean;
@@ -37,9 +36,6 @@ import com.trello.rxlifecycle2.android.ActivityEvent;
 import java.util.List;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
-import io.reactivex.Observable;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 
@@ -64,8 +60,6 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     private FloatingActionButton fabPlay;
     private RecyclerView recyclerView;
     private IVideoContent.Presenter presenter;
-
-    private Observable<Object> observable;
 
     public static void launch(MultiNewsArticleDataBean bean) {
         InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, VideoContentActivity.class)
@@ -106,16 +100,6 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
         } catch (NullPointerException e) {
             ErrorAction.print(e);
         }
-
-        observable = RxBus.getInstance().register(VideoContentActivity.TAG);
-        observable.subscribe(new Consumer<Object>() {
-            @Override
-            public void accept(@NonNull Object o) throws Exception {
-                if (slidrInterface != null) {
-                    slidrInterface.unlock();
-                }
-            }
-        });
     }
 
     private void initView() {
@@ -140,6 +124,16 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
                 if (canLoadMore) {
                     canLoadMore = false;
                     presenter.doLoadMoreData();
+                }
+            }
+        });
+        MyJCVideoPlayerStandard.setOnBackPressListener(new MyJCVideoPlayerStandard.onBackPressListener() {
+            @Override
+            public void onBackPress() {
+                View decorView = getWindow().getDecorView();
+                decorView.setSystemUiVisibility(0);
+                if (slidrInterface != null) {
+                    slidrInterface.unlock();
                 }
             }
         });
@@ -255,11 +249,5 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
             return;
         }
         super.onBackPressed();
-    }
-
-    @Override
-    protected void onDestroy() {
-        RxBus.getInstance().unregister(VideoContentActivity.TAG, observable);
-        super.onDestroy();
     }
 }

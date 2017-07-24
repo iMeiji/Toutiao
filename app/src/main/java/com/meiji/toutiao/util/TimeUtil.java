@@ -67,6 +67,6 @@ public class TimeUtil {
     }
 
     public static String getCurrentTimeStamp() {
-        return String.valueOf(new Date(System.currentTimeMillis()).getTime() / 1000);
+        return String.valueOf(System.currentTimeMillis() / 1000);
     }
 }

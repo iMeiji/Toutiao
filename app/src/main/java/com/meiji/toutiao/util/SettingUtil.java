@@ -59,6 +59,10 @@ public class SettingUtil {
         setting.edit().putBoolean("switch_nightMode", flag).apply();
     }
 
+    public boolean getIsAutoNightMode() {
+        return setting.getBoolean("auto_nightMode", false);
+    }
+
     /**
      * 获取是否开启导航栏上色
      */

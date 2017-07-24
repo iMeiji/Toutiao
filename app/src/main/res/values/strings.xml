@@ -20,6 +20,8 @@
     <string name="choose_icon_summary">重启App生效(可以将App从最近任务列表删除来重启)</string>
     <string name="slidable_title">滑动返回</string>
     <string name="slidable_summary">类似 iOS 左侧滑动返回</string>
+    <string name="auto_night_mode">自动切换夜间模式</string>
+    <string name="auto_night_mode_summary">22:00 ~ 6:00 自动开启夜间模式</string>
 
     <!-- Menu Action -->
     <string name="action_search">搜索</string>

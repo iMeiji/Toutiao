@@ -2,15 +2,18 @@ package com.meiji.toutiao.module.media.home.tab;
 
 import android.text.TextUtils;
 
+import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileMediaApi;
 import com.meiji.toutiao.bean.media.MediaWendaBean;
 import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
 import com.meiji.toutiao.util.TimeUtil;
+import com.meiji.toutiao.util.ToutiaoUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
@@ -89,8 +92,10 @@ public class MediaTabPresenter implements IMediaProfile.Presenter {
         } catch (Exception e) {
             ErrorAction.print(e);
         }
+        Map<String, String> map = ToutiaoUtil.getAsCp();
+
         RetrofitFactory.getRetrofit().create(IMobileMediaApi.class)
-                .getMediaArticle(this.mediaId, this.articleTime)
+                .getMediaArticle(this.mediaId, this.articleTime, map.get(Constant.AS), map.get(Constant.CP))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(view.<MultiMediaArticleBean>bindToLife())
@@ -123,8 +128,10 @@ public class MediaTabPresenter implements IMediaProfile.Presenter {
         } catch (Exception e) {
             ErrorAction.print(e);
         }
+        Map<String, String> map = ToutiaoUtil.getAsCp();
+
         RetrofitFactory.getRetrofit().create(IMobileMediaApi.class)
-                .getMediaVideo(this.mediaId, this.videoTime)
+                .getMediaVideo(this.mediaId, this.videoTime, map.get(Constant.AS), map.get(Constant.CP))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(view.<MultiMediaArticleBean>bindToLife())

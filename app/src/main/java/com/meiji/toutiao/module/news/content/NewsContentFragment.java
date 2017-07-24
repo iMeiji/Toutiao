@@ -92,12 +92,13 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
             mediaName = bean.getMedia_name();
             mediaUrl = "http://toutiao.com/m" + bean.getMedia_info().getMedia_id();
             mediaId = bean.getMedia_info().getMedia_id();
-
-            ImageLoader.loadCenterCrop(getActivity(), bundle.getString(IMG), imageView, R.mipmap.error_image, R.mipmap.error_image);
         } catch (Exception e) {
             ErrorAction.print(e);
         }
+
         if (isHasImage) {
+            ImageLoader.loadCenterCrop(getActivity(), bundle.getString(IMG), imageView, R.mipmap.error_image, R.mipmap.error_image);
+
             appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
                 @Override
                 public void onStateChanged(AppBarLayout appBarLayout, AppBarStateChangeListener.State state) {

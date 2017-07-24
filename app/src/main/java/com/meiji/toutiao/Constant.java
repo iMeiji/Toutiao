@@ -32,4 +32,7 @@ public class Constant {
     public static final int SLIDABLE_DISABLE = 0;
     public static final int SLIDABLE_EDGE = 1;
     public static final int SLIDABLE_FULL = 2;
+
+    public static final String AS = "as";
+    public static final String CP = "cp";
 }
