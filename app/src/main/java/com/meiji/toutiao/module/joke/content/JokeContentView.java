@@ -51,11 +51,6 @@ public class JokeContentView extends BaseListFragment<IJokeContent.Presenter> im
     }
 
     @Override
-    public void onRefresh() {
-        presenter.doRefresh();
-    }
-
-    @Override
     public void onLoadData() {
         onShowLoading();
         presenter.doLoadData();

@@ -17,6 +17,7 @@ import com.meiji.toutiao.RxBus;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.bean.news.NewsChannelBean;
 import com.meiji.toutiao.database.dao.NewsChannelDao;
+import com.meiji.toutiao.module.base.BaseListFragment;
 import com.meiji.toutiao.module.joke.content.JokeContentView;
 import com.meiji.toutiao.module.news.article.NewsArticleView;
 import com.meiji.toutiao.module.news.channel.NewsChannelActivity;
@@ -37,7 +38,7 @@ public class NewsTabLayout extends Fragment {
 
     public static final String TAG = "NewsTabLayout";
     private static NewsTabLayout instance = null;
-    private ViewPager view_pager;
+    private ViewPager viewPager;
     private BasePagerAdapter adapter;
     private LinearLayout linearLayout;
     private NewsChannelDao dao = new NewsChannelDao();
@@ -69,9 +70,9 @@ public class NewsTabLayout extends Fragment {
 
     private void initView(View view) {
         TabLayout tab_layout = view.findViewById(R.id.tab_layout_news);
-        view_pager = view.findViewById(R.id.view_pager_news);
+        viewPager = view.findViewById(R.id.view_pager_news);
 
-        tab_layout.setupWithViewPager(view_pager);
+        tab_layout.setupWithViewPager(viewPager);
         tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
         ImageView add_channel_iv = view.findViewById(R.id.add_channel_iv);
         add_channel_iv.setOnClickListener(new View.OnClickListener() {
@@ -87,8 +88,8 @@ public class NewsTabLayout extends Fragment {
     private void initData() {
         initTabs();
         adapter = new BasePagerAdapter(getChildFragmentManager(), fragmentList, titleList);
-        view_pager.setAdapter(adapter);
-        view_pager.setOffscreenPageLimit(15);
+        viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(15);
 
         observable = RxBus.getInstance().register(NewsTabLayout.TAG);
         observable.subscribe(new Consumer<Boolean>() {
@@ -123,6 +124,13 @@ public class NewsTabLayout extends Fragment {
                 fragmentList.add(NewsArticleView.newInstance(bean.getChannelId()));
             }
             titleList.add(bean.getChannelName());
+        }
+    }
+
+    public void onDoubleClick() {
+        if (titleList != null && titleList.size() > 0 && fragmentList != null && fragmentList.size() > 0) {
+            int item = viewPager.getCurrentItem();
+            ((BaseListFragment) fragmentList.get(item)).onRefresh();
         }
     }
 

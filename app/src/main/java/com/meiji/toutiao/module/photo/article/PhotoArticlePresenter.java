@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -51,7 +52,6 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
 
         RetrofitFactory.getRetrofit().create(IPhotoApi.class).getPhotoArticle(this.category, time)
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
                 .switchMap(new Function<PhotoArticleBean, Observable<PhotoArticleBean.DataBean>>() {
                     @Override
                     public Observable<PhotoArticleBean.DataBean> apply(@NonNull PhotoArticleBean photoArticleBean) throws Exception {
@@ -77,6 +77,7 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
                 })
                 .toList()
                 .compose(view.<List<PhotoArticleBean.DataBean>>bindToLife())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<PhotoArticleBean.DataBean>>() {
                     @Override
                     public void accept(@NonNull List<PhotoArticleBean.DataBean> list) throws Exception {
@@ -109,6 +110,7 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
             dataList.clear();
             time = TimeUtil.getCurrentTimeStamp();
         }
+        view.onShowLoading();
         doLoadData();
     }
 

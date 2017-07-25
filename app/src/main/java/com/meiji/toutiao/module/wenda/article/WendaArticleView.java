@@ -72,10 +72,4 @@ public class WendaArticleView extends BaseListFragment<IWendaArticle.Presenter> 
     public void fetchData() {
         onLoadData();
     }
-
-    @Override
-    public void onRefresh() {
-        recyclerView.smoothScrollToPosition(0);
-        presenter.doRefresh();
-    }
 }

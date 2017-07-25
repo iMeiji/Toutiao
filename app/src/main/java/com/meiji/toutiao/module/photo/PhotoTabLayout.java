@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
+import com.meiji.toutiao.module.base.BaseListFragment;
 import com.meiji.toutiao.module.photo.article.PhotoArticleView;
 import com.meiji.toutiao.util.SettingUtil;
 
@@ -29,9 +30,9 @@ public class PhotoTabLayout extends Fragment {
     private static int pageSize = InitApp.AppContext.getResources().getStringArray(R.array.photo_id).length;
     private String categoryId[] = InitApp.AppContext.getResources().getStringArray(R.array.photo_id);
     private String categoryName[] = InitApp.AppContext.getResources().getStringArray(R.array.photo_name);
-    private TabLayout tab_layout;
-    private ViewPager view_pager;
-    private List<Fragment> list = new ArrayList<>();
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private List<Fragment> fragmentList = new ArrayList<>();
     private BasePagerAdapter adapter;
 
     public static PhotoTabLayout getInstance() {
@@ -53,26 +54,33 @@ public class PhotoTabLayout extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        tab_layout.setBackgroundColor(SettingUtil.getInstance().getColor());
+        tabLayout.setBackgroundColor(SettingUtil.getInstance().getColor());
     }
 
     private void initView(View view) {
-        tab_layout = view.findViewById(R.id.tab_layout_photo);
-        view_pager = view.findViewById(R.id.view_pager_photo);
+        tabLayout = view.findViewById(R.id.tab_layout_photo);
+        viewPager = view.findViewById(R.id.view_pager_photo);
 
-        tab_layout.setupWithViewPager(view_pager);
-        tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tab_layout.setBackgroundColor(SettingUtil.getInstance().getColor());
-        view_pager.setOffscreenPageLimit(pageSize);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.setBackgroundColor(SettingUtil.getInstance().getColor());
+        viewPager.setOffscreenPageLimit(pageSize);
     }
 
     private void initData() {
         for (int i = 0; i < categoryId.length; i++) {
             Fragment fragment = PhotoArticleView.newInstance(categoryId[i]);
-            list.add(fragment);
+            fragmentList.add(fragment);
         }
-        adapter = new BasePagerAdapter(getChildFragmentManager(), list, categoryName);
-        view_pager.setAdapter(adapter);
+        adapter = new BasePagerAdapter(getChildFragmentManager(), fragmentList, categoryName);
+        viewPager.setAdapter(adapter);
+    }
+
+    public void onDoubleClick() {
+        if (fragmentList != null && fragmentList.size() > 0) {
+            int item = viewPager.getCurrentItem();
+            ((BaseListFragment) fragmentList.get(item)).onRefresh();
+        }
     }
 
     @Override

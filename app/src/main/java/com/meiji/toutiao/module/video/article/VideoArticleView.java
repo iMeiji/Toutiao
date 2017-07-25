@@ -62,11 +62,6 @@ public class VideoArticleView extends BaseListFragment<INewsArticle.Presenter> i
     }
 
     @Override
-    public void onRefresh() {
-        presenter.doRefresh();
-    }
-
-    @Override
     public void onLoadData() {
         onShowLoading();
         presenter.doLoadData(categoryId);

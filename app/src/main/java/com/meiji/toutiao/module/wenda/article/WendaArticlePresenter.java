@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -49,7 +50,6 @@ class WendaArticlePresenter implements IWendaArticle.Presenter {
         RetrofitFactory.getRetrofit().create(IMobileWendaApi.class)
                 .getWendaArticle(time)
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
                 .switchMap(new Function<WendaArticleBean, Observable<WendaArticleDataBean>>() {
                     @Override
                     public Observable<WendaArticleDataBean> apply(@NonNull WendaArticleBean wendaArticleBean) throws Exception {
@@ -96,6 +96,7 @@ class WendaArticlePresenter implements IWendaArticle.Presenter {
                 })
                 .toList()
                 .compose(view.<List<WendaArticleDataBean>>bindToLife())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<WendaArticleDataBean>>() {
                     @Override
                     public void accept(@NonNull List<WendaArticleDataBean> wendaArticleDataBeen) throws Exception {
@@ -121,6 +122,7 @@ class WendaArticlePresenter implements IWendaArticle.Presenter {
             dataList.clear();
             time = TimeUtil.getCurrentTimeStamp();
         }
+        view.onShowLoading();
         doLoadData();
     }
 

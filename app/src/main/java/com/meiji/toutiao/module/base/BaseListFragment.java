@@ -2,6 +2,7 @@ package com.meiji.toutiao.module.base;
 
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -99,5 +100,16 @@ public abstract class BaseListFragment<T extends IBasePresenter> extends LazyLoa
                 canLoadMore = false;
             }
         });
+    }
+
+    @Override
+    public void onRefresh() {
+        int firstVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+        if (firstVisibleItemPosition == 0) {
+            presenter.doRefresh();
+            return;
+        }
+        recyclerView.scrollToPosition(5);
+        recyclerView.smoothScrollToPosition(0);
     }
 }

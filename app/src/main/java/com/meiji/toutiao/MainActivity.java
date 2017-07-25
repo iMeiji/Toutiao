@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.meiji.toutiao.module.base.BaseActivity;
@@ -39,10 +38,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private MediaChannelView mediaChannelView;
     private Toolbar toolbar;
     private BottomNavigationView bottom_navigation;
-    private long exitTime;
+    private long exitTime = 0;
+    private long firstClickTime = 0;
     private int position;
-    private FrameLayout content_main;
-    private MenuItem searchItem;
     private NavigationView nav_view;
     private DrawerLayout drawer_layout;
 
@@ -66,21 +64,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     protected void initSlidable() {
-
+        // 禁止滑动返回
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         // 屏幕旋转时记录位置
         outState.putInt(POSITION, position);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (searchItem != null) {
-            searchItem.collapseActionView();
-        }
     }
 
     private void initView() {
@@ -94,12 +84,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 switch (item.getItemId()) {
                     case R.id.action_news:
                         showFragment(FRAGMENT_NEWS);
+                        doubleClick(FRAGMENT_NEWS);
                         break;
                     case R.id.action_photo:
                         showFragment(FRAGMENT_PHOTO);
+                        doubleClick(FRAGMENT_PHOTO);
                         break;
                     case R.id.action_video:
                         showFragment(FRAGMENT_VIDEO);
+                        doubleClick(FRAGMENT_VIDEO);
                         break;
                     case R.id.action_media:
                         showFragment(FRAGMENT_MEDIA);
@@ -109,8 +102,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-        content_main = (FrameLayout) findViewById(R.id.container);
-
         drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -119,6 +110,25 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         nav_view = (NavigationView) findViewById(R.id.nav_view);
         nav_view.setNavigationItemSelectedListener(this);
+    }
+
+    public void doubleClick(int index) {
+        long secondClickTime = System.currentTimeMillis();
+        if ((secondClickTime - firstClickTime < 500)) {
+            switch (index) {
+                case FRAGMENT_NEWS:
+                    newsTabLayout.onDoubleClick();
+                    break;
+                case FRAGMENT_PHOTO:
+                    photoTabLayout.onDoubleClick();
+                    break;
+                case FRAGMENT_VIDEO:
+                    videoTabLayout.onDoubleClick();
+                    break;
+            }
+        } else {
+            firstClickTime = secondClickTime;
+        }
     }
 
     private void showFragment(int index) {

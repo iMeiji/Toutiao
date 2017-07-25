@@ -8,6 +8,7 @@ import com.meiji.toutiao.bean.joke.JokeContentBean;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -35,7 +36,6 @@ class JokeContentPresenter implements IJokeContent.Presenter {
 
         RetrofitFactory.getRetrofit().create(IJokeApi.class).getJokeContent()
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
                 .map(new Function<JokeContentBean, List<JokeContentBean.DataBean.GroupBean>>() {
                     @Override
                     public List<JokeContentBean.DataBean.GroupBean> apply(@NonNull JokeContentBean jokeContentBean) throws Exception {
@@ -47,6 +47,7 @@ class JokeContentPresenter implements IJokeContent.Presenter {
                     }
                 })
                 .compose(view.<List<JokeContentBean.DataBean.GroupBean>>bindToLife())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<JokeContentBean.DataBean.GroupBean>>() {
                     @Override
                     public void accept(@NonNull List<JokeContentBean.DataBean.GroupBean> groupBeen) throws Exception {
@@ -71,6 +72,7 @@ class JokeContentPresenter implements IJokeContent.Presenter {
         if (groupList.size() != 0) {
             groupList.clear();
         }
+        view.onShowLoading();
         doLoadData();
     }
 

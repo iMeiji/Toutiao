@@ -55,11 +55,6 @@ public class PhotoArticleView extends BaseListFragment<IPhotoArticle.Presenter> 
     }
 
     @Override
-    public void onRefresh() {
-        presenter.doRefresh();
-    }
-
-    @Override
     public void onLoadData() {
         onShowLoading();
         presenter.doLoadData(categoryId);

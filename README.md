@@ -86,7 +86,7 @@
 - 解决侧滑返回与 View 冲突问题
 - 内置 3 款 Logo, 随意切换
 - 使用 CoordinatorLayout 、 AppBarLayout 、 CollapsingToolbarLayout 、 BottomSheetDialog 等等新控件
-- 使用 7.0 新工具 DiffUtil , 并适当封装
+- 使用 7.0 新工具 DiffUtil , 不再无脑 notifyDataSetChanged
 - 使用 ItemTouchHelper 实现今日头条的频道排序、频道移动, 参考 [ItemTouchHelperDemo](https://github.com/YoKeyword/ItemTouchHelperDemo)
 - 使用 RxBinding 优雅实现搜索请求
 - 使用 RxLifecycle 绑定 RxJava 生命周期
@@ -95,6 +95,9 @@
 
 ## Changelog
 ```
+2017-7-25
+添加双击底栏按钮监听事件
+
 2017-7-24
 添加自动切换夜间模式选项
 
@@ -263,8 +266,7 @@ WebView无图模式(beta)
 - 栏目位置调换后不 recreate
 - 浏览历史
 - 收藏夹
-- 双击底栏按钮刷新当前页面新闻
-
+- 打开视频页面后直接播放视频, 提供设置选项
 
 ## Libraries
 - [Android Support Libraries](https://developer.android.com/topic/libraries/support-library/index.html)

@@ -59,12 +59,6 @@ public class NewsArticleView extends BaseListFragment<INewsArticle.Presenter> im
     }
 
     @Override
-    public void onRefresh() {
-        recyclerView.smoothScrollToPosition(0);
-        presenter.doRefresh();
-    }
-
-    @Override
     public void onLoadData() {
         onShowLoading();
         presenter.doLoadData(categoryId);

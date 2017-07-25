@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Random;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -76,7 +77,6 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
 //        Observable.merge(ob1, ob2)
         getRandom()
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
                 .switchMap(new Function<MultiNewsArticleBean, Observable<MultiNewsArticleDataBean>>() {
                     @Override
                     public Observable<MultiNewsArticleDataBean> apply(@NonNull MultiNewsArticleBean multiNewsArticleBean) throws Exception {
@@ -136,6 +136,7 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
                     }
                 })
                 .compose(view.<List<MultiNewsArticleDataBean>>bindToLife())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<MultiNewsArticleDataBean>>() {
                     @Override
                     public void accept(@NonNull List<MultiNewsArticleDataBean> list) throws Exception {
@@ -172,6 +173,7 @@ public class NewsArticlePresenter implements INewsArticle.Presenter {
             dataList.clear();
             time = TimeUtil.getCurrentTimeStamp();
         }
+        view.onShowLoading();
         doLoadData();
     }
 
