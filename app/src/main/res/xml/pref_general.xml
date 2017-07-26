@@ -11,8 +11,7 @@
             android:summary="@string/switch_no_photo_mode_summary"
             android:title="@string/switch_photo_mode"/>
 
-        <CheckBoxPreference
-            android:defaultValue="false"
+        <Preference
             android:key="auto_nightMode"
             android:summary="@string/auto_night_mode_summary"
             android:title="@string/auto_night_mode"/>

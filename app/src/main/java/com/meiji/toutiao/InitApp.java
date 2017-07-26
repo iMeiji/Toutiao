@@ -20,25 +20,46 @@ public class InitApp extends Application {
     public void onCreate() {
         super.onCreate();
         AppContext = getApplicationContext();
-        // 获取是否开启 "自动切换夜间模式"
-        if (SettingUtil.getInstance().getIsAutoNightMode()) {
-            Calendar calendar = Calendar.getInstance();
-            int hour = calendar.get(Calendar.HOUR_OF_DAY);
-            if (hour >= 22 || hour < 6) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            }
-        } else {
-            // 获取当前主题
-            if (SettingUtil.getInstance().getIsNightMode()) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            }
-        }
+
+        initTheme();
+
         if (BuildConfig.DEBUG) {
             SdkManager.initStetho(AppContext);
+        }
+    }
+
+    private void initTheme() {
+        SettingUtil settingUtil = SettingUtil.getInstance();
+
+        // 获取是否开启 "自动切换夜间模式"
+        if (settingUtil.getIsAutoNightMode()) {
+
+            int nightStartHour = Integer.parseInt(settingUtil.getNightStartHour());
+            int nightStartMinute = Integer.parseInt(settingUtil.getNightStartMinute());
+            int dayStartHour = Integer.parseInt(settingUtil.getDayStartHour());
+            int dayStartMinute = Integer.parseInt(settingUtil.getDayStartMinute());
+
+            Calendar calendar = Calendar.getInstance();
+            int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+            int currentMinute = calendar.get(Calendar.MINUTE);
+
+            int nightValue = nightStartHour * 60 + nightStartMinute;
+            int dayValue = dayStartHour * 60 + dayStartMinute;
+            int currentValue = currentHour * 60 + currentMinute;
+
+            if (currentValue >= nightValue || currentValue <= dayValue) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+
+        } else {
+            // 获取当前主题
+            if (settingUtil.getIsNightMode()) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
         }
     }
 }

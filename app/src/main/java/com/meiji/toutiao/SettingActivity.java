@@ -2,6 +2,9 @@ package com.meiji.toutiao;
 
 
 import android.app.ActivityManager;
+import android.app.Fragment;
+import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -13,14 +16,22 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TimePicker;
 
 import com.afollestad.materialdialogs.color.CircleView;
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
@@ -118,6 +129,18 @@ public class SettingActivity extends BaseActivity implements ColorChooserDialog.
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
             setText();
+
+            findPreference("auto_nightMode").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    getActivity().getFragmentManager().beginTransaction()
+                            .add(R.id.container, AutoNightModeFragment.newInstance())
+                            .hide(GeneralPreferenceFragment.this)
+                            .addToBackStack("")
+                            .commit();
+                    return true;
+                }
+            });
 
             findPreference("custom_icon").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
@@ -273,32 +296,140 @@ public class SettingActivity extends BaseActivity implements ColorChooserDialog.
         }
     }
 
-//     * This fragment shows notification preferences only. It is used when the
-//     * activity is showing a two-pane com.meiji.toutiao.settings UI.
-//     */
-//    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-//    public static class NotificationPreferenceFragment extends PreferenceFragment {
-//        @Override
-//        public void onCreate(Bundle savedInstanceState) {
-//            super.onCreate(savedInstanceState);
-//            addPreferencesFromResource(R.xml.pref_notification);
-//            setHasOptionsMenu(true);
-//
-//            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-//            // to their values. When their values change, their summaries are
-//            // updated to reflect the new value, per the Android Design
-//            // guidelines.
-//            bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
-//        }
-//
-//        @Override
-//        public boolean onOptionsItemSelected(MenuItem item) {
-//            int id = item.getItemId();
-//            if (id == android.R.id.home) {
-//                launch(new Intent(getActivity(), SettingActivity.class));
-//                return true;
-//            }
-//            return super.onOptionsItemSelected(item);
-//        }
-//    }
+    public static class AutoNightModeFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+
+        private static final String TAG = "AutoNightModeFragment";
+        private AppCompatCheckBox checkbox;
+        private RelativeLayout checkboxLayout;
+        private AppCompatTextView autoNightMode;
+
+        private RelativeLayout nightStartLayout;
+        private AppCompatTextView nightStartTitle;
+        private AppCompatTextView nightStartSummary;
+
+        private RelativeLayout dayStartLayout;
+        private AppCompatTextView dayStartTitle;
+        private AppCompatTextView dayStartSummary;
+
+        private String nightStartHour;
+        private String nightStartMinute;
+        private String dayStartHour;
+        private String dayStartMinute;
+        private SettingUtil settingUtil = SettingUtil.getInstance();
+
+        public static AutoNightModeFragment newInstance() {
+            return new AutoNightModeFragment();
+        }
+
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.fragment_setting_auto_night, container, false);
+            initView(view);
+            return view;
+        }
+
+        private void initView(View view) {
+            this.autoNightMode = view.findViewById(R.id.tv_auto_night_mode);
+            this.checkboxLayout = view.findViewById(R.id.checkbox_layout);
+            this.nightStartTitle = view.findViewById(R.id.tv_night_start_title);
+            this.nightStartSummary = view.findViewById(R.id.tv_night_start_summary);
+            this.nightStartLayout = view.findViewById(R.id.night_start_layout);
+            this.dayStartTitle = view.findViewById(R.id.tv_day_start_title);
+            this.dayStartSummary = view.findViewById(R.id.tv_day_start_summary);
+            this.dayStartLayout = view.findViewById(R.id.day_start_layout);
+            this.checkbox = view.findViewById(R.id.checkbox);
+
+            checkbox.setChecked(settingUtil.getIsAutoNightMode());
+
+            checkboxLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    checkbox.setChecked(!checkbox.isChecked());
+                    settingUtil.setIsAutoNightMode(checkbox.isChecked());
+                }
+            });
+
+            setText();
+
+            nightStartLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TimePickerDialog dialog = new TimePickerDialog(getActivity(),
+                            new TimePickerDialog.OnTimeSetListener() {
+                                @Override
+                                public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                                    settingUtil.setNightStartHour(hour > 9 ? "" + hour : "0" + hour);
+                                    settingUtil.setNightStartMinute(minute > 9 ? "" + minute : "0" + minute);
+                                }
+                            }, Integer.parseInt(nightStartHour), Integer.parseInt(nightStartMinute), true);
+                    dialog.show();
+                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText(R.string.done);
+                    dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setText(R.string.cancel);
+                }
+            });
+
+            dayStartLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TimePickerDialog dialog = new TimePickerDialog(getActivity(),
+                            new TimePickerDialog.OnTimeSetListener() {
+                                @Override
+                                public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                                    settingUtil.setDayStartHour(hour > 9 ? "" + hour : "0" + hour);
+                                    settingUtil.setDayStartMinute(minute > 9 ? "" + minute : "0" + minute);
+                                }
+                            }, Integer.parseInt(dayStartHour), Integer.parseInt(dayStartMinute), true);
+                    dialog.show();
+                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText(R.string.done);
+                    dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setText(R.string.cancel);
+                }
+            });
+        }
+
+        private void setText() {
+
+            nightStartHour = settingUtil.getNightStartHour();
+            nightStartMinute = settingUtil.getNightStartMinute();
+            dayStartHour = settingUtil.getDayStartHour();
+            dayStartMinute = settingUtil.getDayStartMinute();
+
+            nightStartSummary.setText(nightStartHour + ":" + nightStartMinute);
+            dayStartSummary.setText(dayStartHour + ":" + dayStartMinute);
+
+            if (checkbox.isChecked()) {
+                nightStartLayout.setEnabled(true);
+                dayStartLayout.setEnabled(true);
+                int color = autoNightMode.getCurrentTextColor();
+                nightStartTitle.setTextColor(color);
+                nightStartSummary.setTextColor(color);
+                dayStartTitle.setTextColor(color);
+                dayStartSummary.setTextColor(color);
+            } else {
+                nightStartLayout.setEnabled(false);
+                dayStartLayout.setEnabled(false);
+                nightStartTitle.setTextColor(getResources().getColor(R.color.Grey500));
+                nightStartSummary.setTextColor(getResources().getColor(R.color.Grey500));
+                dayStartTitle.setTextColor(getResources().getColor(R.color.Grey500));
+                dayStartSummary.setTextColor(getResources().getColor(R.color.Grey500));
+            }
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+            setText();
+        }
+    }
 }

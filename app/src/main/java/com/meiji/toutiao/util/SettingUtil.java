@@ -59,8 +59,50 @@ public class SettingUtil {
         setting.edit().putBoolean("switch_nightMode", flag).apply();
     }
 
+    /**
+     * 获取是否开启自动切换夜间模式
+     */
     public boolean getIsAutoNightMode() {
         return setting.getBoolean("auto_nightMode", false);
+    }
+
+    /**
+     * 获取是否开启自动切换夜间模式
+     */
+    public void setIsAutoNightMode(boolean flag) {
+        setting.edit().putBoolean("auto_nightMode", flag).apply();
+    }
+
+    public String getNightStartHour() {
+        return setting.getString("night_startHour", "22");
+    }
+
+    public void setNightStartHour(String nightStartHour) {
+        setting.edit().putString("night_startHour", nightStartHour).apply();
+    }
+
+    public String getNightStartMinute() {
+        return setting.getString("night_startMinute", "00");
+    }
+
+    public void setNightStartMinute(String nightStartMinute) {
+        setting.edit().putString("night_startMinute", nightStartMinute).apply();
+    }
+
+    public String getDayStartHour() {
+        return setting.getString("day_startHour", "06");
+    }
+
+    public void setDayStartHour(String dayStartHour) {
+        setting.edit().putString("day_startHour", dayStartHour).apply();
+    }
+
+    public String getDayStartMinute() {
+        return setting.getString("day_startMinute", "00");
+    }
+
+    public void setDayStartMinute(String dayStartMinute) {
+        setting.edit().putString("day_startMinute", dayStartMinute).apply();
     }
 
     /**

@@ -21,7 +21,7 @@
     <string name="slidable_title">滑动返回</string>
     <string name="slidable_summary">类似 iOS 左侧滑动返回</string>
     <string name="auto_night_mode">自动切换夜间模式</string>
-    <string name="auto_night_mode_summary">22:00 ~ 6:00 自动开启夜间模式</string>
+    <string name="auto_night_mode_summary">设置切换时间</string>
 
     <!-- Menu Action -->
     <string name="action_search">搜索</string>
@@ -134,5 +134,6 @@
     <string name="permission_write_never_ask">用户设置不再询问权限申请</string>
 
     <string name="delete_all_search_history">是否删除所有搜索历史记录?</string>
+    <string name="switch_time">切换的时间</string>
 
 </resources>
