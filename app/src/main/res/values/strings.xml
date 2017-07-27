@@ -3,13 +3,13 @@
 
     <!-- Example General com.meiji.toutiao.settings -->
     <string name="switch_photo_mode">无图模式</string>
-    <string name="basic_settings">基本设置</string>
-    <string name="switch_no_photo_mode_summary">开启后在非Wifi下不加载图片</string>
+    <string name="basic_setting">基本设置</string>
+    <string name="switch_no_photo_mode_summary">开启后在非Wifi环境下不加载图片</string>
     <string name="switch_night_mode">夜间模式</string>
     <string name="switch_night_mode_summary">切换夜间皮肤</string>
     <string name="clear_cache">清除缓存</string>
     <string name="clear_cache_successfully">清理成功</string>
-    <string name="other_settings">其他设置</string>
+    <string name="other_setting">其他设置</string>
     <string name="about_settings">关于</string>
     <string name="choose_theme_color">主题颜色</string>
     <string name="choose_theme_color_summary">自定义主题颜色</string>
@@ -22,6 +22,9 @@
     <string name="slidable_summary">类似 iOS 左侧滑动返回</string>
     <string name="auto_night_mode">自动切换夜间模式</string>
     <string name="auto_night_mode_summary">设置切换时间</string>
+    <string name="video_setting">视频设置</string>
+    <string name="video_auto_play">自动播放视频</string>
+    <string name="video_auto_play_summary">开启后在Wifi环境下自动播放视频</string>
 
     <!-- Menu Action -->
     <string name="action_search">搜索</string>
@@ -119,8 +122,8 @@
     <string name="nav_switch_night_mode">切换主题</string>
     <string name="nav_setting">设置</string>
     <string name="nav_share">分享</string>
-    <string name="video_landscape">视频横屏</string>
-    <string name="video_landscape_summary">开启后强制横屏播放视频(能自动旋转就别开)</string>
+    <string name="video_force_landscape">视频横屏</string>
+    <string name="video_force_landscape_summary">开启后强制横屏播放视频(能自动旋转就别开)</string>
 
 
     <string name="button_allow">允许</string>

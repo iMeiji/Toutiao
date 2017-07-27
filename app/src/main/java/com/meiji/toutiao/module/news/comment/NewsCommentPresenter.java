@@ -8,6 +8,7 @@ import com.meiji.toutiao.bean.news.NewsCommentBean;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -47,7 +48,6 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
         RetrofitFactory.getRetrofit().create(IMobileNewsApi.class)
                 .getNewsComment(groupId, offset)
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
                 .map(new Function<NewsCommentBean, List<NewsCommentBean.DataBean.CommentBean>>() {
                     @Override
                     public List<NewsCommentBean.DataBean.CommentBean> apply(@NonNull NewsCommentBean newsCommentBean) throws Exception {
@@ -59,6 +59,7 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
                     }
                 })
                 .compose(view.<List<NewsCommentBean.DataBean.CommentBean>>bindToLife())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<NewsCommentBean.DataBean.CommentBean>>() {
                     @Override
                     public void accept(@NonNull List<NewsCommentBean.DataBean.CommentBean> list) throws Exception {

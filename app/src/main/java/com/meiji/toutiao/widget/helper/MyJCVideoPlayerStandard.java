@@ -14,7 +14,7 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
 public class MyJCVideoPlayerStandard extends JCVideoPlayerStandard {
 
-    public static onBackPressListener onBackPressListener;
+    public static onClickFullScreenListener onClickFullScreenListener;
 
     public MyJCVideoPlayerStandard(Context context) {
         super(context);
@@ -24,22 +24,22 @@ public class MyJCVideoPlayerStandard extends JCVideoPlayerStandard {
         super(context, attrs);
     }
 
-    public static void setOnBackPressListener(onBackPressListener listener) {
-        onBackPressListener = listener;
+    public static void setOnClickFullScreenListener(onClickFullScreenListener listener) {
+        onClickFullScreenListener = listener;
     }
 
     @Override
     public void onClick(View v) {
         super.onClick(v);
         int id = v.getId();
-        if (id == R.id.back || id == R.id.back_tiny || id == R.id.fullscreen) {
-            if (onBackPressListener != null) {
-                onBackPressListener.onBackPress();
+        if (id == R.id.fullscreen) {
+            if (onClickFullScreenListener != null) {
+                onClickFullScreenListener.onClickFullScreen();
             }
         }
     }
 
-    public interface onBackPressListener {
-        void onBackPress();
+    public interface onClickFullScreenListener {
+        void onClickFullScreen();
     }
 }

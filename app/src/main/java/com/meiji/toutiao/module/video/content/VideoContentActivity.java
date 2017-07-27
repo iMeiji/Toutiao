@@ -3,18 +3,21 @@ package com.meiji.toutiao.module.video.content;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.InitApp;
@@ -35,7 +38,10 @@ import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import java.util.List;
 
+import fm.jiecao.jcvideoplayer_lib.JCUserAction;
+import fm.jiecao.jcvideoplayer_lib.JCUserActionStandard;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 
@@ -43,7 +49,7 @@ import me.drakeet.multitype.MultiTypeAdapter;
  * Created by Meiji on 2017/3/30.
  */
 
-public class VideoContentActivity extends BaseActivity implements View.OnClickListener, IVideoContent.View {
+public class VideoContentActivity extends BaseActivity implements IVideoContent.View {
 
     public static final String TAG = "VideoContentActivity";
     protected boolean canLoadMore = false;
@@ -51,15 +57,17 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     private String groupId;
     private String itemId;
     private String videoId;
-    private String videoUrls;
     private String videoTitle;
+    private String shareUrl;
     private MultiNewsArticleDataBean dataBean;
     private Items oldItems = new Items();
 
-    private ImageView iv_image_url;
-    private FloatingActionButton fabPlay;
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
+    private FloatingActionButton fab;
+    private MyJCVideoPlayerStandard jcVideo;
     private IVideoContent.Presenter presenter;
+    private int currentAction;
 
     public static void launch(MultiNewsArticleDataBean bean) {
         InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, VideoContentActivity.class)
@@ -73,7 +81,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-        setContentView(R.layout.fragment_video_content);
+        setContentView(R.layout.fragment_video_content_new);
         presenter = new VideoContentPresenter(this);
         initView();
         initData();
@@ -88,7 +96,7 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
                 if (null != dataBean.getVideo_detail_info().getDetail_video_large_image()) {
                     String image = dataBean.getVideo_detail_info().getDetail_video_large_image().getUrl();
                     if (!TextUtils.isEmpty(image)) {
-                        ImageLoader.loadCenterCrop(this, image, iv_image_url, R.color.viewBackground, R.mipmap.error_image);
+                        ImageLoader.loadCenterCrop(this, image, jcVideo.thumbImageView, R.color.viewBackground, R.mipmap.error_image);
                     }
                 }
             }
@@ -96,21 +104,15 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
             this.itemId = dataBean.getItem_id() + "";
             this.videoId = dataBean.getVideo_id();
             this.videoTitle = dataBean.getTitle();
+            this.shareUrl = dataBean.getDisplay_url();
             oldItems.add(dataBean);
         } catch (NullPointerException e) {
             ErrorAction.print(e);
         }
+
     }
 
     private void initView() {
-        initToolBar((Toolbar) findViewById(R.id.toolbar), true, "");
-
-        iv_image_url = (ImageView) findViewById(R.id.iv_image_url);
-        iv_image_url.setOnClickListener(this);
-        fabPlay = (FloatingActionButton) findViewById(R.id.fab_play);
-        fabPlay.setOnClickListener(this);
-        fabPlay.setBackgroundTintList(ColorStateList.valueOf(SettingUtil.getInstance().getColor()));
-
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -127,43 +129,53 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
                 }
             }
         });
-        MyJCVideoPlayerStandard.setOnBackPressListener(new MyJCVideoPlayerStandard.onBackPressListener() {
+
+        jcVideo = (MyJCVideoPlayerStandard) findViewById(R.id.jc_video);
+
+        MyJCVideoPlayerStandard.setOnClickFullScreenListener(new MyJCVideoPlayerStandard.onClickFullScreenListener() {
             @Override
-            public void onBackPress() {
-                View decorView = getWindow().getDecorView();
-                decorView.setSystemUiVisibility(0);
-                if (slidrInterface != null) {
-                    slidrInterface.unlock();
+            public void onClickFullScreen() {
+                if (currentAction == JCUserAction.ON_ENTER_FULLSCREEN && SettingUtil.getInstance().getIsVideoForceLandscape()) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 }
+            }
+        });
+
+        progressBar = (ProgressBar) findViewById(R.id.pb_progress);
+        int color = SettingUtil.getInstance().getColor();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
+            DrawableCompat.setTint(wrapDrawable, color);
+            this.progressBar.setIndeterminateDrawable(DrawableCompat.unwrap(wrapDrawable));
+        } else {
+            this.progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        }
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setBackgroundTintList(ColorStateList.valueOf(SettingUtil.getInstance().getColor()));
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent shareIntent = new Intent()
+                        .setAction(Intent.ACTION_SEND)
+                        .setType("text/plain")
+                        .putExtra(Intent.EXTRA_TEXT, videoTitle + "\n" + shareUrl);
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
+            }
+        });
+        jcVideo.thumbImageView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                fab.setVisibility(View.GONE);
+                return false;
             }
         });
     }
 
     @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.fab_play || id == R.id.iv_image_url) {
-            MyJCVideoPlayerStandard.startFullscreen(this, MyJCVideoPlayerStandard.class, videoUrls, videoTitle);
-            View decorView = getWindow().getDecorView();
-            int uiOptions = 0;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-            } else {
-                uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-            }
-            decorView.setSystemUiVisibility(uiOptions);
-            if (SettingUtil.getInstance().getVideoOrientation()) {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            }
-            if (slidrInterface != null) {
-                slidrInterface.lock();
-            }
-        }
-    }
-
-    @Override
     public void onLoadData() {
+        onShowLoading();
         presenter.doLoadData(groupId, itemId);
         presenter.doLoadVideoData(videoId);
     }
@@ -182,12 +194,12 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onShowLoading() {
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onHideLoading() {
-
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -228,7 +240,56 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onSetVideoPlay(String urls) {
-        videoUrls = urls;
+        jcVideo.setUp(urls, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, videoTitle);
+        if (SettingUtil.getInstance().getIsVideoAutoPlay()) {
+            jcVideo.startButton.performClick();
+        }
+
+        // 设置监听事件 判断是否进入全屏
+        JCVideoPlayer.setJcUserAction(new JCUserAction() {
+            @Override
+            public void onEvent(int type, String url, int screen, Object... objects) {
+                if (type == JCUserActionStandard.ON_CLICK_START_THUMB ||
+                        type == JCUserAction.ON_CLICK_START_ICON ||
+                        type == JCUserAction.ON_CLICK_RESUME ||
+                        type == JCUserAction.ON_CLICK_START_AUTO_COMPLETE) {
+                    fab.setVisibility(View.GONE);
+                }
+
+                if (type == JCUserAction.ON_CLICK_PAUSE || type == JCUserAction.ON_AUTO_COMPLETE) {
+                    fab.setVisibility(View.VISIBLE);
+                }
+
+                if (type == JCUserAction.ON_ENTER_FULLSCREEN) {
+                    currentAction = JCUserAction.ON_ENTER_FULLSCREEN;
+
+                    View decorView = getWindow().getDecorView();
+                    int uiOptions = 0;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                        uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                    } else {
+                        uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+                    }
+                    decorView.setSystemUiVisibility(uiOptions);
+
+                    if (slidrInterface != null) {
+                        slidrInterface.lock();
+                    }
+                }
+
+                if (type == JCUserAction.ON_QUIT_FULLSCREEN) {
+                    currentAction = JCUserAction.ON_QUIT_FULLSCREEN;
+
+                    View decorView = getWindow().getDecorView();
+                    decorView.setSystemUiVisibility(0);
+
+                    if (slidrInterface != null) {
+                        slidrInterface.unlock();
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -240,12 +301,6 @@ public class VideoContentActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onBackPressed() {
         if (JCVideoPlayer.backPress()) {
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(0);
-            if (slidrInterface != null) {
-                slidrInterface.unlock();
-            }
-//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             return;
         }
         super.onBackPressed();

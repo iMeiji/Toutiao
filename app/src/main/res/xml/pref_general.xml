@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
-        android:title="@string/basic_settings">
+        android:title="@string/basic_setting">
 
         <CheckBoxPreference
             android:defaultValue="false"
@@ -19,7 +19,24 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/other_settings">
+        android:title="@string/video_setting">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="video_force_landscape"
+            android:summary="@string/video_force_landscape_summary"
+            android:title="@string/video_force_landscape"/>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="video_auto_play"
+            android:summary="@string/video_auto_play_summary"
+            android:title="@string/video_auto_play"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/other_setting">
 
         <com.meiji.toutiao.widget.IconListPreference
             android:defaultValue="0"
@@ -50,15 +67,10 @@
             android:summary="@string/nav_bar_coloration_summary"
             android:title="@string/nav_bar_coloration"/>
 
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="video_force_landscape"
-            android:summary="@string/video_landscape_summary"
-            android:title="@string/video_landscape"/>
-
         <Preference
             android:key="clearCache"
             android:title="@string/clear_cache"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

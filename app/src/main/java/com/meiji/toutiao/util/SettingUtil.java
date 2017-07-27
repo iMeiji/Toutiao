@@ -115,7 +115,7 @@ public class SettingUtil {
     /**
      * 获取是否开启视频强制横屏
      */
-    public boolean getVideoOrientation() {
+    public boolean getIsVideoForceLandscape() {
         return setting.getBoolean("video_force_landscape", false);
     }
 
@@ -133,6 +133,13 @@ public class SettingUtil {
     public int getSlidable() {
         String s = setting.getString("slidable", "1");
         return Integer.parseInt(s);
+    }
+
+    /**
+     * 获取是否开启视频自动播放
+     */
+    public boolean getIsVideoAutoPlay() {
+        return setting.getBoolean("video_auto_play", false) && NetWorkUtil.isWifiConnected(InitApp.AppContext);
     }
 
     private static final class SettingsUtilInstance {

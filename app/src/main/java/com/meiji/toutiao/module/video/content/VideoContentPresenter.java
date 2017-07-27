@@ -12,6 +12,7 @@ import com.meiji.toutiao.module.news.comment.NewsCommentPresenter;
 import java.util.Random;
 import java.util.zip.CRC32;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -58,7 +59,6 @@ public class VideoContentPresenter extends NewsCommentPresenter implements IVide
         String url = getVideoContentApi(videoid);
         RetrofitFactory.getRetrofit().create(IVideoApi.class).getVideoContent(url)
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
                 .map(new Function<VideoContentBean, String>() {
                     @Override
                     public String apply(@NonNull VideoContentBean videoContentBean) throws Exception {
@@ -87,15 +87,18 @@ public class VideoContentPresenter extends NewsCommentPresenter implements IVide
                     }
                 })
                 .compose(view.<String>bindToLife())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(@NonNull String s) throws Exception {
                         view.onSetVideoPlay(s);
+                        view.onHideLoading();
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
                         view.onShowNetError();
+                        view.onHideLoading();
                         ErrorAction.print(throwable);
                     }
                 });

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/viewBackground"
+    android:fitsSystemWindows="true">
+
+    <com.meiji.toutiao.widget.helper.MyJCVideoPlayerStandard
+        android:id="@+id/jc_video"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:fitsSystemWindows="true"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="196dp"/>
+
+    <ProgressBar
+        android:id="@+id/pb_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_margin="16dp"
+        app:elevation="16dp"
+        app:layout_anchor="@id/jc_video"
+        app:layout_anchorGravity="bottom|end"
+        app:layout_behavior="com.meiji.toutiao.widget.behavior.ScrollAwareFABBehavior"
+        app:srcCompat="@drawable/ic_share_white_24dp"/>
+
+</android.support.design.widget.CoordinatorLayout>
