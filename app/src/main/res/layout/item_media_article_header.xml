@@ -39,8 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="新京报"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/textColorPrimary"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
         <TextView
             android:id="@+id/tv_desc"
@@ -49,8 +48,7 @@
             android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="慧眼看中国，我们愿做你的4D眼镜。独家调查、深度报道，在这里，新京报能让你得到不一样的满足。"
-            android:textColor="@color/textColorPrimary"/>
+            android:text="慧眼看中国，我们愿做你的4D眼镜。独家调查、深度报道，在这里，新京报能让你得到不一样的满足。"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -67,7 +65,6 @@
                 android:gravity="center"
                 android:padding="8dp"
                 android:text="订阅"
-                android:textColor="@color/textColorPrimary"
                 android:textSize="16sp"
                 android:textStyle="bold"/>
 
@@ -76,8 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:text="654244 订阅量"
-                android:textColor="@color/textColorPrimary"/>
+                android:text="654244 订阅量"/>
 
         </LinearLayout>
     </LinearLayout>

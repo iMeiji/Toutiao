@@ -21,6 +21,7 @@ import com.meiji.toutiao.module.news.NewsTabLayout;
 import com.meiji.toutiao.module.photo.PhotoTabLayout;
 import com.meiji.toutiao.module.search.SearchActivity;
 import com.meiji.toutiao.module.video.VideoTabLayout;
+import com.meiji.toutiao.setting.SettingActivity;
 import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.widget.helper.BottomNavigationViewHelper;
 

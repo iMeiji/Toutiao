@@ -32,5 +32,7 @@ interface IPhotoArticle {
          * 设置适配器
          */
         void doSetAdapter(List<PhotoArticleBean.DataBean> dataBeen);
+
+        void doShowNoMore();
     }
 }

@@ -86,7 +86,7 @@
             android:theme="@style/AppTheme.NoActionBar.Slidable"/>
 
         <activity
-            android:name="com.meiji.toutiao.SettingActivity"
+            android:name="com.meiji.toutiao.setting.SettingActivity"
             android:configChanges="orientation|screenSize|uiMode"
             android:label="@string/title_settings"
             android:theme="@style/AppTheme.NoActionBar.Slidable">

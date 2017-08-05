@@ -49,8 +49,10 @@ public class InitApp extends Application {
 
             if (currentValue >= nightValue || currentValue <= dayValue) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                settingUtil.setIsNightMode(true);
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                settingUtil.setIsNightMode(false);
             }
 
         } else {

@@ -266,7 +266,7 @@ WebView无图模式(beta)
 - 栏目位置调换后不 recreate
 - 浏览历史
 - 收藏夹
-- 打开视频页面后直接播放视频, 提供设置选项
+
 
 ## Libraries
 - [Android Support Libraries](https://developer.android.com/topic/libraries/support-library/index.html)

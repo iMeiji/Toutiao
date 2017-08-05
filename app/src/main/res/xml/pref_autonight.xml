@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="auto_nightMode"
+        android:summary="@string/auto_night_mode_subsummary"
+        android:title="@string/auto_night_mode"/>
+
+    <PreferenceCategory
+        android:dependency="auto_nightMode"
+        android:title="@string/auto_night_category"/>
+
+    <Preference
+        android:dependency="auto_nightMode"
+        android:key="auto_night"
+        android:title="@string/auto_night_start"/>
+
+    <Preference
+        android:dependency="auto_nightMode"
+        android:key="auto_day"
+        android:title="@string/auto_day_start"/>
+
+</PreferenceScreen>

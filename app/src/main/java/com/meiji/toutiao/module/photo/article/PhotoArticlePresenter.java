@@ -81,7 +81,11 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
                 .subscribe(new Consumer<List<PhotoArticleBean.DataBean>>() {
                     @Override
                     public void accept(@NonNull List<PhotoArticleBean.DataBean> list) throws Exception {
-                        doSetAdapter(list);
+                        if (null != list && list.size() > 0) {
+                            doSetAdapter(list);
+                        } else {
+                            doShowNoMore();
+                        }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -118,5 +122,11 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
     public void doShowNetError() {
         view.onHideLoading();
         view.onShowNetError();
+    }
+
+    @Override
+    public void doShowNoMore() {
+        view.onHideLoading();
+        view.onShowNoMore();
     }
 }

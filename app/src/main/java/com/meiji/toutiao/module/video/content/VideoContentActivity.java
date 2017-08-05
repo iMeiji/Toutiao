@@ -243,6 +243,7 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
         jcVideo.setUp(urls, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, videoTitle);
         if (SettingUtil.getInstance().getIsVideoAutoPlay()) {
             jcVideo.startButton.performClick();
+            fab.setVisibility(View.GONE);
         }
 
         // 设置监听事件 判断是否进入全屏
