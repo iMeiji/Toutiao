@@ -9,7 +9,7 @@
     </string-array>
 
     <string-array name="photo_id">
-        <item>gallery_detail</item>
+        <item>组图</item>
         <item>gallery_old_picture</item>
         <item>gallery_story</item>
         <item>gallery_photograthy</item>

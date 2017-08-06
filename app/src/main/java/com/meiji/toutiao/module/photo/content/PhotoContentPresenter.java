@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.bumptech.glide.Glide;
@@ -44,7 +45,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.HttpUrl;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
@@ -154,9 +154,13 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                                     .getNewsContentRedirectUrl(shareUrl).execute();
                             // 获取重定向后的 URL 用于拼凑API
                             if (response.isSuccessful()) {
-                                HttpUrl httpUrl = response.raw().request().url();
-                                String api = httpUrl + "info/";
-                                e.onNext(api);
+                                String httpUrl = response.raw().request().url().toString();
+                                if (!TextUtils.isEmpty(httpUrl) && httpUrl.contains("toutiao")) {
+                                    String api = httpUrl + "info/";
+                                    e.onNext(api);
+                                } else {
+                                    e.onError(new Throwable());
+                                }
                             } else {
                                 e.onError(new Throwable());
                             }
@@ -363,9 +367,13 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                                     .getNewsContentRedirectUrl(shareUrl).execute();
                             // 获取重定向后的 URL 用于拼凑API
                             if (response.isSuccessful()) {
-                                HttpUrl httpUrl = response.raw().request().url();
-                                String api = httpUrl + "info/";
-                                e.onNext(api);
+                                String httpUrl = response.raw().request().url().toString();
+                                if (!TextUtils.isEmpty(httpUrl) && httpUrl.contains("toutiao")) {
+                                    String api = httpUrl + "info/";
+                                    e.onNext(api);
+                                } else {
+                                    e.onComplete();
+                                }
                             } else {
                                 e.onComplete();
                             }

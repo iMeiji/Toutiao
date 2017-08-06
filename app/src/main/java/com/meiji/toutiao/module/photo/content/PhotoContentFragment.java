@@ -92,6 +92,9 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
         itemId = dataBean.getGroup_id() + "";
         mediaUrl = dataBean.getMedia_url();
         presenter.doLoadData(shareUrl);
+        if (!shareUrl.contains("toutiao")) {
+            shareUrl = "http://toutiao.com" + shareUrl;
+        }
     }
 
     @Override

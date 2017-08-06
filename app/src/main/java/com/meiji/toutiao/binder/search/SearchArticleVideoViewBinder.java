@@ -38,7 +38,6 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import me.drakeet.multitype.ItemViewBinder;
-import okhttp3.HttpUrl;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
@@ -122,9 +121,15 @@ public class SearchArticleVideoViewBinder extends ItemViewBinder<MultiNewsArticl
                                         .getNewsContentRedirectUrl(url).execute();
                                 // 获取重定向后的 URL 用于拼凑API
                                 if (response.isSuccessful()) {
-                                    HttpUrl httpUrl = response.raw().request().url();
-                                    String api = httpUrl + "info/";
-                                    return Observable.just(api);
+                                    String httpUrl = response.raw().request().url().toString();
+                                    if (!TextUtils.isEmpty(httpUrl) && httpUrl.contains("toutiao")) {
+                                        String api = httpUrl + "info/";
+                                        return Observable.just(api);
+                                    } else {
+                                        return null;
+                                    }
+                                } else {
+                                    return null;
                                 }
                             } catch (Exception e) {
                                 ErrorAction.print(e);
