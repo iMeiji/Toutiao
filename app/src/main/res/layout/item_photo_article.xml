@@ -39,6 +39,22 @@
                 android:text="新闻源 - 1小时前"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_dots"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="4dp"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/ic_dots_horizontal_grey500_24dp"/>
+            </RelativeLayout>
+
         </LinearLayout>
 
         <LinearLayout

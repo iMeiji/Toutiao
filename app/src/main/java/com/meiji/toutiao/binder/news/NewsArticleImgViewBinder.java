@@ -1,8 +1,10 @@
 package com.meiji.toutiao.binder.news;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +38,7 @@ public class NewsArticleImgViewBinder extends ItemViewBinder<MultiNewsArticleDat
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull NewsArticleImgViewBinder.ViewHolder holder, @NonNull final MultiNewsArticleDataBean item) {
+    protected void onBindViewHolder(@NonNull final NewsArticleImgViewBinder.ViewHolder holder, @NonNull final MultiNewsArticleDataBean item) {
 
         try {
             String imgUrl = "http://p3.pstatp.com/";
@@ -68,6 +70,15 @@ public class NewsArticleImgViewBinder extends ItemViewBinder<MultiNewsArticleDat
             holder.tv_title.setText(tv_title);
             holder.tv_abstract.setText(tv_abstract);
             holder.tv_extra.setText(tv_source + " - " + tv_comment_count + " - " + tv_datetime);
+            holder.iv_dots.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popupMenu = new PopupMenu(holder.itemView.getContext(),
+                            holder.iv_dots, Gravity.END, R.attr.actionOverflowMenuStyle, 0);
+                    popupMenu.inflate(R.menu.menu_share);
+                    popupMenu.show();
+                }
+            });
             final String finalImgUrl = imgUrl;
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -87,6 +98,7 @@ public class NewsArticleImgViewBinder extends ItemViewBinder<MultiNewsArticleDat
         private TextView tv_title;
         private TextView tv_abstract;
         private TextView tv_extra;
+        private ImageView iv_dots;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -95,6 +107,7 @@ public class NewsArticleImgViewBinder extends ItemViewBinder<MultiNewsArticleDat
             this.tv_title = itemView.findViewById(R.id.tv_title);
             this.tv_abstract = itemView.findViewById(R.id.tv_abstract);
             this.tv_extra = itemView.findViewById(R.id.tv_extra);
+            this.iv_dots = itemView.findViewById(R.id.iv_dots);
         }
     }
 }
