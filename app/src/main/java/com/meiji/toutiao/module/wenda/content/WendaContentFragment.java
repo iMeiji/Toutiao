@@ -1,6 +1,5 @@
 package com.meiji.toutiao.module.wenda.content;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -8,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
@@ -128,11 +128,7 @@ public class WendaContentFragment extends BaseListFragment<IWendaContent.Present
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_wenda_share) {
-            Intent shareIntent = new Intent()
-                    .setAction(Intent.ACTION_SEND)
-                    .setType("text/plain")
-                    .putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + shareUrl);
-            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
+            IntentAction.send(getActivity(), shareTitle + "\n" + shareUrl);
         }
         return super.onOptionsItemSelected(item);
     }

@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.meiji.toutiao.ErrorAction;
+import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.base.BaseFragment;
@@ -261,11 +262,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
                 break;
 
             case R.id.action_share:
-                Intent shareIntent = new Intent()
-                        .setAction(Intent.ACTION_SEND)
-                        .setType("text/plain")
-                        .putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + shareUrl);
-                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
+                IntentAction.send(getActivity(), shareTitle + "\n" + shareUrl);
                 break;
 
             case R.id.action_open_in_browser:

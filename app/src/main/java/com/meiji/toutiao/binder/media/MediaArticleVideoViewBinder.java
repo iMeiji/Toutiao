@@ -2,9 +2,12 @@ package com.meiji.toutiao.binder.media;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,6 +16,7 @@ import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.meiji.toutiao.ErrorAction;
+import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
@@ -45,8 +49,10 @@ public class MediaArticleVideoViewBinder extends ItemViewBinder<MultiMediaArticl
 
     @Override
     protected void onBindViewHolder(@NonNull final ViewHolder holder, @NonNull final MultiMediaArticleBean.DataBean item) {
+
+        final Context context = holder.itemView.getContext();
+
         try {
-            final Context context = holder.itemView.getContext();
             List<MultiMediaArticleBean.DataBean.ImageListBean> imageList = item.getImage_list();
             String url = null;
             if (imageList != null && imageList.size() > 0) {
@@ -120,6 +126,25 @@ public class MediaArticleVideoViewBinder extends ItemViewBinder<MultiMediaArticl
                             ErrorAction.print(throwable);
                         }
                     });
+            holder.iv_dots.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popupMenu = new PopupMenu(context,
+                            holder.iv_dots, Gravity.END, 0, R.style.MyPopupMenu);
+                    popupMenu.inflate(R.menu.menu_share);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menu) {
+                            int itemId = menu.getItemId();
+                            if (itemId == R.id.action_share) {
+                                IntentAction.send(context, item.getTitle() + "\n" + item.getDisplay_url());
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
         } catch (Exception e) {
             ErrorAction.print(e);
         }
@@ -131,6 +156,8 @@ public class MediaArticleVideoViewBinder extends ItemViewBinder<MultiMediaArticl
         private TextView tv_title;
         private ImageView iv_video_image;
         private TextView tv_video_time;
+        private ImageView iv_dots;
+
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -138,6 +165,7 @@ public class MediaArticleVideoViewBinder extends ItemViewBinder<MultiMediaArticl
             this.tv_title = itemView.findViewById(R.id.tv_title);
             this.iv_video_image = itemView.findViewById(R.id.iv_video_image);
             this.tv_video_time = itemView.findViewById(R.id.tv_video_time);
+            this.iv_dots = itemView.findViewById(R.id.iv_dots);
         }
     }
 }

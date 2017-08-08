@@ -1,15 +1,20 @@
 package com.meiji.toutiao.binder.media;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.meiji.toutiao.ErrorAction;
+import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
@@ -37,7 +42,9 @@ public class MediaArticleImgViewBinder extends ItemViewBinder<MultiMediaArticleB
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull MediaArticleImgViewBinder.ViewHolder holder, @NonNull final MultiMediaArticleBean.DataBean item) {
+    protected void onBindViewHolder(@NonNull final MediaArticleImgViewBinder.ViewHolder holder, @NonNull final MultiMediaArticleBean.DataBean item) {
+
+        final Context context = holder.itemView.getContext();
 
         try {
             String imgUrl = "";
@@ -45,11 +52,11 @@ public class MediaArticleImgViewBinder extends ItemViewBinder<MultiMediaArticleB
             if (imageList != null && imageList.size() > 0) {
                 String url = imageList.get(0).getUrl();
                 if (!TextUtils.isEmpty(url)) {
-                    if (NetWorkUtil.isWifiConnected(holder.itemView.getContext())) {
+                    if (NetWorkUtil.isWifiConnected(context)) {
                         // 加载高清图
                         url = url.replace("list", "large");
                     }
-                    ImageLoader.loadCenterCrop(holder.itemView.getContext(), url, holder.iv_image, R.color.viewBackground);
+                    ImageLoader.loadCenterCrop(context, url, holder.iv_image, R.color.viewBackground);
                     imgUrl = imageList.get(0).getUrl().replace("list", "large");
                 }
             }
@@ -82,6 +89,25 @@ public class MediaArticleImgViewBinder extends ItemViewBinder<MultiMediaArticleB
                     NewsContentActivity.launch(bean, finalImgUrl);
                 }
             });
+            holder.iv_dots.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popupMenu = new PopupMenu(context,
+                            holder.iv_dots, Gravity.END, 0, R.style.MyPopupMenu);
+                    popupMenu.inflate(R.menu.menu_share);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menu) {
+                            int itemId = menu.getItemId();
+                            if (itemId == R.id.action_share) {
+                                IntentAction.send(context, item.getTitle() + "\n" + item.getDisplay_url());
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
         } catch (Exception e) {
             ErrorAction.print(e);
         }
@@ -93,6 +119,7 @@ public class MediaArticleImgViewBinder extends ItemViewBinder<MultiMediaArticleB
         private TextView tv_title;
         private TextView tv_abstract;
         private TextView tv_extra;
+        private ImageView iv_dots;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -100,6 +127,7 @@ public class MediaArticleImgViewBinder extends ItemViewBinder<MultiMediaArticleB
             this.tv_title = itemView.findViewById(R.id.tv_title);
             this.tv_abstract = itemView.findViewById(R.id.tv_abstract);
             this.tv_extra = itemView.findViewById(R.id.tv_extra);
+            this.iv_dots = itemView.findViewById(R.id.iv_dots);
         }
     }
 }

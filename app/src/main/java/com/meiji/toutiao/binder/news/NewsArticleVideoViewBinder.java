@@ -1,15 +1,20 @@
 package com.meiji.toutiao.binder.news;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.meiji.toutiao.ErrorAction;
+import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.video.content.VideoContentActivity;
@@ -35,13 +40,16 @@ public class NewsArticleVideoViewBinder extends ItemViewBinder<MultiNewsArticleD
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull NewsArticleVideoViewBinder.ViewHolder holder, @NonNull final MultiNewsArticleDataBean item) {
+    protected void onBindViewHolder(@NonNull final NewsArticleVideoViewBinder.ViewHolder holder, @NonNull final MultiNewsArticleDataBean item) {
+
+        final Context context = holder.itemView.getContext();
+
         try {
             if (null != item.getVideo_detail_info()) {
                 if (null != item.getVideo_detail_info().getDetail_video_large_image()) {
                     String image = item.getVideo_detail_info().getDetail_video_large_image().getUrl();
                     if (!TextUtils.isEmpty(image)) {
-                        ImageLoader.loadCenterCrop(holder.itemView.getContext(), image, holder.iv_video_image, R.color.viewBackground, R.mipmap.error_image);
+                        ImageLoader.loadCenterCrop(context, image, holder.iv_video_image, R.color.viewBackground, R.mipmap.error_image);
                     }
                 }
             } else {
@@ -51,7 +59,7 @@ public class NewsArticleVideoViewBinder extends ItemViewBinder<MultiNewsArticleD
             if (null != item.getUser_info()) {
                 String avatar_url = item.getUser_info().getAvatar_url();
                 if (!TextUtils.isEmpty(avatar_url)) {
-                    ImageLoader.loadCenterCrop(holder.itemView.getContext(), avatar_url, holder.iv_media, R.color.viewBackground);
+                    ImageLoader.loadCenterCrop(context, avatar_url, holder.iv_media, R.color.viewBackground);
                 }
             }
 
@@ -73,20 +81,28 @@ public class NewsArticleVideoViewBinder extends ItemViewBinder<MultiNewsArticleD
             holder.tv_title.setText(tv_title);
             holder.tv_extra.setText(tv_source + " - " + tv_comment_count + " - " + tv_datetime);
             holder.tv_video_time.setText(tv_video_time);
+            holder.iv_dots.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popupMenu = new PopupMenu(context,
+                            holder.iv_dots, Gravity.END, 0, R.style.MyPopupMenu);
+                    popupMenu.inflate(R.menu.menu_share);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menu) {
+                            int itemId = menu.getItemId();
+                            if (itemId == R.id.action_share) {
+                                IntentAction.send(context, item.getTitle() + "\n" + item.getShare_url());
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    VideoArticleBean.DataBean dataBean = new VideoArticleBean.DataBean();
-//                    dataBean.setTitle(item.getTitle());
-//                    dataBean.setGroup_id(item.getGroup_id());
-//                    dataBean.setItem_id(item.getGroup_id());
-//                    dataBean.setVideo_id(item.getVideo_id());
-//                    dataBean.setAbstractX(item.getAbstractX());
-//                    dataBean.setSource(item.getSource());
-//                    dataBean.setVideo_duration_str(item.getVideo_duration() / 60 + "");
-//                    String url = item.getVideo_detail_info().getDetail_video_large_image().getUrl();
-//                    VideoContentActivity.launch(dataBean, url);
-//                    Log.d(TAG, "doOnClickItem: " + url);
                     VideoContentActivity.launch(item);
                 }
             });
@@ -102,6 +118,7 @@ public class NewsArticleVideoViewBinder extends ItemViewBinder<MultiNewsArticleD
         private TextView tv_title;
         private ImageView iv_video_image;
         private TextView tv_video_time;
+        private ImageView iv_dots;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -110,6 +127,7 @@ public class NewsArticleVideoViewBinder extends ItemViewBinder<MultiNewsArticleD
             this.tv_title = itemView.findViewById(R.id.tv_title);
             this.iv_video_image = itemView.findViewById(R.id.iv_video_image);
             this.tv_video_time = itemView.findViewById(R.id.tv_video_time);
+            this.iv_dots = itemView.findViewById(R.id.iv_dots);
         }
     }
 }

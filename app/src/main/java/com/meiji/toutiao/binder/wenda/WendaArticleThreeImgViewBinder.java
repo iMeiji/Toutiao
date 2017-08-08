@@ -1,5 +1,6 @@
 package com.meiji.toutiao.binder.wenda;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -33,6 +34,9 @@ public class WendaArticleThreeImgViewBinder extends ItemViewBinder<WendaArticleD
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull final WendaArticleDataBean item) {
+
+        Context context = holder.itemView.getContext();
+
         try {
             int size = item.getExtraBean().getWenda_image().getThree_image_list().size();
             String[] ivs = new String[size];
@@ -41,16 +45,16 @@ public class WendaArticleThreeImgViewBinder extends ItemViewBinder<WendaArticleD
             }
             switch (ivs.length) {
                 case 1:
-                    ImageLoader.loadCenterCrop(holder.itemView.getContext(), ivs[0], holder.iv_0, R.color.viewBackground);
+                    ImageLoader.loadCenterCrop(context, ivs[0], holder.iv_0, R.color.viewBackground);
                     break;
                 case 2:
-                    ImageLoader.loadCenterCrop(holder.itemView.getContext(), ivs[0], holder.iv_0, R.color.viewBackground);
-                    ImageLoader.loadCenterCrop(holder.itemView.getContext(), ivs[1], holder.iv_1, R.color.viewBackground);
+                    ImageLoader.loadCenterCrop(context, ivs[0], holder.iv_0, R.color.viewBackground);
+                    ImageLoader.loadCenterCrop(context, ivs[1], holder.iv_1, R.color.viewBackground);
                     break;
                 case 3:
-                    ImageLoader.loadCenterCrop(holder.itemView.getContext(), ivs[0], holder.iv_0, R.color.viewBackground);
-                    ImageLoader.loadCenterCrop(holder.itemView.getContext(), ivs[1], holder.iv_1, R.color.viewBackground);
-                    ImageLoader.loadCenterCrop(holder.itemView.getContext(), ivs[2], holder.iv_2, R.color.viewBackground);
+                    ImageLoader.loadCenterCrop(context, ivs[0], holder.iv_0, R.color.viewBackground);
+                    ImageLoader.loadCenterCrop(context, ivs[1], holder.iv_1, R.color.viewBackground);
+                    ImageLoader.loadCenterCrop(context, ivs[2], holder.iv_2, R.color.viewBackground);
                     break;
             }
 

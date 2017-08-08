@@ -3,7 +3,6 @@ package com.meiji.toutiao.binder.news;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.meiji.toutiao.ErrorAction;
+import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsCommentBean;
 import com.meiji.toutiao.module.base.BaseActivity;
@@ -38,24 +38,26 @@ public class NewsCommentViewBinder extends ItemViewBinder<NewsCommentBean.DataBe
 
     @Override
     protected void onBindViewHolder(@NonNull final ViewHolder holder, @NonNull final NewsCommentBean.DataBean.CommentBean item) {
+
+        final Context context = holder.itemView.getContext();
+
         try {
             String iv_avatar = item.getUser_profile_image_url();
             String tv_username = item.getUser_name();
             String tv_text = item.getText();
             int tv_likes = item.getDigg_count();
 
-            ImageLoader.loadCenterCrop(holder.itemView.getContext(), iv_avatar, holder.iv_avatar, R.color.viewBackground);
+            ImageLoader.loadCenterCrop(context, iv_avatar, holder.iv_avatar, R.color.viewBackground);
             holder.tv_username.setText(tv_username);
             holder.tv_text.setText(tv_text);
             holder.tv_likes.setText(tv_likes + "赞");
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final BaseActivity context = (BaseActivity) holder.itemView.getContext();
                     final String content = item.getText();
                     final BottomSheetDialogFixed dialog = new BottomSheetDialogFixed(context);
-                    dialog.setOwnerActivity(context);
-                    View view = context.getLayoutInflater().inflate(R.layout.item_comment_action_sheet, null);
+                    dialog.setOwnerActivity((BaseActivity) context);
+                    View view = ((BaseActivity) context).getLayoutInflater().inflate(R.layout.item_comment_action_sheet, null);
                     view.findViewById(R.id.layout_copy_text).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -69,11 +71,7 @@ public class NewsCommentViewBinder extends ItemViewBinder<NewsCommentBean.DataBe
                     view.findViewById(R.id.layout_share_text).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent shareIntent = new Intent()
-                                    .setAction(Intent.ACTION_SEND)
-                                    .setType("text/plain")
-                                    .putExtra(Intent.EXTRA_TEXT, content);
-                            context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.share_to)));
+                            IntentAction.send(context, content);
                             dialog.dismiss();
                         }
                     });

@@ -22,14 +22,35 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="你们当地那些混黑社会的人现在都怎么样了？"
-                android:textStyle="bold"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="22dp"
+                    android:layout_marginRight="22dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="你们当地那些混黑社会的人现在都怎么样了？"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:id="@+id/iv_dots"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="4dp"
+                    android:scaleType="center"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_dots_horizontal_grey500_24dp"/>
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tv_content"
@@ -37,7 +58,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:ellipsize="end"
-                android:maxLines="3"/>
+                android:maxLines="3"
+                android:text="美国总统当选人特朗普日前暗示，可能拿美国的“一中政策”当谈判筹码，与中国大陆就诸如人民币汇率及南海等争议讨价还价。"/>
 
         </LinearLayout>
 

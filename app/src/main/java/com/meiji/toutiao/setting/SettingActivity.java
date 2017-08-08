@@ -19,6 +19,7 @@ import android.view.MenuItem;
 
 import com.afollestad.materialdialogs.color.CircleView;
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
+import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.util.SettingUtil;
@@ -85,11 +86,7 @@ public class SettingActivity extends BaseActivity implements ColorChooserDialog.
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_share) {
-            Intent shareIntent = new Intent()
-                    .setAction(Intent.ACTION_SEND)
-                    .setType("text/plain")
-                    .putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_text) + getString(R.string.source_code_url));
-            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
+            IntentAction.send(SettingActivity.this, getString(R.string.share_app_text) + getString(R.string.source_code_url));
         }
         return super.onOptionsItemSelected(item);
     }

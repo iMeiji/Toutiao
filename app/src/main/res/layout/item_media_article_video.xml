@@ -17,9 +17,59 @@
         android:padding="16dp">
 
         <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="22dp"
+                    android:layout_marginRight="22dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="菲总统称中国将向菲提供武 器已指示军方前往接收"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:id="@+id/iv_dots"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="4dp"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/ic_dots_horizontal_grey500_24dp"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_extra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="123阅读量 - 2222条评论 - 1小时前"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/header"
+            android:layout_marginTop="4dp"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -47,35 +97,6 @@
                     android:textColor="@color/White"/>
 
             </RelativeLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/content"
-            android:layout_marginTop="4dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="菲总统称中国将向菲提供武器 已指示军方前往接收"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/tv_extra"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="123阅读量 - 2222条评论 - 1小时前"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
 
         </LinearLayout>
 

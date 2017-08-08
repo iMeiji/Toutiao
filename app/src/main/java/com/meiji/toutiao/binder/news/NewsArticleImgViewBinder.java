@@ -1,17 +1,20 @@
 package com.meiji.toutiao.binder.news;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.meiji.toutiao.ErrorAction;
+import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.news.content.NewsContentActivity;
@@ -40,12 +43,14 @@ public class NewsArticleImgViewBinder extends ItemViewBinder<MultiNewsArticleDat
     @Override
     protected void onBindViewHolder(@NonNull final NewsArticleImgViewBinder.ViewHolder holder, @NonNull final MultiNewsArticleDataBean item) {
 
+        final Context context = holder.itemView.getContext();
+
         try {
             String imgUrl = "http://p3.pstatp.com/";
             List<MultiNewsArticleDataBean.ImageListBean> image_list = item.getImage_list();
             if (image_list != null && image_list.size() != 0) {
                 String url = image_list.get(0).getUrl();
-                ImageLoader.loadCenterCrop(holder.itemView.getContext(), url, holder.iv_image, R.color.viewBackground);
+                ImageLoader.loadCenterCrop(context, url, holder.iv_image, R.color.viewBackground);
                 if (!TextUtils.isEmpty(image_list.get(0).getUri())) {
                     imgUrl += image_list.get(0).getUri().replace("list", "large");
                 }
@@ -54,7 +59,7 @@ public class NewsArticleImgViewBinder extends ItemViewBinder<MultiNewsArticleDat
             if (null != item.getUser_info()) {
                 String avatar_url = item.getUser_info().getAvatar_url();
                 if (!TextUtils.isEmpty(avatar_url)) {
-                    ImageLoader.loadCenterCrop(holder.itemView.getContext(), avatar_url, holder.iv_media, R.color.viewBackground);
+                    ImageLoader.loadCenterCrop(context, avatar_url, holder.iv_media, R.color.viewBackground);
                 }
             }
 
@@ -73,9 +78,19 @@ public class NewsArticleImgViewBinder extends ItemViewBinder<MultiNewsArticleDat
             holder.iv_dots.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    PopupMenu popupMenu = new PopupMenu(holder.itemView.getContext(),
-                            holder.iv_dots, Gravity.END, R.attr.actionOverflowMenuStyle, 0);
+                    PopupMenu popupMenu = new PopupMenu(context,
+                            holder.iv_dots, Gravity.END, 0, R.style.MyPopupMenu);
                     popupMenu.inflate(R.menu.menu_share);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menu) {
+                            int itemId = menu.getItemId();
+                            if (itemId == R.id.action_share) {
+                                IntentAction.send(context, item.getTitle() + "\n" + item.getShare_url());
+                            }
+                            return false;
+                        }
+                    });
                     popupMenu.show();
                 }
             });

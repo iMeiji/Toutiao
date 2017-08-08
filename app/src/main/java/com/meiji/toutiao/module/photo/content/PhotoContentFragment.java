@@ -30,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.photo.PhotoContentAdapter;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
@@ -212,11 +213,7 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
                 break;
 
             case R.id.action_share:
-                Intent shareIntent = new Intent()
-                        .setAction(Intent.ACTION_SEND)
-                        .setType("text/plain")
-                        .putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + shareUrl);
-                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
+                IntentAction.send(getActivity(), shareTitle + "\n" + shareUrl);
                 break;
         }
         return super.onOptionsItemSelected(item);

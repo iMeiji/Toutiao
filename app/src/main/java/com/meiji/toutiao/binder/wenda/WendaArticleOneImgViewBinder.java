@@ -1,5 +1,6 @@
 package com.meiji.toutiao.binder.wenda;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -32,12 +33,15 @@ public class WendaArticleOneImgViewBinder extends ItemViewBinder<WendaArticleDat
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull final WendaArticleDataBean item) {
+    protected void onBindViewHolder(@NonNull final ViewHolder holder, @NonNull final WendaArticleDataBean item) {
+
+        final Context context = holder.itemView.getContext();
+
         try {
             String url = item.getExtraBean().getWenda_image().getLarge_image_list().get(0).getUrl();
-            ImageLoader.loadCenterCrop(holder.itemView.getContext(), url, holder.iv_image_big, R.color.viewBackground);
+            ImageLoader.loadCenterCrop(context, url, holder.iv_image_big, R.color.viewBackground);
 
-            String tv_title = item.getQuestionBean().getTitle();
+            final String tv_title = item.getQuestionBean().getTitle();
             String tv_answer_count = item.getQuestionBean().getNormal_ans_count() + "回答";
             String tv_datetime = item.getQuestionBean().getCreate_time() + "";
             if (!TextUtils.isEmpty(tv_datetime)) {

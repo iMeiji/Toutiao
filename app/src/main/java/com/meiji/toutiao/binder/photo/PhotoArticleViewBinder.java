@@ -1,15 +1,20 @@
 package com.meiji.toutiao.binder.photo;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.meiji.toutiao.ErrorAction;
+import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.module.photo.content.PhotoContentActivity;
@@ -33,12 +38,15 @@ public class PhotoArticleViewBinder extends ItemViewBinder<PhotoArticleBean.Data
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull final PhotoArticleBean.DataBean item) {
+    protected void onBindViewHolder(@NonNull final ViewHolder holder, @NonNull final PhotoArticleBean.DataBean item) {
+
+        final Context context = holder.itemView.getContext();
+
         try {
             String tv_title = item.getTitle();
 
             if (!TextUtils.isEmpty(item.getMedia_avatar_url())) {
-                ImageLoader.loadCenterCrop(holder.itemView.getContext(), item.getMedia_avatar_url(), holder.iv_media, R.color.viewBackground);
+                ImageLoader.loadCenterCrop(context, item.getMedia_avatar_url(), holder.iv_media, R.color.viewBackground);
             }
 
             if (item.getImage_list() != null) {
@@ -49,16 +57,16 @@ public class PhotoArticleViewBinder extends ItemViewBinder<PhotoArticleBean.Data
                 }
                 switch (ivs.length) {
                     case 1:
-                        ImageLoader.loadCenterCrop(holder.itemView.getContext(), ivs[0], holder.iv_0, R.color.viewBackground);
+                        ImageLoader.loadCenterCrop(context, ivs[0], holder.iv_0, R.color.viewBackground);
                         break;
                     case 2:
-                        ImageLoader.loadCenterCrop(holder.itemView.getContext(), ivs[0], holder.iv_0, R.color.viewBackground);
-                        ImageLoader.loadCenterCrop(holder.itemView.getContext(), ivs[1], holder.iv_1, R.color.viewBackground);
+                        ImageLoader.loadCenterCrop(context, ivs[0], holder.iv_0, R.color.viewBackground);
+                        ImageLoader.loadCenterCrop(context, ivs[1], holder.iv_1, R.color.viewBackground);
                         break;
                     case 3:
-                        ImageLoader.loadCenterCrop(holder.itemView.getContext(), ivs[0], holder.iv_0, R.color.viewBackground);
-                        ImageLoader.loadCenterCrop(holder.itemView.getContext(), ivs[1], holder.iv_1, R.color.viewBackground);
-                        ImageLoader.loadCenterCrop(holder.itemView.getContext(), ivs[2], holder.iv_2, R.color.viewBackground);
+                        ImageLoader.loadCenterCrop(context, ivs[0], holder.iv_0, R.color.viewBackground);
+                        ImageLoader.loadCenterCrop(context, ivs[1], holder.iv_1, R.color.viewBackground);
+                        ImageLoader.loadCenterCrop(context, ivs[2], holder.iv_2, R.color.viewBackground);
                         break;
                 }
             }
@@ -70,6 +78,29 @@ public class PhotoArticleViewBinder extends ItemViewBinder<PhotoArticleBean.Data
             }
             holder.tv_title.setText(tv_title);
             holder.tv_extra.setText(tv_source + " - " + comments_count + " - " + tv_datetime);
+            holder.iv_dots.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popupMenu = new PopupMenu(context,
+                            holder.iv_dots, Gravity.END, 0, R.style.MyPopupMenu);
+                    popupMenu.inflate(R.menu.menu_share);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menu) {
+                            int itemId = menu.getItemId();
+                            if (itemId == R.id.action_share) {
+                                String shareUrl = item.getSource_url();
+                                if (!shareUrl.contains("toutiao")) {
+                                    shareUrl = "http://toutiao.com" + shareUrl;
+                                }
+                                IntentAction.send(context, item.getTitle() + "\n" + shareUrl);
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,6 +120,7 @@ public class PhotoArticleViewBinder extends ItemViewBinder<PhotoArticleBean.Data
         private ImageView iv_0;
         private ImageView iv_1;
         private ImageView iv_2;
+        private ImageView iv_dots;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -98,6 +130,7 @@ public class PhotoArticleViewBinder extends ItemViewBinder<PhotoArticleBean.Data
             this.iv_0 = itemView.findViewById(R.id.iv_0);
             this.iv_1 = itemView.findViewById(R.id.iv_1);
             this.iv_2 = itemView.findViewById(R.id.iv_2);
+            this.iv_dots = itemView.findViewById(R.id.iv_dots);
         }
     }
 }

@@ -36,7 +36,7 @@
     <string name="action_change_theme">切换主题</string>
     <string name="action_open_comment">查看评论</string>
     <string name="action_follow_media">关注此头条号</string>
-    <string name="action_share">分享至</string>
+    <string name="action_share">分享</string>
     <string name="action_open_in_browser">在浏览器中打开</string>
     <string name="action_copy_content">复制内容</string>
     <string name="action_unfollow_media">取消关注</string>
@@ -75,7 +75,7 @@
     <!-- View Action -->
     <string name="network_error">网络不给力</string>
     <string name="retry">重试</string>
-    <string name="share_to">分享至</string>
+    <string name="share_to">分享</string>
     <string name="loading">加载中</string>
     <string name="copied_to_clipboard">复制成功</string>
     <string name="no_more_content">暂无更多内容</string>

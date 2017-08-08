@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.InitApp;
+import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.Register;
 import com.meiji.toutiao.adapter.DiffCallback;
@@ -157,11 +158,7 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent shareIntent = new Intent()
-                        .setAction(Intent.ACTION_SEND)
-                        .setType("text/plain")
-                        .putExtra(Intent.EXTRA_TEXT, videoTitle + "\n" + shareUrl);
-                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_to)));
+                IntentAction.send(VideoContentActivity.this, videoTitle + "\n" + shareUrl);
             }
         });
         jcVideo.thumbImageView.setOnTouchListener(new View.OnTouchListener() {

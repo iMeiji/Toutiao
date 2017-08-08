@@ -1,10 +1,14 @@
 package com.meiji.toutiao.binder.search;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,6 +16,7 @@ import android.widget.TextView;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.meiji.toutiao.ErrorAction;
+import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileSearchApi;
@@ -57,17 +62,20 @@ public class SearchArticleVideoViewBinder extends ItemViewBinder<MultiNewsArticl
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull SearchArticleVideoViewBinder.ViewHolder holder, @NonNull final MultiNewsArticleDataBean item) {
+    protected void onBindViewHolder(@NonNull final SearchArticleVideoViewBinder.ViewHolder holder, @NonNull final MultiNewsArticleDataBean item) {
+
+        final Context context = holder.itemView.getContext();
+
         try {
             String image = null;
             if (null != item.getMiddle_image()) {
                 image = item.getMiddle_image().getUrl();
                 if (!TextUtils.isEmpty(image)) {
-                    if (NetWorkUtil.isWifiConnected(holder.itemView.getContext())) {
+                    if (NetWorkUtil.isWifiConnected(context)) {
                         // 加载高清图
                         image = image.replace("list", "large");
                     }
-                    ImageLoader.loadCenterCrop(holder.itemView.getContext(), image, holder.iv_video_image, R.color.viewBackground, R.mipmap.error_image);
+                    ImageLoader.loadCenterCrop(context, image, holder.iv_video_image, R.color.viewBackground, R.mipmap.error_image);
                 }
             } else {
                 holder.iv_video_image.setImageResource(R.mipmap.error_image);
@@ -76,7 +84,7 @@ public class SearchArticleVideoViewBinder extends ItemViewBinder<MultiNewsArticl
             if (null != item.getUser_info()) {
                 String avatar_url = item.getUser_info().getAvatar_url();
                 if (!TextUtils.isEmpty(avatar_url)) {
-                    ImageLoader.loadCenterCrop(holder.itemView.getContext(), avatar_url, holder.iv_media, R.color.viewBackground);
+                    ImageLoader.loadCenterCrop(context, avatar_url, holder.iv_media, R.color.viewBackground);
                 }
             }
 
@@ -99,7 +107,7 @@ public class SearchArticleVideoViewBinder extends ItemViewBinder<MultiNewsArticl
             holder.tv_extra.setText(tv_source + " - " + tv_comment_count + " - " + tv_datetime);
             holder.tv_video_time.setText(tv_video_time);
 
-            final ProgressDialog dialog = new ProgressDialog(holder.itemView.getContext());
+            final ProgressDialog dialog = new ProgressDialog(context);
             dialog.setTitle(R.string.loading);
 
             final String finalImage = image;
@@ -176,6 +184,25 @@ public class SearchArticleVideoViewBinder extends ItemViewBinder<MultiNewsArticl
                             ErrorAction.print(throwable);
                         }
                     });
+            holder.iv_dots.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popupMenu = new PopupMenu(context,
+                            holder.iv_dots, Gravity.END, 0, R.style.MyPopupMenu);
+                    popupMenu.inflate(R.menu.menu_share);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menu) {
+                            int itemId = menu.getItemId();
+                            if (itemId == R.id.action_share) {
+                                IntentAction.send(context, item.getTitle() + "\n" + item.getShare_url());
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
         } catch (Exception e) {
             ErrorAction.print(e);
         }
@@ -203,6 +230,7 @@ public class SearchArticleVideoViewBinder extends ItemViewBinder<MultiNewsArticl
         private TextView tv_title;
         private ImageView iv_video_image;
         private TextView tv_video_time;
+        private ImageView iv_dots;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -211,6 +239,7 @@ public class SearchArticleVideoViewBinder extends ItemViewBinder<MultiNewsArticl
             this.tv_title = itemView.findViewById(R.id.tv_title);
             this.iv_video_image = itemView.findViewById(R.id.iv_video_image);
             this.tv_video_time = itemView.findViewById(R.id.tv_video_time);
+            this.iv_dots = itemView.findViewById(R.id.iv_dots);
         }
     }
 }
