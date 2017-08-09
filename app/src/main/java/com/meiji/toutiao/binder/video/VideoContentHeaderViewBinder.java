@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.view.RxView;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
@@ -16,6 +17,9 @@ import com.meiji.toutiao.module.media.home.MediaHomeActivity;
 import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.widget.CircleImageView;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.functions.Consumer;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -57,12 +61,15 @@ public class VideoContentHeaderViewBinder extends ItemViewBinder<MultiNewsArticl
             holder.tv_tv_video_duration_str.setText("时长 " + tv_video_time + " | " + tv_comment_count + "评论");
             holder.tv_abstract.setText(abstractX);
             holder.tv_source.setText(source);
-            holder.media_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MediaHomeActivity.launch(media_id);
-                }
-            });
+
+            RxView.clicks(holder.itemView)
+                    .throttleFirst(1, TimeUnit.SECONDS)
+                    .subscribe(new Consumer<Object>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
+                            MediaHomeActivity.launch(media_id);
+                        }
+                    });
         } catch (Exception e) {
             ErrorAction.print(e);
         }

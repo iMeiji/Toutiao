@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="都说床头不能朝西，有什么说法吗？"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/White"/>
 
     <TextView
         android:id="@+id/tv_abstract"
@@ -19,15 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="都说床头不能朝西，可是我家设计的两个卧室都是不得不朝西的啊！有什么不好吗？"
+        android:textColor="@color/White"
         android:textSize="16sp"/>
-
-    <ImageView
-        android:id="@+id/iv_image"
-        android:layout_width="160dp"
-        android:layout_height="92dp"
-        android:layout_marginTop="8dp"
-        android:scaleType="centerCrop"
-        android:visibility="gone"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="602个回答"
+            android:textColor="@color/White"
             android:textSize="14sp"/>
 
         <TextView
@@ -48,6 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:text="68关注"
+            android:textColor="@color/White"
             android:textSize="14sp"/>
 
     </LinearLayout>

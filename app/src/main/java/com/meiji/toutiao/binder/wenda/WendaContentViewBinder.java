@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.view.RxView;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
@@ -14,6 +15,9 @@ import com.meiji.toutiao.module.wenda.detail.WendaDetailActivity;
 import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.widget.CircleImageView;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.functions.Consumer;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -40,12 +44,15 @@ public class WendaContentViewBinder extends ItemViewBinder<WendaContentBean.AnsL
             holder.tv_user_name.setText(tv_user_name);
             holder.tv_like_count.setText(tv_like_count);
             holder.tv_abstract.setText(tv_abstract);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    WendaDetailActivity.launch(item);
-                }
-            });
+
+            RxView.clicks(holder.itemView)
+                    .throttleFirst(1, TimeUnit.SECONDS)
+                    .subscribe(new Consumer<Object>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
+                            WendaDetailActivity.launch(item);
+                        }
+                    });
         } catch (Exception e) {
             ErrorAction.print(e);
         }

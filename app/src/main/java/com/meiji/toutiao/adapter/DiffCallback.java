@@ -120,6 +120,9 @@ public class DiffCallback extends DiffUtil.Callback {
                 case WENDA_ARTICLE:
                     return ((WendaArticleDataBean) oldList.get(oldItemPosition)).getQuestionBean().getContent().equals(
                             ((WendaArticleDataBean) newList.get(newItemPosition)).getQuestionBean().getContent());
+                case WENDA_CONTENT:
+                    return ((WendaContentBean.AnsListBean) oldList.get(oldItemPosition)).getAns_url().equals(
+                            ((WendaContentBean.AnsListBean) newList.get(newItemPosition)).getAns_url());
                 case SEARCH:
                     return ((SearchResultBean.DataBeanX) oldList.get(oldItemPosition)).getAbstractX().equals(
                             ((SearchResultBean.DataBeanX) newList.get(newItemPosition)).getAbstractX());

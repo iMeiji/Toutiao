@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.view.RxView;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
@@ -21,7 +22,9 @@ import com.meiji.toutiao.module.wenda.detail.WendaDetailActivity;
 import com.meiji.toutiao.util.ImageLoader;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.functions.Consumer;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -62,23 +65,27 @@ public class MediaWendaViewBinder extends ItemViewBinder<MediaWendaBean.AnswerQu
             holder.tv_title.setText(title);
             holder.tv_abstract.setText(abstractX);
             holder.tv_extra.setText(readCount + "  -  " + time);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    WendaContentBean.AnsListBean ansBean = new WendaContentBean.AnsListBean();
-                    WendaContentBean.AnsListBean.ShareDataBeanX shareBean = new WendaContentBean.AnsListBean.ShareDataBeanX();
-                    WendaContentBean.AnsListBean.UserBeanX userBean = new WendaContentBean.AnsListBean.UserBeanX();
-                    ansBean.setTitle(title);
-                    ansBean.setQid(item.getQuestion().getQid());
-                    ansBean.setAnsid(item.getQuestion().getQid());
-                    shareBean.setShare_url(item.getAnswer().getWap_url());
-                    userBean.setUname(item.getAnswer().getUser().getUname());
-                    userBean.setAvatar_url(item.getAnswer().getUser().getAvatar_url());
-                    ansBean.setShare_data(shareBean);
-                    ansBean.setUser(userBean);
-                    WendaDetailActivity.launch(ansBean);
-                }
-            });
+
+            RxView.clicks(holder.itemView)
+                    .throttleFirst(1, TimeUnit.SECONDS)
+                    .subscribe(new Consumer<Object>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
+                            WendaContentBean.AnsListBean ansBean = new WendaContentBean.AnsListBean();
+                            WendaContentBean.AnsListBean.ShareDataBeanX shareBean = new WendaContentBean.AnsListBean.ShareDataBeanX();
+                            WendaContentBean.AnsListBean.UserBeanX userBean = new WendaContentBean.AnsListBean.UserBeanX();
+                            ansBean.setTitle(title);
+                            ansBean.setQid(item.getQuestion().getQid());
+                            ansBean.setAnsid(item.getQuestion().getQid());
+                            shareBean.setShare_url(item.getAnswer().getWap_url());
+                            userBean.setUname(item.getAnswer().getUser().getUname());
+                            userBean.setAvatar_url(item.getAnswer().getUser().getAvatar_url());
+                            ansBean.setShare_data(shareBean);
+                            ansBean.setUser(userBean);
+                            WendaDetailActivity.launch(ansBean);
+                        }
+                    });
+
             holder.iv_dots.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

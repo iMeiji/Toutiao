@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.view.RxView;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
@@ -21,6 +22,9 @@ import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.news.content.NewsContentActivity;
 import com.meiji.toutiao.util.TimeUtil;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.functions.Consumer;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -55,21 +59,25 @@ public class MediaArticleTextViewBinder extends ItemViewBinder<MultiMediaArticle
             holder.tv_title.setText(title);
             holder.tv_abstract.setText(abstractX);
             holder.tv_extra.setText(readCount + " - " + countmmentCount + " - " + time);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MultiNewsArticleDataBean bean = new MultiNewsArticleDataBean();
-                    bean.setTitle(item.getTitle());
-                    bean.setDisplay_url(item.getDisplay_url());
-                    bean.setMedia_name(item.getSource());
-                    MultiNewsArticleDataBean.MediaInfoBean mediaInfo = new MultiNewsArticleDataBean.MediaInfoBean();
-                    mediaInfo.setMedia_id(item.getMedia_id() + "");
-                    bean.setMedia_info(mediaInfo);
-                    bean.setGroup_id(item.getGroup_id());
-                    bean.setItem_id(item.getItem_id());
-                    NewsContentActivity.launch(bean);
-                }
-            });
+
+            RxView.clicks(holder.itemView)
+                    .throttleFirst(1, TimeUnit.SECONDS)
+                    .subscribe(new Consumer<Object>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
+                            MultiNewsArticleDataBean bean = new MultiNewsArticleDataBean();
+                            bean.setTitle(item.getTitle());
+                            bean.setDisplay_url(item.getDisplay_url());
+                            bean.setMedia_name(item.getSource());
+                            MultiNewsArticleDataBean.MediaInfoBean mediaInfo = new MultiNewsArticleDataBean.MediaInfoBean();
+                            mediaInfo.setMedia_id(item.getMedia_id() + "");
+                            bean.setMedia_info(mediaInfo);
+                            bean.setGroup_id(item.getGroup_id());
+                            bean.setItem_id(item.getItem_id());
+                            NewsContentActivity.launch(bean);
+                        }
+                    });
+
             holder.iv_dots.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

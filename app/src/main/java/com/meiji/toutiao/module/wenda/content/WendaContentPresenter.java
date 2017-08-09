@@ -10,6 +10,7 @@ import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -56,7 +57,7 @@ class WendaContentPresenter implements IWendaContent.Presenter {
 
         RetrofitFactory.getRetrofit().create(IMobileWendaApi.class).getWendaNiceContent(qid)
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<WendaContentBean>() {
                     @Override
                     public void accept(@NonNull WendaContentBean wendaContentBean) throws Exception {
@@ -80,7 +81,7 @@ class WendaContentPresenter implements IWendaContent.Presenter {
             RetrofitFactory.getRetrofit().create(IMobileWendaApi.class)
                     .getWendaNiceContentLoadMore(qid, niceOffset)
                     .subscribeOn(Schedulers.io())
-                    .observeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Consumer<WendaContentBean>() {
                         @Override
                         public void accept(@NonNull WendaContentBean wendaContentBean) throws Exception {
@@ -98,7 +99,7 @@ class WendaContentPresenter implements IWendaContent.Presenter {
             RetrofitFactory.getRetrofit().create(IMobileWendaApi.class)
                     .getWendaNormalContentLoadMore(qid, normalOffset)
                     .subscribeOn(Schedulers.io())
-                    .observeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Consumer<WendaContentBean>() {
                         @Override
                         public void accept(@NonNull WendaContentBean wendaContentBean) throws Exception {

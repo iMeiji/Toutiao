@@ -23,14 +23,17 @@ public class RxBus {
 
     }
 
+    @NonNull
     public static RxBus getInstance() {
         return Holder.instance;
     }
 
+    @NonNull
     public <T> Observable<T> register(@NonNull Class<T> clz) {
         return register(clz.getName());
     }
 
+    @NonNull
     public <T> Observable<T> register(@NonNull Object tag) {
         List<Subject> subjectList = subjectMapper.get(tag);
         if (null == subjectList) {

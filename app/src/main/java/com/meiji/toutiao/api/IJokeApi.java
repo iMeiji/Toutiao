@@ -19,8 +19,11 @@ public interface IJokeApi {
      * 获取段子正文内容
      * http://www.toutiao.com/api/article/feed/?category=essay_joke&as=A115C8457F69B85&cp=585F294B8845EE1
      */
-    @GET("api/article/feed/?category=essay_joke&as=A115C8457F69B85&cp=585F294B8845EE1")
-    Observable<JokeContentBean> getJokeContent();
+    @GET("api/article/feed/?category=essay_joke")
+    Observable<JokeContentBean> getJokeContent(
+            @Query("max_behot_time") String maxBehotTime,
+            @Query("as") String as,
+            @Query("cp") String cp);
 
     /**
      * 获取段子评论

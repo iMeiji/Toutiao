@@ -36,9 +36,26 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="8dp"
                 android:ellipsize="end"
+                android:maxLength="30"
                 android:maxLines="1"
                 android:text="小恢恢的帽子"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_dots"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:padding="4dp"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/ic_dots_horizontal_grey500_24dp"/>
+            </RelativeLayout>
 
         </LinearLayout>
 

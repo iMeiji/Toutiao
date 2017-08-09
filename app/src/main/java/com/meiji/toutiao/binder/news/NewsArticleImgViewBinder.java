@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.view.RxView;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
@@ -23,7 +24,9 @@ import com.meiji.toutiao.util.TimeUtil;
 import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.functions.Consumer;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -94,13 +97,16 @@ public class NewsArticleImgViewBinder extends ItemViewBinder<MultiNewsArticleDat
                     popupMenu.show();
                 }
             });
+
             final String finalImgUrl = imgUrl;
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    NewsContentActivity.launch(item, finalImgUrl);
-                }
-            });
+            RxView.clicks(holder.itemView)
+                    .throttleFirst(1, TimeUnit.SECONDS)
+                    .subscribe(new Consumer<Object>() {
+                        @Override
+                        public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
+                            NewsContentActivity.launch(item, finalImgUrl);
+                        }
+                    });
         } catch (Exception e) {
             ErrorAction.print(e);
         }

@@ -50,7 +50,7 @@ import me.drakeet.multitype.MultiTypeAdapter;
 
 public class Register {
 
-    public static void registerNewsArticleItem(MultiTypeAdapter adapter) {
+    public static void registerNewsArticleItem(@NonNull MultiTypeAdapter adapter) {
         // 一个类型对应多个 ItemViewBinder
         adapter.register(MultiNewsArticleDataBean.class)
                 .to(new NewsArticleImgViewBinder(),
@@ -73,45 +73,45 @@ public class Register {
         adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
-    public static void registerNewsCommentItem(MultiTypeAdapter adapter) {
+    public static void registerNewsCommentItem(@NonNull MultiTypeAdapter adapter) {
         adapter.register(NewsCommentBean.DataBean.CommentBean.class, new NewsCommentViewBinder());
         adapter.register(LoadingBean.class, new LoadingViewBinder());
         adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
-    public static void registerVideoContentItem(MultiTypeAdapter adapter) {
+    public static void registerVideoContentItem(@NonNull MultiTypeAdapter adapter) {
         adapter.register(MultiNewsArticleDataBean.class, new VideoContentHeaderViewBinder());
         adapter.register(NewsCommentBean.DataBean.CommentBean.class, new NewsCommentViewBinder());
         adapter.register(LoadingBean.class, new LoadingViewBinder());
         adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
-    public static void registerVideoArticleItem(MultiTypeAdapter adapter) {
+    public static void registerVideoArticleItem(@NonNull MultiTypeAdapter adapter) {
         adapter.register(MultiNewsArticleDataBean.class, new NewsArticleVideoViewBinder());
         adapter.register(LoadingBean.class, new LoadingViewBinder());
         adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
-    public static void registerJokeContentItem(MultiTypeAdapter adapter) {
+    public static void registerJokeContentItem(@NonNull MultiTypeAdapter adapter) {
         adapter.register(JokeContentBean.DataBean.GroupBean.class, new JokeContentViewBinder());
         adapter.register(LoadingBean.class, new LoadingViewBinder());
         adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
-    public static void registerJokeCommentItem(MultiTypeAdapter adapter) {
+    public static void registerJokeCommentItem(@NonNull MultiTypeAdapter adapter) {
         adapter.register(JokeContentBean.DataBean.GroupBean.class, new JokeCommentHeaderViewBinder());
         adapter.register(JokeCommentBean.DataBean.RecentCommentsBean.class, new JokeCommentViewBinder());
         adapter.register(LoadingBean.class, new LoadingViewBinder());
         adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
-    public static void registerPhotoArticleItem(MultiTypeAdapter adapter) {
+    public static void registerPhotoArticleItem(@NonNull MultiTypeAdapter adapter) {
         adapter.register(PhotoArticleBean.DataBean.class, new PhotoArticleViewBinder());
         adapter.register(LoadingBean.class, new LoadingViewBinder());
         adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
-    public static void registerWendaArticleItem(MultiTypeAdapter adapter) {
+    public static void registerWendaArticleItem(@NonNull MultiTypeAdapter adapter) {
         // 一个类型对应多个 ItemViewBinder
         adapter.register(WendaArticleDataBean.class)
                 .to(new WendaArticleTextViewBinder(),
@@ -138,18 +138,18 @@ public class Register {
         adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
-    public static void registerWendaContentItem(MultiTypeAdapter adapter) {
+    public static void registerWendaContentItem(@NonNull MultiTypeAdapter adapter) {
         adapter.register(WendaContentBean.QuestionBean.class, new WendaContentHeaderViewBinder());
         adapter.register(WendaContentBean.AnsListBean.class, new WendaContentViewBinder());
         adapter.register(LoadingBean.class, new LoadingViewBinder());
         adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
-    public static void registerMediaChannelItem(MultiTypeAdapter adapter, IOnItemLongClickListener listener) {
+    public static void registerMediaChannelItem(@NonNull MultiTypeAdapter adapter, @NonNull IOnItemLongClickListener listener) {
         adapter.register(MediaChannelBean.class, new MediaChannelViewBinder(listener));
     }
 
-    public static void registerSearchItem(MultiTypeAdapter adapter) {
+    public static void registerSearchItem(@NonNull MultiTypeAdapter adapter) {
         adapter.register(MultiNewsArticleDataBean.class)
                 .to(new NewsArticleImgViewBinder(),
                         new SearchArticleVideoViewBinder(),
@@ -171,7 +171,7 @@ public class Register {
         adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
-    public static void registerMediaArticleItem(MultiTypeAdapter adapter) {
+    public static void registerMediaArticleItem(@NonNull MultiTypeAdapter adapter) {
         adapter.register(MultiMediaArticleBean.DataBean.class)
                 .to(new MediaArticleImgViewBinder(),
                         new MediaArticleVideoViewBinder(),
@@ -194,7 +194,7 @@ public class Register {
         adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
     }
 
-    public static void registerMediaWendaItem(MultiTypeAdapter adapter) {
+    public static void registerMediaWendaItem(@NonNull MultiTypeAdapter adapter) {
         adapter.register(MediaWendaBean.AnswerQuestionBean.class, new MediaWendaViewBinder());
         adapter.register(LoadingBean.class, new LoadingViewBinder());
         adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());

@@ -33,5 +33,7 @@ interface IJokeContent {
          * 设置适配器
          */
         void doSetAdapter();
+
+        void doShowNoMore();
     }
 }

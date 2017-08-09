@@ -1,5 +1,7 @@
 package com.meiji.toutiao;
 
+import android.support.annotation.NonNull;
+
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
@@ -65,6 +67,7 @@ public class RetrofitFactory {
     };
     private volatile static Retrofit retrofit;
 
+    @NonNull
     public static Retrofit getRetrofit() {
         synchronized (Object) {
             if (retrofit == null) {

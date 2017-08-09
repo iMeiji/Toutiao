@@ -1,10 +1,10 @@
 package com.meiji.toutiao.module.base;
 
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.LoadingEndBean;
@@ -62,7 +62,7 @@ public abstract class BaseListFragment<T extends IBasePresenter> extends LazyLoa
 
     @Override
     public void onShowNetError() {
-        Snackbar.make(swipeRefreshLayout, R.string.network_error, Snackbar.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -82,7 +82,6 @@ public abstract class BaseListFragment<T extends IBasePresenter> extends LazyLoa
 
     @Override
     public void onShowNoMore() {
-//        Snackbar.make(swipeRefreshLayout, R.string.no_more_content, Snackbar.LENGTH_SHORT).show();
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

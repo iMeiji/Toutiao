@@ -23,9 +23,6 @@ import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -49,10 +46,10 @@ public class MediaArticleHeaderViewBinder extends ItemViewBinder<MediaProfileBea
 
     @Override
     protected void onBindViewHolder(@NonNull final ViewHolder holder, @NonNull final MediaProfileBean.DataBean item) {
+
+        final Context context = holder.itemView.getContext();
+
         try {
-
-            final Context context = holder.itemView.getContext();
-
             // 设置头条号信息
             String imgUrl = item.getBg_img_url();
             if (!TextUtils.isEmpty(imgUrl)) {
@@ -158,26 +155,12 @@ public class MediaArticleHeaderViewBinder extends ItemViewBinder<MediaProfileBea
         }
 
         private void setIsSub(final String mediaId) {
-            Observable
-                    .create(new ObservableOnSubscribe<Boolean>() {
-                        @Override
-                        public void subscribe(@NonNull ObservableEmitter<Boolean> e) throws Exception {
-                            boolean isExist = dao.queryIsExist(mediaId);
-                            e.onNext(isExist);
-                        }
-                    })
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<Boolean>() {
-                        @Override
-                        public void accept(@NonNull Boolean isExist) throws Exception {
-                            if (isExist) {
-                                tv_is_sub.setText("已订阅");
-                            } else {
-                                tv_is_sub.setText("订阅");
-                            }
-                        }
-                    }, ErrorAction.error());
+            boolean isExist = dao.queryIsExist(mediaId);
+            if (isExist) {
+                tv_is_sub.setText("已订阅");
+            } else {
+                tv_is_sub.setText("订阅");
+            }
         }
     }
 }
