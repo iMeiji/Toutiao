@@ -4,20 +4,19 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ProgressBar;
 
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.InitApp;
@@ -64,11 +63,12 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
     private Items oldItems = new Items();
 
     private RecyclerView recyclerView;
-    private ProgressBar progressBar;
+    private ContentLoadingProgressBar progressBar;
     private FloatingActionButton fab;
     private MyJCVideoPlayerStandard jcVideo;
     private IVideoContent.Presenter presenter;
     private int currentAction;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public static void launch(MultiNewsArticleDataBean bean) {
         InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, VideoContentActivity.class)
@@ -131,8 +131,6 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
             }
         });
 
-        jcVideo = (MyJCVideoPlayerStandard) findViewById(R.id.jc_video);
-
         MyJCVideoPlayerStandard.setOnClickFullScreenListener(new MyJCVideoPlayerStandard.onClickFullScreenListener() {
             @Override
             public void onClickFullScreen() {
@@ -142,25 +140,36 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
             }
         });
 
-        progressBar = (ProgressBar) findViewById(R.id.pb_progress);
+        progressBar = (ContentLoadingProgressBar) findViewById(R.id.pb_progress);
         int color = SettingUtil.getInstance().getColor();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
-            DrawableCompat.setTint(wrapDrawable, color);
-            this.progressBar.setIndeterminateDrawable(DrawableCompat.unwrap(wrapDrawable));
-        } else {
-            this.progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
-        }
+        progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+        progressBar.show();
+
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
+        swipeRefreshLayout.setColorSchemeColors(SettingUtil.getInstance().getColor());
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(true);
+                    }
+                });
+                onLoadData();
+            }
+        });
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setBackgroundTintList(ColorStateList.valueOf(SettingUtil.getInstance().getColor()));
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 IntentAction.send(VideoContentActivity.this, videoTitle + "\n" + shareUrl);
             }
         });
+
+        jcVideo = (MyJCVideoPlayerStandard) findViewById(R.id.jc_video);
         jcVideo.thumbImageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -172,7 +181,6 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
 
     @Override
     public void onLoadData() {
-        onShowLoading();
         presenter.doLoadData(groupId, itemId);
         presenter.doLoadVideoData(videoId);
     }
@@ -191,12 +199,18 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
 
     @Override
     public void onShowLoading() {
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.show();
     }
 
     @Override
     public void onHideLoading() {
-        progressBar.setVisibility(View.GONE);
+        progressBar.hide();
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override

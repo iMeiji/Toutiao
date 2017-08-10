@@ -100,7 +100,7 @@
             android:name=".module.photo.content.PhotoContentActivity"
             android:configChanges="orientation|screenSize|uiMode"
             android:label="@string/title_photo_content"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar.Slidable"/>
 
         <activity
             android:name=".module.news.channel.NewsChannelActivity"

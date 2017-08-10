@@ -33,8 +33,9 @@
             tools:layout="@layout/fragment_list">
         </android.support.v4.view.ViewPager>
 
-        <ProgressBar
+        <android.support.v4.widget.ContentLoadingProgressBar
             android:id="@+id/pb_progress"
+            style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"/>

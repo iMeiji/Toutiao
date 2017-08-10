@@ -2,19 +2,15 @@ package com.meiji.toutiao.module.media.home;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.InitApp;
@@ -48,7 +44,7 @@ public class MediaHomeActivity extends BaseActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private ProgressBar progressBar;
+    private ContentLoadingProgressBar progressBar;
 
     public static void launch(String MediaId) {
         InitApp.AppContext.startActivity(new Intent(InitApp.AppContext, MediaHomeActivity.class)
@@ -67,22 +63,18 @@ public class MediaHomeActivity extends BaseActivity {
     private void initView() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(SettingUtil.getInstance().getColor());
+
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         tabLayout.setBackgroundColor(SettingUtil.getInstance().getColor());
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 
-        progressBar = (ProgressBar) findViewById(R.id.pb_progress);
+        progressBar = (ContentLoadingProgressBar) findViewById(R.id.pb_progress);
         int color = SettingUtil.getInstance().getColor();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
-            DrawableCompat.setTint(wrapDrawable, color);
-            this.progressBar.setIndeterminateDrawable(DrawableCompat.unwrap(wrapDrawable));
-        } else {
-            this.progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
-        }
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+        progressBar.show();
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -164,11 +156,11 @@ public class MediaHomeActivity extends BaseActivity {
         BasePagerAdapter pagerAdapter = new BasePagerAdapter(getSupportFragmentManager(), fragmentList, titleList);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(topTab.size());
-        progressBar.setVisibility(View.GONE);
+        progressBar.hide();
     }
 
     private void onError() {
-        progressBar.setVisibility(View.GONE);
+        progressBar.hide();
         Snackbar.make(progressBar, getString(R.string.error), Snackbar.LENGTH_INDEFINITE).show();
     }
 }

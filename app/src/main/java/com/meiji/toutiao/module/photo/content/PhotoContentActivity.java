@@ -8,6 +8,7 @@ import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.module.base.BaseActivity;
+import com.r0adkll.slidr.model.SlidrInterface;
 
 /**
  * Created by Meiji on 2017/3/1.
@@ -32,11 +33,7 @@ public class PhotoContentActivity extends BaseActivity {
                 .commit();
     }
 
-    /**
-     * 禁用滑动返回
-     */
-    @Override
-    protected void initSlidable() {
-
+    public SlidrInterface getSlidrInterface() {
+        return slidrInterface;
     }
 }

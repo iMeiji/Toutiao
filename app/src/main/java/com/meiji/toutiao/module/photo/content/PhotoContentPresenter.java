@@ -116,7 +116,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                 .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-                        view.onShowLoading();
+
                     }
 
                     @Override
@@ -189,7 +189,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                 .subscribe(new Observer<String>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-                        view.onShowLoading();
+
                     }
 
                     @Override

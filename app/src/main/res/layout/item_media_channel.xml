@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
     android:layout_marginTop="4dp"
     android:background="@color/viewBackground"
@@ -29,6 +29,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
+            android:gravity="center_vertical"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -56,8 +57,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_mediaName"
+                    android:layout_marginTop="4dp"
                     android:ellipsize="end"
-                    android:maxLines="2"
+                    android:maxLines="1"
                     android:text="中国军力超越日本 日本为什么不怕中国？普京一句话让国人顿悟"
                     android:textSize="14sp"/>
             </RelativeLayout>

@@ -5,16 +5,15 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,10 +25,10 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.adapter.photo.PhotoContentAdapter;
@@ -39,6 +38,7 @@ import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.module.news.comment.NewsCommentActivity;
 import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.widget.ViewPagerFixed;
+import com.r0adkll.slidr.model.SlidrInterface;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -60,7 +60,7 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
     private RelativeLayout photoView;
     private WebView webView;
     private NestedScrollView scrollView;
-    private ProgressBar progressBar;
+    private ContentLoadingProgressBar progressBar;
     private String shareUrl;
     private String shareTitle;
     private String groupId;
@@ -68,6 +68,7 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
     private PhotoContentAdapter adapter;
     private String mediaUrl;
     private String mediaId;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public static PhotoContentFragment newInstance(Parcelable dataBean) {
         PhotoContentFragment instance = new PhotoContentFragment();
@@ -85,16 +86,20 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
     @Override
     protected void initData() {
         Bundle bundle = getArguments();
-        PhotoArticleBean.DataBean dataBean = bundle.getParcelable(TAG);
-        shareUrl = dataBean.getSource_url();
-        shareTitle = dataBean.getTitle();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(shareTitle);
-        groupId = dataBean.getGroup_id() + "";
-        itemId = dataBean.getGroup_id() + "";
-        mediaUrl = dataBean.getMedia_url();
-        presenter.doLoadData(shareUrl);
-        if (!shareUrl.contains("toutiao")) {
-            shareUrl = "http://toutiao.com" + shareUrl;
+        try {
+            PhotoArticleBean.DataBean dataBean = bundle.getParcelable(TAG);
+            shareUrl = dataBean.getSource_url();
+            shareTitle = dataBean.getTitle();
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(shareTitle);
+            groupId = dataBean.getGroup_id() + "";
+            itemId = dataBean.getGroup_id() + "";
+            mediaUrl = dataBean.getMedia_url();
+            presenter.doLoadData(shareUrl);
+            if (!shareUrl.contains("toutiao")) {
+                shareUrl = "http://toutiao.com" + shareUrl;
+            }
+        } catch (Exception e) {
+            ErrorAction.print(e);
         }
     }
 
@@ -102,28 +107,42 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
     protected void initView(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, "");
-        tv_hint = view.findViewById(R.id.tv_hint);
-        tv_save = view.findViewById(R.id.tv_save);
-        tv_save.setOnClickListener(this);
-        viewPager = view.findViewById(R.id.viewPager);
-        photoView = view.findViewById(R.id.photoView);
-        webView = view.findViewById(R.id.webview_content);
-        scrollView = view.findViewById(R.id.scrollView);
-        progressBar = view.findViewById(R.id.pb_progress);
-        int color = SettingUtil.getInstance().getColor();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
-            DrawableCompat.setTint(wrapDrawable, color);
-            this.progressBar.setIndeterminateDrawable(DrawableCompat.unwrap(wrapDrawable));
-        } else {
-            this.progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
-        }
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 scrollView.smoothScrollTo(0, 0);
             }
         });
+
+        tv_hint = view.findViewById(R.id.tv_hint);
+        tv_save = view.findViewById(R.id.tv_save);
+        tv_save.setOnClickListener(this);
+
+        viewPager = view.findViewById(R.id.viewPager);
+        photoView = view.findViewById(R.id.photoView);
+        webView = view.findViewById(R.id.webview_content);
+        scrollView = view.findViewById(R.id.scrollView);
+
+        progressBar = view.findViewById(R.id.pb_progress);
+        int color = SettingUtil.getInstance().getColor();
+        progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+        progressBar.show();
+
+        swipeRefreshLayout = view.findViewById(R.id.refresh_layout);
+        swipeRefreshLayout.setColorSchemeColors(SettingUtil.getInstance().getColor());
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(true);
+                    }
+                });
+                presenter.doLoadData(shareUrl);
+            }
+        });
+
         setHasOptionsMenu(true);
     }
 
@@ -142,7 +161,7 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
     public void onSetWebView(String url, boolean flag) {
         initWebClient();
         photoView.setVisibility(View.GONE);
-        scrollView.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
 
         // 是否为头条的网站
         if (flag) {
@@ -150,16 +169,27 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
         } else {
             webView.loadUrl(shareUrl);
         }
+
+        SlidrInterface slidrInterface = ((PhotoContentActivity) getActivity()).getSlidrInterface();
+        if (slidrInterface != null) {
+            slidrInterface.unlock();
+        }
     }
 
     @Override
     public void onShowLoading() {
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.show();
     }
 
     @Override
     public void onHideLoading() {
-        progressBar.setVisibility(View.GONE);
+        progressBar.hide();
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override
@@ -183,6 +213,15 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
     public void onPageSelected(int position) {
         presenter.doSetPosition(position);
         tv_hint.setText(position + 1 + "/" + presenter.doGetImageCount());
+
+        SlidrInterface slidrInterface = ((PhotoContentActivity) getActivity()).getSlidrInterface();
+        if (slidrInterface != null) {
+            if (position == 0) {
+                slidrInterface.unlock();
+            } else {
+                slidrInterface.lock();
+            }
+        }
     }
 
     @Override

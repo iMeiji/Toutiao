@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,11 +11,11 @@ import android.os.Parcelable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +26,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.IntentAction;
@@ -35,6 +33,7 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.module.media.home.MediaHomeActivity;
+import com.meiji.toutiao.module.news.comment.NewsCommentActivity;
 import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.widget.helper.AppBarStateChangeListener;
@@ -55,15 +54,17 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
     private String mediaName;
     private String imgUrl;
     private boolean isHasImage;
+    private MultiNewsArticleDataBean bean;
 
     private Toolbar toolbar;
     private WebView webView;
     private NestedScrollView scrollView;
     private INewsContent.Presenter presenter;
-    private ProgressBar progressBar;
+    private ContentLoadingProgressBar progressBar;
     private AppBarLayout appBarLayout;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ImageView imageView;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public static NewsContentFragment newInstance(Parcelable dataBean, String imgUrl) {
         NewsContentFragment instance = new NewsContentFragment();
@@ -85,8 +86,8 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
     protected void initData() {
         Bundle bundle = getArguments();
         try {
-            MultiNewsArticleDataBean bean = bundle.getParcelable(TAG);
-            Log.d(TAG, "initData: " + bean.toString());
+            bean = bundle.getParcelable(TAG);
+//            Log.d(TAG, "initData: " + bean.toString());
             presenter.doLoadData(bean);
             shareUrl = bean.getShare_url();
             shareTitle = bean.getTitle();
@@ -140,38 +141,50 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
     protected void initView(View view) {
         toolbar = view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, "");
-        webView = view.findViewById(R.id.webview_content);
-        scrollView = view.findViewById(R.id.scrollView);
-        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                progressBar.setVisibility(View.GONE);
-            }
-        });
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 scrollView.smoothScrollTo(0, 0);
             }
         });
+
+        webView = view.findViewById(R.id.webview_content);
+        initWebClient();
+
+        scrollView = view.findViewById(R.id.scrollView);
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                onHideLoading();
+            }
+        });
+
         progressBar = view.findViewById(R.id.pb_progress);
         int color = SettingUtil.getInstance().getColor();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
-            DrawableCompat.setTint(wrapDrawable, color);
-            this.progressBar.setIndeterminateDrawable(DrawableCompat.unwrap(wrapDrawable));
-        } else {
-            this.progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
-        }
-        progressBar.setVisibility(View.VISIBLE);
-        setHasOptionsMenu(true);
-        initWebClient();
+        progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+        progressBar.show();
+
+        swipeRefreshLayout = view.findViewById(R.id.refresh_layout);
+        swipeRefreshLayout.setColorSchemeColors(SettingUtil.getInstance().getColor());
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(true);
+                    }
+                });
+                presenter.doLoadData(bean);
+            }
+        });
 
         if (isHasImage) {
             appBarLayout = view.findViewById(R.id.app_bar_layout);
             collapsingToolbarLayout = view.findViewById(R.id.collapsing_toolbar);
             imageView = view.findViewById(R.id.iv_image);
         }
+        setHasOptionsMenu(true);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -239,12 +252,18 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
 
     @Override
     public void onShowLoading() {
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.show();
     }
 
     @Override
     public void onHideLoading() {
-        progressBar.setVisibility(View.GONE);
+        progressBar.hide();
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override
@@ -258,7 +277,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
         int id = item.getItemId();
         switch (id) {
             case R.id.action_open_comment:
-                presenter.doShowComment(getActivity(), this);
+                NewsCommentActivity.launch(bean.getGroup_id() + "", bean.getItem_id() + "");
                 break;
 
             case R.id.action_share:

@@ -2,14 +2,12 @@ package com.meiji.toutiao.module.wenda.detail;
 
 import android.annotation.SuppressLint;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -22,7 +20,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.meiji.toutiao.IntentAction;
@@ -57,15 +54,17 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
 
     private WebView webView;
     private NestedScrollView scrollView;
-    private ProgressBar progressBar;
+    private ContentLoadingProgressBar progressBar;
     private TextView tv_title;
     private CircleImageView iv_user_avatar;
     private TextView tv_user_name;
     private RecyclerView recyclerView;
+    private LinearLayout header_layout;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     private MultiTypeAdapter adapter;
     private boolean canLoadMore;
     private Items oldItems = new Items();
-    private LinearLayout header_layout;
 
     public static WendaDetailFragment newInstance(Parcelable bean) {
         Bundle args = new Bundle();
@@ -77,19 +76,18 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
 
     @Override
     protected void initData() {
-        this.bean = getArguments().getParcelable(TAG);
+        bean = getArguments().getParcelable(TAG);
         if (null == this.bean) {
             onShowNetError();
             return;
         }
-        this.url = bean.getShare_data().getShare_url();
-
-        ImageLoader.loadCenterCrop(getActivity(), bean.getUser().getAvatar_url(), iv_user_avatar, R.color.viewBackground);
-        this.tv_title.setText(bean.getTitle());
-        this.tv_user_name.setText(bean.getUser().getUname());
-        this.shareTitle = bean.getShare_data().getTitle();
+        url = bean.getShare_data().getShare_url();
         onLoadData();
 
+        ImageLoader.loadCenterCrop(getActivity(), bean.getUser().getAvatar_url(), iv_user_avatar, R.color.viewBackground);
+        tv_title.setText(bean.getTitle());
+        tv_user_name.setText(bean.getUser().getUname());
+        shareTitle = bean.getShare_data().getTitle();
         header_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,15 +127,6 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
     @Override
     protected void initView(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
-        webView = view.findViewById(R.id.webview_content);
-        scrollView = view.findViewById(R.id.scrollView);
-        progressBar = view.findViewById(R.id.pb_progress);
-        header_layout = view.findViewById(R.id.header_layout);
-        tv_title = view.findViewById(R.id.tv_title);
-        iv_user_avatar = view.findViewById(R.id.iv_user_avatar);
-        tv_user_name = view.findViewById(R.id.tv_user_name);
-        recyclerView = view.findViewById(R.id.recycler_view);
-
         initToolBar(toolbar, true, getString(R.string.title_wenda_detail));
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,23 +135,28 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
             }
         });
 
+        webView = view.findViewById(R.id.webview_content);
+        initWebClient();
+
+        header_layout = view.findViewById(R.id.header_layout);
         header_layout.setBackgroundColor(SettingUtil.getInstance().getColor());
 
+        tv_title = view.findViewById(R.id.tv_title);
+        iv_user_avatar = view.findViewById(R.id.iv_user_avatar);
+        tv_user_name = view.findViewById(R.id.tv_user_name);
+
+        scrollView = view.findViewById(R.id.scrollView);
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                progressBar.setVisibility(View.GONE);
+                onHideLoading();
             }
         });
-
         scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
                 View view = scrollView.getChildAt(scrollView.getChildCount() - 1);
-
-                int diff = (view.getBottom() - (scrollView.getHeight() + scrollView
-                        .getScrollY()));
-
+                int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
                 if (diff == 0) {
                     canLoadMore = false;
                     presenter.doLoadMoreComment();
@@ -170,27 +164,35 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
             }
         });
 
-        int color = SettingUtil.getInstance().getColor();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Drawable wrapDrawable = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
-            DrawableCompat.setTint(wrapDrawable, color);
-            this.progressBar.setIndeterminateDrawable(DrawableCompat.unwrap(wrapDrawable));
-        } else {
-            this.progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
-        }
-        progressBar.setVisibility(View.VISIBLE);
+        swipeRefreshLayout = view.findViewById(R.id.refresh_layout);
+        swipeRefreshLayout.setColorSchemeColors(SettingUtil.getInstance().getColor());
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(true);
+                    }
+                });
+                presenter.doLoadData(url);
+            }
+        });
 
+        progressBar = view.findViewById(R.id.pb_progress);
+        int color = SettingUtil.getInstance().getColor();
+        progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+        progressBar.show();
+
+        recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         // 禁止嵌套滚动
         recyclerView.setNestedScrollingEnabled(false);
-
         adapter = new MultiTypeAdapter(oldItems);
         Register.registerNewsCommentItem(adapter);
         recyclerView.setAdapter(adapter);
 
         setHasOptionsMenu(true);
-        initWebClient();
     }
 
     @Override
@@ -282,12 +284,18 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
 
     @Override
     public void onShowLoading() {
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.show();
     }
 
     @Override
     public void onHideLoading() {
-        progressBar.setVisibility(View.GONE);
+        progressBar.hide();
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     @Override

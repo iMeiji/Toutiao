@@ -18,86 +18,96 @@
         android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/scrollView"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/scrollView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
                 <LinearLayout
-                    android:id="@+id/header_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:maxLines="2"
-                        android:padding="16dp"
-                        android:text="都说床头不能朝西，有什么说法吗？"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textColor="@color/White"/>
-
-                </LinearLayout>
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@color/viewBackground"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:padding="8dp">
-
-                        <com.meiji.toutiao.widget.CircleImageView
-                            android:id="@+id/iv_user_avatar"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:scaleType="centerCrop"
-                            android:src="@color/Black"/>
-
-                        <TextView
-                            android:id="@+id/tv_user_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="用户名"/>
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
-
-                <WebView
-                    android:id="@+id/webview_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fadeScrollbars="true"
-                    android:scrollbarFadeDuration="1"
-                    android:scrollbars="vertical"/>
-            </LinearLayout>
+                    android:orientation="vertical">
 
-        </android.support.v4.widget.NestedScrollView>
+                    <LinearLayout
+                        android:id="@+id/header_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:orientation="vertical">
 
-        <ProgressBar
+                        <TextView
+                            android:id="@+id/tv_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:padding="16dp"
+                            android:text="都说床头不能朝西，有什么说法吗？"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                            android:textColor="@color/White"/>
+
+                    </LinearLayout>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="@color/viewBackground"
+                        android:orientation="horizontal"
+                        app:cardElevation="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:padding="8dp">
+
+                            <com.meiji.toutiao.widget.CircleImageView
+                                android:id="@+id/iv_user_avatar"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:scaleType="centerCrop"
+                                android:src="@color/Black"/>
+
+                            <TextView
+                                android:id="@+id/tv_user_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="8dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="用户名"/>
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <WebView
+                        android:id="@+id/webview_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fadeScrollbars="true"
+                        android:scrollbarFadeDuration="1"
+                        android:scrollbars="vertical"
+                        app:layoutManager="LinearLayoutManager"/>
+                </LinearLayout>
+
+            </android.support.v4.widget.NestedScrollView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <android.support.v4.widget.ContentLoadingProgressBar
             android:id="@+id/pb_progress"
+            style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"/>
