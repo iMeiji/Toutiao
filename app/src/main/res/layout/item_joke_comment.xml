@@ -13,7 +13,10 @@
         android:layout_height="match_parent"
         android:background="?attr/selectableItemBackground"
         android:foreground="?attr/selectableItemBackground"
-        android:padding="16dp">
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,7 +61,7 @@
                     android:id="@+id/tv_likes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="2dp"
                     android:gravity="end"
                     android:maxLines="1"
                     android:text="4832赞"/>

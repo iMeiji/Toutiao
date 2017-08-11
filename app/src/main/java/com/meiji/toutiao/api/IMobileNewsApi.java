@@ -35,12 +35,12 @@ public interface IMobileNewsApi {
             @Query("device_id") String deviceId,
             @Query("category") String category);
 
-    @GET("http://is.snssdk.com/api/news/feed/v58/?iid=5034850950&device_id=6096495334&refer=1&count=20&aid=13")
+    @GET("http://is.snssdk.com/api/news/feed/v62/?iid=5034850950&device_id=6096495334&refer=1&count=20&aid=13")
     Observable<MultiNewsArticleBean> getNewsArticle(
             @Query("category") String category,
             @Query("max_behot_time") String maxBehotTime);
 
-    @GET("http://lf.snssdk.com/api/news/feed/v58/?iid=12507202490&device_id=37487219424&refer=1&count=20&aid=13")
+    @GET("http://lf.snssdk.com/api/news/feed/v62/?iid=12507202490&device_id=37487219424&refer=1&count=20&aid=13")
     Observable<MultiNewsArticleBean> getNewsArticle2(
             @Query("category") String category,
             @Query("max_behot_time") String maxBehotTime);

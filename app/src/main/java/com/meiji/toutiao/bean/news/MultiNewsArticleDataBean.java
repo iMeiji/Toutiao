@@ -103,7 +103,7 @@ public class MultiNewsArticleDataBean implements Parcelable {
     private int article_type;
     private String tag;
     private ForwardInfoBean forward_info;
-    private int has_m3u8_video;
+    private boolean has_m3u8_video;
     private String keywords;
     private String rid;
     private String label;
@@ -186,7 +186,7 @@ public class MultiNewsArticleDataBean implements Parcelable {
         has_video = in.readByte() != 0;
         article_type = in.readInt();
         tag = in.readString();
-        has_m3u8_video = in.readInt();
+        has_m3u8_video = in.readByte() != 0;
         keywords = in.readString();
         rid = in.readString();
         label = in.readString();
@@ -252,7 +252,7 @@ public class MultiNewsArticleDataBean implements Parcelable {
         dest.writeByte((byte) (has_video ? 1 : 0));
         dest.writeInt(article_type);
         dest.writeString(tag);
-        dest.writeInt(has_m3u8_video);
+        dest.writeByte((byte) (has_m3u8_video ? 1 : 0));
         dest.writeString(keywords);
         dest.writeString(rid);
         dest.writeString(label);
@@ -393,11 +393,11 @@ public class MultiNewsArticleDataBean implements Parcelable {
         this.forward_info = forward_info;
     }
 
-    public int getHas_m3u8_video() {
+    public boolean getHas_m3u8_video() {
         return has_m3u8_video;
     }
 
-    public void setHas_m3u8_video(int has_m3u8_video) {
+    public void setHas_m3u8_video(boolean has_m3u8_video) {
         this.has_m3u8_video = has_m3u8_video;
     }
 
