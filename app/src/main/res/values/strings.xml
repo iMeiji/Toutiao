@@ -83,12 +83,19 @@
     <string name="saved">保存成功</string>
     <string name="permission_denied">没有权限</string>
     <string name="double_click_exit">再按一次退出程序</string>
-    <string name="search_hint">搜素...</string>
+    <string name="search_hint">搜素</string>
     <string name="anymore_unfollow">不再关注</string>
     <string name="action_unfollow_media_success">取消关注成功</string>
     <string name="undo">撤回</string>
     <string name="cancel">取消</string>
     <string name="error">发生错误</string>
+    <string name="delete_all_search_history">是否删除所有搜索历史记录?</string>
+    <string name="search_hot">热门搜索</string>
+    <string name="change_another">换一批</string>
+    <string name="search_history">搜索历史</string>
+    <string name="clear">清空</string>
+    <string name="save">保存</string>
+    <string name="subscribe">订阅</string>
 
     <!-- About -->
     <string name="changelog">更新日志</string>
@@ -140,6 +147,5 @@
     <string name="permission_write_denied">你拒绝了权限，该功能不可用</string>
     <string name="permission_write_never_ask">用户设置不再询问权限申请</string>
 
-    <string name="delete_all_search_history">是否删除所有搜索历史记录?</string>
 
 </resources>

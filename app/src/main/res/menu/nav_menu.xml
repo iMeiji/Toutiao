@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group
-        android:id="@+id/account"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_account"
-            android:icon="@drawable/ic_account_gray_24dp"
-            android:title="@string/nav_account"/>
-    </group>
+    <!--<group-->
+    <!--android:id="@+id/account"-->
+    <!--android:checkableBehavior="single">-->
+    <!--<item-->
+    <!--android:id="@+id/nav_account"-->
+    <!--android:icon="@drawable/ic_account_gray_24dp"-->
+    <!--android:title="@string/nav_account"/>-->
+    <!--</group>-->
 
     <group android:id="@+id/other">
         <item

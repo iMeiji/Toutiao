@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/title_view"
@@ -19,57 +18,60 @@
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="都说床头不能朝西，有什么说法吗？"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/White"/>
+            android:textColor="@color/White"
+            tools:text="都说床头不能朝西，有什么说法吗？"/>
     </LinearLayout>
 
-    <android.support.v7.widget.CardView
+    <LinearLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
+        android:layout_below="@+id/title_view"
         android:background="@color/viewBackground"
-        app:cardElevation="1dp">
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp">
+
+        <TextView
+            android:id="@+id/tv_abstract"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            tools:text="都说床头不能朝西，可是我家设计的两个卧室都是不得不朝西的啊！有什么不好吗？"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="8dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="8dp">
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_abstract"
-                android:layout_width="match_parent"
+                android:id="@+id/tv_answer_count"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="都说床头不能朝西，可是我家设计的两个卧室都是不得不朝西的啊！有什么不好吗？"
-                android:textSize="16sp"/>
+                android:textSize="14sp"
+                tools:text="602个回答"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tv_follow_count"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal">
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:textSize="14sp"
+                tools:text="68关注"/>
 
-                <TextView
-                    android:id="@+id/tv_answer_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="602个回答"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:id="@+id/tv_follow_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="68关注"
-                    android:textSize="14sp"/>
-
-            </LinearLayout>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </LinearLayout>
 
-</LinearLayout>
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/content"
+        android:background="@color/line_divider"/>
+
+</RelativeLayout>

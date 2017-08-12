@@ -10,12 +10,14 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -135,7 +137,7 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
             }
         });
 
-        webView = view.findViewById(R.id.webview_content);
+        webView = view.findViewById(R.id.webview);
         initWebClient();
 
         header_layout = view.findViewById(R.id.header_layout);
@@ -217,14 +219,16 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
         // 开启DOM storage API功能
         settings.setDomStorageEnabled(true);
         // 开启application Cache功能
-        settings.setAppCacheEnabled(false);
+        settings.setAppCacheEnabled(true);
         // 判断是否为无图模式
         settings.setBlockNetworkImage(SettingUtil.getInstance().getIsNoPhotoMode());
         // 不调用第三方浏览器即可进行页面反应
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
+                if (!TextUtils.isEmpty(url)) {
+                    view.loadUrl(url);
+                }
                 return true;
             }
 
@@ -243,6 +247,18 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
                     return true;
                 }
                 return false;
+            }
+        });
+
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                if (newProgress == 100) {
+                    onHideLoading();
+                } else {
+                    onShowLoading();
+                }
             }
         });
     }

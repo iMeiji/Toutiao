@@ -68,6 +68,7 @@ public class MediaArticleTextViewBinder extends ItemViewBinder<MultiMediaArticle
                             MultiNewsArticleDataBean bean = new MultiNewsArticleDataBean();
                             bean.setTitle(item.getTitle());
                             bean.setDisplay_url(item.getDisplay_url());
+                            bean.setShare_url(item.getDisplay_url());
                             bean.setMedia_name(item.getSource());
                             MultiNewsArticleDataBean.MediaInfoBean mediaInfo = new MultiNewsArticleDataBean.MediaInfoBean();
                             mediaInfo.setMedia_id(item.getMedia_id() + "");

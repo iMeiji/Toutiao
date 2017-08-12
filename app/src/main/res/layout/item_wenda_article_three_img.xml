@@ -2,6 +2,7 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
@@ -30,8 +31,8 @@
                 android:layout_marginRight="22dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="你们当地那些混黑社会的人现在都怎么样了？"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:text="你们当地那些混黑社会的人现在都怎么样了？"/>
 
             <ImageView
                 android:id="@+id/iv_dots"
@@ -43,7 +44,8 @@
                 android:padding="4dp"
                 android:scaleType="center"
                 android:visibility="gone"
-                app:srcCompat="@drawable/ic_dots_horizontal_grey500_24dp"/>
+                app:srcCompat="@drawable/ic_dots_horizontal_grey500_24dp"
+                tools:ignore="ContentDescription"/>
 
         </RelativeLayout>
 
@@ -58,19 +60,23 @@
                 android:id="@+id/iv_0"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@color/viewBackground"/>
+                android:src="@color/viewBackground"
+                tools:ignore="ContentDescription"/>
 
             <ImageView
                 android:id="@+id/iv_1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginEnd="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@color/viewBackground"/>
+                android:src="@color/viewBackground"
+                tools:ignore="ContentDescription"/>
 
             <ImageView
                 android:id="@+id/iv_2"
@@ -78,7 +84,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                android:src="@color/viewBackground"/>
+                android:src="@color/viewBackground"
+                tools:ignore="ContentDescription"/>
         </LinearLayout>
 
         <LinearLayout
@@ -93,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="1226回答"/>
+                tools:text="1226回答"/>
 
             <TextView
                 android:id="@+id/tv_time"
@@ -103,7 +110,7 @@
                 android:ellipsize="end"
                 android:gravity="end"
                 android:maxLines="1"
-                android:text="1小时前"/>
+                tools:text="1小时前"/>
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

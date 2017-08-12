@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="1dp"
-    android:background="@color/viewBackground"
-    app:cardElevation="1dp">
+    android:background="@color/viewBackground">
 
     <LinearLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="vertical"
@@ -36,9 +35,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="小恢恢的帽子"/>
+                tools:text="小恢恢的帽子"/>
 
         </LinearLayout>
 
@@ -52,7 +52,7 @@
                 android:id="@+id/tv_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="光看个开头就笑的不行了，咱们中国有个传统，就是家里来客人了，要到门口迎一下，如果手里还带着礼物，那要先接过来，因为人家大老远一路带过来的，已经很累了，更何况老美不远万里带过来的呢，如果不接过来那也太不像话了，会让国际笑话中国，也有失大国风范！这也是一种礼貌，更是中华民族的传统美德！"/>
+                tools:text="光看个开头就笑的不行了，咱们中国有个传统，就是家里来客人了，要到门口迎一下，如果手里还带着礼物，那要先接过来，因为人家大老远一路带过来的，已经很累了，更何况老美不远万里带过来的呢，如果不接过来那也太不像话了，会让国际笑话中国，也有失大国风范！这也是一种礼貌，更是中华民族的传统美德！"/>
 
             <TextView
                 android:id="@+id/tv_likes"
@@ -61,8 +61,16 @@
                 android:layout_marginTop="2dp"
                 android:gravity="end"
                 android:maxLines="1"
-                android:text="4832赞"/>
+                tools:text="4832赞"/>
 
         </LinearLayout>
     </LinearLayout>
-</android.support.v7.widget.CardView>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/content"
+        android:background="@color/line_divider"/>
+
+</RelativeLayout>

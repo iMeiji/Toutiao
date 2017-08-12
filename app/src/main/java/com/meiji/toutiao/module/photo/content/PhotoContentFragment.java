@@ -17,11 +17,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -120,7 +122,7 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
 
         viewPager = view.findViewById(R.id.viewPager);
         photoView = view.findViewById(R.id.photoView);
-        webView = view.findViewById(R.id.webview_content);
+        webView = view.findViewById(R.id.webview);
         scrollView = view.findViewById(R.id.scrollView);
 
         progressBar = view.findViewById(R.id.pb_progress);
@@ -269,14 +271,16 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
         // 开启DOM storage API功能
         settings.setDomStorageEnabled(true);
         // 开启application Cache功能
-        settings.setAppCacheEnabled(false);
+        settings.setAppCacheEnabled(true);
         // 判断是否为无图模式
         settings.setBlockNetworkImage(SettingUtil.getInstance().getIsNoPhotoMode());
         // 不调用第三方浏览器即可进行页面反应
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
+                if (!TextUtils.isEmpty(url)) {
+                    view.loadUrl(url);
+                }
                 return true;
             }
 
@@ -295,6 +299,18 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
                     return true;
                 }
                 return false;
+            }
+        });
+
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                if (newProgress == 100) {
+                    onHideLoading();
+                } else {
+                    onShowLoading();
+                }
             }
         });
     }

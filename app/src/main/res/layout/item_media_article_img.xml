@@ -2,6 +2,7 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
@@ -19,7 +20,8 @@
         <LinearLayout
             android:id="@+id/content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -33,8 +35,8 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="菲总统称中国将向菲提供武器 已指示军方前往接收"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    tools:text="菲总统称中国将向菲提供武器 已指示军方前往接收"/>
 
                 <TextView
                     android:id="@+id/tv_abstract"
@@ -43,7 +45,7 @@
                     android:layout_marginTop="4dp"
                     android:ellipsize="end"
                     android:maxLines="3"
-                    android:text="美国总统当选人特朗普日前暗示，可能拿美国的“一中政策”当谈判筹码，与中国大陆就诸如人民币汇率及南海等争议讨价还价。"/>
+                    tools:text="美国总统当选人特朗普日前暗示，可能拿美国的“一中政策”当谈判筹码，与中国大陆就诸如人民币汇率及南海等争议讨价还价。"/>
             </LinearLayout>
 
             <LinearLayout
@@ -58,14 +60,17 @@
                     android:layout_gravity="end"
                     android:padding="4dp"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/ic_dots_horizontal_grey500_24dp"/>
+                    app:srcCompat="@drawable/ic_dots_horizontal_grey500_24dp"
+                    tools:ignore="ContentDescription"/>
 
                 <ImageView
                     android:id="@+id/iv_image"
                     android:layout_width="72dp"
                     android:layout_height="72dp"
                     android:layout_marginLeft="8dp"
-                    android:layout_marginTop="4dp"/>
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    tools:ignore="ContentDescription"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -85,8 +90,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="123阅读量 - 2222条评论 - 1小时前"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                tools:text="123阅读量 - 2222条评论 - 1小时前"/>
 
         </LinearLayout>
 

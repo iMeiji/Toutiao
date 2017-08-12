@@ -2,6 +2,7 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
@@ -34,11 +35,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:ellipsize="end"
                 android:maxLength="30"
                 android:maxLines="1"
-                android:text="新闻源 - 2222条评论 - 1小时前"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                tools:text="新闻源 - 2222条评论 - 1小时前"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -53,7 +55,8 @@
                     android:layout_centerVertical="true"
                     android:padding="4dp"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/ic_dots_horizontal_grey500_24dp"/>
+                    app:srcCompat="@drawable/ic_dots_horizontal_grey500_24dp"
+                    tools:ignore="ContentDescription"/>
             </RelativeLayout>
 
         </LinearLayout>
@@ -72,8 +75,8 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="菲总统称中国将向菲提供武器 已指示军方前往接收"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:text="菲总统称中国将向菲提供武器 已指示军方前往接收"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -85,20 +88,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@color/viewBackground"/>
+                    android:src="@color/viewBackground"
+                    tools:ignore="ContentDescription"/>
 
                 <TextView
                     android:id="@+id/tv_video_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:background="@color/textColorPrimary"
                     android:padding="2dp"
-                    android:text="10:34"
-                    android:textColor="@color/White"/>
+                    android:textColor="@color/White"
+                    tools:text="10:34"/>
 
             </RelativeLayout>
 

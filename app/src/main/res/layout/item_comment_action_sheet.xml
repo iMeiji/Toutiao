@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottom_sheet"
     style="?attr/bottomSheetStyle"
     android:layout_width="match_parent"
@@ -30,8 +30,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:tint="@color/textColorPrimary"
-            app:srcCompat="@drawable/ic_copy_gray_24dp"/>
+            app:srcCompat="@drawable/ic_copy_gray_24dp"
+            tools:ignore="ContentDescription"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -39,8 +39,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:gravity="center_vertical"
-            android:text="@string/copy_content"
-            android:textColor="@color/textColorPrimary"/>
+            android:text="@string/copy_content"/>
 
     </LinearLayout>
 
@@ -59,8 +58,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:tint="@color/textColorPrimary"
-            app:srcCompat="@drawable/ic_share_grey_24dp"/>
+            app:srcCompat="@drawable/ic_share_grey_24dp"
+            tools:ignore="ContentDescription"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -68,8 +67,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:gravity="center_vertical"
-            android:text="@string/share_content"
-            android:textColor="@color/textColorPrimary"/>
+            android:text="@string/share_content"/>
 
     </LinearLayout>
 

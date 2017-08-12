@@ -229,9 +229,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.nav_account:
-                drawer_layout.closeDrawers();
-                return false;
+//            case R.id.nav_account:
+//                drawer_layout.closeDrawers();
+//                return false;
 
             case R.id.nav_switch_night_mode:
                 int mode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;

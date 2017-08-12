@@ -2,11 +2,11 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/news_content_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
     <include layout="@layout/toolbar"/>
 
@@ -48,46 +48,45 @@
                             android:ellipsize="end"
                             android:maxLines="2"
                             android:padding="16dp"
-                            android:text="都说床头不能朝西，有什么说法吗？"
                             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                            android:textColor="@color/White"/>
+                            android:textColor="@color/White"
+                            tools:text="都说床头不能朝西，有什么说法吗？"/>
 
                     </LinearLayout>
 
-                    <android.support.v7.widget.CardView
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
+                        android:layout_height="match_parent"
                         android:background="@color/viewBackground"
-                        android:orientation="horizontal"
-                        app:cardElevation="1dp">
+                        android:gravity="center_vertical"
+                        android:padding="8dp">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:padding="8dp">
+                        <com.meiji.toutiao.widget.CircleImageView
+                            android:id="@+id/iv_user_avatar"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:scaleType="centerCrop"
+                            android:src="@color/Black"/>
 
-                            <com.meiji.toutiao.widget.CircleImageView
-                                android:id="@+id/iv_user_avatar"
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:scaleType="centerCrop"
-                                android:src="@color/Black"/>
+                        <TextView
+                            android:id="@+id/tv_user_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            tools:text="用户名"/>
+                    </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/tv_user_name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="8dp"
-                                android:ellipsize="end"
-                                android:maxLines="1"
-                                android:text="用户名"/>
-                        </LinearLayout>
-
-                    </android.support.v7.widget.CardView>
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/line_divider"/>
 
                     <WebView
-                        android:id="@+id/webview_content"
+                        android:id="@+id/webview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 

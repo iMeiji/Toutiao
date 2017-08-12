@@ -17,7 +17,3 @@
         app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
 </android.support.design.widget.AppBarLayout>
-
-<!--
-android:background="?attr/colorPrimary"
--->

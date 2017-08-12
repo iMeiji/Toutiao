@@ -19,9 +19,7 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MediaWendaBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.module.wenda.detail.WendaDetailActivity;
-import com.meiji.toutiao.util.ImageLoader;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.functions.Consumer;
@@ -49,13 +47,6 @@ public class MediaWendaViewBinder extends ItemViewBinder<MediaWendaBean.AnswerQu
         try {
             MediaWendaBean.AnswerQuestionBean.AnswerBean answerBean = item.getAnswer();
             MediaWendaBean.AnswerQuestionBean.QuestionBean questionBean = item.getQuestion();
-            List<MediaWendaBean.AnswerQuestionBean.AnswerBean.ContentAbstractBean.ThumbImageListBean> imageList = answerBean.getContent_abstract().getThumb_image_list();
-            if (imageList != null && imageList.size() > 0) {
-                String url = imageList.get(0).getUrl();
-                ImageLoader.loadCenterCrop(context, url, holder.iv_image, R.color.viewBackground);
-            } else {
-                holder.iv_image.setVisibility(View.GONE);
-            }
 
             final String title = questionBean.getTitle();
             String abstractX = answerBean.getContent_abstract().getText();
@@ -112,7 +103,6 @@ public class MediaWendaViewBinder extends ItemViewBinder<MediaWendaBean.AnswerQu
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView iv_image;
         private TextView tv_title;
         private TextView tv_abstract;
         private TextView tv_extra;
@@ -120,7 +110,6 @@ public class MediaWendaViewBinder extends ItemViewBinder<MediaWendaBean.AnswerQu
 
         ViewHolder(View itemView) {
             super(itemView);
-            this.iv_image = itemView.findViewById(R.id.iv_image);
             this.tv_title = itemView.findViewById(R.id.tv_title);
             this.tv_abstract = itemView.findViewById(R.id.tv_abstract);
             this.tv_extra = itemView.findViewById(R.id.tv_extra);

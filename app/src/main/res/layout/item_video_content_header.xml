@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="毒舌马丁催泪讲述中国式父亲，母亲曾给他下跪，现场观众感动落泪"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        tools:text="毒舌马丁催泪讲述中国式父亲，母亲曾给他下跪，现场观众感动落泪"/>
 
     <TextView
         android:id="@+id/tv_tv_video_duration_str"
@@ -22,14 +22,14 @@
         android:layout_height="wrap_content"
         android:paddingBottom="8dp"
         android:paddingTop="8dp"
-        android:text="时长 3:35"/>
+        tools:text="时长 3:35"/>
 
     <TextView
         android:id="@+id/tv_abstract"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="97年驻港部队第一次进驻香港，万人空巷欢迎，场面壮观"
-        android:textSize="16sp"/>
+        android:textSize="16sp"
+        tools:text="97年驻港部队第一次进驻香港，万人空巷欢迎，场面壮观"/>
 
     <LinearLayout
         android:id="@+id/media_layout"

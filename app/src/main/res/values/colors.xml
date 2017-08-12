@@ -6,6 +6,7 @@
     <color name="textColorPrimary">#616161</color>
     <color name="viewBackground">@android:color/white</color>
     <color name="windowBackground">@color/Grey100</color>
+    <color name="line_divider">@color/Grey300</color>
 
     <color name="colorPrimary_night">#35464e</color>
     <color name="colorPrimaryDark_night">#212a2f</color>
@@ -43,12 +44,14 @@
 
     <color name="shadow_material_light">#727272</color>
 
-    <color name="Grey50">#fafafa</color>
+    <color name="Grey50">#FAFAFA</color>
     <color name="Grey100">#F5F5F5</color>
+    <color name="Grey200">#EEEEEE</color>
     <color name="Grey300">#E0E0E0</color>
     <color name="Grey400">#bdbdbd</color>
     <color name="Grey500">#9e9e9e</color>
     <color name="Grey600">#757575</color>
+    <color name="Grey700">#616161</color>
     <color name="Grey800">#424242</color>
     <color name="Grey900">#212121</color>
 </resources>

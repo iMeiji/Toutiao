@@ -120,7 +120,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         // 搜索建议
-        suggestionList = (ListView) findViewById(R.id.suggestion_listview);
+        suggestionList = (ListView) findViewById(R.id.suggestion_list);
         suggestionAdapter = new SearchSuggestionAdapter(this, -1);
         suggestionList.setAdapter(suggestionAdapter);
         suggestionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -132,7 +132,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             }
         });
         // 搜索历史
-        historyList = (ListView) findViewById(R.id.history_listview);
+        historyList = (ListView) findViewById(R.id.history_list);
         historyAdapter = new SearchHistoryAdapter(this, -1);
         historyList.setAdapter(historyAdapter);
         historyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

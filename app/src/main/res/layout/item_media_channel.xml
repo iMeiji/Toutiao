@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="4dp"
-    android:layout_marginTop="4dp"
-    android:background="@color/viewBackground"
-    app:cardElevation="1dp">
+    android:background="@color/viewBackground">
 
     <LinearLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
         android:foreground="?attr/selectableItemBackground"
         android:padding="8dp">
@@ -24,47 +22,54 @@
             android:scaleType="centerCrop"
             android:src="@color/textColorPrimary"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:layout_marginStart="8dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_mediaName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_toLeftOf="@+id/tv_followCount"
+                android:layout_toStartOf="@+id/tv_followCount"
+                android:maxLines="1"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="新华国际"/>
 
-                <TextView
-                    android:id="@+id/tv_mediaName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:text="新华国际"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/tv_followCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text=""
+                tools:text="111人关注"/>
 
-                <TextView
-                    android:id="@+id/tv_followCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text=""/>
+            <TextView
+                android:id="@+id/tv_descText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_mediaName"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="14sp"
+                tools:text="中国军力超越日本 日本为什么不怕中国？普京一句话让国人顿悟"/>
+        </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/tv_descText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_mediaName"
-                    android:layout_marginTop="4dp"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="中国军力超越日本 日本为什么不怕中国？普京一句话让国人顿悟"
-                    android:textSize="14sp"/>
-            </RelativeLayout>
-
-        </LinearLayout>
     </LinearLayout>
 
-</android.support.v7.widget.CardView>
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/content"
+        android:background="@color/line_divider"/>
+
+</RelativeLayout>

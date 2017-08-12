@@ -22,6 +22,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -89,7 +90,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
             bean = bundle.getParcelable(TAG);
 //            Log.d(TAG, "initData: " + bean.toString());
             presenter.doLoadData(bean);
-            shareUrl = bean.getShare_url();
+            shareUrl = !TextUtils.isEmpty(bean.getShare_url()) ? bean.getShare_url() : bean.getDisplay_url();
             shareTitle = bean.getTitle();
             mediaName = bean.getMedia_name();
             mediaUrl = "http://toutiao.com/m" + bean.getMedia_info().getMedia_id();
@@ -148,7 +149,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
             }
         });
 
-        webView = view.findViewById(R.id.webview_content);
+        webView = view.findViewById(R.id.webview);
         initWebClient();
 
         scrollView = view.findViewById(R.id.scrollView);
@@ -198,14 +199,16 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
         // 开启DOM storage API功能
         settings.setDomStorageEnabled(true);
         // 开启application Cache功能
-        settings.setAppCacheEnabled(false);
+        settings.setAppCacheEnabled(true);
         // 判断是否为无图模式
         settings.setBlockNetworkImage(SettingUtil.getInstance().getIsNoPhotoMode());
         // 不调用第三方浏览器即可进行页面反应
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
+                if (!TextUtils.isEmpty(url)) {
+                    view.loadUrl(url);
+                }
                 return true;
             }
 
@@ -224,6 +227,18 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
                     return true;
                 }
                 return false;
+            }
+        });
+
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                if (newProgress == 100) {
+                    onHideLoading();
+                } else {
+                    onShowLoading();
+                }
             }
         });
     }

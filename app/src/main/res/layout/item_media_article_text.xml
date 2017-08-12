@@ -2,6 +2,7 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
@@ -9,83 +10,66 @@
     android:background="@color/viewBackground"
     app:cardElevation="1dp">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
         android:foreground="?attr/selectableItemBackground"
+        android:orientation="vertical"
         android:padding="16dp">
 
-        <LinearLayout
-            android:id="@+id/content"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/tv_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="22dp"
-                        android:layout_marginRight="22dp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="菲总统称中国将向菲提供武 器已指示军方前往接收"
-                        android:textStyle="bold"/>
-
-                    <ImageView
-                        android:id="@+id/iv_dots"
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:padding="4dp"
-                        android:scaleType="center"
-                        app:srcCompat="@drawable/ic_dots_horizontal_grey500_24dp"/>
-
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/tv_abstract"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:ellipsize="end"
-                    android:maxLines="3"
-                    android:text="美国总统当选人特朗普日前暗示，可能拿美国的“一中政策”当谈判筹码，与中国大陆就诸如人民币汇率及南海等争议讨价还价。"/>
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/content"
-            android:layout_marginTop="4dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
             <TextView
-                android:id="@+id/tv_extra"
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/iv_dots"
+                android:layout_toStartOf="@+id/iv_dots"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="123阅读量 - 2222条评论 - 1小时前"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+                android:textStyle="bold"
+                tools:text="菲总统称中国将向菲提供武 器已指示军方前往接收"/>
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_dots"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="4dp"
+                android:scaleType="center"
+                app:srcCompat="@drawable/ic_dots_horizontal_grey500_24dp"
+                tools:ignore="ContentDescription"/>
 
-    </RelativeLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_abstract"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            tools:text="美国总统当选人特朗普日前暗示，可能拿美国的“一中政策”当谈判筹码，与中国大陆就诸如人民币汇率及南海等争议讨价还价。"/>
+
+        <TextView
+            android:id="@+id/tv_extra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            tools:text="123阅读量 - 2222条评论 - 1小时前"/>
+
+    </LinearLayout>
+
 </android.support.v7.widget.CardView>

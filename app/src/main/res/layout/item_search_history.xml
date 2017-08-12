@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeightSmall"
     android:orientation="horizontal">
@@ -14,7 +15,8 @@
         android:layout_marginRight="4dp"
         android:gravity="center_vertical"
         android:scaleType="center"
-        app:srcCompat="@drawable/ic_history_gray_24dp"/>
+        app:srcCompat="@drawable/ic_history_gray_24dp"
+        tools:ignore="ContentDescription"/>
 
     <TextView
         android:id="@+id/tv_keyword"
@@ -25,7 +27,7 @@
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
-        android:text="123"/>
+        tools:text="123"/>
 
     <ImageView
         android:id="@+id/iv_close"
@@ -39,6 +41,7 @@
         android:paddingRight="10dp"
         android:paddingTop="4dp"
         android:scaleType="center"
-        app:srcCompat="@drawable/ic_close_gray_24dp"/>
+        app:srcCompat="@drawable/ic_close_gray_24dp"
+        tools:ignore="ContentDescription"/>
 
 </LinearLayout>

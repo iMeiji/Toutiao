@@ -9,8 +9,6 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <!--<include layout="@layout/toolbar"/>-->
-
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
@@ -66,7 +64,7 @@
                 android:layout_height="match_parent">
 
                 <WebView
-                    android:id="@+id/webview_content"
+                    android:id="@+id/webview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="16dp"
