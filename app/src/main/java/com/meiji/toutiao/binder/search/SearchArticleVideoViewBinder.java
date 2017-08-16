@@ -26,6 +26,7 @@ import com.meiji.toutiao.bean.search.SearchVideoInfoBean;
 import com.meiji.toutiao.module.video.content.VideoContentActivity;
 import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.util.NetWorkUtil;
+import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.util.TimeUtil;
 import com.meiji.toutiao.widget.CircleImageView;
 
@@ -104,6 +105,7 @@ public class SearchArticleVideoViewBinder extends ItemViewBinder<MultiNewsArticl
             String tv_video_time = min + ":" + second;
 
             holder.tv_title.setText(tv_title);
+            holder.tv_title.setTextSize(SettingUtil.getInstance().getTextSize());
             holder.tv_extra.setText(tv_source + " - " + tv_comment_count + " - " + tv_datetime);
             holder.tv_video_time.setText(tv_video_time);
 

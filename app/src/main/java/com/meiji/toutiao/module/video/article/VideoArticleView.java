@@ -58,6 +58,7 @@ public class VideoArticleView extends BaseListFragment<INewsArticle.Presenter> i
 
     @Override
     public void fetchData() {
+        super.fetchData();
         onLoadData();
     }
 

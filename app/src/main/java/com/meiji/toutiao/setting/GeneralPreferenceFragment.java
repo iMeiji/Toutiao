@@ -59,6 +59,14 @@ public class GeneralPreferenceFragment extends PreferenceFragment implements Sha
             }
         });
 
+        findPreference("text_size").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                context.startWithFragment(TextSizeFragment.class.getName(), null, null, 0, null);
+                return true;
+            }
+        });
+
         findPreference("custom_icon").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {

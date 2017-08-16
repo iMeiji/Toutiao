@@ -20,6 +20,7 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.news.content.NewsContentActivity;
 import com.meiji.toutiao.util.ImageLoader;
+import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.util.TimeUtil;
 import com.meiji.toutiao.widget.CircleImageView;
 
@@ -67,6 +68,7 @@ public class NewsArticleTextViewBinder extends ItemViewBinder<MultiNewsArticleDa
             }
 
             holder.tv_title.setText(tv_title);
+            holder.tv_title.setTextSize(SettingUtil.getInstance().getTextSize());
             holder.tv_abstract.setText(tv_abstract);
             holder.tv_extra.setText(tv_source + " - " + tv_comment_count + " - " + tv_datetime);
             holder.iv_dots.setOnClickListener(new View.OnClickListener() {

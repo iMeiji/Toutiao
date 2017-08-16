@@ -70,6 +70,7 @@ public class WendaArticleView extends BaseListFragment<IWendaArticle.Presenter> 
 
     @Override
     public void fetchData() {
+        super.fetchData();
         onLoadData();
     }
 }

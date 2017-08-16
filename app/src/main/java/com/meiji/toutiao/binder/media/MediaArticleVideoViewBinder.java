@@ -23,6 +23,7 @@ import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.video.content.VideoContentActivity;
 import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.util.NetWorkUtil;
+import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.List;
@@ -76,6 +77,7 @@ public class MediaArticleVideoViewBinder extends ItemViewBinder<MultiMediaArticl
             String video_time = item.getVideo_duration_str();
 
             holder.tv_title.setText(title);
+            holder.tv_title.setTextSize(SettingUtil.getInstance().getTextSize());
             holder.tv_extra.setText(readCount + " - " + commentCount + " - " + datetime);
             holder.tv_video_time.setText(video_time);
 

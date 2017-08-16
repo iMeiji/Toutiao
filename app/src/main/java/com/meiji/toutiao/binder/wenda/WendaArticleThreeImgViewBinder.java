@@ -16,6 +16,7 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
 import com.meiji.toutiao.module.wenda.content.WendaContentActivity;
 import com.meiji.toutiao.util.ImageLoader;
+import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.concurrent.TimeUnit;
@@ -69,6 +70,7 @@ public class WendaArticleThreeImgViewBinder extends ItemViewBinder<WendaArticleD
                 tv_datetime = TimeUtil.getTimeStampAgo(tv_datetime);
             }
             holder.tv_title.setText(tv_title);
+            holder.tv_title.setTextSize(SettingUtil.getInstance().getTextSize());
             holder.tv_answer_count.setText(tv_answer_count);
             holder.tv_time.setText(tv_datetime);
 

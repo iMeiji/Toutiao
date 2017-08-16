@@ -20,6 +20,7 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
 import com.meiji.toutiao.module.photo.content.PhotoContentActivity;
 import com.meiji.toutiao.util.ImageLoader;
+import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.util.TimeUtil;
 import com.meiji.toutiao.widget.CircleImageView;
 
@@ -81,6 +82,7 @@ public class PhotoArticleViewBinder extends ItemViewBinder<PhotoArticleBean.Data
                 tv_datetime = TimeUtil.getTimeStampAgo(tv_datetime);
             }
             holder.tv_title.setText(tv_title);
+            holder.tv_title.setTextSize(SettingUtil.getInstance().getTextSize());
             holder.tv_extra.setText(tv_source + " - " + comments_count + " - " + tv_datetime);
             holder.iv_dots.setOnClickListener(new View.OnClickListener() {
                 @Override

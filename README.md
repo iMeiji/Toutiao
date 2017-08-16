@@ -13,10 +13,6 @@
 ## 头条
 <img src="./art/logo.png" width="128" alt="logo">
 
-<a href='https://play.google.com/store/apps/details?id=com.meiji.toutiao'>
-    <img alt='下载应用, 请到 Google Play' src='./art/Google Play.png' width=200 height=77/>
-</a>
-
 头条是一款遵循材料设计(Material Design)的第三方今日头条客户端, 聚合了新闻/段子/图片/视频/头条号内容, 没有广告, 仅仅只有存粹的阅读, 不断完善中, 采用 MVP + RxJava + Retrofit 架构的项目
 
 其中API来自 [今日头条Api分析](https://github.com/iMeiji/Toutiao/wiki/%E4%BB%8A%E6%97%A5%E5%A4%B4%E6%9D%A1Api%E5%88%86%E6%9E%90)
@@ -37,6 +33,7 @@
 - 自定义主题颜色 无缝切换日夜皮肤
 - 视频播放
 - 内置3款 logo 随意互换
+- 动态切换字体大小
 
 
 ## Screenshots
@@ -65,9 +62,7 @@
 
 
 ## Download
-- [Google Play](https://play.google.com/store/apps/details?id=com.meiji.toutiao)  
-- [酷安](http://www.coolapk.com/apk/com.meiji.toutiao)  
-- [GitHub Release](https://github.com/iMeiji/Toutiao/releases)
+由于侵犯 `今日头条` 版权, 故不再提供 APK 下载
 
 
 ## Points
@@ -95,6 +90,9 @@
 
 ## Changelog
 ```
+2017-8-17
+添加字体大小设置选项
+
 2017-7-25
 添加双击底栏按钮监听事件
 
@@ -262,7 +260,6 @@ WebView无图模式(beta)
 - 视频支持切换分辨率
 - 本地新闻
 - 视频离线缓存
-- 模拟登陆头条账号
 - 栏目位置调换后不 recreate
 - 浏览历史
 - 收藏夹

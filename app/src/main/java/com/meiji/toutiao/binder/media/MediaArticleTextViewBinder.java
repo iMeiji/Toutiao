@@ -20,6 +20,7 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.news.content.NewsContentActivity;
+import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.concurrent.TimeUnit;
@@ -57,6 +58,7 @@ public class MediaArticleTextViewBinder extends ItemViewBinder<MultiMediaArticle
             }
 
             holder.tv_title.setText(title);
+            holder.tv_title.setTextSize(SettingUtil.getInstance().getTextSize());
             holder.tv_abstract.setText(abstractX);
             holder.tv_extra.setText(readCount + " - " + countmmentCount + " - " + time);
 

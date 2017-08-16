@@ -122,4 +122,6 @@ dependencies {
     compile 'com.google.android:flexbox:0.2.7'
     // 滑动返回 https://oss.sonatype.org/content/repositories/snapshots/com/r0adkll/slidableactivity/
     compile 'com.r0adkll:slidableactivity:2.0.7-SNAPSHOT'
+    // 带刻度的 SeekBar
+    compile 'com.github.Jay-Goo:RangeSeekBar:v1.0.7'
 }

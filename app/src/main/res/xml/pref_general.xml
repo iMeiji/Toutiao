@@ -16,6 +16,11 @@
             android:summary="@string/auto_night_mode_summary"
             android:title="@string/auto_night_mode"/>
 
+        <Preference
+            android:key="text_size"
+            android:summary="设置字体大小"
+            android:title="字体大小"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory

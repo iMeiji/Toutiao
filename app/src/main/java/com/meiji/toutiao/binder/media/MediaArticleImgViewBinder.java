@@ -22,6 +22,7 @@ import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.news.content.NewsContentActivity;
 import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.util.NetWorkUtil;
+import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.List;
@@ -74,6 +75,7 @@ public class MediaArticleImgViewBinder extends ItemViewBinder<MultiMediaArticleB
             }
 
             holder.tv_title.setText(title);
+            holder.tv_title.setTextSize(SettingUtil.getInstance().getTextSize());
             holder.tv_abstract.setText(abstractX);
             holder.tv_extra.setText(readCount + " - " + countmmentCount + " - " + time);
             final String finalImgUrl = imgUrl;

@@ -28,7 +28,6 @@ import me.drakeet.multitype.ItemViewBinder;
 
 public class NewsCommentViewBinder extends ItemViewBinder<NewsCommentBean.DataBean.CommentBean, NewsCommentViewBinder.ViewHolder> {
 
-
     @NonNull
     @Override
     protected NewsCommentViewBinder.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {

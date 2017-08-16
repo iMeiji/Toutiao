@@ -7,9 +7,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.meiji.toutiao.R;
+import com.meiji.toutiao.RxBus;
 import com.meiji.toutiao.bean.LoadingEndBean;
 import com.meiji.toutiao.util.SettingUtil;
 
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 
@@ -19,11 +23,13 @@ import me.drakeet.multitype.MultiTypeAdapter;
 
 public abstract class BaseListFragment<T extends IBasePresenter> extends LazyLoadFragment<T> implements IBaseListView<T>, SwipeRefreshLayout.OnRefreshListener {
 
+    public static final String TAG = "BaseListFragment";
     protected RecyclerView recyclerView;
     protected SwipeRefreshLayout swipeRefreshLayout;
     protected MultiTypeAdapter adapter;
     protected Items oldItems = new Items();
     protected boolean canLoadMore = false;
+    protected Observable<Integer> observable;
 
     @Override
     protected int attachLayoutId() {
@@ -56,6 +62,17 @@ public abstract class BaseListFragment<T extends IBasePresenter> extends LazyLoa
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    @Override
+    public void fetchData() {
+        observable = RxBus.getInstance().register(BaseListFragment.TAG);
+        observable.subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(@NonNull Integer integer) throws Exception {
+                adapter.notifyDataSetChanged();
             }
         });
     }
@@ -110,5 +127,11 @@ public abstract class BaseListFragment<T extends IBasePresenter> extends LazyLoa
         }
         recyclerView.scrollToPosition(5);
         recyclerView.smoothScrollToPosition(0);
+    }
+
+    @Override
+    public void onDestroy() {
+        RxBus.getInstance().unregister(BaseListFragment.TAG, observable);
+        super.onDestroy();
     }
 }

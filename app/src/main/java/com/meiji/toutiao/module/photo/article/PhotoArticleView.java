@@ -51,6 +51,7 @@ public class PhotoArticleView extends BaseListFragment<IPhotoArticle.Presenter> 
 
     @Override
     public void fetchData() {
+        super.fetchData();
         onLoadData();
     }
 

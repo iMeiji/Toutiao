@@ -55,6 +55,7 @@ public class NewsArticleView extends BaseListFragment<INewsArticle.Presenter> im
 
     @Override
     public void fetchData() {
+        super.fetchData();
         onLoadData();
     }
 

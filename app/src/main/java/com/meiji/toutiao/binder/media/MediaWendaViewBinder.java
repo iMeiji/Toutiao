@@ -19,6 +19,7 @@ import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.media.MediaWendaBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.module.wenda.detail.WendaDetailActivity;
+import com.meiji.toutiao.util.SettingUtil;
 
 import java.util.concurrent.TimeUnit;
 
@@ -54,6 +55,7 @@ public class MediaWendaViewBinder extends ItemViewBinder<MediaWendaBean.AnswerQu
             String time = answerBean.getShow_time();
 
             holder.tv_title.setText(title);
+            holder.tv_title.setTextSize(SettingUtil.getInstance().getTextSize());
             holder.tv_abstract.setText(abstractX);
             holder.tv_extra.setText(readCount + "  -  " + time);
 

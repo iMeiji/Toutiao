@@ -142,6 +142,20 @@ public class SettingUtil {
         return setting.getBoolean("video_auto_play", false) && NetWorkUtil.isWifiConnected(InitApp.AppContext);
     }
 
+    /**
+     * 获取字体大小
+     */
+    public int getTextSize() {
+        return setting.getInt("textsize", 16);
+    }
+
+    /**
+     * 设置字体大小
+     */
+    public void setTextSize(int textSize) {
+        setting.edit().putInt("textsize", textSize).apply();
+    }
+
     private static final class SettingsUtilInstance {
         private static final SettingUtil instance = new SettingUtil();
     }
