@@ -25,7 +25,9 @@ import com.meiji.toutiao.module.wenda.article.WendaArticleView;
 import com.meiji.toutiao.util.SettingUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
@@ -45,6 +47,7 @@ public class NewsTabLayout extends Fragment {
     private List<Fragment> fragmentList;
     private List<String> titleList;
     private Observable<Boolean> observable;
+    private Map<String, Fragment> map = new HashMap<>();
 
     public static NewsTabLayout getInstance() {
         if (instance == null) {
@@ -114,16 +117,43 @@ public class NewsTabLayout extends Fragment {
 
         for (NewsChannelBean bean : channelList) {
 
-            if (bean.getChannelId().equals("essay_joke")) {
-                fragmentList.add(JokeContentView.newInstance());
+            Fragment fragment = null;
+            String channelId = bean.getChannelId();
 
-            } else if (bean.getChannelId().equals("question_and_answer")) {
-                fragmentList.add(WendaArticleView.newInstance());
+            switch (channelId) {
+                case "essay_joke":
+                    if (map.containsKey(channelId)) {
+                        fragmentList.add(map.get(channelId));
+                    } else {
+                        fragment = JokeContentView.newInstance();
+                        fragmentList.add(fragment);
+                    }
 
-            } else {
-                fragmentList.add(NewsArticleView.newInstance(bean.getChannelId()));
+                    break;
+                case "question_and_answer":
+                    if (map.containsKey(channelId)) {
+                        fragmentList.add(map.get(channelId));
+                    } else {
+                        fragment = WendaArticleView.newInstance();
+                        fragmentList.add(fragment);
+                    }
+
+                    break;
+                default:
+                    if (map.containsKey(channelId)) {
+                        fragmentList.add(map.get(channelId));
+                    } else {
+                        fragment = NewsArticleView.newInstance(channelId);
+                        fragmentList.add(fragment);
+                    }
+                    break;
             }
+
             titleList.add(bean.getChannelName());
+
+            if (fragment != null) {
+                map.put(channelId, fragment);
+            }
         }
     }
 
