@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.bean.news.NewsChannelBean;
@@ -29,10 +30,10 @@ public class NewsChannelDao {
         String categoryId[] = InitApp.AppContext.getResources().getStringArray(R.array.mobile_news_id);
         String categoryName[] = InitApp.AppContext.getResources().getStringArray(R.array.mobile_news_name);
         for (int i = 0; i < 8; i++) {
-            add(categoryId[i], categoryName[i], 1, i);
+            add(categoryId[i], categoryName[i], Constant.NEWS_CHANNEL_ENABLE, i);
         }
         for (int i = 8; i < categoryId.length; i++) {
-            add(categoryId[i], categoryName[i], 0, i);
+            add(categoryId[i], categoryName[i], Constant.NEWS_CHANNEL_DISABLE, i);
         }
     }
 

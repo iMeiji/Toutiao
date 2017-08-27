@@ -306,7 +306,7 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-                if (newProgress == 100) {
+                if (newProgress >= 90) {
                     onHideLoading();
                 } else {
                     onShowLoading();

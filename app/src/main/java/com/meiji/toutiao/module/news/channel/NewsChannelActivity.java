@@ -9,6 +9,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.Toast;
 
+import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.RxBus;
@@ -38,7 +39,6 @@ public class NewsChannelActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private NewsChannelAdapter adapter;
     private NewsChannelDao dao = new NewsChannelDao();
-    private List<NewsChannelBean> items = dao.query(1);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,8 +60,8 @@ public class NewsChannelActivity extends BaseActivity {
     }
 
     private void initData() {
-        final List<NewsChannelBean> items = dao.query(1);
-        final List<NewsChannelBean> otherItems = dao.query(0);
+        final List<NewsChannelBean> enableItems = dao.query(Constant.NEWS_CHANNEL_ENABLE);
+        final List<NewsChannelBean> disableItems = dao.query(Constant.NEWS_CHANNEL_DISABLE);
 
         GridLayoutManager manager = new GridLayoutManager(this, 4);
         recyclerView.setLayoutManager(manager);
@@ -70,7 +70,7 @@ public class NewsChannelActivity extends BaseActivity {
         final ItemTouchHelper helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(recyclerView);
 
-        adapter = new NewsChannelAdapter(this, helper, items, otherItems);
+        adapter = new NewsChannelAdapter(this, helper, enableItems, disableItems);
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -83,7 +83,7 @@ public class NewsChannelActivity extends BaseActivity {
         adapter.setOnMyChannelItemClickListener(new NewsChannelAdapter.OnMyChannelItemClickListener() {
             @Override
             public void onItemClick(View v, int position) {
-                Toast.makeText(NewsChannelActivity.this, items.get(position).getChannelName() + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewsChannelActivity.this, enableItems.get(position).getChannelName() + position, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -94,7 +94,8 @@ public class NewsChannelActivity extends BaseActivity {
                 .create(new ObservableOnSubscribe<Boolean>() {
                     @Override
                     public void subscribe(@NonNull ObservableEmitter<Boolean> e) throws Exception {
-                        e.onNext(!compare(items, adapter.getmMyChannelItems()));
+                        List<NewsChannelBean> oldItems = dao.query(Constant.NEWS_CHANNEL_ENABLE);
+                        e.onNext(!compare(oldItems, adapter.getmMyChannelItems()));
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -102,16 +103,16 @@ public class NewsChannelActivity extends BaseActivity {
                     @Override
                     public void accept(@NonNull Boolean aBoolean) throws Exception {
                         if (aBoolean) {
-                            List<NewsChannelBean> items = adapter.getmMyChannelItems();
-                            List<NewsChannelBean> otherItems = adapter.getmOtherChannelItems();
+                            List<NewsChannelBean> enableItems = adapter.getmMyChannelItems();
+                            List<NewsChannelBean> disableItems = adapter.getmOtherChannelItems();
                             dao.removeAll();
-                            for (int i = 0; i < items.size(); i++) {
-                                NewsChannelBean bean = items.get(i);
-                                dao.add(bean.getChannelId(), bean.getChannelName(), 1, i);
+                            for (int i = 0; i < enableItems.size(); i++) {
+                                NewsChannelBean bean = enableItems.get(i);
+                                dao.add(bean.getChannelId(), bean.getChannelName(), Constant.NEWS_CHANNEL_ENABLE, i);
                             }
-                            for (int i = 0; i < otherItems.size(); i++) {
-                                NewsChannelBean bean = otherItems.get(i);
-                                dao.add(bean.getChannelId(), bean.getChannelName(), 0, i);
+                            for (int i = 0; i < disableItems.size(); i++) {
+                                NewsChannelBean bean = disableItems.get(i);
+                                dao.add(bean.getChannelId(), bean.getChannelName(), Constant.NEWS_CHANNEL_DISABLE, i);
                             }
                         }
                     }

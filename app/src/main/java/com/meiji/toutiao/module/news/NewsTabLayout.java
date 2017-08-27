@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.RxBus;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
@@ -112,7 +113,7 @@ public class NewsTabLayout extends Fragment {
         titleList = new ArrayList<>();
         if (channelList.size() == 0) {
             dao.addInitData();
-            channelList = dao.query(1);
+            channelList = dao.query(Constant.NEWS_CHANNEL_ENABLE);
         }
 
         for (NewsChannelBean bean : channelList) {

@@ -35,4 +35,7 @@ public class Constant {
 
     public static final String AS = "as";
     public static final String CP = "cp";
+
+    public static final int NEWS_CHANNEL_ENABLE = 1;
+    public static final int NEWS_CHANNEL_DISABLE = 0;
 }

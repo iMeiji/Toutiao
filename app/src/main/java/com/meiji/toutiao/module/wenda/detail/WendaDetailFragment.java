@@ -254,7 +254,7 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-                if (newProgress == 100) {
+                if (newProgress >= 90) {
                     onHideLoading();
                 } else {
                     onShowLoading();

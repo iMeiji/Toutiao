@@ -28,6 +28,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
+import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
@@ -146,6 +147,8 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
             @Override
             public void onClick(View view) {
                 scrollView.smoothScrollTo(0, 0);
+//                ObjectAnimator anim = ObjectAnimator.ofInt(webView, "scrollY", webView.getScrollY(), 0);
+//                anim.setDuration(500).start();
             }
         });
 
@@ -234,7 +237,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-                if (newProgress == 100) {
+                if (newProgress >= 90) {
                     onHideLoading();
                 } else {
                     onShowLoading();
@@ -249,6 +252,14 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
         if (flag) {
             webView.loadDataWithBaseURL(null, url, "text/html", "utf-8", null);
         } else {
+            /*
+               ScrollView 嵌套 WebView, 导致部分网页无法正常加载
+               如:https://temai.snssdk.com/article/feed/index/?id=11754971
+               最佳做法是去掉 ScrollView, 或使用 NestedScrollWebView
+             */
+            if (shareUrl.contains("temai.snssdk.com")) {
+                webView.getSettings().setUserAgentString(Constant.USER_AGENT_PC);
+            }
             webView.loadUrl(shareUrl);
         }
     }

@@ -32,6 +32,10 @@
                     android:id="@+id/webview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="16dp"
                     android:background="@color/windowBackground"/>
 
             </android.support.v4.widget.NestedScrollView>
