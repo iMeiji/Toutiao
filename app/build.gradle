@@ -124,4 +124,6 @@ dependencies {
     compile 'com.r0adkll:slidableactivity:2.0.7-SNAPSHOT'
     // 带刻度的 SeekBar
     compile 'com.github.Jay-Goo:RangeSeekBar:v1.0.7'
+    // 高亮功能提示效果 https://material.google.com/growth-communications/feature-discovery.html#feature-discovery-design
+    compile 'com.getkeepsafe.taptargetview:taptargetview:1.9.1'
 }

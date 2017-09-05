@@ -156,6 +156,14 @@ public class SettingUtil {
         setting.edit().putInt("textsize", textSize).apply();
     }
 
+    public boolean getIsFirstTime() {
+        return setting.getBoolean("first_time", true);
+    }
+
+    public void setIsFirstTime(boolean flag) {
+        setting.edit().putBoolean("first_time", flag).apply();
+    }
+
     private static final class SettingsUtilInstance {
         private static final SettingUtil instance = new SettingUtil();
     }

@@ -2,6 +2,7 @@ package com.meiji.toutiao;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,10 +12,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.media.channel.MediaChannelView;
 import com.meiji.toutiao.module.news.NewsTabLayout;
@@ -61,6 +65,61 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         } else {
             showFragment(FRAGMENT_NEWS);
         }
+
+        if (SettingUtil.getInstance().getIsFirstTime()) {
+            showTapTarget();
+        }
+    }
+
+    private void showTapTarget() {
+        final Display display = getWindowManager().getDefaultDisplay();
+        final Rect target = new Rect(
+                0,
+                display.getHeight(),
+                0,
+                display.getHeight());
+        target.offset(display.getWidth() / 8, -56);
+
+        // 引导用户使用
+        TapTargetSequence sequence = new TapTargetSequence(this)
+                .targets(
+                        TapTarget.forToolbarMenuItem(toolbar, R.id.action_search, "点击这里进行搜索")
+                                .dimColor(android.R.color.black)
+                                .outerCircleColor(R.color.colorPrimary)
+                                .cancelable(false)
+                                .drawShadow(true)
+                                .id(1),
+                        TapTarget.forToolbarNavigationIcon(toolbar, "点击这里展开侧栏")
+                                .dimColor(android.R.color.black)
+                                .outerCircleColor(R.color.colorPrimary)
+                                .cancelable(false)
+                                .drawShadow(true)
+                                .id(2),
+                        TapTarget.forBounds(target, "点击这里切换新闻", "双击返回顶部\n再次双击刷新当前页面")
+                                .dimColor(android.R.color.black)
+                                .outerCircleColor(R.color.colorPrimary)
+                                .targetRadius(60)
+                                .transparentTarget(true)
+                                .cancelable(false)
+                                .drawShadow(true)
+                                .id(3)
+                ).listener(new TapTargetSequence.Listener() {
+                    @Override
+                    public void onSequenceFinish() {
+                        SettingUtil.getInstance().setIsFirstTime(false);
+                    }
+
+                    @Override
+                    public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+
+                    }
+
+                    @Override
+                    public void onSequenceCanceled(TapTarget lastTarget) {
+
+                    }
+                });
+        sequence.start();
     }
 
     @Override
@@ -76,6 +135,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void initView() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.menu_activity_main);
         bottom_navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         BottomNavigationViewHelper.disableShiftMode(bottom_navigation);
         setSupportActionBar(toolbar);
