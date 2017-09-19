@@ -33,6 +33,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private static final String TAG = "MainActivity";
     private static final String POSITION = "position";
+    private static final String SELECT_ITEM = "bottomNavigationSelectItem";
     private static final int FRAGMENT_NEWS = 0;
     private static final int FRAGMENT_PHOTO = 1;
     private static final int FRAGMENT_VIDEO = 2;
@@ -60,8 +61,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             photoTabLayout = (PhotoTabLayout) getSupportFragmentManager().findFragmentByTag(PhotoTabLayout.class.getName());
             videoTabLayout = (VideoTabLayout) getSupportFragmentManager().findFragmentByTag(VideoTabLayout.class.getName());
             mediaChannelView = (MediaChannelView) getSupportFragmentManager().findFragmentByTag(MediaChannelView.class.getName());
-            // 屏幕恢复时取出位置
+            // 恢复 recreate 前的位置
             showFragment(savedInstanceState.getInt(POSITION));
+            bottom_navigation.setSelectedItemId(savedInstanceState.getInt(SELECT_ITEM));
         } else {
             showFragment(FRAGMENT_NEWS);
         }
@@ -129,8 +131,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        // 屏幕旋转时记录位置
+        // recreate 时记录当前位置 (在 Manifest 已禁止 Activity 旋转,所以旋转屏幕并不会执行以下代码)
         outState.putInt(POSITION, position);
+        outState.putInt(SELECT_ITEM, bottom_navigation.getSelectedItemId());
     }
 
     private void initView() {
