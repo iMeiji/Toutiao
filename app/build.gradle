@@ -104,7 +104,7 @@ dependencies {
     implementation 'com.trello.rxlifecycle2:rxlifecycle-components:2.0.1'
     // okhttp 3
     implementation 'com.squareup.okhttp3:okhttp:3.9.0'
-    debugCompile 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    debugImplementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
     // MD dialog
     implementation 'com.afollestad.material-dialogs:commons:0.9.4.4'
     // 权限管理

@@ -121,7 +121,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
                 @Override
                 public void run() {
 
-                    String act = ".MainActivity_";
+                    String act = ".SplashActivity_";
 
                     for (String s : Constant.ICONS_TYPE) {
                         getPackageManager().setComponentEnabledSetting(new ComponentName(BaseActivity.this, getPackageName() + act + s),

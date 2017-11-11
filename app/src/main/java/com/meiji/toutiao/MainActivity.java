@@ -88,13 +88,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         TapTarget.forToolbarMenuItem(toolbar, R.id.action_search, "点击这里进行搜索")
                                 .dimColor(android.R.color.black)
                                 .outerCircleColor(R.color.colorPrimary)
-                                .cancelable(false)
                                 .drawShadow(true)
                                 .id(1),
                         TapTarget.forToolbarNavigationIcon(toolbar, "点击这里展开侧栏")
                                 .dimColor(android.R.color.black)
                                 .outerCircleColor(R.color.colorPrimary)
-                                .cancelable(false)
                                 .drawShadow(true)
                                 .id(2),
                         TapTarget.forBounds(target, "点击这里切换新闻", "双击返回顶部\n再次双击刷新当前页面")
@@ -102,7 +100,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                                 .outerCircleColor(R.color.colorPrimary)
                                 .targetRadius(60)
                                 .transparentTarget(true)
-                                .cancelable(false)
                                 .drawShadow(true)
                                 .id(3)
                 ).listener(new TapTargetSequence.Listener() {
@@ -118,7 +115,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                     @Override
                     public void onSequenceCanceled(TapTarget lastTarget) {
-
+                        SettingUtil.getInstance().setIsFirstTime(false);
                     }
                 });
         sequence.start();
