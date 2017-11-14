@@ -41,6 +41,7 @@ public class TextSizeFragment extends Fragment {
         text = view.findViewById(R.id.text);
         text.setTextSize(settingUtil.getTextSize());
         seekbar.setValue(settingUtil.getTextSize() - 14);
+        seekbar.setLineColor(0, settingUtil.getColor());
         seekbar.setOnRangeChangedListener(new RangeSeekBar.OnRangeChangedListener() {
             @Override
             public void onRangeChanged(RangeSeekBar view, final float min, float max, boolean isFromUser) {

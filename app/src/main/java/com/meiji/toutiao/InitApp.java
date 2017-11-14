@@ -1,7 +1,7 @@
 package com.meiji.toutiao;
 
-import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.meiji.toutiao.util.SettingUtil;
@@ -12,7 +12,7 @@ import java.util.Calendar;
  * Created by Meiji on 2016/12/12.
  */
 
-public class InitApp extends Application {
+public class InitApp extends MultiDexApplication {
 
     public static Context AppContext;
 

@@ -55,10 +55,10 @@
             android:layout_weight="1"
             app:cellMode="other"
             app:cells="4"
-            app:hideProgressHint="true"
             app:lineColorSelected="@color/colorPrimary"
             app:max="4"
             app:min="0"
+            app:progressHintMode="alwaysHide"
             app:seekBarMode="single"/>
 
         <TextView
