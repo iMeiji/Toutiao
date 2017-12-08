@@ -60,6 +60,7 @@ public class WendaArticleView extends BaseListFragment<IWendaArticle.Presenter> 
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;
+        recyclerView.stopScroll();
     }
 
     @Override

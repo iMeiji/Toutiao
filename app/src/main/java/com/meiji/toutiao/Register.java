@@ -59,7 +59,7 @@ public class Register {
                 .withClassLinker(new ClassLinker<MultiNewsArticleDataBean>() {
                     @NonNull
                     @Override
-                    public Class<? extends ItemViewBinder<MultiNewsArticleDataBean, ?>> index(@NonNull MultiNewsArticleDataBean item) {
+                    public Class<? extends ItemViewBinder<MultiNewsArticleDataBean, ?>> index(int position, @NonNull MultiNewsArticleDataBean item) {
                         if (item.isHas_video()) {
                             return NewsArticleVideoViewBinder.class;
                         }
@@ -120,7 +120,7 @@ public class Register {
                 .withClassLinker(new ClassLinker<WendaArticleDataBean>() {
                     @NonNull
                     @Override
-                    public Class<? extends ItemViewBinder<WendaArticleDataBean, ?>> index(@NonNull WendaArticleDataBean item) {
+                    public Class<? extends ItemViewBinder<WendaArticleDataBean, ?>> index(int position, @NonNull WendaArticleDataBean item) {
                         if (null != item.getExtraBean().getWenda_image() &&
                                 null != item.getExtraBean().getWenda_image().getThree_image_list() &&
                                 item.getExtraBean().getWenda_image().getThree_image_list().size() > 0) {
@@ -157,7 +157,7 @@ public class Register {
                 .withClassLinker(new ClassLinker<MultiNewsArticleDataBean>() {
                     @NonNull
                     @Override
-                    public Class<? extends ItemViewBinder<MultiNewsArticleDataBean, ?>> index(@NonNull MultiNewsArticleDataBean item) {
+                    public Class<? extends ItemViewBinder<MultiNewsArticleDataBean, ?>> index(int position, @NonNull MultiNewsArticleDataBean item) {
                         if (item.isHas_video()) {
                             return SearchArticleVideoViewBinder.class;
                         }
@@ -179,7 +179,7 @@ public class Register {
                 .withClassLinker(new ClassLinker<MultiMediaArticleBean.DataBean>() {
                     @NonNull
                     @Override
-                    public Class<? extends ItemViewBinder<MultiMediaArticleBean.DataBean, ?>> index(@NonNull MultiMediaArticleBean.DataBean item) {
+                    public Class<? extends ItemViewBinder<MultiMediaArticleBean.DataBean, ?>> index(int position, @NonNull MultiMediaArticleBean.DataBean item) {
                         if (item.isHas_video()) {
                             return MediaArticleVideoViewBinder.class;
                         }

@@ -76,6 +76,7 @@ public class SearchResultFragment extends BaseListFragment<ISearchResult.Present
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;
+        recyclerView.stopScroll();
     }
 
     @Override

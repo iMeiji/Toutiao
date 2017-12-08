@@ -64,6 +64,7 @@ public class JokeContentView extends BaseListFragment<IJokeContent.Presenter> im
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;
+        recyclerView.stopScroll();
     }
 
     @Override

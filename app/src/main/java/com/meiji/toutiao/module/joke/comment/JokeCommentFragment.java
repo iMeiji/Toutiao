@@ -129,6 +129,7 @@ public class JokeCommentFragment extends BaseListFragment<IJokeComment.Presenter
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;
+        recyclerView.stopScroll();
     }
 
     @Override

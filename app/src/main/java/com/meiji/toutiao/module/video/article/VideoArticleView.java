@@ -76,6 +76,7 @@ public class VideoArticleView extends BaseListFragment<INewsArticle.Presenter> i
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;
+        recyclerView.stopScroll();
     }
 
     /**

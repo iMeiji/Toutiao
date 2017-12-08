@@ -98,6 +98,7 @@ public class NewsCommentFragment extends BaseListFragment<INewsComment.Presenter
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;
+        recyclerView.stopScroll();
     }
 
     @Override

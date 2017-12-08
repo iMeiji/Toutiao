@@ -86,6 +86,7 @@ public class MediaVideoFragment extends BaseListFragment<IMediaProfile.Presenter
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;
+        recyclerView.stopScroll();
     }
 
     @Override

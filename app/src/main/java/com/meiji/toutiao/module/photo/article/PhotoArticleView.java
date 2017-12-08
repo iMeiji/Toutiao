@@ -69,6 +69,7 @@ public class PhotoArticleView extends BaseListFragment<IPhotoArticle.Presenter> 
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;
+        recyclerView.stopScroll();
     }
 
     @Override

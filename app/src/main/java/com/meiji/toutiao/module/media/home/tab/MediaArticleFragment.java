@@ -79,6 +79,7 @@ public class MediaArticleFragment extends BaseListFragment<IMediaProfile.Present
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;
+        recyclerView.stopScroll();
     }
 
     @Override

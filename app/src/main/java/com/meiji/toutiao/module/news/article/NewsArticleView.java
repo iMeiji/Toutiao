@@ -73,6 +73,12 @@ public class NewsArticleView extends BaseListFragment<INewsArticle.Presenter> im
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;
+        /**
+         * https://medium.com/@hanru.yeh/recyclerview-and-appbarlayout-behavior-changed-in-v26-0-x-d9eb4de78fc0
+         * support libraries v26 增加了 RV 惯性滑动，当 root layout 使用了 AppBarLayout Behavior 就会自动生效
+         * 因此需要手动停止滑动
+         */
+        recyclerView.stopScroll();
     }
 
     @Override
