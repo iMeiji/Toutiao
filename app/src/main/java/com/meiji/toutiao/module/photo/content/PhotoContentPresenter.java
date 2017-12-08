@@ -19,6 +19,7 @@ import com.meiji.toutiao.api.IPhotoApi;
 import com.meiji.toutiao.bean.news.NewsContentBean;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
 import com.meiji.toutiao.module.media.home.MediaHomeActivity;
+import com.meiji.toutiao.util.ChineseUtil;
 import com.meiji.toutiao.util.SettingUtil;
 
 import org.jsoup.Jsoup;
@@ -264,25 +265,21 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
         for (Element e : scripts) {
             // 过滤字符串
             String script = e.toString();
-            if (script.contains("var gallery = {")) {
+            if (script.contains("BASE_DATA.galleryInfo = {")) {
                 // 只取得script的內容
                 script = e.childNode(0).toString();
-                // 取得JS变量数组
-                String[] vars = script.split("var ");
-                // 取得单个JS变量
-                for (String var : vars) {
-                    // 取到满足条件的JS变量
-                    if (var.contains("gallery = ")) {
-                        int start = var.indexOf("=");
-                        int end = var.lastIndexOf(";");
-                        String json = var.substring(start + 1, end + 1);
-                        // 处理特殊符号
-                        JsonReader reader = new JsonReader(new StringReader(json));
-                        reader.setLenient(true);
-                        Log.d(TAG, "parseHTML: " + reader);
-                        bean = new Gson().fromJson(reader, PhotoGalleryBean.class);
-                        flag = true;
-                    }
+                if (script.contains("JSON.parse")) {
+                    int start = script.indexOf("(");
+                    int end = script.indexOf("),");
+                    String json = script.substring(start + 2, end - 1);
+                    // 处理特殊符号
+                    json = ChineseUtil.UnicodeToChs(json);
+                    json = json.replace("\\", "");
+                    JsonReader reader = new JsonReader(new StringReader(json));
+                    reader.setLenient(true);
+                    bean = new Gson().fromJson(reader, PhotoGalleryBean.class);
+                    flag = true;
+                    break;
                 }
             }
         }
