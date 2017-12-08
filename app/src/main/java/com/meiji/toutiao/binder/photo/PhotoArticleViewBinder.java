@@ -58,7 +58,7 @@ public class PhotoArticleViewBinder extends ItemViewBinder<PhotoArticleBean.Data
                 int size = item.getImage_list().size();
                 String[] ivs = new String[size];
                 for (int i = 0; i < item.getImage_list().size(); i++) {
-                    ivs[i] = item.getImage_list().get(i).getUrl();
+                    ivs[i] = "https:" + item.getImage_list().get(i).getUrl();
                 }
                 switch (ivs.length) {
                     case 1:
