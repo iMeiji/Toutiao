@@ -389,6 +389,27 @@ public class WendaArticleDataBean {
         private ContentBean content;
         private Object group_id;
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (o == null || getClass() != o.getClass())
+                return false;
+
+            QuestionBean that = (QuestionBean) o;
+
+            if (!title.equals(that.title))
+                return false;
+            return content.equals(that.content);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = title.hashCode();
+            result = 31 * result + content.hashCode();
+            return result;
+        }
+
         public int getStatus() {
             return status;
         }

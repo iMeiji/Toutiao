@@ -584,6 +584,27 @@ public class MediaWendaBean {
             private int tag_id;
             private FoldReasonBean fold_reason;
 
+            @Override
+            public boolean equals(Object o) {
+                if (this == o)
+                    return true;
+                if (o == null || getClass() != o.getClass())
+                    return false;
+
+                QuestionBean that = (QuestionBean) o;
+
+                if (!title.equals(that.title))
+                    return false;
+                return qid.equals(that.qid);
+            }
+
+            @Override
+            public int hashCode() {
+                int result = title.hashCode();
+                result = 31 * result + qid.hashCode();
+                return result;
+            }
+
             public ContentBean getContent() {
                 return content;
             }

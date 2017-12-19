@@ -27,12 +27,12 @@ import android.widget.TextView;
 import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.Register;
-import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.bean.LoadingBean;
 import com.meiji.toutiao.bean.LoadingEndBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.module.base.BaseFragment;
 import com.meiji.toutiao.module.wenda.content.WendaContentActivity;
+import com.meiji.toutiao.util.DiffCallback;
 import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.widget.CircleImageView;
@@ -114,7 +114,7 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
     public void onSetAdapter(List<?> list) {
         Items newItems = new Items(list);
         newItems.add(new LoadingBean());
-        DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.NEWS_COMMENT, adapter);
+        DiffCallback.create(oldItems, newItems, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;

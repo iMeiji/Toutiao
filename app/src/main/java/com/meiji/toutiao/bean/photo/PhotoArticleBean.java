@@ -125,7 +125,6 @@ public class PhotoArticleBean {
         private String media_url;
         private boolean honey;
         private List<ImageListBean> image_list;
-
         protected DataBean(Parcel in) {
             image_url = in.readString();
             media_avatar_url = in.readString();
@@ -146,6 +145,27 @@ public class PhotoArticleBean {
             group_id = in.readString();
             media_url = in.readString();
             honey = in.readByte() != 0;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (o == null || getClass() != o.getClass())
+                return false;
+
+            DataBean dataBean = (DataBean) o;
+
+            if (!title.equals(dataBean.title))
+                return false;
+            return source_url.equals(dataBean.source_url);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = title.hashCode();
+            result = 31 * result + source_url.hashCode();
+            return result;
         }
 
         @Override

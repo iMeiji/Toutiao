@@ -977,7 +977,6 @@ public class WendaContentBean {
         private int digg_count;
         private boolean is_digg;
         private String schema;
-
         public AnsListBean(Parcel in) {
             create_time = in.readInt();
             user = in.readParcelable(UserBeanX.class.getClassLoader());
@@ -993,8 +992,28 @@ public class WendaContentBean {
             is_digg = in.readByte() != 0;
             schema = in.readString();
         }
-
         public AnsListBean() {
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (o == null || getClass() != o.getClass())
+                return false;
+
+            AnsListBean that = (AnsListBean) o;
+
+            if (!ans_url.equals(that.ans_url))
+                return false;
+            return ansid.equals(that.ansid);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = ans_url.hashCode();
+            result = 31 * result + ansid.hashCode();
+            return result;
         }
 
         @Override

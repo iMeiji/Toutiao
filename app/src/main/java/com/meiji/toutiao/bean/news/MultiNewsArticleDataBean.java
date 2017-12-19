@@ -173,10 +173,8 @@ public class MultiNewsArticleDataBean implements Parcelable {
     private int group_flags;
     private int like_count;
     private List<ImageListBean> image_list;
-
     public MultiNewsArticleDataBean() {
     }
-
     protected MultiNewsArticleDataBean(Parcel in) {
         read_count = in.readInt();
         media_name = in.readString();
@@ -240,6 +238,27 @@ public class MultiNewsArticleDataBean implements Parcelable {
         video_duration = in.readInt();
         group_flags = in.readInt();
         like_count = in.readInt();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        MultiNewsArticleDataBean that = (MultiNewsArticleDataBean) o;
+
+        if (item_id != that.item_id)
+            return false;
+        return title.equals(that.title);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = title.hashCode();
+        result = 31 * result + (int) (item_id ^ (item_id >>> 32));
+        return result;
     }
 
     @Override

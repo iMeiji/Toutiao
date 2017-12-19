@@ -212,7 +212,6 @@ public class JokeContentBean {
             private ActivityBean activity;
             private long group_id;
             private int category_id;
-
             protected GroupBean(Parcel in) {
                 text = in.readString();
                 create_time = in.readInt();
@@ -248,6 +247,27 @@ public class JokeContentBean {
                 user_repin = in.readInt();
                 group_id = in.readLong();
                 category_id = in.readInt();
+            }
+
+            @Override
+            public boolean equals(Object o) {
+                if (this == o)
+                    return true;
+                if (o == null || getClass() != o.getClass())
+                    return false;
+
+                GroupBean groupBean = (GroupBean) o;
+
+                if (!share_url.equals(groupBean.share_url))
+                    return false;
+                return content.equals(groupBean.content);
+            }
+
+            @Override
+            public int hashCode() {
+                int result = share_url.hashCode();
+                result = 31 * result + content.hashCode();
+                return result;
             }
 
             @Override

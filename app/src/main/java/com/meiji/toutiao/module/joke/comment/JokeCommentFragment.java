@@ -11,10 +11,10 @@ import android.view.View;
 
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.Register;
-import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.bean.LoadingBean;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
+import com.meiji.toutiao.util.DiffCallback;
 import com.meiji.toutiao.util.OnLoadMoreListener;
 
 import java.util.List;
@@ -125,7 +125,7 @@ public class JokeCommentFragment extends BaseListFragment<IJokeComment.Presenter
         newItems.add(jokeCommentHeaderBean);
         newItems.addAll(list);
         newItems.add(new LoadingBean());
-        DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.JOKE_COMMENT, adapter);
+        DiffCallback.create(oldItems, newItems, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;

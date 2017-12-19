@@ -10,10 +10,10 @@ import android.view.View;
 import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.Register;
-import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.bean.LoadingBean;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
+import com.meiji.toutiao.util.DiffCallback;
 import com.meiji.toutiao.util.OnLoadMoreListener;
 import com.meiji.toutiao.util.SettingUtil;
 
@@ -55,7 +55,7 @@ public class WendaContentFragment extends BaseListFragment<IWendaContent.Present
         newItems.add(WendaContentHeaderBean);
         newItems.addAll(list);
         newItems.add(new LoadingBean());
-        DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.WENDA_CONTENT, adapter);
+        DiffCallback.create(oldItems, newItems, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;

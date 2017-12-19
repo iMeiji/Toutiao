@@ -5,9 +5,9 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.meiji.toutiao.Register;
-import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.bean.LoadingBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
+import com.meiji.toutiao.util.DiffCallback;
 import com.meiji.toutiao.util.OnLoadMoreListener;
 
 import java.util.List;
@@ -82,7 +82,7 @@ public class MediaWendaFragment extends BaseListFragment<IMediaProfile.Presenter
     public void onSetAdapter(List<?> list) {
         Items newItems = new Items(list);
         newItems.add(new LoadingBean());
-        DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.MEDIA_WENDA, adapter);
+        DiffCallback.create(oldItems, newItems, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;

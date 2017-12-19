@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.meiji.toutiao.Register;
-import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.bean.LoadingBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
+import com.meiji.toutiao.util.DiffCallback;
 import com.meiji.toutiao.util.OnLoadMoreListener;
 
 import java.util.List;
@@ -69,7 +69,7 @@ public class NewsArticleView extends BaseListFragment<INewsArticle.Presenter> im
     public void onSetAdapter(final List<?> list) {
         Items newItems = new Items(list);
         newItems.add(new LoadingBean());
-        DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.MUlTI_NEWS, adapter);
+        DiffCallback.create(oldItems, newItems, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;

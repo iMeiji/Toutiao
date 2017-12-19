@@ -305,6 +305,28 @@ public class MultiMediaArticleBean {
         private List<ImageInfosBean> image_infos;
         private List<?> gallery;
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (o == null || getClass() != o.getClass())
+                return false;
+
+            DataBean dataBean = (DataBean) o;
+
+            if (title != null ? !title.equals(dataBean.title) : dataBean.title != null)
+                return false;
+            return abstractX != null ? !abstractX.equals(dataBean.abstractX) : dataBean.abstractX != null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = item_status;
+            result = 31 * result + (title != null ? title.hashCode() : 0);
+            result = 31 * result + (abstractX != null ? abstractX.hashCode() : 0);
+            return result;
+        }
+
         public int getItem_status() {
             return item_status;
         }

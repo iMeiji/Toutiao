@@ -243,6 +243,27 @@ public class NewsCommentBean {
             private List<?> reply_list;
             private List<?> author_badge;
 
+            @Override
+            public boolean equals(Object o) {
+                if (this == o)
+                    return true;
+                if (o == null || getClass() != o.getClass())
+                    return false;
+
+                CommentBean that = (CommentBean) o;
+
+                if (create_time != that.create_time)
+                    return false;
+                return text.equals(that.text);
+            }
+
+            @Override
+            public int hashCode() {
+                int result = text.hashCode();
+                result = 31 * result + create_time;
+                return result;
+            }
+
             public int getIs_followed() {
                 return is_followed;
             }

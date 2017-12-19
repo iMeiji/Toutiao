@@ -335,6 +335,27 @@ public class SearchResultBean {
         private List<ImageListBean> image_list;
         private List<QueriesBean> queries;
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (o == null || getClass() != o.getClass())
+                return false;
+
+            DataBeanX dataBeanX = (DataBeanX) o;
+
+            if (!abstractX.equals(dataBeanX.abstractX))
+                return false;
+            return title.equals(dataBeanX.title);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = abstractX.hashCode();
+            result = 31 * result + title.hashCode();
+            return result;
+        }
+
         public int getCell_type() {
             return cell_type;
         }

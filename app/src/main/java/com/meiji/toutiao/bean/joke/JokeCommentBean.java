@@ -145,6 +145,27 @@ public class JokeCommentBean {
             private String avatar_url;
             private long group_id;
 
+            @Override
+            public boolean equals(Object o) {
+                if (this == o)
+                    return true;
+                if (o == null || getClass() != o.getClass())
+                    return false;
+
+                RecentCommentsBean that = (RecentCommentsBean) o;
+
+                if (create_time != that.create_time)
+                    return false;
+                return text.equals(that.text);
+            }
+
+            @Override
+            public int hashCode() {
+                int result = text.hashCode();
+                result = 31 * result + create_time;
+                return result;
+            }
+
             public boolean isReply_to_user_verified() {
                 return reply_to_user_verified;
             }

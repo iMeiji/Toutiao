@@ -6,10 +6,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.meiji.toutiao.Register;
-import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.bean.LoadingBean;
 import com.meiji.toutiao.bean.media.MediaProfileBean;
 import com.meiji.toutiao.module.base.BaseListFragment;
+import com.meiji.toutiao.util.DiffCallback;
 import com.meiji.toutiao.util.OnLoadMoreListener;
 
 import java.util.List;
@@ -75,7 +75,7 @@ public class MediaArticleFragment extends BaseListFragment<IMediaProfile.Present
         newItems.add(dataBean);
         newItems.addAll(list);
         newItems.add(new LoadingBean());
-        DiffCallback.notifyDataSetChanged(oldItems, newItems, DiffCallback.MUlTI_MEDIA, adapter);
+        DiffCallback.create(oldItems, newItems, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;

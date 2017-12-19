@@ -23,12 +23,12 @@ import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.Register;
-import com.meiji.toutiao.adapter.DiffCallback;
 import com.meiji.toutiao.bean.LoadingBean;
 import com.meiji.toutiao.bean.LoadingEndBean;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.news.comment.INewsComment;
+import com.meiji.toutiao.util.DiffCallback;
 import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.util.OnLoadMoreListener;
 import com.meiji.toutiao.util.SettingUtil;
@@ -114,7 +114,7 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
     }
 
     private void initView() {
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -140,12 +140,12 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
             }
         });
 
-        progressBar = (ContentLoadingProgressBar) findViewById(R.id.pb_progress);
+        progressBar = findViewById(R.id.pb_progress);
         int color = SettingUtil.getInstance().getColor();
         progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
         progressBar.show();
 
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
+        swipeRefreshLayout = findViewById(R.id.refresh_layout);
         swipeRefreshLayout.setColorSchemeColors(SettingUtil.getInstance().getColor());
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -160,7 +160,7 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
             }
         });
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setBackgroundTintList(ColorStateList.valueOf(SettingUtil.getInstance().getColor()));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,7 +169,7 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
             }
         });
 
-        jcVideo = (MyJCVideoPlayerStandard) findViewById(R.id.jc_video);
+        jcVideo = findViewById(R.id.jc_video);
         jcVideo.thumbImageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -191,7 +191,7 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
         newItems.add(dataBean);
         newItems.addAll(list);
         newItems.add(new LoadingBean());
-        DiffCallback.notifyDataSetChanged(newItems, newItems, DiffCallback.NEWS_COMMENT, adapter);
+        DiffCallback.create(newItems, newItems, adapter);
         oldItems.clear();
         oldItems.addAll(newItems);
         canLoadMore = true;
