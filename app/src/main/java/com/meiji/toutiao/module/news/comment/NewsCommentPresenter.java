@@ -1,9 +1,9 @@
 package com.meiji.toutiao.module.news.comment;
 
 import com.meiji.toutiao.ErrorAction;
-import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileNewsApi;
 import com.meiji.toutiao.bean.news.NewsCommentBean;
+import com.meiji.toutiao.util.RetrofitFactory;
 
 import java.util.ArrayList;
 import java.util.List;

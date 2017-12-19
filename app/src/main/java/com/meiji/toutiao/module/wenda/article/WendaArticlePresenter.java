@@ -4,10 +4,10 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.meiji.toutiao.ErrorAction;
-import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileWendaApi;
 import com.meiji.toutiao.bean.wenda.WendaArticleBean;
 import com.meiji.toutiao.bean.wenda.WendaArticleDataBean;
+import com.meiji.toutiao.util.RetrofitFactory;
 import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.ArrayList;

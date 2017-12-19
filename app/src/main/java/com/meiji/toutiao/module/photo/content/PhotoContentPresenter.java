@@ -13,13 +13,13 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.InitApp;
-import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.INewsApi;
 import com.meiji.toutiao.api.IPhotoApi;
 import com.meiji.toutiao.bean.news.NewsContentBean;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
 import com.meiji.toutiao.module.media.home.MediaHomeActivity;
 import com.meiji.toutiao.util.ChineseUtil;
+import com.meiji.toutiao.util.RetrofitFactory;
 import com.meiji.toutiao.util.SettingUtil;
 
 import org.jsoup.Jsoup;

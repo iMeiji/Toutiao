@@ -1,10 +1,10 @@
 package com.meiji.toutiao.module.wenda.detail;
 
 import com.meiji.toutiao.ErrorAction;
-import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileNewsApi;
 import com.meiji.toutiao.api.IMobileWendaApi;
 import com.meiji.toutiao.bean.news.NewsCommentBean;
+import com.meiji.toutiao.util.RetrofitFactory;
 import com.meiji.toutiao.util.SettingUtil;
 
 import org.jsoup.Jsoup;

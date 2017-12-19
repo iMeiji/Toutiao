@@ -1,9 +1,9 @@
 package com.meiji.toutiao.module.joke.comment;
 
 import com.meiji.toutiao.ErrorAction;
-import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IJokeApi;
 import com.meiji.toutiao.bean.joke.JokeCommentBean;
+import com.meiji.toutiao.util.RetrofitFactory;
 
 import java.util.ArrayList;
 import java.util.List;

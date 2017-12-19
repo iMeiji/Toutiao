@@ -1,4 +1,4 @@
-package com.meiji.toutiao;
+package com.meiji.toutiao.util;
 
 import android.support.annotation.NonNull;
 
@@ -6,8 +6,10 @@ import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
+import com.meiji.toutiao.BuildConfig;
+import com.meiji.toutiao.InitApp;
+import com.meiji.toutiao.SdkManager;
 import com.meiji.toutiao.api.INewsApi;
-import com.meiji.toutiao.util.NetWorkUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +31,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitFactory {
 
-    private static final Object Object = new Object();
     /**
      * 缓存机制
      * 在响应请求之后在 data/data/<包名>/cache 下建立一个response 文件夹，保持缓存数据。
@@ -69,38 +70,40 @@ public class RetrofitFactory {
 
     @NonNull
     public static Retrofit getRetrofit() {
-        synchronized (Object) {
-            if (retrofit == null) {
-                // 指定缓存路径,缓存大小 50Mb
-                Cache cache = new Cache(new File(InitApp.AppContext.getCacheDir(), "HttpCache"),
-                        1024 * 1024 * 50);
+        if (retrofit == null) {
+            synchronized (RetrofitFactory.class) {
+                if (retrofit == null) {
+                    // 指定缓存路径,缓存大小 50Mb
+                    Cache cache = new Cache(new File(InitApp.AppContext.getCacheDir(), "HttpCache"),
+                            1024 * 1024 * 50);
 
-                // Cookie 持久化
-                ClearableCookieJar cookieJar =
-                        new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(InitApp.AppContext));
+                    // Cookie 持久化
+                    ClearableCookieJar cookieJar =
+                            new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(InitApp.AppContext));
 
-                OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                        .cookieJar(cookieJar)
-                        .cache(cache)
-                        .addInterceptor(cacheControlInterceptor)
-                        .connectTimeout(10, TimeUnit.SECONDS)
-                        .readTimeout(15, TimeUnit.SECONDS)
-                        .writeTimeout(15, TimeUnit.SECONDS)
-                        .retryOnConnectionFailure(true);
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                            .cookieJar(cookieJar)
+                            .cache(cache)
+                            .addInterceptor(cacheControlInterceptor)
+                            .connectTimeout(10, TimeUnit.SECONDS)
+                            .readTimeout(15, TimeUnit.SECONDS)
+                            .writeTimeout(15, TimeUnit.SECONDS)
+                            .retryOnConnectionFailure(true);
 
-                // Log 拦截器
-                if (BuildConfig.DEBUG) {
-                    builder = SdkManager.initInterceptor(builder);
+                    // Log 拦截器
+                    if (BuildConfig.DEBUG) {
+                        builder = SdkManager.initInterceptor(builder);
+                    }
+
+                    retrofit = new Retrofit.Builder()
+                            .baseUrl(INewsApi.HOST)
+                            .client(builder.build())
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                            .build();
                 }
-
-                retrofit = new Retrofit.Builder()
-                        .baseUrl(INewsApi.HOST)
-                        .client(builder.build())
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                        .build();
             }
-            return retrofit;
         }
+        return retrofit;
     }
 }

@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 
 import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.RxBus;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.bean.news.NewsChannelBean;
 import com.meiji.toutiao.database.dao.NewsChannelDao;
@@ -23,6 +22,7 @@ import com.meiji.toutiao.module.joke.content.JokeContentView;
 import com.meiji.toutiao.module.news.article.NewsArticleView;
 import com.meiji.toutiao.module.news.channel.NewsChannelActivity;
 import com.meiji.toutiao.module.wenda.article.WendaArticleView;
+import com.meiji.toutiao.util.RxBus;
 import com.meiji.toutiao.util.SettingUtil;
 
 import java.util.ArrayList;

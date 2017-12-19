@@ -1,9 +1,9 @@
 package com.meiji.toutiao.module.photo.article;
 
 import com.meiji.toutiao.ErrorAction;
-import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IPhotoApi;
 import com.meiji.toutiao.bean.photo.PhotoArticleBean;
+import com.meiji.toutiao.util.RetrofitFactory;
 import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.ArrayList;

@@ -3,10 +3,10 @@ package com.meiji.toutiao.module.news.content;
 import android.text.TextUtils;
 
 import com.meiji.toutiao.ErrorAction;
-import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.INewsApi;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsContentBean;
+import com.meiji.toutiao.util.RetrofitFactory;
 import com.meiji.toutiao.util.SettingUtil;
 
 import io.reactivex.Observable;

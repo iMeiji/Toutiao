@@ -2,9 +2,9 @@ package com.meiji.toutiao.module.joke.content;
 
 import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.ErrorAction;
-import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IJokeApi;
 import com.meiji.toutiao.bean.joke.JokeContentBean;
+import com.meiji.toutiao.util.RetrofitFactory;
 import com.meiji.toutiao.util.TimeUtil;
 import com.meiji.toutiao.util.ToutiaoUtil;
 

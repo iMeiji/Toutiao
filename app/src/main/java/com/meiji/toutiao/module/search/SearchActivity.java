@@ -33,7 +33,6 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.adapter.search.SearchHistoryAdapter;
 import com.meiji.toutiao.adapter.search.SearchSuggestionAdapter;
@@ -44,6 +43,7 @@ import com.meiji.toutiao.bean.search.SearchSuggestionBean;
 import com.meiji.toutiao.database.dao.SearchHistoryDao;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.search.result.SearchResultFragment;
+import com.meiji.toutiao.util.RetrofitFactory;
 import com.meiji.toutiao.util.SettingUtil;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.android.ActivityEvent;
@@ -91,16 +91,16 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initView() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         initToolBar(toolbar, true, "");
         // 热门搜索
-        hotWordLayout = (LinearLayout) findViewById(R.id.hotword_layout);
-        flexboxLayout = (FlexboxLayout) findViewById(R.id.flexbox_layout);
+        hotWordLayout = findViewById(R.id.hotword_layout);
+        flexboxLayout = findViewById(R.id.flexbox_layout);
         flexboxLayout.setFlexDirection(FlexboxLayout.FLEX_DIRECTION_ROW);
         flexboxLayout.setFlexWrap(FlexboxLayout.FLEX_WRAP_WRAP);
-        TextView tv_clear = (TextView) findViewById(R.id.tv_clear);
+        TextView tv_clear = findViewById(R.id.tv_clear);
         tv_clear.setOnClickListener(this);
-        TextView tv_refresh = (TextView) findViewById(R.id.tv_refresh);
+        TextView tv_refresh = findViewById(R.id.tv_refresh);
         RxView.clicks(tv_refresh)
                 // 防抖
                 .throttleFirst(1, TimeUnit.SECONDS)
@@ -113,14 +113,14 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                     }
                 }, ErrorAction.error());
         // 搜索结果
-        resultLayout = (LinearLayout) findViewById(R.id.result_layout);
-        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        resultLayout = findViewById(R.id.result_layout);
+        tabLayout = findViewById(R.id.tab_layout);
+        viewPager = findViewById(R.id.view_pager);
         tabLayout.setBackgroundColor(SettingUtil.getInstance().getColor());
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         // 搜索建议
-        suggestionList = (ListView) findViewById(R.id.suggestion_list);
+        suggestionList = findViewById(R.id.suggestion_list);
         suggestionAdapter = new SearchSuggestionAdapter(this, -1);
         suggestionList.setAdapter(suggestionAdapter);
         suggestionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -132,7 +132,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             }
         });
         // 搜索历史
-        historyList = (ListView) findViewById(R.id.history_list);
+        historyList = findViewById(R.id.history_list);
         historyAdapter = new SearchHistoryAdapter(this, -1);
         historyList.setAdapter(historyAdapter);
         historyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

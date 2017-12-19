@@ -1,4 +1,4 @@
-package com.meiji.toutiao;
+package com.meiji.toutiao.util;
 
 import android.support.annotation.NonNull;
 

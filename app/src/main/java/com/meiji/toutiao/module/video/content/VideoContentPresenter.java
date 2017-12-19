@@ -4,10 +4,10 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.meiji.toutiao.ErrorAction;
-import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IVideoApi;
 import com.meiji.toutiao.bean.video.VideoContentBean;
 import com.meiji.toutiao.module.news.comment.NewsCommentPresenter;
+import com.meiji.toutiao.util.RetrofitFactory;
 
 import java.util.Random;
 import java.util.zip.CRC32;

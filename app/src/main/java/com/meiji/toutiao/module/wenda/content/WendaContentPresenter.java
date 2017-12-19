@@ -3,9 +3,9 @@ package com.meiji.toutiao.module.wenda.content;
 import android.util.Log;
 
 import com.meiji.toutiao.ErrorAction;
-import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileWendaApi;
 import com.meiji.toutiao.bean.wenda.WendaContentBean;
+import com.meiji.toutiao.util.RetrofitFactory;
 
 import java.util.ArrayList;
 import java.util.List;

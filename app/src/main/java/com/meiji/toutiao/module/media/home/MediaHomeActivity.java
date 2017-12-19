@@ -15,7 +15,6 @@ import android.text.TextUtils;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.api.IMobileMediaApi;
 import com.meiji.toutiao.bean.media.MediaProfileBean;
@@ -23,6 +22,7 @@ import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.media.home.tab.MediaArticleFragment;
 import com.meiji.toutiao.module.media.home.tab.MediaVideoFragment;
 import com.meiji.toutiao.module.media.home.tab.MediaWendaFragment;
+import com.meiji.toutiao.util.RetrofitFactory;
 import com.meiji.toutiao.util.SettingUtil;
 
 import java.util.ArrayList;
@@ -61,16 +61,16 @@ public class MediaHomeActivity extends BaseActivity {
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(SettingUtil.getInstance().getColor());
 
-        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
+        tabLayout = findViewById(R.id.tab_layout);
+        viewPager = findViewById(R.id.view_pager);
         tabLayout.setBackgroundColor(SettingUtil.getInstance().getColor());
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 
-        progressBar = (ContentLoadingProgressBar) findViewById(R.id.pb_progress);
+        progressBar = findViewById(R.id.pb_progress);
         int color = SettingUtil.getInstance().getColor();
         progressBar.getIndeterminateDrawable().setColorFilter(color, PorterDuff.Mode.MULTIPLY);
         progressBar.show();

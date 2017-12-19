@@ -4,10 +4,10 @@ import android.text.TextUtils;
 
 import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.ErrorAction;
-import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileMediaApi;
 import com.meiji.toutiao.bean.media.MediaWendaBean;
 import com.meiji.toutiao.bean.media.MultiMediaArticleBean;
+import com.meiji.toutiao.util.RetrofitFactory;
 import com.meiji.toutiao.util.TimeUtil;
 import com.meiji.toutiao.util.ToutiaoUtil;
 

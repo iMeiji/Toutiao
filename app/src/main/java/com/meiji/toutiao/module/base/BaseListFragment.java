@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.RxBus;
 import com.meiji.toutiao.bean.LoadingEndBean;
+import com.meiji.toutiao.util.RxBus;
 import com.meiji.toutiao.util.SettingUtil;
 
 import io.reactivex.Observable;

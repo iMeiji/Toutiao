@@ -9,10 +9,10 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.meiji.toutiao.ErrorAction;
-import com.meiji.toutiao.RetrofitFactory;
 import com.meiji.toutiao.api.IMobileSearchApi;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.search.SearchResultBean;
+import com.meiji.toutiao.util.RetrofitFactory;
 import com.meiji.toutiao.util.StringUtil;
 
 import java.lang.reflect.Type;

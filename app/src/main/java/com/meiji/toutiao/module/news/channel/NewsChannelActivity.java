@@ -12,12 +12,12 @@ import android.widget.Toast;
 import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.R;
-import com.meiji.toutiao.RxBus;
 import com.meiji.toutiao.adapter.news.NewsChannelAdapter;
 import com.meiji.toutiao.bean.news.NewsChannelBean;
 import com.meiji.toutiao.database.dao.NewsChannelDao;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.news.NewsTabLayout;
+import com.meiji.toutiao.util.RxBus;
 import com.meiji.toutiao.widget.helper.ItemDragHelperCallback;
 
 import java.util.List;
@@ -56,7 +56,7 @@ public class NewsChannelActivity extends BaseActivity {
 
     private void initView() {
         initToolBar((Toolbar) findViewById(R.id.toolbar), true, getString(R.string.title_item_drag));
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view);
     }
 
     private void initData() {
