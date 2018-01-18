@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -57,6 +58,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
     private String imgUrl;
     private boolean isHasImage;
     private MultiNewsArticleDataBean bean;
+    private Bundle mBundle;
 
     private Toolbar toolbar;
     private WebView webView;
@@ -79,17 +81,21 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
 
     @Override
     protected int attachLayoutId() {
-        imgUrl = getArguments().getString(IMG);
+        mBundle = getArguments();
+        if (mBundle != null) {
+            imgUrl = mBundle.getString(IMG);
+        }
         isHasImage = !TextUtils.isEmpty(imgUrl);
         return isHasImage ? R.layout.fragment_news_content_img : R.layout.fragment_news_content;
     }
 
     @Override
     protected void initData() {
-        Bundle bundle = getArguments();
+        if (mBundle == null) {
+            return;
+        }
         try {
-            bean = bundle.getParcelable(TAG);
-//            Log.d(TAG, "initData: " + bean.toString());
+            bean = mBundle.getParcelable(TAG);
             presenter.doLoadData(bean);
             shareUrl = !TextUtils.isEmpty(bean.getShare_url()) ? bean.getShare_url() : bean.getDisplay_url();
             shareTitle = bean.getTitle();
@@ -101,17 +107,21 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
         }
 
         if (isHasImage) {
-            ImageLoader.loadCenterCrop(getActivity(), bundle.getString(IMG), imageView, R.mipmap.error_image, R.mipmap.error_image);
+            ImageLoader.loadCenterCrop(getActivity(), mBundle.getString(IMG), imageView, R.mipmap.error_image, R.mipmap.error_image);
 
             appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
                 @Override
                 public void onStateChanged(AppBarLayout appBarLayout, AppBarStateChangeListener.State state) {
+                    Window window = null;
+                    if (getActivity() != null && getActivity().getWindow() != null) {
+                        window = getActivity().getWindow();
+                    }
                     if (state == State.EXPANDED) {
                         // 展开状态
                         collapsingToolbarLayout.setTitle("");
                         toolbar.setBackgroundColor(Color.TRANSPARENT);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && window != null) {
+                            window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                         }
                     } else if (state == State.COLLAPSED) {
                         // 折叠状态
@@ -120,8 +130,8 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
                         // 中间状态
                         collapsingToolbarLayout.setTitle(mediaName);
                         toolbar.setBackgroundColor(SettingUtil.getInstance().getColor());
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && window != null) {
+                            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                         }
                     }
                 }
