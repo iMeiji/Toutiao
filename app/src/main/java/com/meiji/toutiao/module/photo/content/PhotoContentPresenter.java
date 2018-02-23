@@ -290,7 +290,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
         boolean flag = false;
         try {
             // 获取 bitmap
-            Bitmap bitmap = Glide.with(InitApp.AppContext).load(url).asBitmap()
+            Bitmap bitmap = Glide.with(InitApp.AppContext).asBitmap().load(url)
                     .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .get();
             // http://stormzhang.com/android/2014/07/24/android-save-image-to-gallery/
