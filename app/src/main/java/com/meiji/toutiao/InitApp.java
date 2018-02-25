@@ -24,7 +24,8 @@ public class InitApp extends MultiDexApplication {
         initTheme();
 
         if (BuildConfig.DEBUG) {
-            SdkManager.initStetho(AppContext);
+            SdkManager.initStetho(this);
+            SdkManager.initLeakCanary(this);
         }
     }
 

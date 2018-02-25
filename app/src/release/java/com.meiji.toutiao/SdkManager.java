@@ -1,5 +1,6 @@
 package com.meiji.toutiao;
 
+import android.app.Application;
 import android.content.Context;
 
 import okhttp3.OkHttpClient;
@@ -14,5 +15,8 @@ public class SdkManager {
 
     public static OkHttpClient.Builder initInterceptor(OkHttpClient.Builder builder) {
         return builder;
+    }
+
+    public static void initLeakCanary(Application app) {
     }
 }

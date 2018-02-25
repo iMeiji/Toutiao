@@ -149,4 +149,7 @@ dependencies {
 
     // 高亮功能提示效果 https://material.google.com/growth-communications/feature-discovery.html#feature-discovery-design
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.9.1'
+
+    // LeakCanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
 }
