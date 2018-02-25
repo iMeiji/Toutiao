@@ -96,8 +96,8 @@ dependencies {
     // 协议Dialog
     implementation 'de.psdev.licensesdialog:licensesdialog:1.8.3'
 
-    // 节操播放器
-    implementation 'fm.jiecao:jiecaovideoplayer:5.7'
+    // 饺子视频播放器
+    implementation 'cn.jzvd:jiaozivideoplayer:6.2.7'
 
     // retrofit 2
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'

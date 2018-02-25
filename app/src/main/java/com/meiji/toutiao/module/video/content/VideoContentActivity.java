@@ -32,16 +32,16 @@ import com.meiji.toutiao.util.DiffCallback;
 import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.util.OnLoadMoreListener;
 import com.meiji.toutiao.util.SettingUtil;
-import com.meiji.toutiao.widget.helper.MyJCVideoPlayerStandard;
+import com.meiji.toutiao.widget.helper.MyJZVideoPlayerStandard;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import java.util.List;
 
-import fm.jiecao.jcvideoplayer_lib.JCUserAction;
-import fm.jiecao.jcvideoplayer_lib.JCUserActionStandard;
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
+import cn.jzvd.JZUserAction;
+import cn.jzvd.JZUserActionStandard;
+import cn.jzvd.JZVideoPlayer;
+import cn.jzvd.JZVideoPlayerStandard;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 
@@ -65,7 +65,7 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
     private RecyclerView recyclerView;
     private ContentLoadingProgressBar progressBar;
     private FloatingActionButton fab;
-    private MyJCVideoPlayerStandard jcVideo;
+    private MyJZVideoPlayerStandard jcVideo;
     private IVideoContent.Presenter presenter;
     private int currentAction;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -131,10 +131,10 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
             }
         });
 
-        MyJCVideoPlayerStandard.setOnClickFullScreenListener(new MyJCVideoPlayerStandard.onClickFullScreenListener() {
+        MyJZVideoPlayerStandard.setOnClickFullScreenListener(new MyJZVideoPlayerStandard.onClickFullScreenListener() {
             @Override
             public void onClickFullScreen() {
-                if (currentAction == JCUserAction.ON_ENTER_FULLSCREEN && SettingUtil.getInstance().getIsVideoForceLandscape()) {
+                if (currentAction == JZUserAction.ON_ENTER_FULLSCREEN && SettingUtil.getInstance().getIsVideoForceLandscape()) {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 }
             }
@@ -251,29 +251,29 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
 
     @Override
     public void onSetVideoPlay(String urls) {
-        jcVideo.setUp(urls, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, videoTitle);
+        jcVideo.setUp(urls, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, videoTitle);
         if (SettingUtil.getInstance().getIsVideoAutoPlay()) {
             jcVideo.startButton.performClick();
             fab.setVisibility(View.GONE);
         }
 
         // 设置监听事件 判断是否进入全屏
-        JCVideoPlayer.setJcUserAction(new JCUserAction() {
+        JZVideoPlayer.setJzUserAction(new JZUserAction() {
             @Override
-            public void onEvent(int type, String url, int screen, Object... objects) {
-                if (type == JCUserActionStandard.ON_CLICK_START_THUMB ||
-                        type == JCUserAction.ON_CLICK_START_ICON ||
-                        type == JCUserAction.ON_CLICK_RESUME ||
-                        type == JCUserAction.ON_CLICK_START_AUTO_COMPLETE) {
+            public void onEvent(int type, Object url, int screen, Object... objects) {
+                if (type == JZUserActionStandard.ON_CLICK_START_THUMB ||
+                        type == JZUserAction.ON_CLICK_START_ICON ||
+                        type == JZUserAction.ON_CLICK_RESUME ||
+                        type == JZUserAction.ON_CLICK_START_AUTO_COMPLETE) {
                     fab.setVisibility(View.GONE);
                 }
 
-                if (type == JCUserAction.ON_CLICK_PAUSE || type == JCUserAction.ON_AUTO_COMPLETE) {
+                if (type == JZUserAction.ON_CLICK_PAUSE || type == JZUserAction.ON_AUTO_COMPLETE) {
                     fab.setVisibility(View.VISIBLE);
                 }
 
-                if (type == JCUserAction.ON_ENTER_FULLSCREEN) {
-                    currentAction = JCUserAction.ON_ENTER_FULLSCREEN;
+                if (type == JZUserAction.ON_ENTER_FULLSCREEN) {
+                    currentAction = JZUserAction.ON_ENTER_FULLSCREEN;
 
                     View decorView = getWindow().getDecorView();
                     int uiOptions = 0;
@@ -290,8 +290,8 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
                     }
                 }
 
-                if (type == JCUserAction.ON_QUIT_FULLSCREEN) {
-                    currentAction = JCUserAction.ON_QUIT_FULLSCREEN;
+                if (type == JZUserAction.ON_QUIT_FULLSCREEN) {
+                    currentAction = JZUserAction.ON_QUIT_FULLSCREEN;
 
                     View decorView = getWindow().getDecorView();
                     decorView.setSystemUiVisibility(0);
@@ -307,12 +307,14 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
     @Override
     protected void onPause() {
         super.onPause();
-        JCVideoPlayer.releaseAllVideos();
+        JZVideoPlayer.setJzUserAction(null);
+        JZVideoPlayer.releaseAllVideos();
+        MyJZVideoPlayerStandard.releaseAllVideos();
     }
 
     @Override
     public void onBackPressed() {
-        if (JCVideoPlayer.backPress()) {
+        if (JZVideoPlayer.backPress()) {
             return;
         }
         super.onBackPressed();

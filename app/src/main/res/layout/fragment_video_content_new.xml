@@ -7,7 +7,7 @@
     android:background="@color/windowBackground"
     android:fitsSystemWindows="true">
 
-    <com.meiji.toutiao.widget.helper.MyJCVideoPlayerStandard
+    <com.meiji.toutiao.widget.helper.MyJZVideoPlayerStandard
         android:id="@+id/jc_video"
         android:layout_width="match_parent"
         android:layout_height="220dp"

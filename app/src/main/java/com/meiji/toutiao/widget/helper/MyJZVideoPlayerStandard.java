@@ -6,21 +6,21 @@ import android.view.View;
 
 import com.meiji.toutiao.R;
 
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
+import cn.jzvd.JZVideoPlayerStandard;
 
 /**
  * Created by Meiji on 2017/5/15.
  */
 
-public class MyJCVideoPlayerStandard extends JCVideoPlayerStandard {
+public class MyJZVideoPlayerStandard extends JZVideoPlayerStandard {
 
     public static onClickFullScreenListener onClickFullScreenListener;
 
-    public MyJCVideoPlayerStandard(Context context) {
+    public MyJZVideoPlayerStandard(Context context) {
         super(context);
     }
 
-    public MyJCVideoPlayerStandard(Context context, AttributeSet attrs) {
+    public MyJZVideoPlayerStandard(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
