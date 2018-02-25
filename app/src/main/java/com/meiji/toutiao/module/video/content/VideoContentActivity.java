@@ -309,6 +309,7 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
         super.onPause();
         JZVideoPlayer.setJzUserAction(null);
         JZVideoPlayer.releaseAllVideos();
+        MyJZVideoPlayerStandard.setOnClickFullScreenListener(null);
         MyJZVideoPlayerStandard.releaseAllVideos();
     }
 
