@@ -82,7 +82,7 @@ class NewsContentPresenter implements INewsContent.Presenter {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(view.<String>bindToLife())
+                .as(view.<String>bindAutoDispose())
                 .subscribe(new Observer<String>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {

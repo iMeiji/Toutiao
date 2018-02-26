@@ -52,7 +52,7 @@ class JokeCommentPresenter implements IJokeComment.Presenter {
                         return jokeCommentBean.getData().getRecent_comments();
                     }
                 })
-                .compose(view.<List<JokeCommentBean.DataBean.RecentCommentsBean>>bindToLife())
+                .as(view.<List<JokeCommentBean.DataBean.RecentCommentsBean>>bindAutoDispose())
                 .subscribe(new Consumer<List<JokeCommentBean.DataBean.RecentCommentsBean>>() {
                     @Override
                     public void accept(@NonNull List<JokeCommentBean.DataBean.RecentCommentsBean> recentCommentsBeen) throws Exception {

@@ -1,6 +1,7 @@
 package com.meiji.toutiao.module.base;
 
 import android.app.ActivityManager;
+import android.arch.lifecycle.Lifecycle;
 import android.content.ComponentName;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -9,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -19,13 +21,15 @@ import com.meiji.toutiao.util.SettingUtil;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrConfig;
 import com.r0adkll.slidr.model.SlidrInterface;
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.AutoDisposeConverter;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 /**
  * Created by Meiji on 2016/12/12.
  */
 
-public abstract class BaseActivity extends RxAppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private static final String TAG = "BaseActivity";
     protected SlidrInterface slidrInterface;
@@ -91,17 +95,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        for (Call call : InitApp.getOkHttpClient().dispatcher().queuedCalls()) {
-//            call.cancel();
-//        }
-//        for (Call call : InitApp.getOkHttpClient().dispatcher().runningCalls()) {
-//            call.cancel();
-//        }
-//        super.onDestroy();
-//    }
-
     @Override
     public void onBackPressed() {
         // Fragment 逐个出栈
@@ -139,5 +132,10 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         }
 
         super.onStop();
+    }
+
+    public <X> AutoDisposeConverter<X> bindAutoDispose() {
+        return AutoDispose.autoDisposable(AndroidLifecycleScopeProvider
+                .from(this, Lifecycle.Event.ON_DESTROY));
     }
 }

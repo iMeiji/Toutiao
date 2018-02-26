@@ -58,8 +58,8 @@ public class NewsCommentPresenter implements INewsComment.Presenter {
                         return data;
                     }
                 })
-                .compose(view.<List<NewsCommentBean.DataBean.CommentBean>>bindToLife())
                 .observeOn(AndroidSchedulers.mainThread())
+                .as(view.<List<NewsCommentBean.DataBean.CommentBean>>bindAutoDispose())
                 .subscribe(new Consumer<List<NewsCommentBean.DataBean.CommentBean>>() {
                     @Override
                     public void accept(@NonNull List<NewsCommentBean.DataBean.CommentBean> list) throws Exception {

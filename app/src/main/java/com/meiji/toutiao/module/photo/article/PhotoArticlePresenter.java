@@ -76,8 +76,8 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
                     }
                 })
                 .toList()
-                .compose(view.<List<PhotoArticleBean.DataBean>>bindToLife())
                 .observeOn(AndroidSchedulers.mainThread())
+                .as(view.<List<PhotoArticleBean.DataBean>>bindAutoDispose())
                 .subscribe(new Consumer<List<PhotoArticleBean.DataBean>>() {
                     @Override
                     public void accept(@NonNull List<PhotoArticleBean.DataBean> list) throws Exception {

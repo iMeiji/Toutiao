@@ -1,7 +1,5 @@
 package com.meiji.toutiao.module.base;
 
-import com.trello.rxlifecycle2.LifecycleTransformer;
-
 import java.util.List;
 
 /**
@@ -29,11 +27,6 @@ public interface IBaseListView<T> extends IBaseView<T> {
      * 设置 presenter
      */
     void setPresenter(T presenter);
-
-    /**
-     * 绑定生命周期
-     */
-    <T> LifecycleTransformer<T> bindToLife();
 
     /**
      * 设置适配器

@@ -1,6 +1,6 @@
 package com.meiji.toutiao.module.base;
 
-import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.uber.autodispose.AutoDisposeConverter;
 
 /**
  * Created by Meiji on 2017/5/7.
@@ -31,5 +31,5 @@ public interface IBaseView<T> {
     /**
      * 绑定生命周期
      */
-    <T> LifecycleTransformer<T> bindToLife();
+    <X> AutoDisposeConverter<X> bindAutoDispose();
 }

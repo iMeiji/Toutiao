@@ -45,8 +45,6 @@ import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.search.result.SearchResultFragment;
 import com.meiji.toutiao.util.RetrofitFactory;
 import com.meiji.toutiao.util.SettingUtil;
-import com.trello.rxlifecycle2.LifecycleTransformer;
-import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +102,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         RxView.clicks(tv_refresh)
                 // 防抖
                 .throttleFirst(1, TimeUnit.SECONDS)
-                .compose(this.bindToLifecycle())
+                .as(this.bindAutoDispose())
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(@NonNull Object o) throws Exception {
@@ -221,8 +219,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                         return hotList;
                     }
                 })
-                .compose(this.<List<String>>bindToLife())
                 .observeOn(AndroidSchedulers.mainThread())
+                .as(this.<List<String>>bindAutoDispose())
                 .subscribe(new Consumer<List<String>>() {
                     @Override
                     public void accept(@NonNull final List<String> list) throws Exception {
@@ -260,7 +258,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<List<SearchHistoryBean>>bindToLife())
+                .as(this.<List<SearchHistoryBean>>bindAutoDispose())
                 .subscribe(new Consumer<List<SearchHistoryBean>>() {
                     @Override
                     public void accept(@NonNull final List<SearchHistoryBean> list) throws Exception {
@@ -274,7 +272,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 .getSearchSuggestion(keyWord.trim())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<SearchSuggestionBean>bindToLife())
+                .as(this.<SearchSuggestionBean>bindAutoDispose())
                 .subscribe(new Consumer<SearchSuggestionBean>() {
                     @Override
                     public void accept(@NonNull SearchSuggestionBean bean) throws Exception {
@@ -288,7 +286,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 .throttleLast(100, TimeUnit.MILLISECONDS)
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<SearchViewQueryTextEvent>bindToLife())
+                .as(this.<SearchViewQueryTextEvent>bindAutoDispose())
                 .subscribe(new Consumer<SearchViewQueryTextEvent>() {
                     @Override
                     public void accept(@NonNull SearchViewQueryTextEvent searchViewQueryTextEvent) throws Exception {
@@ -380,9 +378,5 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         } else {
             finish();
         }
-    }
-
-    public <T> LifecycleTransformer<T> bindToLife() {
-        return this.bindUntilEvent(ActivityEvent.DESTROY);
     }
 }

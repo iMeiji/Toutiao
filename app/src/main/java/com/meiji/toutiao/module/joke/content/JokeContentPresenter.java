@@ -51,8 +51,8 @@ class JokeContentPresenter implements IJokeContent.Presenter {
                         return groupList;
                     }
                 })
-                .compose(view.<List<JokeContentBean.DataBean.GroupBean>>bindToLife())
                 .observeOn(AndroidSchedulers.mainThread())
+                .as(view.<List<JokeContentBean.DataBean.GroupBean>>bindAutoDispose())
                 .subscribe(new Consumer<List<JokeContentBean.DataBean.GroupBean>>() {
                     @Override
                     public void accept(@NonNull List<JokeContentBean.DataBean.GroupBean> groupBeen) throws Exception {

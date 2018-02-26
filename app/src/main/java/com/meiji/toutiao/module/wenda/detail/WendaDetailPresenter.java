@@ -52,6 +52,7 @@ public class WendaDetailPresenter implements IWendaDetail.Presenter {
                 .getWendaAnsDetail(url)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .as(view.<ResponseBody>bindAutoDispose())
                 .subscribe(new Consumer<ResponseBody>() {
                     @Override
                     public void accept(@NonNull ResponseBody responseBody) throws Exception {
@@ -98,7 +99,7 @@ public class WendaDetailPresenter implements IWendaDetail.Presenter {
                         return data;
                     }
                 })
-                .compose(view.<List<NewsCommentBean.DataBean.CommentBean>>bindToLife())
+                .as(view.<List<NewsCommentBean.DataBean.CommentBean>>bindAutoDispose())
                 .subscribe(new Consumer<List<NewsCommentBean.DataBean.CommentBean>>() {
                     @Override
                     public void accept(@NonNull List<NewsCommentBean.DataBean.CommentBean> list) throws Exception {

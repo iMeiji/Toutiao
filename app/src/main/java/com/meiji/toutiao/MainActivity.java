@@ -129,14 +129,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         // recreate 时记录当前位置 (在 Manifest 已禁止 Activity 旋转,所以旋转屏幕并不会执行以下代码)
+        super.onSaveInstanceState(outState);
         outState.putInt(POSITION, position);
         outState.putInt(SELECT_ITEM, bottom_navigation.getSelectedItemId());
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_activity_main);
-        bottom_navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottom_navigation = findViewById(R.id.bottom_navigation);
         BottomNavigationViewHelper.disableShiftMode(bottom_navigation);
         setSupportActionBar(toolbar);
         bottom_navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -163,13 +164,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-        drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer_layout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer_layout.addDrawerListener(toggle);
         toggle.syncState();
 
-        nav_view = (NavigationView) findViewById(R.id.nav_view);
+        nav_view = findViewById(R.id.nav_view);
         nav_view.setNavigationItemSelectedListener(this);
     }
 

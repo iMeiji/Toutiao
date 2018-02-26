@@ -95,8 +95,8 @@ class WendaArticlePresenter implements IWendaArticle.Presenter {
                     }
                 })
                 .toList()
-                .compose(view.<List<WendaArticleDataBean>>bindToLife())
                 .observeOn(AndroidSchedulers.mainThread())
+                .as(view.<List<WendaArticleDataBean>>bindAutoDispose())
                 .subscribe(new Consumer<List<WendaArticleDataBean>>() {
                     @Override
                     public void accept(@NonNull List<WendaArticleDataBean> wendaArticleDataBeen) throws Exception {

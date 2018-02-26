@@ -33,8 +33,6 @@ import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.util.OnLoadMoreListener;
 import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.widget.helper.MyJZVideoPlayerStandard;
-import com.trello.rxlifecycle2.LifecycleTransformer;
-import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import java.util.List;
 
@@ -113,6 +111,7 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
 
     }
 
+    @SuppressWarnings("all")
     private void initView() {
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -221,11 +220,6 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
     @Override
     public void setPresenter(INewsComment.Presenter presenter) {
 
-    }
-
-    @Override
-    public <T> LifecycleTransformer<T> bindToLife() {
-        return this.bindUntilEvent(ActivityEvent.DESTROY);
     }
 
     @Override

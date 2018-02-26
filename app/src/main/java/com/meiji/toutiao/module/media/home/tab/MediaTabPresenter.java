@@ -98,7 +98,7 @@ public class MediaTabPresenter implements IMediaProfile.Presenter {
                 .getMediaArticle(this.mediaId, this.articleTime, map.get(Constant.AS), map.get(Constant.CP))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(view.<MultiMediaArticleBean>bindToLife())
+                .as(view.<MultiMediaArticleBean>bindAutoDispose())
                 .subscribe(new Consumer<MultiMediaArticleBean>() {
                     @Override
                     public void accept(@NonNull MultiMediaArticleBean bean) throws Exception {
@@ -134,7 +134,7 @@ public class MediaTabPresenter implements IMediaProfile.Presenter {
                 .getMediaVideo(this.mediaId, this.videoTime, map.get(Constant.AS), map.get(Constant.CP))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(view.<MultiMediaArticleBean>bindToLife())
+                .as(view.<MultiMediaArticleBean>bindAutoDispose())
                 .subscribe(new Consumer<MultiMediaArticleBean>() {
                     @Override
                     public void accept(@NonNull MultiMediaArticleBean bean) throws Exception {
@@ -168,7 +168,7 @@ public class MediaTabPresenter implements IMediaProfile.Presenter {
                 .getMediaWenda(this.mediaId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(view.<MediaWendaBean>bindToLife())
+                .as(view.<MediaWendaBean>bindAutoDispose())
                 .subscribe(new Consumer<MediaWendaBean>() {
                     @Override
                     public void accept(@NonNull MediaWendaBean bean) throws Exception {
@@ -205,7 +205,7 @@ public class MediaTabPresenter implements IMediaProfile.Presenter {
                             .getMediaWendaLoadMore(this.mediaId, this.wendaCursor)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .compose(view.<MediaWendaBean>bindToLife())
+                            .as(view.<MediaWendaBean>bindAutoDispose())
                             .subscribe(new Consumer<MediaWendaBean>() {
                                 @Override
                                 public void accept(@NonNull MediaWendaBean bean) throws Exception {

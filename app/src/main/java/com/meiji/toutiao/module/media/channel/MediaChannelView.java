@@ -1,10 +1,12 @@
 package com.meiji.toutiao.module.media.channel;
 
+import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,8 +22,8 @@ import com.meiji.toutiao.bean.media.MediaChannelBean;
 import com.meiji.toutiao.database.dao.MediaChannelDao;
 import com.meiji.toutiao.interfaces.IOnItemLongClickListener;
 import com.meiji.toutiao.util.SettingUtil;
-import com.trello.rxlifecycle2.android.FragmentEvent;
-import com.trello.rxlifecycle2.components.support.RxFragment;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import java.util.List;
 
@@ -40,7 +42,7 @@ import static com.meiji.toutiao.R.id.recycler_view;
  * Created by Meiji on 2016/12/24.
  */
 
-public class MediaChannelView extends RxFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class MediaChannelView extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "MediaChannelView";
     private static MediaChannelView instance = null;
@@ -96,7 +98,8 @@ public class MediaChannelView extends RxFragment implements SwipeRefreshLayout.O
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<List<MediaChannelBean>>bindUntilEvent(FragmentEvent.DESTROY))
+                .as(AutoDispose.<List<MediaChannelBean>>autoDisposable(AndroidLifecycleScopeProvider
+                        .from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new Consumer<List<MediaChannelBean>>() {
                     @Override
                     public void accept(@NonNull List<MediaChannelBean> list) throws Exception {

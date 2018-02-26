@@ -113,7 +113,7 @@ public class MediaHomeActivity extends BaseActivity {
                 .getMediaProfile(mediaId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<MediaProfileBean>bindToLifecycle())
+                .as(this.<MediaProfileBean>bindAutoDispose())
                 .subscribe(new Consumer<MediaProfileBean>() {
                     @Override
                     public void accept(@NonNull MediaProfileBean bean) throws Exception {

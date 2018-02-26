@@ -113,7 +113,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(view.<Boolean>bindToLife())
+                .as(view.<Boolean>bindAutoDispose())
                 .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -186,7 +186,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(view.<String>bindToLife())
+                .as(view.<String>bindAutoDispose())
                 .subscribe(new Observer<String>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -238,7 +238,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(view.<Boolean>bindToLife())
+                .as(view.<Boolean>bindAutoDispose())
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(@NonNull Boolean aBoolean) throws Exception {
@@ -389,7 +389,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(view.<NewsContentBean>bindToLife())
+                .as(view.<NewsContentBean>bindAutoDispose())
                 .subscribe(new Consumer<NewsContentBean>() {
                     @Override
                     public void accept(@NonNull NewsContentBean bean) throws Exception {

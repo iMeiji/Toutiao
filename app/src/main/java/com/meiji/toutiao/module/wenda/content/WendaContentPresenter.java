@@ -58,6 +58,7 @@ class WendaContentPresenter implements IWendaContent.Presenter {
         RetrofitFactory.getRetrofit().create(IMobileWendaApi.class).getWendaNiceContent(qid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .as(view.<WendaContentBean>bindAutoDispose())
                 .subscribe(new Consumer<WendaContentBean>() {
                     @Override
                     public void accept(@NonNull WendaContentBean wendaContentBean) throws Exception {
@@ -82,6 +83,7 @@ class WendaContentPresenter implements IWendaContent.Presenter {
                     .getWendaNiceContentLoadMore(qid, niceOffset)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .as(view.<WendaContentBean>bindAutoDispose())
                     .subscribe(new Consumer<WendaContentBean>() {
                         @Override
                         public void accept(@NonNull WendaContentBean wendaContentBean) throws Exception {
@@ -100,6 +102,7 @@ class WendaContentPresenter implements IWendaContent.Presenter {
                     .getWendaNormalContentLoadMore(qid, normalOffset)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .as(view.<WendaContentBean>bindAutoDispose())
                     .subscribe(new Consumer<WendaContentBean>() {
                         @Override
                         public void accept(@NonNull WendaContentBean wendaContentBean) throws Exception {
