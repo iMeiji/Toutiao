@@ -71,12 +71,15 @@
 - 使用 7.0 新工具 DiffUtil , 不再无脑 notifyDataSetChanged
 - 使用 ItemTouchHelper 实现今日头条的频道排序、频道移动, 参考 [ItemTouchHelperDemo](https://github.com/YoKeyword/ItemTouchHelperDemo)
 - 使用 RxBinding 优雅实现搜索请求
-- 使用 RxLifecycle 绑定 RxJava 生命周期
+- 使用 AutoDispose 绑定 RxJava 生命周期
 - 使用 Travis Cl 持续集成
 
 
 ## Changelog
 ```
+2018-2-26
+使用 AutoDispose 解决了 RxLifecycle 侵入性强的问题
+
 2017-11-11
 优化启动页面
 
