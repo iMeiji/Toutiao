@@ -201,7 +201,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
         setHasOptionsMenu(true);
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface", "JavascriptInterface"})
     private void initWebClient() {
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -228,6 +228,8 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
             @Override
             public void onPageFinished(WebView view, String url) {
                 onHideLoading();
+                // 注入 js 函数监听
+                webView.loadUrl(Constant.JS_INJECT_IMG);
                 super.onPageFinished(view, url);
             }
         });
@@ -254,6 +256,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
                 }
             }
         });
+        webView.addJavascriptInterface(presenter, "imageListener");
     }
 
     @Override

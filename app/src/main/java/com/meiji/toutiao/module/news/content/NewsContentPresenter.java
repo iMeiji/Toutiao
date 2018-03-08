@@ -1,6 +1,8 @@
 package com.meiji.toutiao.module.news.content;
 
 import android.text.TextUtils;
+import android.util.Log;
+import android.webkit.JavascriptInterface;
 
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.api.INewsApi;
@@ -8,6 +10,11 @@ import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsContentBean;
 import com.meiji.toutiao.util.RetrofitFactory;
 import com.meiji.toutiao.util.SettingUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -29,9 +36,12 @@ import retrofit2.Response;
 class NewsContentPresenter implements INewsContent.Presenter {
 
     private static final String TAG = "NewsContentPresenter";
+    // 获取img标签正则
+    private static final String IMAGE_URL_REGEX = "<img[^>]+src\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>";
     private INewsContent.View view;
     private String groupId;
     private String itemId;
+    private String html;
 
     NewsContentPresenter(INewsContent.View view) {
         this.view = view;
@@ -117,7 +127,7 @@ class NewsContentPresenter implements INewsContent.Presenter {
                 css = css.replace("toutiao_light", "toutiao_dark");
             }
 
-            String html = "<!DOCTYPE html>\n" +
+            html = "<!DOCTYPE html>\n" +
                     "<html lang=\"en\">\n" +
                     "<head>\n" +
                     "    <meta charset=\"UTF-8\">" +
@@ -149,5 +159,41 @@ class NewsContentPresenter implements INewsContent.Presenter {
     public void doShowNetError() {
         view.onHideLoading();
         view.onShowNetError();
+    }
+
+    /**
+     * js 通信接口，定义供 JavaScript 调用的交互接口
+     * 点击图片启动新的 Activity，并传入点击图片对应的 url 和页面所有图片
+     * 对应的 url
+     *
+     * @param url 点击图片对应的 url
+     */
+    @JavascriptInterface
+    public void openImage(String url) {
+        Log.d(TAG, "openImage: " + url);
+
+        if (!TextUtils.isEmpty(url)) {
+            List<String> list = getAllImageUrlFromHtml(html);
+            if (list.size() > 0) {
+                // TODO launch ImageBrowserActivity(url, list)
+            }
+        }
+    }
+
+    /***
+     * 获取页面所有图片对应的地址对象，
+     * 例如 <img src="http://sc1.hao123img.com/data/f44d0aab7bc35b8767de3c48706d429e" />
+     */
+    private List<String> getAllImageUrlFromHtml(String html) {
+        Matcher matcher = Pattern.compile(IMAGE_URL_REGEX).matcher(html);
+        List<String> imgUrlList = new ArrayList<String>();
+        while (matcher.find()) {
+            int count = matcher.groupCount();
+            if (count >= 1) {
+                imgUrlList.add(matcher.group(1));
+            }
+        }
+        //从图片对应的地址对象中解析出 src 标签对应的内容
+        return imgUrlList;
     }
 }
