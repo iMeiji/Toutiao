@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.meiji.toutiao.widget.imagebrowser.DismissFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dismissContainter"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <uk.co.senab.photoview.PhotoView
+        android:id="@+id/photoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"/>
+
+
+</com.meiji.toutiao.widget.imagebrowser.DismissFrameLayout>

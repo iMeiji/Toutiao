@@ -3,7 +3,6 @@ package com.meiji.toutiao.util;
 import android.content.Context;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;
 import com.bumptech.glide.request.RequestListener;
@@ -21,7 +20,7 @@ public class ImageLoader extends AppGlideModule {
         if (SettingUtil.getInstance().getIsNoPhotoMode() && NetWorkUtil.isMobileConnected(context)) {
             view.setImageResource(defaultResId);
         } else {
-            Glide.with(context)
+            GlideApp.with(context)
                     .load(url)
                     .transition(withCrossFade())
                     .apply(new RequestOptions().centerCrop())
@@ -36,7 +35,7 @@ public class ImageLoader extends AppGlideModule {
         if (SettingUtil.getInstance().getIsNoPhotoMode() && NetWorkUtil.isMobileConnected(context)) {
             view.setImageResource(defaultResId);
         } else {
-            Glide.with(context)
+            GlideApp.with(context)
                     .load(url)
                     .transition(withCrossFade())
                     .apply(new RequestOptions().centerCrop().error(errorResId))
@@ -48,11 +47,15 @@ public class ImageLoader extends AppGlideModule {
      * 带监听处理
      */
     public static void loadCenterCrop(Context context, String url, ImageView view, RequestListener listener) {
-        Glide.with(context)
+        GlideApp.with(context)
                 .load(url)
                 .transition(withCrossFade())
                 .apply(new RequestOptions().centerCrop())
                 .listener(listener)
                 .into(view);
+    }
+
+    public static void loadNormal(Context context, String url, ImageView view) {
+        GlideApp.with(context).load(url).into(view);
     }
 }

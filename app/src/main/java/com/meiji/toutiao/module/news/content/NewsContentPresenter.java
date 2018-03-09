@@ -5,6 +5,8 @@ import android.util.Log;
 import android.webkit.JavascriptInterface;
 
 import com.meiji.toutiao.ErrorAction;
+import com.meiji.toutiao.ImageBrowserActivity;
+import com.meiji.toutiao.InitApp;
 import com.meiji.toutiao.api.INewsApi;
 import com.meiji.toutiao.bean.news.MultiNewsArticleDataBean;
 import com.meiji.toutiao.bean.news.NewsContentBean;
@@ -12,7 +14,6 @@ import com.meiji.toutiao.util.RetrofitFactory;
 import com.meiji.toutiao.util.SettingUtil;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -173,9 +174,9 @@ class NewsContentPresenter implements INewsContent.Presenter {
         Log.d(TAG, "openImage: " + url);
 
         if (!TextUtils.isEmpty(url)) {
-            List<String> list = getAllImageUrlFromHtml(html);
+            ArrayList<String> list = getAllImageUrlFromHtml(html);
             if (list.size() > 0) {
-                // TODO launch ImageBrowserActivity(url, list)
+                ImageBrowserActivity.start(InitApp.AppContext, url, list);
             }
         }
     }
@@ -184,16 +185,15 @@ class NewsContentPresenter implements INewsContent.Presenter {
      * 获取页面所有图片对应的地址对象，
      * 例如 <img src="http://sc1.hao123img.com/data/f44d0aab7bc35b8767de3c48706d429e" />
      */
-    private List<String> getAllImageUrlFromHtml(String html) {
+    private ArrayList<String> getAllImageUrlFromHtml(String html) {
         Matcher matcher = Pattern.compile(IMAGE_URL_REGEX).matcher(html);
-        List<String> imgUrlList = new ArrayList<String>();
+        ArrayList<String> imgUrlList = new ArrayList<>();
         while (matcher.find()) {
             int count = matcher.groupCount();
             if (count >= 1) {
                 imgUrlList.add(matcher.group(1));
             }
         }
-        //从图片对应的地址对象中解析出 src 标签对应的内容
         return imgUrlList;
     }
 }

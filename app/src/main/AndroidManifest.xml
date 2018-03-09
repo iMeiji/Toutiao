@@ -141,6 +141,11 @@
             android:configChanges="orientation|screenSize|uiMode"
             android:theme="@style/AppTheme.NoActionBar.Slidable"/>
 
+        <activity
+            android:name=".ImageBrowserActivity"
+            android:configChanges="orientation|screenSize|uiMode"
+            android:theme="@style/AppTheme.NoActionBar.Slidable"/>
+
     </application>
 
 </manifest>

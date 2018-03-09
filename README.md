@@ -77,6 +77,10 @@
 
 ## Changelog
 ```
+2018-3-10
+部分 WebView 页面支持点击查看图片
+图片浏览器上下滑动退出
+
 2018-2-26
 使用 AutoDispose 解决了 RxLifecycle 侵入性强的问题
 
