@@ -1,26 +1,37 @@
 package com.meiji.toutiao.widget.imagebrowser;
 
 import android.content.Context;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
-import android.support.v4.view.MotionEventCompat;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
+import com.meiji.toutiao.BuildConfig;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
- * Created by huang on 2/14/17.
+ * Created by Meiji on 2018/3/9.
+ * reference <a href="https://github.com/mingdroid/SETransitionDemo"/>
  */
 
 public class SwipeGestureDetector {
 
-    public static final int DIRECTION_TOP_BOTTOM = 1;
-    public static final int DIRECTION_LEFT_RIGHT = 4;
+    public static final int DIRECTION_LEFT = 0x00;
+    public static final int DIRECTION_RIGHT = 0x01;
+    public static final int DIRECTION_TOP = 0x02;
+    public static final int DIRECTION_BOTTOM = 0x03;
     private static final String TAG = "SwipeGestureDetector";
+    private static final boolean DEBUG = BuildConfig.DEBUG;
     private OnSwipeGestureListener listener;
-    private int direction;
     private int touchSlop;
     private float initialMotionX, initialMotionY;
     private float lastMotionX, lastMotionY;
     private boolean isBeingDragged;
+    @Direction
+    private int direction;
 
     public SwipeGestureDetector(Context context, @NonNull OnSwipeGestureListener listener) {
         this.listener = listener;
@@ -28,10 +39,17 @@ public class SwipeGestureDetector {
     }
 
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        int action = MotionEventCompat.getActionMasked(event);
+        int action = event.getAction();
+
+        // two fingers
+        int pointerCount = event.getPointerCount();
+        if (pointerCount > 1) {
+            return true;
+        }
 
         float x = event.getRawX();
         float y = event.getRawY();
+        if (DEBUG) Log.d(TAG, "onTouchEvent: " + x + "-" + y);
 
         // Always take care of the touch gesture being complete.
         if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
@@ -56,12 +74,22 @@ public class SwipeGestureDetector {
                 final float yDiff = Math.abs(y - initialMotionY);
                 if (xDiff > touchSlop && xDiff > yDiff) {
                     isBeingDragged = true;
-                    //direction horizon
-                    direction = DIRECTION_LEFT_RIGHT;
+                    if (x - initialMotionX > 0) {
+                        direction = DIRECTION_RIGHT;
+                        if (DEBUG) Log.d(TAG, "onInterceptTouchEvent: RIGHT");
+                    } else {
+                        direction = DIRECTION_LEFT;
+                        if (DEBUG) Log.d(TAG, "onInterceptTouchEvent: LEFT");
+                    }
                 } else if (yDiff > touchSlop && yDiff > xDiff) {
                     isBeingDragged = true;
-                    //direction vertical
-                    direction = DIRECTION_TOP_BOTTOM;
+                    if (y - initialMotionY > 0) {
+                        direction = DIRECTION_BOTTOM;
+                        if (DEBUG) Log.d(TAG, "onInterceptTouchEvent: BOTTOM");
+                    } else {
+                        direction = DIRECTION_TOP;
+                        if (DEBUG) Log.d(TAG, "onInterceptTouchEvent: TOP");
+                    }
                 }
                 break;
         }
@@ -69,9 +97,16 @@ public class SwipeGestureDetector {
     }
 
     public boolean onTouchEvent(MotionEvent event) {
-        int action = MotionEventCompat.getActionMasked(event);
+        int action = event.getAction();
+
+        int pointerCount = event.getPointerCount();
+        if (pointerCount > 1) {
+            return true;
+        }
+
         float x = event.getRawX();
         float y = event.getRawY();
+        if (DEBUG) Log.d(TAG, "onTouchEvent: " + x + "-" + y);
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
@@ -84,22 +119,36 @@ public class SwipeGestureDetector {
                 lastMotionX = x;
                 lastMotionY = y;
                 if (isBeingDragged) {
-                    if (direction == DIRECTION_LEFT_RIGHT) {
-                        listener.onSwipeLeftRight(deltaX, deltaY);
-                    } else if (direction == DIRECTION_TOP_BOTTOM) {
-                        listener.onSwipeTopBottom(deltaX, deltaY);
+                    if (direction == DIRECTION_LEFT) {
+                        listener.onSwipeLeft(deltaX, deltaY);
+                    } else if (direction == DIRECTION_RIGHT) {
+                        listener.onSwipeRight(deltaX, deltaY);
+                    } else if (direction == DIRECTION_TOP) {
+                        listener.onSwipeTop(deltaX, deltaY);
+                    } else if (direction == DIRECTION_BOTTOM) {
+                        listener.onSwipeBottom(deltaX, deltaY);
                     }
                 } else {
                     final float xDiff = Math.abs(x - initialMotionX);
                     final float yDiff = Math.abs(y - initialMotionY);
                     if (xDiff > touchSlop && xDiff > yDiff) {
                         isBeingDragged = true;
-                        //direction horizon
-                        direction = DIRECTION_LEFT_RIGHT;
+                        if (x - initialMotionX > 0) {
+                            direction = DIRECTION_RIGHT;
+                            if (DEBUG) Log.d(TAG, "onTouchEvent: RIGHT");
+                        } else {
+                            direction = DIRECTION_LEFT;
+                            if (DEBUG) Log.d(TAG, "onTouchEvent: LEFT");
+                        }
                     } else if (yDiff > touchSlop && yDiff > xDiff) {
                         isBeingDragged = true;
-                        //direction vertical
-                        direction = DIRECTION_TOP_BOTTOM;
+                        if (y - initialMotionY > 0) {
+                            direction = DIRECTION_BOTTOM;
+                            if (DEBUG) Log.d(TAG, "onTouchEvent: BOTTOM");
+                        } else {
+                            direction = DIRECTION_TOP;
+                            if (DEBUG) Log.d(TAG, "onTouchEvent: TOP");
+                        }
                     }
                 }
                 break;
@@ -120,12 +169,21 @@ public class SwipeGestureDetector {
         isBeingDragged = false;
     }
 
+    @IntDef({DIRECTION_LEFT, DIRECTION_RIGHT, DIRECTION_TOP, DIRECTION_BOTTOM})
+    @Retention(RetentionPolicy.SOURCE)
+    @interface Direction {
+    }
+
     public interface OnSwipeGestureListener {
-        void onSwipeTopBottom(float deltaX, float deltaY);
+        void onSwipeLeft(float deltaX, float deltaY);
 
-        void onSwipeLeftRight(float deltaX, float deltaY);
+        void onSwipeRight(float deltaX, float deltaY);
 
-        void onFinish(int direction, float distanceX, float distanceY);
+        void onSwipeTop(float deltaX, float deltaY);
+
+        void onSwipeBottom(float deltaX, float deltaY);
+
+        void onFinish(@Direction int direction, float distanceX, float distanceY);
     }
 
 }

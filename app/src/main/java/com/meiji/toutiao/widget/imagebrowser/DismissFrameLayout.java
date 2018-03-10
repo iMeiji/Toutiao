@@ -2,6 +2,7 @@ package com.meiji.toutiao.widget.imagebrowser;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,7 +13,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 /**
- * Created by huang on 2/15/17.
+ * Created by Meiji on 2018/3/9.
+ * reference <a href="https://github.com/mingdroid/SETransitionDemo"/>
  */
 
 public class DismissFrameLayout extends FrameLayout {
@@ -39,7 +41,7 @@ public class DismissFrameLayout extends FrameLayout {
         init();
     }
 
-    @TargetApi(21)
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public DismissFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
@@ -49,19 +51,29 @@ public class DismissFrameLayout extends FrameLayout {
         swipeGestureDetector = new SwipeGestureDetector(getContext(),
                 new SwipeGestureDetector.OnSwipeGestureListener() {
                     @Override
-                    public void onSwipeTopBottom(float deltaX, float deltaY) {
-                        dragChildView(deltaX, deltaY);
+                    public void onSwipeLeft(float deltaX, float deltaY) {
+
                     }
 
                     @Override
-                    public void onSwipeLeftRight(float deltaX, float deltaY) {
+                    public void onSwipeRight(float deltaX, float deltaY) {
+
                     }
 
                     @Override
-                    public void onFinish(int direction, float distanceX, float distanceY) {
+                    public void onSwipeTop(float deltaX, float deltaY) {
+                        dragChildView(deltaX, deltaY, SwipeGestureDetector.DIRECTION_TOP);
+                    }
+
+                    @Override
+                    public void onSwipeBottom(float deltaX, float deltaY) {
+                        dragChildView(deltaX, deltaY, SwipeGestureDetector.DIRECTION_BOTTOM);
+                    }
+
+                    @Override
+                    public void onFinish(@SwipeGestureDetector.Direction int direction, float distanceX, float distanceY) {
                         if (dismissListener != null
-                                && direction == SwipeGestureDetector.DIRECTION_TOP_BOTTOM) {
-                            // 上下滑动都退出
+                                && direction == SwipeGestureDetector.DIRECTION_BOTTOM || direction == SwipeGestureDetector.DIRECTION_TOP) {
                             if (Math.abs(distanceY) > initHeight / 10) {
                                 dismissListener.onDismiss();
                             } else {
@@ -89,11 +101,11 @@ public class DismissFrameLayout extends FrameLayout {
      * @param deltaX
      * @param deltaY
      */
-    private void dragChildView(float deltaX, float deltaY) {
+    private void dragChildView(float deltaX, float deltaY, @SwipeGestureDetector.Direction int direction) {
         int count = getChildCount();
         if (count > 0) {
             View view = getChildAt(0);
-            scaleAndMove(view, deltaX, deltaY);
+            scaleAndMove(view, deltaX, deltaY, direction);
         }
     }
 
@@ -103,7 +115,7 @@ public class DismissFrameLayout extends FrameLayout {
      * @param view
      * @param deltaY
      */
-    private void scaleAndMove(View view, float deltaX, float deltaY) {
+    private void scaleAndMove(View view, float deltaX, float deltaY, @SwipeGestureDetector.Direction int direction) {
         MarginLayoutParams params = (MarginLayoutParams) view.getLayoutParams();
         if (params == null) {
             params = new MarginLayoutParams(view.getWidth(), view.getHeight());
@@ -118,28 +130,25 @@ public class DismissFrameLayout extends FrameLayout {
             initLeft = params.leftMargin;
             initTop = params.topMargin;
         }
-        float percent = Math.abs(deltaY) / getHeight();
+
+        float percent = 0;
+        if (direction == SwipeGestureDetector.DIRECTION_BOTTOM) {
+            percent = deltaY / getHeight();
+        } else if (direction == SwipeGestureDetector.DIRECTION_TOP) {
+            percent = -deltaY / getHeight();
+        }
+
         int scaleX = (int) (initWidth * percent);
         int scaleY = (int) (initHeight * percent);
         params.width = params.width - scaleX;
         params.height = params.height - scaleY;
 //        Log.d("scaleDown", params.width + "-" + params.height);
-        params.leftMargin += (calXOffset(deltaX) + scaleX / 2);
-        params.topMargin += (calYOffset(deltaY) + scaleY / 2);
+        params.leftMargin += (deltaX + scaleX / 2);
+        params.topMargin += (deltaY + scaleY / 2);
         view.setLayoutParams(params);
         if (dismissListener != null) {
             dismissListener.onScaleProgress(percent);
         }
-    }
-
-    private int calXOffset(float deltaX) {
-//        Log.d("calXOffset", "" + deltaX);
-        return (int) deltaX;
-    }
-
-    private int calYOffset(float deltaY) {
-//        Log.d("calYOffset", "" + deltaY);
-        return (int) deltaY;
     }
 
     private void reset() {

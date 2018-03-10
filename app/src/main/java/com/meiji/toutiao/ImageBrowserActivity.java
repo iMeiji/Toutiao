@@ -9,8 +9,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -22,7 +24,9 @@ import com.meiji.toutiao.widget.imagebrowser.DismissFrameLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.senab.photoview.DefaultOnDoubleTapListener;
 import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by Meiji on 2018/3/9.
@@ -78,7 +82,7 @@ public class ImageBrowserActivity extends BaseActivity {
 
         FrameLayout container = findViewById(R.id.container);
         mColorDrawable = new ColorDrawable(getResources().getColor(R.color.Black));
-        container.setBackgroundDrawable(mColorDrawable);
+        container.setBackground(mColorDrawable);
 
         Intent intent = getIntent();
         if (intent == null) {
@@ -164,7 +168,11 @@ public class ImageBrowserActivity extends BaseActivity {
                 Context context = container.getContext();
                 view = LayoutInflater.from(context).inflate(R.layout.item_image_browser, container, false);
                 view.setTag(position);
+
                 PhotoView imageView = view.findViewById(R.id.photoView);
+                PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
+                attacher.setOnDoubleTapListener(new PhotoViewOnDoubleTapListener(attacher));
+
                 ImageLoader.loadNormal(context, mList.get(position), imageView);
 
                 DismissFrameLayout layout = view.findViewById(R.id.dismissContainter);
@@ -179,6 +187,40 @@ public class ImageBrowserActivity extends BaseActivity {
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             container.removeView((View) object);
+            Log.d(TAG, "destroyItem: " + position);
         }
     }
+
+    private class PhotoViewOnDoubleTapListener extends DefaultOnDoubleTapListener {
+
+        private PhotoViewAttacher photoViewAttacher;
+        private boolean canZoom = true;
+
+        PhotoViewOnDoubleTapListener(PhotoViewAttacher photoViewAttacher) {
+            super(photoViewAttacher);
+            this.photoViewAttacher = photoViewAttacher;
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent ev) {
+            if (photoViewAttacher == null)
+                return false;
+            try {
+                float x = ev.getX();
+                float y = ev.getY();
+
+                if (canZoom) {
+                    photoViewAttacher.setScale(photoViewAttacher.getMediumScale(), x, y, true);
+                } else {
+                    photoViewAttacher.setScale(photoViewAttacher.getMinimumScale(), x, y, true);
+                }
+                canZoom = !canZoom;
+            } catch (ArrayIndexOutOfBoundsException e) {
+                // Can sometimes happen when getX() and getY() is called
+            }
+
+            return true;
+        }
+    }
+
 }
