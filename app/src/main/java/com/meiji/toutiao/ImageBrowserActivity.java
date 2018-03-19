@@ -1,5 +1,7 @@
 package com.meiji.toutiao;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -9,28 +11,34 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.widget.imagebrowser.DismissFrameLayout;
+import com.pixelcan.inkpageindicator.InkPageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
 import uk.co.senab.photoview.DefaultOnDoubleTapListener;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by Meiji on 2018/3/9.
- * TODO 显示图片下标，长按下载图片
+ * TODO 长按下载图片
  */
 
 public class ImageBrowserActivity extends BaseActivity {
@@ -45,7 +53,11 @@ public class ImageBrowserActivity extends BaseActivity {
     private ArrayList<String> mImgList;
 
     private ViewPager mViewPager;
+    private InkPageIndicator mIndicator;
     private ColorDrawable mColorDrawable;
+
+    private boolean canHideFlag = true;
+    private long mIndicatorHideTime;
 
     private DismissFrameLayout.OnDismissListener onDismissListener = new DismissFrameLayout.OnDismissListener() {
         @Override
@@ -80,7 +92,7 @@ public class ImageBrowserActivity extends BaseActivity {
         fullScreen();
         setContentView(R.layout.activity_imagebrowser);
 
-        FrameLayout container = findViewById(R.id.container);
+        RelativeLayout container = findViewById(R.id.container);
         mColorDrawable = new ColorDrawable(getResources().getColor(R.color.Black));
         container.setBackground(mColorDrawable);
 
@@ -97,6 +109,10 @@ public class ImageBrowserActivity extends BaseActivity {
         mViewPager = findViewById(R.id.viewPager);
         mViewPager.setAdapter(new PhotoAdapter(mImgList, onDismissListener));
         mViewPager.setCurrentItem(mCurrentPosition);
+
+        mIndicator = findViewById(R.id.indicator);
+        mIndicator.setViewPager(mViewPager);
+
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -116,9 +132,55 @@ public class ImageBrowserActivity extends BaseActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+                if (state == ViewPager.SCROLL_STATE_IDLE) {
+                    mIndicatorHideTime = System.currentTimeMillis();
+                    canHideFlag = true;
+                } else {
+                    canHideFlag = false;
+                    mIndicator.animate()
+                            .translationY(0)
+                            .setDuration(200)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    mIndicator.setVisibility(View.VISIBLE);
+                                }
+                            });
+                }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Flowable.interval(1, 1, TimeUnit.SECONDS)
+                .filter(new Predicate<Long>() {
+                    @Override
+                    public boolean test(Long aLong) throws Exception {
+                        return canHideFlag && System.currentTimeMillis() - mIndicatorHideTime > 1000;
+                    }
+                })
+                .subscribeOn(Schedulers.single())
+                .observeOn(AndroidSchedulers.mainThread())
+                .as(this.<Long>bindAutoDispose())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        canHideFlag = false;
+                        mIndicator.animate()
+                                .translationY(mIndicator.getHeight())
+                                .setDuration(400)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        super.onAnimationEnd(animation);
+                                        mIndicator.setVisibility(View.GONE);
+                                    }
+                                });
+                    }
+                });
     }
 
     public void fullScreen() {
@@ -187,7 +249,6 @@ public class ImageBrowserActivity extends BaseActivity {
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
             container.removeView((View) object);
-            Log.d(TAG, "destroyItem: " + position);
         }
     }
 
