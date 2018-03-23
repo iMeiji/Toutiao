@@ -82,6 +82,11 @@ public class DismissFrameLayout extends FrameLayout {
                             }
                         }
                     }
+
+                    @Override
+                    public void onLongClick() {
+                        dismissListener.onLongClick();
+                    }
                 });
     }
 
@@ -174,5 +179,7 @@ public class DismissFrameLayout extends FrameLayout {
         void onDismiss();
 
         void onCancel();
+
+        void onLongClick();
     }
 }

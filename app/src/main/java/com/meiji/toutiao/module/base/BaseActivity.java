@@ -3,6 +3,7 @@ package com.meiji.toutiao.module.base;
 import android.app.ActivityManager;
 import android.arch.lifecycle.Lifecycle;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -33,6 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private static final String TAG = "BaseActivity";
     protected SlidrInterface slidrInterface;
+    protected Context mContext;
     private int iconType = -1;
 
     /**
@@ -61,6 +63,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.iconType = SettingUtil.getInstance().getCustomIconValue();
+        this.mContext = this;
         initSlidable();
     }
 

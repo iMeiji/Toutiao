@@ -1,14 +1,8 @@
 package com.meiji.toutiao.module.photo.content;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.meiji.toutiao.ErrorAction;
@@ -19,6 +13,7 @@ import com.meiji.toutiao.bean.news.NewsContentBean;
 import com.meiji.toutiao.bean.photo.PhotoGalleryBean;
 import com.meiji.toutiao.module.media.home.MediaHomeActivity;
 import com.meiji.toutiao.util.ChineseUtil;
+import com.meiji.toutiao.util.DownloadUtil;
 import com.meiji.toutiao.util.RetrofitFactory;
 import com.meiji.toutiao.util.SettingUtil;
 
@@ -27,13 +22,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -48,8 +41,6 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
-
-import static android.R.attr.path;
 
 /**
  * Created by Meiji on 2017/2/16.
@@ -233,7 +224,7 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
                         List<PhotoGalleryBean.SubImagesBean> sub_images = bean.getSub_images();
                         final String url = sub_images.get(position).getUrl();
                         Log.d(TAG, "doSaveImage: " + url);
-                        e.onNext(saveImage(url));
+                        e.onNext(DownloadUtil.saveImage(url, InitApp.AppContext));
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -265,57 +256,30 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
         for (Element e : scripts) {
             // 过滤字符串
             String script = e.toString();
-            if (script.contains("BASE_DATA.galleryInfo = {")) {
+            if (script.contains("BASE_DATA.galleryInfo")) {
                 // 只取得script的內容
                 script = e.childNode(0).toString();
-                if (script.contains("JSON.parse")) {
-                    int start = script.indexOf("(");
-                    int end = script.indexOf("),");
-                    String json = script.substring(start + 2, end - 1);
-                    // 处理特殊符号
-                    json = ChineseUtil.UnicodeToChs(json);
-                    json = json.replace("\\", "");
-                    JsonReader reader = new JsonReader(new StringReader(json));
-                    reader.setLenient(true);
-                    bean = new Gson().fromJson(reader, PhotoGalleryBean.class);
-                    flag = true;
-                    break;
+
+                Matcher matcher = Pattern.compile("(JSON.parse\\(\\\".+\\))").matcher(script);
+                while (matcher.find()) {
+                    int count = matcher.groupCount();
+                    if (count >= 1) {
+                        int start = script.indexOf("(");
+                        int end = script.indexOf("),");
+                        String json = script.substring(start + 2, end - 1);
+
+                        // 处理特殊符号
+                        json = ChineseUtil.UnicodeToChs(json);
+                        json = json.replace("\\", "");
+                        JsonReader reader = new JsonReader(new StringReader(json));
+                        reader.setLenient(true);
+                        bean = new Gson().fromJson(reader, PhotoGalleryBean.class);
+                        Log.d(TAG, "parseHTML: " + bean.toString());
+                        flag = true;
+                        break;
+                    }
                 }
             }
-        }
-        return flag;
-    }
-
-    private Boolean saveImage(String url) {
-        boolean flag = false;
-        try {
-            // 获取 bitmap
-            Bitmap bitmap = Glide.with(InitApp.AppContext).asBitmap().load(url)
-                    .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                    .get();
-            // http://stormzhang.com/android/2014/07/24/android-save-image-to-gallery/
-            if (bitmap != null) {
-                // 首先保存图片
-                File appDir = new File(Environment.getExternalStorageDirectory(), "Toutiao");
-                if (!appDir.exists()) {
-                    appDir.mkdir();
-                }
-                String fileName = System.currentTimeMillis() + ".jpg";
-                File file = new File(appDir, fileName);
-                FileOutputStream fos = new FileOutputStream(file);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                fos.flush();
-                fos.close();
-
-                // 其次把文件插入到系统图库
-//                MediaStore.Images.Media.insertImage(InitApp.AppContext.getContentResolver(), file.getAbsolutePath(), fileName, null);
-                // 最后通知图库更新
-                InitApp.AppContext.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + path)));
-
-                flag = true;
-            }
-        } catch (InterruptedException | ExecutionException | IOException e) {
-            ErrorAction.print(e);
         }
         return flag;
     }

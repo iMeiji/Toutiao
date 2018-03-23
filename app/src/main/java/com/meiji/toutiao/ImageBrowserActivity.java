@@ -1,16 +1,23 @@
 package com.meiji.toutiao;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,6 +29,12 @@ import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.util.ImageLoader;
 import com.meiji.toutiao.widget.imagebrowser.DismissFrameLayout;
 import com.pixelcan.inkpageindicator.InkPageIndicator;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.Rationale;
+import com.yanzhenjie.permission.RequestExecutor;
+import com.yanzhenjie.permission.SettingService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +88,12 @@ public class ImageBrowserActivity extends BaseActivity {
         public void onCancel() {
             mColorDrawable.setAlpha(ALPHA_MAX);
         }
+
+        @Override
+        public void onLongClick() {
+            Log.d(TAG, "onLongClick: ");
+            LongClick();
+        }
     };
 
 
@@ -89,18 +108,18 @@ public class ImageBrowserActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fullScreen();
         setContentView(R.layout.activity_imagebrowser);
-
-        RelativeLayout container = findViewById(R.id.container);
-        mColorDrawable = new ColorDrawable(getResources().getColor(R.color.Black));
-        container.setBackground(mColorDrawable);
 
         Intent intent = getIntent();
         if (intent == null) {
             finish();
             return;
         }
+
+        RelativeLayout container = findViewById(R.id.container);
+        mColorDrawable = new ColorDrawable(getResources().getColor(R.color.Black));
+        container.setBackground(mColorDrawable);
+
 
         mImgList = intent.getStringArrayListExtra(EXTRA_LIST);
         String url = intent.getStringExtra(EXTRA_URl);
@@ -150,11 +169,11 @@ public class ImageBrowserActivity extends BaseActivity {
                 }
             }
         });
+
+        startIndicatorObserver();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    private void startIndicatorObserver() {
         Flowable.interval(1, 1, TimeUnit.SECONDS)
                 .filter(new Predicate<Long>() {
                     @Override
@@ -183,6 +202,12 @@ public class ImageBrowserActivity extends BaseActivity {
                 });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        fullScreen();
+    }
+
     public void fullScreen() {
 
         int newUiOptions = getWindow().getDecorView().getSystemUiVisibility();
@@ -197,6 +222,74 @@ public class ImageBrowserActivity extends BaseActivity {
         }
 
         getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
+    }
+
+    private void LongClick() {
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            AndPermission.with(this)
+                    .permission(Permission.WRITE_EXTERNAL_STORAGE)
+                    .rationale(new Rationale() {
+                        @Override
+                        public void showRationale(Context context, List<String> permissions, final RequestExecutor executor) {
+                            new AlertDialog.Builder(context)
+                                    .setMessage(R.string.permission_write_rationale)
+                                    .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            executor.execute();
+                                        }
+                                    })
+                                    .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            executor.cancel();
+                                        }
+                                    })
+                                    .show();
+                        }
+                    })
+                    .onGranted(new Action() {
+                        @Override
+                        public void onAction(List<String> permissions) {
+                            SaveImage();
+                        }
+                    })
+                    .onDenied(new Action() {
+                        @Override
+                        public void onAction(List<String> permissions) {
+                            Snackbar.make(mViewPager, R.string.permission_write_denied, Snackbar.LENGTH_SHORT).show();
+                            if (AndPermission.hasAlwaysDeniedPermission(ImageBrowserActivity.this, permissions)) {
+                                final SettingService settingService = AndPermission.permissionSetting(ImageBrowserActivity.this);
+                                new AlertDialog.Builder(ImageBrowserActivity.this)
+                                        .setMessage(R.string.permission_write_rationale)
+                                        .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                settingService.execute();
+                                            }
+                                        })
+                                        .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                settingService.cancel();
+                                            }
+                                        })
+                                        .show();
+                            }
+                        }
+                    })
+                    .start();
+        } else {
+            SaveImage();
+
+        }
+    }
+
+    private void SaveImage() {
+        String url = mImgList.get(mViewPager.getCurrentItem());
+//        DownloadUtil.saveImage(url, mContext);
     }
 
     public class PhotoAdapter extends PagerAdapter {
