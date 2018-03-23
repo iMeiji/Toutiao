@@ -124,10 +124,7 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:commons:0.9.4.4'
 
     // 权限管理
-    implementation('com.github.hotchemi:permissionsdispatcher:2.4.0') {
-        exclude module: 'support-v13'
-    }
-    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.4.0'
+    implementation 'com.yanzhenjie:permission:2.0.0-rc3'
 
     // 调试工具
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'

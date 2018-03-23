@@ -1,14 +1,13 @@
 package com.meiji.toutiao.module.photo.content;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.ContentLoadingProgressBar;
@@ -41,18 +40,18 @@ import com.meiji.toutiao.module.news.comment.NewsCommentActivity;
 import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.widget.ViewPagerFixed;
 import com.r0adkll.slidr.model.SlidrInterface;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.Rationale;
+import com.yanzhenjie.permission.RequestExecutor;
+import com.yanzhenjie.permission.SettingService;
 
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.OnNeverAskAgain;
-import permissions.dispatcher.OnPermissionDenied;
-import permissions.dispatcher.OnShowRationale;
-import permissions.dispatcher.PermissionRequest;
-import permissions.dispatcher.RuntimePermissions;
+import java.util.List;
 
 /**
  * Created by Meiji on 2017/3/1.
  */
-@RuntimePermissions
 public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> implements IPhotoContent.View, ViewPager.OnPageChangeListener, View.OnClickListener {
 
     public static final String TAG = "PhotoContentFragment";
@@ -151,7 +150,7 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
     @Override
     public void onSetImageBrowser(PhotoGalleryBean bean, int position) {
         if (adapter == null) {
-            adapter = new PhotoContentAdapter(getActivity(), bean);
+            adapter = new PhotoContentAdapter(mContext, bean);
             viewPager.setAdapter(adapter);
             viewPager.setCurrentItem(position);
             viewPager.addOnPageChangeListener(this);
@@ -323,47 +322,59 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.tv_save) {
-            PhotoContentFragmentPermissionsDispatcher.onSaveImageWithCheck(this);
+            AndPermission.with(this)
+                    .permission(Permission.WRITE_EXTERNAL_STORAGE)
+                    .rationale(new Rationale() {
+                        @Override
+                        public void showRationale(Context context, List<String> permissions, final RequestExecutor executor) {
+                            new AlertDialog.Builder(context)
+                                    .setMessage(R.string.permission_write_rationale)
+                                    .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            executor.execute();
+                                        }
+                                    })
+                                    .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            executor.cancel();
+                                        }
+                                    })
+                                    .show();
+                        }
+                    })
+                    .onGranted(new Action() {
+                        @Override
+                        public void onAction(List<String> permissions) {
+                            presenter.doSaveImage();
+                        }
+                    })
+                    .onDenied(new Action() {
+                        @Override
+                        public void onAction(List<String> permissions) {
+                            Snackbar.make(photoView, R.string.permission_write_denied, Snackbar.LENGTH_SHORT).show();
+                            if (AndPermission.hasAlwaysDeniedPermission(PhotoContentFragment.this, permissions)) {
+                                final SettingService settingService = AndPermission.permissionSetting(PhotoContentFragment.this);
+                                new AlertDialog.Builder(mContext)
+                                        .setMessage(R.string.permission_write_rationale)
+                                        .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                settingService.execute();
+                                            }
+                                        })
+                                        .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                settingService.cancel();
+                                            }
+                                        })
+                                        .show();
+                            }
+                        }
+                    })
+                    .start();
         }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PhotoContentFragmentPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }
-
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void onSaveImage() {
-        presenter.doSaveImage();
-    }
-
-    @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void showRationale(final PermissionRequest request) {
-        new AlertDialog.Builder(getActivity())
-                .setMessage(R.string.permission_write_rationale)
-                .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        request.proceed();
-                    }
-                })
-                .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        request.cancel();
-                    }
-                })
-                .show();
-    }
-
-    @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void showDenied() {
-        Snackbar.make(photoView, R.string.permission_write_denied, Snackbar.LENGTH_SHORT).show();
-    }
-
-    @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void showNeverAsk() {
-        Snackbar.make(photoView, R.string.permission_write_never_ask, Snackbar.LENGTH_SHORT).show();
     }
 }

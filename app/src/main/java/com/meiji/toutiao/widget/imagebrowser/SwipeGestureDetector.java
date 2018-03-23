@@ -1,6 +1,7 @@
 package com.meiji.toutiao.widget.imagebrowser;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -25,6 +26,7 @@ public class SwipeGestureDetector {
     public static final int DIRECTION_BOTTOM = 0x03;
     private static final String TAG = "SwipeGestureDetector";
     private static final boolean DEBUG = BuildConfig.DEBUG;
+    private final Handler handler = new Handler();
     private OnSwipeGestureListener listener;
     private int touchSlop;
     private float initialMotionX, initialMotionY;
@@ -49,7 +51,8 @@ public class SwipeGestureDetector {
 
         float x = event.getRawX();
         float y = event.getRawY();
-        if (DEBUG) Log.d(TAG, "onTouchEvent: " + x + "-" + y);
+        if (DEBUG)
+            Log.d(TAG, "onInterceptTouchEvent: " + x + "-" + y);
 
         // Always take care of the touch gesture being complete.
         if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {

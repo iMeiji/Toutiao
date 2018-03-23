@@ -3,31 +3,49 @@ package com.meiji.toutiao;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.meiji.toutiao.module.base.BaseActivity;
+import com.meiji.toutiao.util.DownloadUtil;
 import com.meiji.toutiao.util.ImageLoader;
+import com.meiji.toutiao.widget.BottomSheetDialogFixed;
 import com.meiji.toutiao.widget.imagebrowser.DismissFrameLayout;
 import com.pixelcan.inkpageindicator.InkPageIndicator;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.Rationale;
+import com.yanzhenjie.permission.RequestExecutor;
+import com.yanzhenjie.permission.SettingService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import io.reactivex.MaybeEmitter;
+import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
@@ -38,7 +56,6 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by Meiji on 2018/3/9.
- * TODO 长按下载图片
  */
 
 public class ImageBrowserActivity extends BaseActivity {
@@ -89,18 +106,19 @@ public class ImageBrowserActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fullScreen();
+        translucentScreen();
         setContentView(R.layout.activity_imagebrowser);
-
-        RelativeLayout container = findViewById(R.id.container);
-        mColorDrawable = new ColorDrawable(getResources().getColor(R.color.Black));
-        container.setBackground(mColorDrawable);
 
         Intent intent = getIntent();
         if (intent == null) {
             finish();
             return;
         }
+
+        RelativeLayout container = findViewById(R.id.container);
+        mColorDrawable = new ColorDrawable(getResources().getColor(R.color.Black));
+        container.setBackground(mColorDrawable);
+
 
         mImgList = intent.getStringArrayListExtra(EXTRA_LIST);
         String url = intent.getStringExtra(EXTRA_URl);
@@ -111,7 +129,6 @@ public class ImageBrowserActivity extends BaseActivity {
         mViewPager.setCurrentItem(mCurrentPosition);
 
         mIndicator = findViewById(R.id.indicator);
-        mIndicator.setViewPager(mViewPager);
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -150,11 +167,17 @@ public class ImageBrowserActivity extends BaseActivity {
                 }
             }
         });
+
+        startIndicatorObserver();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        mIndicator.setViewPager(mViewPager);
+    }
+
+    private void startIndicatorObserver() {
         Flowable.interval(1, 1, TimeUnit.SECONDS)
                 .filter(new Predicate<Long>() {
                     @Override
@@ -183,20 +206,114 @@ public class ImageBrowserActivity extends BaseActivity {
                 });
     }
 
-    public void fullScreen() {
-
-        int newUiOptions = getWindow().getDecorView().getSystemUiVisibility();
-
-        newUiOptions ^= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            newUiOptions ^= View.SYSTEM_UI_FLAG_FULLSCREEN;
-        }
+    public void translucentScreen() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            newUiOptions ^= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
+    }
 
-        getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
+    private void onLongClick() {
+        final BottomSheetDialogFixed dialog = new BottomSheetDialogFixed(mContext);
+        dialog.setOwnerActivity(this);
+        View view = getLayoutInflater().inflate(R.layout.item_imageview_action_sheet, null);
+        view.findViewById(R.id.layout_dowm_image).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveImage();
+                dialog.dismiss();
+            }
+        });
+        view.findViewById(R.id.layout_share_image).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO 分享图片
+                dialog.dismiss();
+            }
+        });
+        dialog.setContentView(view);
+        dialog.show();
+    }
+
+    private void requestPermission() {
+        AndPermission.with(this)
+                .permission(Permission.WRITE_EXTERNAL_STORAGE)
+                .rationale(new Rationale() {
+                    @Override
+                    public void showRationale(Context context, List<String> permissions, final RequestExecutor executor) {
+                        new AlertDialog.Builder(context)
+                                .setMessage(R.string.permission_write_rationale)
+                                .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        executor.execute();
+                                    }
+                                })
+                                .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        executor.cancel();
+                                    }
+                                })
+                                .show();
+                    }
+                })
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        saveImage();
+                    }
+                })
+                .onDenied(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        Snackbar.make(mViewPager, R.string.permission_write_denied, Snackbar.LENGTH_SHORT).show();
+                        if (AndPermission.hasAlwaysDeniedPermission(ImageBrowserActivity.this, permissions)) {
+                            final SettingService settingService = AndPermission.permissionSetting(ImageBrowserActivity.this);
+                            new AlertDialog.Builder(ImageBrowserActivity.this)
+                                    .setMessage(R.string.permission_write_rationale)
+                                    .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            settingService.execute();
+                                        }
+                                    })
+                                    .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            settingService.cancel();
+                                        }
+                                    })
+                                    .show();
+                        }
+                    }
+                })
+                .start();
+    }
+
+    private void saveImage() {
+        if (ContextCompat.checkSelfPermission(mContext, Permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermission();
+        } else {
+            final String url = mImgList.get(mViewPager.getCurrentItem());
+            Maybe.create(new MaybeOnSubscribe<Boolean>() {
+                @Override
+                public void subscribe(MaybeEmitter<Boolean> emitter) throws Exception {
+                    emitter.onSuccess(DownloadUtil.saveImage(url, mContext));
+                }
+            })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .as(this.<Boolean>bindAutoDispose())
+                    .subscribe(new Consumer<Boolean>() {
+                        @Override
+                        public void accept(Boolean b) throws Exception {
+                            String s = b ? getString(R.string.saved) : getString(R.string.error);
+                            Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
+                        }
+                    }, ErrorAction.error());
+        }
     }
 
     public class PhotoAdapter extends PagerAdapter {
@@ -234,6 +351,13 @@ public class ImageBrowserActivity extends BaseActivity {
                 PhotoView imageView = view.findViewById(R.id.photoView);
                 PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
                 attacher.setOnDoubleTapListener(new PhotoViewOnDoubleTapListener(attacher));
+                attacher.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        ImageBrowserActivity.this.onLongClick();
+                        return false;
+                    }
+                });
 
                 ImageLoader.loadNormal(context, mList.get(position), imageView);
 

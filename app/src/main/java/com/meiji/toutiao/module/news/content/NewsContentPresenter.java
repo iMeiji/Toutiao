@@ -27,8 +27,6 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
 
 /**
  * Created by Meiji on 2016/12/17.
@@ -58,25 +56,32 @@ class NewsContentPresenter implements INewsContent.Presenter {
                 .create(new ObservableOnSubscribe<String>() {
                     @Override
                     public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
-                        try {
-                            Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(INewsApi.class)
-                                    .getNewsContentRedirectUrl(url).execute();
-                            // 获取重定向后的 URL 用于拼凑API
-                            if (response.isSuccessful()) {
-                                String httpUrl = response.raw().request().url().toString();
-                                if (!TextUtils.isEmpty(httpUrl) && httpUrl.contains("toutiao")) {
-                                    String api = httpUrl + "info/";
-                                    e.onNext(api);
-                                } else {
-                                    e.onError(new Throwable());
-                                }
-                            } else {
-                                e.onError(new Throwable());
-                            }
-                        } catch (Exception e1) {
-                            e.onComplete();
-                            ErrorAction.print(e1);
-                        }
+                        // https://toutiao.com/group/6530252650288513540/
+                        // https://m.toutiao.com/i6530252650288513540/info/
+                        String api = url.replace("www.", "")
+                                .replace("toutiao", "m.toutiao")
+                                .replace("group/", "i") + "info/";
+                        e.onNext(api);
+//                        try {
+//                            Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(INewsApi.class)
+//                                    .getNewsContentRedirectUrl(url).execute();
+//                            // 获取重定向后的 URL 用于拼凑API
+//                            if (response.isSuccessful()) {
+//                                String httpUrl = response.raw().request().url().toString();
+//                                if (!TextUtils.isEmpty(httpUrl) && httpUrl.contains("toutiao")) {
+//                                    String api = httpUrl + "info/";
+//                                    e.onNext(api);
+//                                } else {
+//                                    e.onError(new Throwable());
+//                                }
+//                            } else {
+//                                e.onError(new Throwable());
+//                            }
+
+//                        } catch (Exception e1) {
+//                            e.onComplete();
+//                            ErrorAction.print(e1);
+//                        }
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -171,12 +176,11 @@ class NewsContentPresenter implements INewsContent.Presenter {
      */
     @JavascriptInterface
     public void openImage(String url) {
-        Log.d(TAG, "openImage: " + url);
-
         if (!TextUtils.isEmpty(url)) {
             ArrayList<String> list = getAllImageUrlFromHtml(html);
             if (list.size() > 0) {
                 ImageBrowserActivity.start(InitApp.AppContext, url, list);
+                Log.d(TAG, "openImage: " + list.toString());
             }
         }
     }
