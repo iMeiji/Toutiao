@@ -176,12 +176,11 @@ class NewsContentPresenter implements INewsContent.Presenter {
      */
     @JavascriptInterface
     public void openImage(String url) {
-        Log.d(TAG, "openImage: " + url);
-
         if (!TextUtils.isEmpty(url)) {
             ArrayList<String> list = getAllImageUrlFromHtml(html);
             if (list.size() > 0) {
                 ImageBrowserActivity.start(InitApp.AppContext, url, list);
+                Log.d(TAG, "openImage: " + list.toString());
             }
         }
     }

@@ -34,12 +34,7 @@ public class SwipeGestureDetector {
     private boolean isBeingDragged;
     @Direction
     private int direction;
-    private Runnable mLongPressed = new Runnable() {
-        public void run() {
-            Log.d(TAG, "Long press!");
-            listener.onLongClick();
-        }
-    };
+
     public SwipeGestureDetector(Context context, @NonNull OnSwipeGestureListener listener) {
         this.listener = listener;
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
@@ -56,7 +51,8 @@ public class SwipeGestureDetector {
 
         float x = event.getRawX();
         float y = event.getRawY();
-        if (DEBUG) Log.d(TAG, "onTouchEvent: " + x + "-" + y);
+        if (DEBUG)
+            Log.d(TAG, "onInterceptTouchEvent: " + x + "-" + y);
 
         // Always take care of the touch gesture being complete.
         if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
@@ -75,14 +71,12 @@ public class SwipeGestureDetector {
             case MotionEvent.ACTION_DOWN:
                 initialMotionX = lastMotionX = x;
                 initialMotionY = lastMotionY = y;
-                handler.postDelayed(mLongPressed, ViewConfiguration.getLongPressTimeout());
                 break;
             case MotionEvent.ACTION_MOVE:
                 final float xDiff = Math.abs(x - initialMotionX);
                 final float yDiff = Math.abs(y - initialMotionY);
                 if (xDiff > touchSlop && xDiff > yDiff) {
                     isBeingDragged = true;
-                    handler.removeCallbacks(mLongPressed);
                     if (x - initialMotionX > 0) {
                         direction = DIRECTION_RIGHT;
                         if (DEBUG) Log.d(TAG, "onInterceptTouchEvent: RIGHT");
@@ -92,7 +86,6 @@ public class SwipeGestureDetector {
                     }
                 } else if (yDiff > touchSlop && yDiff > xDiff) {
                     isBeingDragged = true;
-                    handler.removeCallbacks(mLongPressed);
                     if (y - initialMotionY > 0) {
                         direction = DIRECTION_BOTTOM;
                         if (DEBUG) Log.d(TAG, "onInterceptTouchEvent: BOTTOM");
@@ -194,8 +187,6 @@ public class SwipeGestureDetector {
         void onSwipeBottom(float deltaX, float deltaY);
 
         void onFinish(@Direction int direction, float distanceX, float distanceY);
-
-        void onLongClick();
     }
 
 }

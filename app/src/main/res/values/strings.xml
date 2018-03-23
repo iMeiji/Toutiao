@@ -64,6 +64,8 @@
     <!-- Bottom Sheet List -->
     <string name="copy_content">复制内容</string>
     <string name="share_content">分享内容</string>
+    <string name="download_image">下载图片</string>
+    <string name="share_image">分享图片</string>
 
     <!-- Item Drag -->
     <string name="tip_drag">长按编辑,拖拽排序</string>

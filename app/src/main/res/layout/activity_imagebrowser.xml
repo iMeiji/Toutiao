@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:fitsSystemWindows="true"
         android:padding="10dip"
         app:ipi_animationDuration="320"
         app:ipi_currentPageIndicatorColor="@color/Grey400"
@@ -24,3 +25,7 @@
         app:ipi_pageIndicatorColor="@color/Grey800"/>
 
 </RelativeLayout>
+
+    <!--android:fitsSystemWindows="true"
+        防止 导航栏 遮挡
+    -->
