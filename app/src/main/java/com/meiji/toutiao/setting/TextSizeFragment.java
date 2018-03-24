@@ -53,6 +53,16 @@ public class TextSizeFragment extends Fragment {
                     }
                 }
             }
+
+            @Override
+            public void onStartTrackingTouch(RangeSeekBar view, boolean isLeft) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(RangeSeekBar view, boolean isLeft) {
+
+            }
         });
     }
 

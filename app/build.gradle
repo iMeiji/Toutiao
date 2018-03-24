@@ -88,7 +88,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
 
     // 解析HTML
-    implementation 'org.jsoup:jsoup:1.11.1'
+    implementation 'org.jsoup:jsoup:1.11.2'
 
     // 图片浏览
     implementation 'com.github.chrisbanes.photoview:library:1.2.4'
@@ -100,16 +100,16 @@ dependencies {
     implementation 'cn.jzvd:jiaozivideoplayer:6.2.7'
 
     // retrofit 2
-    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
 
     // 持久化 Cookie
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
 
     // RxJava 2
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
 
     // AutoDispose
     implementation 'com.uber.autodispose:autodispose:0.6.1'
@@ -117,11 +117,11 @@ dependencies {
     implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.6.1'
 
     // okhttp 3
-    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
-    debugImplementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    debugImplementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
 
     // MD dialog
-    implementation 'com.afollestad.material-dialogs:commons:0.9.4.4'
+    implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
 
     // 权限管理
     implementation 'com.yanzhenjie:permission:2.0.0-rc3'
@@ -134,19 +134,19 @@ dependencies {
     implementation 'me.drakeet.multitype:multitype:3.4.0'
 
     // RxBinding
-    implementation 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
+    implementation 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.1.1'
 
     // 响应式排版布局
-    implementation 'com.google.android:flexbox:0.2.7'
+    implementation 'com.google.android:flexbox:0.3.2'
 
     // 滑动返回 https://oss.sonatype.org/content/repositories/snapshots/com/r0adkll/slidableactivity/
     implementation 'com.r0adkll:slidableactivity:2.0.7-SNAPSHOT'
 
     // 带刻度的 SeekBar
-    implementation 'com.github.Jay-Goo:RangeSeekBar:v1.1.0'
+    implementation 'com.github.Jay-Goo:RangeSeekBar:v1.2.2'
 
     // 高亮功能提示效果 https://material.google.com/growth-communications/feature-discovery.html#feature-discovery-design
-    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.9.1'
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.11.0'
 
     // LeakCanary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
