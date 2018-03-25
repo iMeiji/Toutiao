@@ -2,12 +2,11 @@ package com.meiji.toutiao.module.video.content;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,11 +15,9 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.meiji.toutiao.ErrorAction;
 import com.meiji.toutiao.InitApp;
-import com.meiji.toutiao.IntentAction;
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.Register;
 import com.meiji.toutiao.bean.LoadingBean;
@@ -62,7 +59,6 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
 
     private RecyclerView recyclerView;
     private ContentLoadingProgressBar progressBar;
-    private FloatingActionButton fab;
     private MyJZVideoPlayerStandard jcVideo;
     private IVideoContent.Presenter presenter;
     private int currentAction;
@@ -77,14 +73,19 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
         setContentView(R.layout.fragment_video_content_new);
         presenter = new VideoContentPresenter(this);
         initView();
         initData();
         onLoadData();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(Color.BLACK);
+        }
     }
 
     private void initData() {
@@ -159,20 +160,10 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
             }
         });
 
-        fab = findViewById(R.id.fab);
-        fab.setBackgroundTintList(ColorStateList.valueOf(SettingUtil.getInstance().getColor()));
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                IntentAction.send(VideoContentActivity.this, videoTitle + "\n" + shareUrl);
-            }
-        });
-
         jcVideo = findViewById(R.id.jc_video);
         jcVideo.thumbImageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                fab.setVisibility(View.GONE);
                 return false;
             }
         });
@@ -248,7 +239,6 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
         jcVideo.setUp(urls, JZVideoPlayerStandard.SCREEN_WINDOW_NORMAL, videoTitle);
         if (SettingUtil.getInstance().getIsVideoAutoPlay()) {
             jcVideo.startButton.performClick();
-            fab.setVisibility(View.GONE);
         }
 
         // 设置监听事件 判断是否进入全屏
@@ -259,11 +249,9 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
                         type == JZUserAction.ON_CLICK_START_ICON ||
                         type == JZUserAction.ON_CLICK_RESUME ||
                         type == JZUserAction.ON_CLICK_START_AUTO_COMPLETE) {
-                    fab.setVisibility(View.GONE);
                 }
 
                 if (type == JZUserAction.ON_CLICK_PAUSE || type == JZUserAction.ON_AUTO_COMPLETE) {
-                    fab.setVisibility(View.VISIBLE);
                 }
 
                 if (type == JZUserAction.ON_ENTER_FULLSCREEN) {

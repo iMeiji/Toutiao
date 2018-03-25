@@ -96,7 +96,7 @@ public class GeneralPreferenceFragment extends PreferenceFragment implements Sha
                         .customButton(R.string.custom)
                         .presetsButton(R.string.back)
                         .allowUserColorInputAlpha(false)
-                        .show();
+                        .show(context);
                 return false;
             }
         });

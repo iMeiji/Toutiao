@@ -53,13 +53,13 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:layout_weight="1"
-            app:cellMode="other"
-            app:cells="4"
-            app:lineColorSelected="@color/colorPrimary"
-            app:max="4"
-            app:min="0"
-            app:progressHintMode="alwaysHide"
-            app:seekBarMode="single"/>
+            app:rsb_cellMode="other"
+            app:rsb_cells="4"
+            app:rsb_lineColorSelected="@color/colorPrimary"
+            app:rsb_max="4"
+            app:rsb_min="0"
+            app:rsb_progressHintMode="alwaysHide"
+            app:rsb_seekBarMode="single" />
 
         <TextView
             android:layout_width="wrap_content"

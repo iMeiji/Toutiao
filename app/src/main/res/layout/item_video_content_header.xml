@@ -1,45 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@color/viewBackground"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_title"
+    <RelativeLayout
+        android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:textSize="20sp"
-        tools:text="毒舌马丁催泪讲述中国式父亲，母亲曾给他下跪，现场观众感动落泪"/>
+        android:background="?attr/selectableItemBackground"
+        android:foreground="?attr/selectableItemBackground"
+        android:minHeight="?attr/actionBarSize"
+        android:orientation="horizontal"
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/tv_tv_video_duration_str"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp"
-        tools:text="时长 3:35"/>
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="36dp"
+            android:layout_marginRight="36dp"
+            android:textSize="20sp"
+            tools:text="毒舌马丁催泪讲述中国式父亲，母亲曾给他下跪，现场观众感动落泪" />
 
-    <TextView
-        android:id="@+id/tv_abstract"
+        <ImageView
+            android:id="@+id/iv_menu"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            app:srcCompat="@drawable/ic_menu_up_gray_24dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        tools:text="97年驻港部队第一次进驻香港，万人空巷欢迎，场面壮观"/>
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_tv_video_duration_str"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="时长 3:35" />
+
+        <TextView
+            android:id="@+id/tv_abstract"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="16sp"
+            tools:text="97年驻港部队第一次进驻香港，万人空巷欢迎，场面壮观" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/line_divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingEnd="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingStart="16dp">
+
+        <LinearLayout
+            android:id="@+id/ll_share"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_share_grey_24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:text="@string/share_to" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_dl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_arrow_down_gray_24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:text="@string/action_download" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line_divider" />
 
     <LinearLayout
         android:id="@+id/media_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/selectableItemBackground"
         android:foreground="?attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:paddingEnd="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingStart="16dp">
 
         <com.meiji.toutiao.widget.CircleImageView
             android:id="@+id/iv_media_avatar_url"
@@ -47,7 +146,7 @@
             android:layout_height="36dp"
             android:scaleType="centerCrop"
             app:srcCompat="@color/viewBackground"
-            tools:ignore="ContentDescription"/>
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tv_extra"
@@ -57,8 +156,14 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:textStyle="bold"
-            tools:text="龙猫公社"/>
+            tools:text="龙猫公社" />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="4dp"
+        android:background="@color/line_divider" />
 
 </LinearLayout>

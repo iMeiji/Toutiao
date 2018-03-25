@@ -26,6 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayout;
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView;
 import com.jakewharton.rxbinding2.support.v7.widget.SearchViewQueryTextEvent;
@@ -94,8 +96,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         // 热门搜索
         hotWordLayout = findViewById(R.id.hotword_layout);
         flexboxLayout = findViewById(R.id.flexbox_layout);
-        flexboxLayout.setFlexDirection(FlexboxLayout.FLEX_DIRECTION_ROW);
-        flexboxLayout.setFlexWrap(FlexboxLayout.FLEX_WRAP_WRAP);
+        flexboxLayout.setFlexDirection(FlexDirection.ROW);
+        flexboxLayout.setFlexWrap(FlexWrap.WRAP);
         TextView tv_clear = findViewById(R.id.tv_clear);
         tv_clear.setOnClickListener(this);
         TextView tv_refresh = findViewById(R.id.tv_refresh);

@@ -6,9 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -25,6 +28,8 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.util.DownloadUtil;
 import com.meiji.toutiao.util.ImageLoader;
@@ -38,6 +43,8 @@ import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RequestExecutor;
 import com.yanzhenjie.permission.SettingService;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -48,6 +55,7 @@ import io.reactivex.MaybeEmitter;
 import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import uk.co.senab.photoview.DefaultOnDoubleTapListener;
@@ -227,12 +235,61 @@ public class ImageBrowserActivity extends BaseActivity {
         view.findViewById(R.id.layout_share_image).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO 分享图片
+                shareImage();
                 dialog.dismiss();
             }
         });
         dialog.setContentView(view);
         dialog.show();
+    }
+
+    private void shareImage() {
+        if (ContextCompat.checkSelfPermission(mContext, Permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermission();
+        } else {
+            Maybe.create(new MaybeOnSubscribe<Bitmap>() {
+                @Override
+                public void subscribe(MaybeEmitter<Bitmap> emitter) throws Exception {
+                    final String url = mImgList.get(mViewPager.getCurrentItem());
+                    Bitmap bitmap = Glide.with(mContext).asBitmap().load(url)
+                            .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                            .get();
+                    emitter.onSuccess(bitmap);
+                }
+            })
+                    .subscribeOn(Schedulers.io())
+                    .filter(new Predicate<Bitmap>() {
+                        @Override
+                        public boolean test(Bitmap bitmap) throws Exception {
+                            return bitmap != null;
+                        }
+                    })
+                    .map(new Function<Bitmap, File>() {
+                        @Override
+                        public File apply(Bitmap bitmap) throws Exception {
+                            File appDir = new File(Environment.getExternalStorageDirectory(), "Toutiao");
+                            if (!appDir.exists()) {
+                                appDir.mkdir();
+                            }
+                            String fileName = "temporary_file.jpg";
+                            File file = new File(appDir, fileName);
+                            FileOutputStream fos = new FileOutputStream(file);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                            fos.flush();
+                            fos.close();
+                            return file;
+                        }
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .as(this.<File>bindAutoDispose())
+                    .subscribe(new Consumer<File>() {
+                        @Override
+                        public void accept(File file) throws Exception {
+                            IntentAction.sendImage(mContext, Uri.fromFile(file));
+                        }
+                    }, ErrorAction.error());
+        }
     }
 
     private void requestPermission() {
@@ -256,12 +313,6 @@ public class ImageBrowserActivity extends BaseActivity {
                                     }
                                 })
                                 .show();
-                    }
-                })
-                .onGranted(new Action() {
-                    @Override
-                    public void onAction(List<String> permissions) {
-                        saveImage();
                     }
                 })
                 .onDenied(new Action() {
