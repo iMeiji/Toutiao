@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -51,81 +50,63 @@ public class GeneralPreferenceFragment extends PreferenceFragment implements Sha
         setHasOptionsMenu(true);
         setText();
 
-        findPreference("auto_nightMode").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                context.startWithFragment(AutoNightModeFragment.class.getName(), null, null, 0, null);
-                return true;
-            }
+        findPreference("auto_nightMode").setOnPreferenceClickListener(preference -> {
+            context.startWithFragment(AutoNightModeFragment.class.getName(), null, null, 0, null);
+            return true;
         });
 
-        findPreference("text_size").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                context.startWithFragment(TextSizeFragment.class.getName(), null, null, 0, null);
-                return true;
-            }
+        findPreference("text_size").setOnPreferenceClickListener(preference -> {
+            context.startWithFragment(TextSizeFragment.class.getName(), null, null, 0, null);
+            return true;
         });
 
-        findPreference("custom_icon").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+        findPreference("custom_icon").setOnPreferenceChangeListener((preference, newValue) -> {
 
-                int selectValue = Integer.parseInt((String) newValue);
-                int drawable = Constant.ICONS_DRAWABLES[selectValue];
+            int selectValue = Integer.parseInt((String) newValue);
+            int drawable = Constant.ICONS_DRAWABLES[selectValue];
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    ActivityManager.TaskDescription tDesc = new ActivityManager.TaskDescription(
-                            getString(R.string.app_name),
-                            BitmapFactory.decodeResource(getResources(), drawable),
-                            SettingUtil.getInstance().getColor());
-                    context.setTaskDescription(tDesc);
-                }
-
-                return true;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ActivityManager.TaskDescription tDesc = new ActivityManager.TaskDescription(
+                        getString(R.string.app_name),
+                        BitmapFactory.decodeResource(getResources(), drawable),
+                        SettingUtil.getInstance().getColor());
+                context.setTaskDescription(tDesc);
             }
+
+            return true;
         });
 
-        findPreference("color").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                new ColorChooserDialog.Builder(context, R.string.choose_theme_color)
-                        .backButton(R.string.back)
-                        .cancelButton(R.string.cancel)
-                        .doneButton(R.string.done)
-                        .customButton(R.string.custom)
-                        .presetsButton(R.string.back)
-                        .allowUserColorInputAlpha(false)
-                        .show(context);
-                return false;
-            }
+        findPreference("color").setOnPreferenceClickListener(preference -> {
+            new ColorChooserDialog.Builder(context, R.string.choose_theme_color)
+                    .backButton(R.string.back)
+                    .cancelButton(R.string.cancel)
+                    .doneButton(R.string.done)
+                    .customButton(R.string.custom)
+                    .presetsButton(R.string.back)
+                    .allowUserColorInputAlpha(false)
+                    .show(context);
+            return false;
         });
 
         colorPreview = (IconPreference) findPreference("color");
 
-        findPreference("nav_bar").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                int color = SettingUtil.getInstance().getColor();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (SettingUtil.getInstance().getNavBar()) {
-                        context.getWindow().setNavigationBarColor(CircleView.shiftColorDown(CircleView.shiftColorDown(color)));
-                    } else {
-                        context.getWindow().setNavigationBarColor(Color.BLACK);
-                    }
+        findPreference("nav_bar").setOnPreferenceClickListener(preference -> {
+            int color = SettingUtil.getInstance().getColor();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                if (SettingUtil.getInstance().getNavBar()) {
+                    context.getWindow().setNavigationBarColor(CircleView.shiftColorDown(CircleView.shiftColorDown(color)));
+                } else {
+                    context.getWindow().setNavigationBarColor(Color.BLACK);
                 }
-                return false;
             }
+            return false;
         });
 
-        findPreference("clearCache").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                CacheDataManager.clearAllCache(context);
-                Snackbar.make(getView(), R.string.clear_cache_successfully, Snackbar.LENGTH_SHORT).show();
-                setText();
-                return false;
-            }
+        findPreference("clearCache").setOnPreferenceClickListener(preference -> {
+            CacheDataManager.clearAllCache(context);
+            Snackbar.make(getView(), R.string.clear_cache_successfully, Snackbar.LENGTH_SHORT).show();
+            setText();
+            return false;
         });
 
         try {
@@ -135,40 +116,28 @@ public class GeneralPreferenceFragment extends PreferenceFragment implements Sha
             e.printStackTrace();
         }
 
-        findPreference("changelog").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.changelog_url))));
-                return false;
-            }
+        findPreference("changelog").setOnPreferenceClickListener(preference -> {
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.changelog_url))));
+            return false;
         });
 
-        findPreference("licenses").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                createLicenseDialog();
-                return false;
-            }
+        findPreference("licenses").setOnPreferenceClickListener(preference -> {
+            createLicenseDialog();
+            return false;
         });
 
-        findPreference("sourceCode").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.source_code_url))));
-                return false;
-            }
+        findPreference("sourceCode").setOnPreferenceClickListener(preference -> {
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.source_code_url))));
+            return false;
         });
 
-        findPreference("copyRight").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                new AlertDialog.Builder(context)
-                        .setTitle(R.string.copyright)
-                        .setMessage(R.string.copyright_content)
-                        .setCancelable(true)
-                        .show();
-                return false;
-            }
+        findPreference("copyRight").setOnPreferenceClickListener(preference -> {
+            new AlertDialog.Builder(context)
+                    .setTitle(R.string.copyright)
+                    .setMessage(R.string.copyright_content)
+                    .setCancelable(true)
+                    .show();
+            return false;
         });
     }
 

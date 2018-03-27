@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -98,24 +96,18 @@ public class MediaTabPresenter implements IMediaProfile.Presenter {
                 .getMediaArticle(this.mediaId, this.articleTime, map.get(Constant.AS), map.get(Constant.CP))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(view.<MultiMediaArticleBean>bindAutoDispose())
-                .subscribe(new Consumer<MultiMediaArticleBean>() {
-                    @Override
-                    public void accept(@NonNull MultiMediaArticleBean bean) throws Exception {
-                        articleTime = bean.getNext().getMax_behot_time();
-                        List<MultiMediaArticleBean.DataBean> list = bean.getData();
-                        if (null != list && list.size() > 0) {
-                            doSetAdapter(list);
-                        } else {
-                            doShowNoMore();
-                        }
+                .as(view.bindAutoDispose())
+                .subscribe(bean -> {
+                    articleTime = bean.getNext().getMax_behot_time();
+                    List<MultiMediaArticleBean.DataBean> list = bean.getData();
+                    if (null != list && list.size() > 0) {
+                        doSetAdapter(list);
+                    } else {
+                        doShowNoMore();
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        doShowNetError();
-                        ErrorAction.print(throwable);
-                    }
+                }, throwable -> {
+                    doShowNetError();
+                    ErrorAction.print(throwable);
                 });
     }
 
@@ -134,24 +126,18 @@ public class MediaTabPresenter implements IMediaProfile.Presenter {
                 .getMediaVideo(this.mediaId, this.videoTime, map.get(Constant.AS), map.get(Constant.CP))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(view.<MultiMediaArticleBean>bindAutoDispose())
-                .subscribe(new Consumer<MultiMediaArticleBean>() {
-                    @Override
-                    public void accept(@NonNull MultiMediaArticleBean bean) throws Exception {
-                        videoTime = bean.getNext().getMax_behot_time();
-                        List<MultiMediaArticleBean.DataBean> list = bean.getData();
-                        if (null != list && list.size() > 0) {
-                            doSetAdapter(list);
-                        } else {
-                            doShowNoMore();
-                        }
+                .as(view.bindAutoDispose())
+                .subscribe(bean -> {
+                    videoTime = bean.getNext().getMax_behot_time();
+                    List<MultiMediaArticleBean.DataBean> list = bean.getData();
+                    if (null != list && list.size() > 0) {
+                        doSetAdapter(list);
+                    } else {
+                        doShowNoMore();
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        doShowNetError();
-                        ErrorAction.print(throwable);
-                    }
+                }, throwable -> {
+                    doShowNetError();
+                    ErrorAction.print(throwable);
                 });
     }
 
@@ -168,25 +154,19 @@ public class MediaTabPresenter implements IMediaProfile.Presenter {
                 .getMediaWenda(this.mediaId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(view.<MediaWendaBean>bindAutoDispose())
-                .subscribe(new Consumer<MediaWendaBean>() {
-                    @Override
-                    public void accept(@NonNull MediaWendaBean bean) throws Exception {
-                        wendatotal = bean.getTotal();
-                        wendaCursor = bean.getCursor();
-                        List<MediaWendaBean.AnswerQuestionBean> list = bean.getAnswer_question();
-                        if (null != list && list.size() > 0) {
-                            doSetWendaAdapter(list);
-                        } else {
-                            doShowNoMore();
-                        }
+                .as(view.bindAutoDispose())
+                .subscribe(bean -> {
+                    wendatotal = bean.getTotal();
+                    wendaCursor = bean.getCursor();
+                    List<MediaWendaBean.AnswerQuestionBean> list = bean.getAnswer_question();
+                    if (null != list && list.size() > 0) {
+                        doSetWendaAdapter(list);
+                    } else {
+                        doShowNoMore();
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        doShowNetError();
-                        ErrorAction.print(throwable);
-                    }
+                }, throwable -> {
+                    doShowNetError();
+                    ErrorAction.print(throwable);
                 });
     }
 
@@ -205,31 +185,20 @@ public class MediaTabPresenter implements IMediaProfile.Presenter {
                             .getMediaWendaLoadMore(this.mediaId, this.wendaCursor)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .as(view.<MediaWendaBean>bindAutoDispose())
-                            .subscribe(new Consumer<MediaWendaBean>() {
-                                @Override
-                                public void accept(@NonNull MediaWendaBean bean) throws Exception {
-                                    List<MediaWendaBean.AnswerQuestionBean> list = bean.getAnswer_question();
-                                    if (null != list && list.size() > 0) {
-                                        doSetWendaAdapter(list);
-                                    } else {
-                                        doShowNoMore();
-                                    }
+                            .as(view.bindAutoDispose())
+                            .subscribe(bean -> {
+                                List<MediaWendaBean.AnswerQuestionBean> list = bean.getAnswer_question();
+                                if (null != list && list.size() > 0) {
+                                    doSetWendaAdapter(list);
+                                } else {
+                                    doShowNoMore();
                                 }
-                            }, new Consumer<Throwable>() {
-                                @Override
-                                public void accept(@NonNull Throwable throwable) throws Exception {
-                                    view.onShowNoMore();
-                                    ErrorAction.print(throwable);
-                                }
+                            }, throwable -> {
+                                view.onShowNoMore();
+                                ErrorAction.print(throwable);
                             });
                 } else {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            doShowNoMore();
-                        }
-                    }).start();
+                    new Thread(this::doShowNoMore).start();
                 }
                 break;
         }

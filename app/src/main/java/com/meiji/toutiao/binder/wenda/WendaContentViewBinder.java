@@ -17,7 +17,6 @@ import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.functions.Consumer;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -47,12 +46,7 @@ public class WendaContentViewBinder extends ItemViewBinder<WendaContentBean.AnsL
 
             RxView.clicks(holder.itemView)
                     .throttleFirst(1, TimeUnit.SECONDS)
-                    .subscribe(new Consumer<Object>() {
-                        @Override
-                        public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
-                            WendaDetailActivity.launch(item);
-                        }
-                    });
+                    .subscribe(o -> WendaDetailActivity.launch(item));
         } catch (Exception e) {
             ErrorAction.print(e);
         }

@@ -8,9 +8,6 @@ import com.meiji.toutiao.util.RetrofitFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -46,28 +43,17 @@ class JokeCommentPresenter implements IJokeComment.Presenter {
         RetrofitFactory.getRetrofit().create(IJokeApi.class).getJokeComment(jokeId, offset)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .map(new Function<JokeCommentBean, List<JokeCommentBean.DataBean.RecentCommentsBean>>() {
-                    @Override
-                    public List<JokeCommentBean.DataBean.RecentCommentsBean> apply(@NonNull JokeCommentBean jokeCommentBean) throws Exception {
-                        return jokeCommentBean.getData().getRecent_comments();
+                .map(jokeCommentBean -> jokeCommentBean.getData().getRecent_comments())
+                .as(view.bindAutoDispose())
+                .subscribe(recentCommentsBeen -> {
+                    if (recentCommentsBeen.size() > 0) {
+                        doSetAdapter(recentCommentsBeen);
+                    } else {
+                        doShowNoMore();
                     }
-                })
-                .as(view.<List<JokeCommentBean.DataBean.RecentCommentsBean>>bindAutoDispose())
-                .subscribe(new Consumer<List<JokeCommentBean.DataBean.RecentCommentsBean>>() {
-                    @Override
-                    public void accept(@NonNull List<JokeCommentBean.DataBean.RecentCommentsBean> recentCommentsBeen) throws Exception {
-                        if (recentCommentsBeen.size() > 0) {
-                            doSetAdapter(recentCommentsBeen);
-                        } else {
-                            doShowNoMore();
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        doShowNetError();
-                        ErrorAction.print(throwable);
-                    }
+                }, throwable -> {
+                    doShowNetError();
+                    ErrorAction.print(throwable);
                 });
     }
 

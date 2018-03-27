@@ -1,8 +1,6 @@
 package com.meiji.toutiao.module.photo.content;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.net.Uri;
@@ -40,14 +38,9 @@ import com.meiji.toutiao.module.news.comment.NewsCommentActivity;
 import com.meiji.toutiao.util.SettingUtil;
 import com.meiji.toutiao.widget.ViewPagerFixed;
 import com.r0adkll.slidr.model.SlidrInterface;
-import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
-import com.yanzhenjie.permission.Rationale;
-import com.yanzhenjie.permission.RequestExecutor;
 import com.yanzhenjie.permission.SettingService;
-
-import java.util.List;
 
 /**
  * Created by Meiji on 2017/3/1.
@@ -108,12 +101,7 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
     protected void initView(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, "");
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                scrollView.smoothScrollTo(0, 0);
-            }
-        });
+        toolbar.setOnClickListener(v -> scrollView.smoothScrollTo(0, 0));
 
         tv_hint = view.findViewById(R.id.tv_hint);
         tv_save = view.findViewById(R.id.tv_save);
@@ -131,17 +119,9 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
 
         swipeRefreshLayout = view.findViewById(R.id.refresh_layout);
         swipeRefreshLayout.setColorSchemeColors(SettingUtil.getInstance().getColor());
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayout.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(true);
-                    }
-                });
-                presenter.doLoadData(shareUrl);
-            }
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
+            presenter.doLoadData(shareUrl);
         });
 
         setHasOptionsMenu(true);
@@ -185,12 +165,7 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
     @Override
     public void onHideLoading() {
         progressBar.hide();
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
     @Override
@@ -290,15 +265,12 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
             }
         });
 
-        webView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if ((keyEvent.getKeyCode() == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
-                    webView.goBack();
-                    return true;
-                }
-                return false;
+        webView.setOnKeyListener((view, i, keyEvent) -> {
+            if ((keyEvent.getKeyCode() == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
+                webView.goBack();
+                return true;
             }
+            return false;
         });
 
         webView.setWebChromeClient(new WebChromeClient() {
@@ -324,54 +296,21 @@ public class PhotoContentFragment extends BaseFragment<IPhotoContent.Presenter> 
         if (v.getId() == R.id.tv_save) {
             AndPermission.with(this)
                     .permission(Permission.WRITE_EXTERNAL_STORAGE)
-                    .rationale(new Rationale() {
-                        @Override
-                        public void showRationale(Context context, List<String> permissions, final RequestExecutor executor) {
-                            new AlertDialog.Builder(context)
+                    .rationale((context, permissions, executor) -> new AlertDialog.Builder(context)
+                            .setMessage(R.string.permission_write_rationale)
+                            .setPositiveButton(R.string.button_allow, (dialog, which) -> executor.execute())
+                            .setNegativeButton(R.string.button_deny, (dialog, which) -> executor.cancel())
+                            .show())
+                    .onGranted(permissions -> presenter.doSaveImage())
+                    .onDenied(permissions -> {
+                        Snackbar.make(photoView, R.string.permission_write_denied, Snackbar.LENGTH_SHORT).show();
+                        if (AndPermission.hasAlwaysDeniedPermission(PhotoContentFragment.this, permissions)) {
+                            final SettingService settingService = AndPermission.permissionSetting(PhotoContentFragment.this);
+                            new AlertDialog.Builder(mContext)
                                     .setMessage(R.string.permission_write_rationale)
-                                    .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            executor.execute();
-                                        }
-                                    })
-                                    .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            executor.cancel();
-                                        }
-                                    })
+                                    .setPositiveButton(R.string.button_allow, (dialog, which) -> settingService.execute())
+                                    .setNegativeButton(R.string.button_deny, (dialog, which) -> settingService.cancel())
                                     .show();
-                        }
-                    })
-                    .onGranted(new Action() {
-                        @Override
-                        public void onAction(List<String> permissions) {
-                            presenter.doSaveImage();
-                        }
-                    })
-                    .onDenied(new Action() {
-                        @Override
-                        public void onAction(List<String> permissions) {
-                            Snackbar.make(photoView, R.string.permission_write_denied, Snackbar.LENGTH_SHORT).show();
-                            if (AndPermission.hasAlwaysDeniedPermission(PhotoContentFragment.this, permissions)) {
-                                final SettingService settingService = AndPermission.permissionSetting(PhotoContentFragment.this);
-                                new AlertDialog.Builder(mContext)
-                                        .setMessage(R.string.permission_write_rationale)
-                                        .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                settingService.execute();
-                                            }
-                                        })
-                                        .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                settingService.cancel();
-                                            }
-                                        })
-                                        .show();
-                            }
                         }
                     })
                     .start();

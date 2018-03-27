@@ -1,7 +1,6 @@
 package com.meiji.toutiao.binder.media;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -24,8 +23,6 @@ import com.meiji.toutiao.widget.CircleImageView;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import me.drakeet.multitype.ItemViewBinder;
 
@@ -69,66 +66,39 @@ public class MediaArticleHeaderViewBinder extends ItemViewBinder<MediaProfileBea
             RxView.clicks(holder.tv_is_sub)
                     .throttleFirst(1, TimeUnit.SECONDS)
                     .observeOn(Schedulers.io())
-                    .map(new Function<Object, Boolean>() {
-                        @Override
-                        public Boolean apply(@NonNull Object o) throws Exception {
-                            return dao.queryIsExist(mediaId);
-                        }
-                    })
+                    .map(o -> dao.queryIsExist(mediaId))
                     .observeOn(AndroidSchedulers.mainThread())
-                    .doOnNext(new Consumer<Boolean>() {
-                        @Override
-                        public void accept(@NonNull Boolean isExist) throws Exception {
-                            if (isExist) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                builder.setMessage("取消订阅\" " + item.getName() + " \"?");
-                                builder.setPositiveButton(R.string.button_enter, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        new Thread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                dao.delete(item.getMedia_id());
-                                            }
-                                        }).start();
-                                        holder.tv_is_sub.setText("订阅");
-                                        dialog.dismiss();
-                                    }
-                                });
-                                builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        holder.tv_is_sub.setText("已订阅");
-                                        dialog.dismiss();
-                                    }
-                                });
-                                builder.show();
-                            }
-                            if (!isExist) {
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        // 保存到数据库
-                                        dao.add(item.getMedia_id(),
-                                                item.getName(),
-                                                item.getAvatar_url(),
-                                                "news",
-                                                item.getFollowers_count(),
-                                                item.getDescription(),
-                                                "http://toutiao.com/m" + item.getMedia_id());
-                                    }
-                                }).start();
+                    .doOnNext(isExist -> {
+                        if (isExist) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setMessage("取消订阅\" " + item.getName() + " \"?");
+                            builder.setPositiveButton(R.string.button_enter, (dialog, which) -> {
+                                new Thread(() -> dao.delete(item.getMedia_id())).start();
+                                holder.tv_is_sub.setText("订阅");
+                                dialog.dismiss();
+                            });
+                            builder.setNegativeButton(R.string.button_cancel, (dialog, which) -> {
                                 holder.tv_is_sub.setText("已订阅");
-                                Toast.makeText(context, "订阅成功", Toast.LENGTH_SHORT).show();
-                            }
+                                dialog.dismiss();
+                            });
+                            builder.show();
+                        }
+                        if (!isExist) {
+                            new Thread(() -> {
+                                // 保存到数据库
+                                dao.add(item.getMedia_id(),
+                                        item.getName(),
+                                        item.getAvatar_url(),
+                                        "news",
+                                        item.getFollowers_count(),
+                                        item.getDescription(),
+                                        "http://toutiao.com/m" + item.getMedia_id());
+                            }).start();
+                            holder.tv_is_sub.setText("已订阅");
+                            Toast.makeText(context, "订阅成功", Toast.LENGTH_SHORT).show();
                         }
                     })
-                    .subscribe(new Consumer<Boolean>() {
-                        @Override
-                        public void accept(@NonNull Boolean isExist) throws Exception {
-                            holder.setIsSub(mediaId);
-                        }
-                    }, ErrorAction.error());
+                    .subscribe(isExist -> holder.setIsSub(mediaId), ErrorAction.error());
 
         } catch (Exception e) {
             ErrorAction.print(e);

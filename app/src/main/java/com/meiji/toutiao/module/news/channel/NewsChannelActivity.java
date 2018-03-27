@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.View;
 import android.widget.Toast;
 
 import com.meiji.toutiao.Constant;
@@ -23,11 +21,8 @@ import com.meiji.toutiao.widget.helper.ItemDragHelperCallback;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -55,7 +50,7 @@ public class NewsChannelActivity extends BaseActivity {
     }
 
     private void initView() {
-        initToolBar((Toolbar) findViewById(R.id.toolbar), true, getString(R.string.title_item_drag));
+        initToolBar(findViewById(R.id.toolbar), true, getString(R.string.title_item_drag));
         recyclerView = findViewById(R.id.recycler_view);
     }
 
@@ -80,50 +75,34 @@ public class NewsChannelActivity extends BaseActivity {
         });
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnMyChannelItemClickListener(new NewsChannelAdapter.OnMyChannelItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                Toast.makeText(NewsChannelActivity.this, enableItems.get(position).getChannelName() + position, Toast.LENGTH_SHORT).show();
-            }
-        });
+        adapter.setOnMyChannelItemClickListener((v, position) -> Toast.makeText(NewsChannelActivity.this, enableItems.get(position).getChannelName() + position, Toast.LENGTH_SHORT).show());
     }
 
     public void onSaveData() {
 
         Observable
-                .create(new ObservableOnSubscribe<Boolean>() {
-                    @Override
-                    public void subscribe(@NonNull ObservableEmitter<Boolean> e) throws Exception {
-                        List<NewsChannelBean> oldItems = dao.query(Constant.NEWS_CHANNEL_ENABLE);
-                        e.onNext(!compare(oldItems, adapter.getmMyChannelItems()));
-                    }
+                .create((ObservableOnSubscribe<Boolean>) e -> {
+                    List<NewsChannelBean> oldItems = dao.query(Constant.NEWS_CHANNEL_ENABLE);
+                    e.onNext(!compare(oldItems, adapter.getmMyChannelItems()));
                 })
                 .subscribeOn(Schedulers.io())
-                .doOnNext(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(@NonNull Boolean aBoolean) throws Exception {
-                        if (aBoolean) {
-                            List<NewsChannelBean> enableItems = adapter.getmMyChannelItems();
-                            List<NewsChannelBean> disableItems = adapter.getmOtherChannelItems();
-                            dao.removeAll();
-                            for (int i = 0; i < enableItems.size(); i++) {
-                                NewsChannelBean bean = enableItems.get(i);
-                                dao.add(bean.getChannelId(), bean.getChannelName(), Constant.NEWS_CHANNEL_ENABLE, i);
-                            }
-                            for (int i = 0; i < disableItems.size(); i++) {
-                                NewsChannelBean bean = disableItems.get(i);
-                                dao.add(bean.getChannelId(), bean.getChannelName(), Constant.NEWS_CHANNEL_DISABLE, i);
-                            }
+                .doOnNext(aBoolean -> {
+                    if (aBoolean) {
+                        List<NewsChannelBean> enableItems = adapter.getmMyChannelItems();
+                        List<NewsChannelBean> disableItems = adapter.getmOtherChannelItems();
+                        dao.removeAll();
+                        for (int i = 0; i < enableItems.size(); i++) {
+                            NewsChannelBean bean = enableItems.get(i);
+                            dao.add(bean.getChannelId(), bean.getChannelName(), Constant.NEWS_CHANNEL_ENABLE, i);
+                        }
+                        for (int i = 0; i < disableItems.size(); i++) {
+                            NewsChannelBean bean = disableItems.get(i);
+                            dao.add(bean.getChannelId(), bean.getChannelName(), Constant.NEWS_CHANNEL_DISABLE, i);
                         }
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(@NonNull Boolean isRefresh) throws Exception {
-                        RxBus.getInstance().post(NewsTabLayout.TAG, isRefresh);
-                    }
-                }, ErrorAction.error());
+                .subscribe(isRefresh -> RxBus.getInstance().post(NewsTabLayout.TAG, isRefresh), ErrorAction.error());
     }
 
     public synchronized <T extends Comparable<T>> boolean compare(List<T> a, List<T> b) {

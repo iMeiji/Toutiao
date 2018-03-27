@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -58,20 +56,14 @@ class WendaContentPresenter implements IWendaContent.Presenter {
         RetrofitFactory.getRetrofit().create(IMobileWendaApi.class).getWendaNiceContent(qid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(view.<WendaContentBean>bindAutoDispose())
-                .subscribe(new Consumer<WendaContentBean>() {
-                    @Override
-                    public void accept(@NonNull WendaContentBean wendaContentBean) throws Exception {
-                        doSetHeader(wendaContentBean.getQuestion());
-                        doSetAdapter(wendaContentBean.getAns_list());
-                        niceOffset += 10;
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        doShowNetError();
-                        ErrorAction.print(throwable);
-                    }
+                .as(view.bindAutoDispose())
+                .subscribe(wendaContentBean -> {
+                    doSetHeader(wendaContentBean.getQuestion());
+                    doSetAdapter(wendaContentBean.getAns_list());
+                    niceOffset += 10;
+                }, throwable -> {
+                    doShowNetError();
+                    ErrorAction.print(throwable);
                 });
     }
 
@@ -83,38 +75,26 @@ class WendaContentPresenter implements IWendaContent.Presenter {
                     .getWendaNiceContentLoadMore(qid, niceOffset)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .as(view.<WendaContentBean>bindAutoDispose())
-                    .subscribe(new Consumer<WendaContentBean>() {
-                        @Override
-                        public void accept(@NonNull WendaContentBean wendaContentBean) throws Exception {
-                            doSetAdapter(wendaContentBean.getAns_list());
-                            niceOffset += 10;
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(@NonNull Throwable throwable) throws Exception {
-                            doShowNetError();
-                            ErrorAction.print(throwable);
-                        }
+                    .as(view.bindAutoDispose())
+                    .subscribe(wendaContentBean -> {
+                        doSetAdapter(wendaContentBean.getAns_list());
+                        niceOffset += 10;
+                    }, throwable -> {
+                        doShowNetError();
+                        ErrorAction.print(throwable);
                     });
         } else if (normalOffset < normalAnsCount) {
             RetrofitFactory.getRetrofit().create(IMobileWendaApi.class)
                     .getWendaNormalContentLoadMore(qid, normalOffset)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .as(view.<WendaContentBean>bindAutoDispose())
-                    .subscribe(new Consumer<WendaContentBean>() {
-                        @Override
-                        public void accept(@NonNull WendaContentBean wendaContentBean) throws Exception {
-                            doSetAdapter(wendaContentBean.getAns_list());
-                            normalOffset += 10;
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(@NonNull Throwable throwable) throws Exception {
-                            doShowNetError();
-                            ErrorAction.print(throwable);
-                        }
+                    .as(view.bindAutoDispose())
+                    .subscribe(wendaContentBean -> {
+                        doSetAdapter(wendaContentBean.getAns_list());
+                        normalOffset += 10;
+                    }, throwable -> {
+                        doShowNetError();
+                        ErrorAction.print(throwable);
                     });
         } else {
             doShowNoMore();

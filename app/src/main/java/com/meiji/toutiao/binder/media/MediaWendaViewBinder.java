@@ -6,7 +6,6 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,7 +22,6 @@ import com.meiji.toutiao.util.SettingUtil;
 
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.functions.Consumer;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -61,42 +59,33 @@ public class MediaWendaViewBinder extends ItemViewBinder<MediaWendaBean.AnswerQu
 
             RxView.clicks(holder.itemView)
                     .throttleFirst(1, TimeUnit.SECONDS)
-                    .subscribe(new Consumer<Object>() {
-                        @Override
-                        public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
-                            WendaContentBean.AnsListBean ansBean = new WendaContentBean.AnsListBean();
-                            WendaContentBean.AnsListBean.ShareDataBeanX shareBean = new WendaContentBean.AnsListBean.ShareDataBeanX();
-                            WendaContentBean.AnsListBean.UserBeanX userBean = new WendaContentBean.AnsListBean.UserBeanX();
-                            ansBean.setTitle(title);
-                            ansBean.setQid(item.getQuestion().getQid());
-                            ansBean.setAnsid(item.getQuestion().getQid());
-                            shareBean.setShare_url(item.getAnswer().getWap_url());
-                            userBean.setUname(item.getAnswer().getUser().getUname());
-                            userBean.setAvatar_url(item.getAnswer().getUser().getAvatar_url());
-                            ansBean.setShare_data(shareBean);
-                            ansBean.setUser(userBean);
-                            WendaDetailActivity.launch(ansBean);
-                        }
+                    .subscribe(o -> {
+                        WendaContentBean.AnsListBean ansBean = new WendaContentBean.AnsListBean();
+                        WendaContentBean.AnsListBean.ShareDataBeanX shareBean = new WendaContentBean.AnsListBean.ShareDataBeanX();
+                        WendaContentBean.AnsListBean.UserBeanX userBean = new WendaContentBean.AnsListBean.UserBeanX();
+                        ansBean.setTitle(title);
+                        ansBean.setQid(item.getQuestion().getQid());
+                        ansBean.setAnsid(item.getQuestion().getQid());
+                        shareBean.setShare_url(item.getAnswer().getWap_url());
+                        userBean.setUname(item.getAnswer().getUser().getUname());
+                        userBean.setAvatar_url(item.getAnswer().getUser().getAvatar_url());
+                        ansBean.setShare_data(shareBean);
+                        ansBean.setUser(userBean);
+                        WendaDetailActivity.launch(ansBean);
                     });
 
-            holder.iv_dots.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    PopupMenu popupMenu = new PopupMenu(context,
-                            holder.iv_dots, Gravity.END, 0, R.style.MyPopupMenu);
-                    popupMenu.inflate(R.menu.menu_share);
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menu) {
-                            int itemId = menu.getItemId();
-                            if (itemId == R.id.action_share) {
-                                IntentAction.send(context, title + "\n" + item.getAnswer().getWap_url());
-                            }
-                            return false;
-                        }
-                    });
-                    popupMenu.show();
-                }
+            holder.iv_dots.setOnClickListener(view -> {
+                PopupMenu popupMenu = new PopupMenu(context,
+                        holder.iv_dots, Gravity.END, 0, R.style.MyPopupMenu);
+                popupMenu.inflate(R.menu.menu_share);
+                popupMenu.setOnMenuItemClickListener(menu -> {
+                    int itemId = menu.getItemId();
+                    if (itemId == R.id.action_share) {
+                        IntentAction.send(context, title + "\n" + item.getAnswer().getWap_url());
+                    }
+                    return false;
+                });
+                popupMenu.show();
             });
         } catch (Exception e) {
             ErrorAction.print(e);

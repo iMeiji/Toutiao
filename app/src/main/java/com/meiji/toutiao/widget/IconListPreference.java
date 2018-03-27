@@ -3,7 +3,6 @@ package com.meiji.toutiao.widget;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.preference.ListPreference;
@@ -75,12 +74,7 @@ public class IconListPreference extends ListPreference {
     @Override
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
         builder.setAdapter(createListAdapter(), this);
-        builder.setNegativeButton(getContext().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton(getContext().getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
         super.onPrepareDialogBuilder(builder);
     }
 

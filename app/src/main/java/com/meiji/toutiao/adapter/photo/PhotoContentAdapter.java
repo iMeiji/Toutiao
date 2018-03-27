@@ -70,12 +70,9 @@ public class PhotoContentAdapter extends PagerAdapter {
             }
 
             PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(iv_image);
-            photoViewAttacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
-                @Override
-                public void onPhotoTap(View view, float x, float y) {
-                    BaseActivity activity = (BaseActivity) context;
-                    activity.finish();
-                }
+            photoViewAttacher.setOnPhotoTapListener((view12, x, y) -> {
+                BaseActivity activity = (BaseActivity) context;
+                activity.finish();
             });
 
             final List<PhotoGalleryBean.SubImagesBean> sub_images = galleryBean.getSub_images();
@@ -100,13 +97,10 @@ public class PhotoContentAdapter extends PagerAdapter {
             } else {
                 progressBar.setVisibility(View.GONE);
                 tv_onclick.setVisibility(View.VISIBLE);
-                view.findViewById(R.id.layout_onclick).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        progressBar.setVisibility(View.VISIBLE);
-                        tv_onclick.setVisibility(View.GONE);
-                        ImageLoader.loadCenterCrop(context, sub_images.get(position).getUrl(), iv_image, listener);
-                    }
+                view.findViewById(R.id.layout_onclick).setOnClickListener(view1 -> {
+                    progressBar.setVisibility(View.VISIBLE);
+                    tv_onclick.setVisibility(View.GONE);
+                    ImageLoader.loadCenterCrop(context, sub_images.get(position).getUrl(), iv_image, listener);
                 });
             }
             tv_abstract.setText(sub_abstracts.get(position));

@@ -71,12 +71,7 @@ public class WendaContentFragment extends BaseListFragment<IWendaContent.Present
         super.initView(view);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, getString(R.string.title_wenda));
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recyclerView.smoothScrollToPosition(0);
-            }
-        });
+        toolbar.setOnClickListener(view1 -> recyclerView.smoothScrollToPosition(0));
         toolbar.setBackgroundColor(SettingUtil.getInstance().getColor());
 
         adapter = new MultiTypeAdapter(oldItems);

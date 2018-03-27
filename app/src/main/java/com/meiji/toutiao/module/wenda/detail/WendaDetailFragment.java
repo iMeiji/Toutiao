@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -90,12 +89,7 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
         tv_title.setText(bean.getTitle());
         tv_user_name.setText(bean.getUser().getUname());
         shareTitle = bean.getShare_data().getTitle();
-        header_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WendaContentActivity.launch(bean.getQid());
-            }
-        });
+        header_layout.setOnClickListener(v -> WendaContentActivity.launch(bean.getQid()));
     }
 
     @Override
@@ -130,12 +124,7 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
     protected void initView(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, getString(R.string.title_wenda_detail));
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                scrollView.smoothScrollTo(0, 0);
-            }
-        });
+        toolbar.setOnClickListener(view12 -> scrollView.smoothScrollTo(0, 0));
 
         webView = view.findViewById(R.id.webview);
         initWebClient();
@@ -148,37 +137,21 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
         tv_user_name = view.findViewById(R.id.tv_user_name);
 
         scrollView = view.findViewById(R.id.scrollView);
-        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                onHideLoading();
-            }
-        });
-        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                View view = scrollView.getChildAt(scrollView.getChildCount() - 1);
-                int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
-                if (diff == 0) {
-                    canLoadMore = false;
-                    presenter.doLoadMoreComment();
-                }
+        scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> onHideLoading());
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            View view1 = scrollView.getChildAt(scrollView.getChildCount() - 1);
+            int diff = (view1.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
+            if (diff == 0) {
+                canLoadMore = false;
+                presenter.doLoadMoreComment();
             }
         });
 
         swipeRefreshLayout = view.findViewById(R.id.refresh_layout);
         swipeRefreshLayout.setColorSchemeColors(SettingUtil.getInstance().getColor());
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayout.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(true);
-                    }
-                });
-                presenter.doLoadData(url);
-            }
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
+            presenter.doLoadData(url);
         });
 
         progressBar = view.findViewById(R.id.pb_progress);
@@ -239,15 +212,12 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
             }
         });
 
-        webView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if ((keyEvent.getKeyCode() == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
-                    webView.goBack();
-                    return true;
-                }
-                return false;
+        webView.setOnKeyListener((view, i, keyEvent) -> {
+            if ((keyEvent.getKeyCode() == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
+                webView.goBack();
+                return true;
             }
+            return false;
         });
 
         webView.setWebChromeClient(new WebChromeClient() {
@@ -279,22 +249,19 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
 
     @Override
     public void onShowNoMore() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (oldItems.size() > 0) {
-                    Items newItems = new Items(oldItems);
-                    newItems.remove(newItems.size() - 1);
-                    newItems.add(new LoadingEndBean());
-                    adapter.setItems(newItems);
-                    adapter.notifyDataSetChanged();
-                } else if (oldItems.size() == 0) {
-                    oldItems.add(new LoadingEndBean());
-                    adapter.setItems(oldItems);
-                    adapter.notifyDataSetChanged();
-                }
-                canLoadMore = false;
+        getActivity().runOnUiThread(() -> {
+            if (oldItems.size() > 0) {
+                Items newItems = new Items(oldItems);
+                newItems.remove(newItems.size() - 1);
+                newItems.add(new LoadingEndBean());
+                adapter.setItems(newItems);
+                adapter.notifyDataSetChanged();
+            } else if (oldItems.size() == 0) {
+                oldItems.add(new LoadingEndBean());
+                adapter.setItems(oldItems);
+                adapter.notifyDataSetChanged();
             }
+            canLoadMore = false;
         });
     }
 
@@ -306,24 +273,16 @@ public class WendaDetailFragment extends BaseFragment<IWendaDetail.Presenter> im
     @Override
     public void onHideLoading() {
         progressBar.hide();
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
     @Override
     public void onShowNetError() {
         Snackbar.make(scrollView, R.string.network_error, Snackbar.LENGTH_SHORT).show();
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                adapter.setItems(new Items());
-                adapter.notifyDataSetChanged();
-                canLoadMore = false;
-            }
+        getActivity().runOnUiThread(() -> {
+            adapter.setItems(new Items());
+            adapter.notifyDataSetChanged();
+            canLoadMore = false;
         });
     }
 }

@@ -4,7 +4,6 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,7 +28,6 @@ import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayout;
 import com.jakewharton.rxbinding2.support.v7.widget.RxSearchView;
-import com.jakewharton.rxbinding2.support.v7.widget.SearchViewQueryTextEvent;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.meiji.toutiao.Constant;
 import com.meiji.toutiao.ErrorAction;
@@ -41,7 +38,6 @@ import com.meiji.toutiao.adapter.search.SearchSuggestionAdapter;
 import com.meiji.toutiao.api.IMobileSearchApi;
 import com.meiji.toutiao.bean.search.SearchHistoryBean;
 import com.meiji.toutiao.bean.search.SearchRecommentBean;
-import com.meiji.toutiao.bean.search.SearchSuggestionBean;
 import com.meiji.toutiao.database.dao.SearchHistoryDao;
 import com.meiji.toutiao.module.base.BaseActivity;
 import com.meiji.toutiao.module.search.result.SearchResultFragment;
@@ -53,12 +49,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -105,12 +97,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 // 防抖
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .as(this.bindAutoDispose())
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(@NonNull Object o) throws Exception {
-                        flexboxLayout.removeAllViews();
-                        getSearchHotWord();
-                    }
+                .subscribe(o -> {
+                    flexboxLayout.removeAllViews();
+                    getSearchHotWord();
                 }, ErrorAction.error());
         // 搜索结果
         resultLayout = findViewById(R.id.result_layout);
@@ -123,25 +112,19 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         suggestionList = findViewById(R.id.suggestion_list);
         suggestionAdapter = new SearchSuggestionAdapter(this, -1);
         suggestionList.setAdapter(suggestionAdapter);
-        suggestionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String keyWord = suggestionAdapter.getItem(position).getKeyword();
-                searchView.clearFocus();
-                searchView.setQuery(keyWord, true);
-            }
+        suggestionList.setOnItemClickListener((parent, view, position, id) -> {
+            String keyWord = suggestionAdapter.getItem(position).getKeyword();
+            searchView.clearFocus();
+            searchView.setQuery(keyWord, true);
         });
         // 搜索历史
         historyList = findViewById(R.id.history_list);
         historyAdapter = new SearchHistoryAdapter(this, -1);
         historyList.setAdapter(historyAdapter);
-        historyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String keyWord = historyAdapter.getItem(position).getKeyWord();
-                searchView.clearFocus();
-                searchView.setQuery(keyWord, true);
-            }
+        historyList.setOnItemClickListener((parent, view, position, id) -> {
+            String keyWord = historyAdapter.getItem(position).getKeyWord();
+            searchView.clearFocus();
+            searchView.setQuery(keyWord, true);
         });
     }
 
@@ -208,42 +191,33 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         RetrofitFactory.getRetrofit().create(IMobileSearchApi.class).getSearchRecomment()
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .map(new Function<SearchRecommentBean, List<String>>() {
-                    @Override
-                    public List<String> apply(@NonNull SearchRecommentBean searchRecommentBean) throws Exception {
-                        List<SearchRecommentBean.DataBean.SuggestWordListBean> suggest_word_list = searchRecommentBean.getData().getSuggest_word_list();
-                        List<String> hotList = new ArrayList<>();
-                        for (int i = 0; i < suggest_word_list.size(); i++) {
-                            if (suggest_word_list.get(i).getType().equals("recom")) {
-                                hotList.add(suggest_word_list.get(i).getWord());
-                            }
+                .map(searchRecommentBean -> {
+                    List<SearchRecommentBean.DataBean.SuggestWordListBean> suggest_word_list = searchRecommentBean.getData().getSuggest_word_list();
+                    List<String> hotList = new ArrayList<>();
+                    for (int i = 0; i < suggest_word_list.size(); i++) {
+                        if (suggest_word_list.get(i).getType().equals("recom")) {
+                            hotList.add(suggest_word_list.get(i).getWord());
                         }
-                        return hotList;
                     }
+                    return hotList;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(this.<List<String>>bindAutoDispose())
-                .subscribe(new Consumer<List<String>>() {
-                    @Override
-                    public void accept(@NonNull final List<String> list) throws Exception {
-                        for (int i = 0; i < list.size(); i++) {
-                            final TextView tv = (TextView) LayoutInflater.from(SearchActivity.this).inflate(R.layout.item_search_sug_text, flexboxLayout, false);
-                            final String keyWord = list.get(i);
-                            int color = Constant.TAG_COLORS[i % Constant.TAG_COLORS.length];
-                            tv.setText(keyWord);
-                            tv.setBackgroundColor(color);
-                            tv.setTextColor(Color.WHITE);
-                            tv.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    searchView.clearFocus();
-                                    searchView.setQuery(keyWord, true);
-                                }
-                            });
-                            flexboxLayout.addView(tv);
-                            if (i == 7) {
-                                return;
-                            }
+                .as(this.bindAutoDispose())
+                .subscribe(list -> {
+                    for (int i = 0; i < list.size(); i++) {
+                        final TextView tv = (TextView) LayoutInflater.from(SearchActivity.this).inflate(R.layout.item_search_sug_text, flexboxLayout, false);
+                        final String keyWord = list.get(i);
+                        int color = Constant.TAG_COLORS[i % Constant.TAG_COLORS.length];
+                        tv.setText(keyWord);
+                        tv.setBackgroundColor(color);
+                        tv.setTextColor(Color.WHITE);
+                        tv.setOnClickListener(view -> {
+                            searchView.clearFocus();
+                            searchView.setQuery(keyWord, true);
+                        });
+                        flexboxLayout.addView(tv);
+                        if (i == 7) {
+                            return;
                         }
                     }
                 }, ErrorAction.error());
@@ -251,22 +225,14 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     private void getSearchHistory() {
         Observable
-                .create(new ObservableOnSubscribe<List<SearchHistoryBean>>() {
-                    @Override
-                    public void subscribe(@NonNull ObservableEmitter<List<SearchHistoryBean>> e) throws Exception {
-                        List<SearchHistoryBean> list = dao.queryAll();
-                        e.onNext(list);
-                    }
+                .create((ObservableOnSubscribe<List<SearchHistoryBean>>) e -> {
+                    List<SearchHistoryBean> list = dao.queryAll();
+                    e.onNext(list);
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(this.<List<SearchHistoryBean>>bindAutoDispose())
-                .subscribe(new Consumer<List<SearchHistoryBean>>() {
-                    @Override
-                    public void accept(@NonNull final List<SearchHistoryBean> list) throws Exception {
-                        historyAdapter.updateDataSource(list);
-                    }
-                }, ErrorAction.error());
+                .as(this.bindAutoDispose())
+                .subscribe(list -> historyAdapter.updateDataSource(list), ErrorAction.error());
     }
 
     private void getSearchSuggest(String keyWord) {
@@ -274,13 +240,8 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 .getSearchSuggestion(keyWord.trim())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(this.<SearchSuggestionBean>bindAutoDispose())
-                .subscribe(new Consumer<SearchSuggestionBean>() {
-                    @Override
-                    public void accept(@NonNull SearchSuggestionBean bean) throws Exception {
-                        suggestionAdapter.updateDataSource(bean.getData());
-                    }
-                }, ErrorAction.error());
+                .as(this.bindAutoDispose())
+                .subscribe(bean -> suggestionAdapter.updateDataSource(bean.getData()), ErrorAction.error());
     }
 
     private void setOnQuenyTextChangeListener() {
@@ -288,43 +249,37 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 .throttleLast(100, TimeUnit.MILLISECONDS)
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(this.<SearchViewQueryTextEvent>bindAutoDispose())
-                .subscribe(new Consumer<SearchViewQueryTextEvent>() {
-                    @Override
-                    public void accept(@NonNull SearchViewQueryTextEvent searchViewQueryTextEvent) throws Exception {
-                        final String keyWord = searchViewQueryTextEvent.queryText() + "";
-                        Log.d(TAG, "accept: " + keyWord);
-                        if (searchViewQueryTextEvent.isSubmitted()) {
-                            searchView.clearFocus();
-                            initSearchLayout(keyWord);
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (dao.queryisExist(keyWord)) {
-                                        dao.update(keyWord);
-                                    } else {
-                                        dao.add(keyWord);
-                                    }
-                                }
-                            }).start();
-                            return;
+                .as(this.bindAutoDispose())
+                .subscribe(searchViewQueryTextEvent -> {
+                    final String keyWord = searchViewQueryTextEvent.queryText() + "";
+                    Log.d(TAG, "accept: " + keyWord);
+                    if (searchViewQueryTextEvent.isSubmitted()) {
+                        searchView.clearFocus();
+                        initSearchLayout(keyWord);
+                        new Thread(() -> {
+                            if (dao.queryisExist(keyWord)) {
+                                dao.update(keyWord);
+                            } else {
+                                dao.add(keyWord);
+                            }
+                        }).start();
+                        return;
+                    }
+                    if (!TextUtils.isEmpty(keyWord)) {
+                        getSearchSuggest(keyWord);
+                        hotWordLayout.setVisibility(View.GONE);
+                        resultLayout.setVisibility(View.GONE);
+                        suggestionList.setVisibility(View.VISIBLE);
+                    } else {
+                        getSearchHistory();
+                        if (hotWordLayout.getVisibility() != View.VISIBLE) {
+                            hotWordLayout.setVisibility(View.VISIBLE);
                         }
-                        if (!TextUtils.isEmpty(keyWord)) {
-                            getSearchSuggest(keyWord);
-                            hotWordLayout.setVisibility(View.GONE);
+                        if (resultLayout.getVisibility() != View.GONE) {
                             resultLayout.setVisibility(View.GONE);
-                            suggestionList.setVisibility(View.VISIBLE);
-                        } else {
-                            getSearchHistory();
-                            if (hotWordLayout.getVisibility() != View.VISIBLE) {
-                                hotWordLayout.setVisibility(View.VISIBLE);
-                            }
-                            if (resultLayout.getVisibility() != View.GONE) {
-                                resultLayout.setVisibility(View.GONE);
-                            }
-                            if (suggestionList.getVisibility() != View.GONE) {
-                                suggestionList.setVisibility(View.GONE);
-                            }
+                        }
+                        if (suggestionList.getVisibility() != View.GONE) {
+                            suggestionList.setVisibility(View.GONE);
                         }
                     }
                 }, ErrorAction.error());
@@ -342,25 +297,14 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         if (id == R.id.tv_clear) {
             new AlertDialog.Builder(this)
                     .setMessage(R.string.delete_all_search_history)
-                    .setPositiveButton(R.string.button_enter, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    dao.deleteAll();
-                                    getSearchHistory();
-                                }
-                            }).start();
-                            dialog.dismiss();
-                        }
+                    .setPositiveButton(R.string.button_enter, (dialog, which) -> {
+                        new Thread(() -> {
+                            dao.deleteAll();
+                            getSearchHistory();
+                        }).start();
+                        dialog.dismiss();
                     })
-                    .setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
+                    .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.dismiss())
                     .show();
         }
     }

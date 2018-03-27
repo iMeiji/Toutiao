@@ -12,8 +12,6 @@ import com.meiji.toutiao.util.RxBus;
 import com.meiji.toutiao.util.SettingUtil;
 
 import io.reactivex.Observable;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 
@@ -48,45 +46,27 @@ public abstract class BaseListFragment<T extends IBasePresenter> extends LazyLoa
 
     @Override
     public void onShowLoading() {
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-            }
-        });
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
     }
 
     @Override
     public void onHideLoading() {
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
     @Override
     public void fetchData() {
         observable = RxBus.getInstance().register(BaseListFragment.TAG);
-        observable.subscribe(new Consumer<Integer>() {
-            @Override
-            public void accept(@NonNull Integer integer) throws Exception {
-                adapter.notifyDataSetChanged();
-            }
-        });
+        observable.subscribe(integer -> adapter.notifyDataSetChanged());
     }
 
     @Override
     public void onShowNetError() {
         Toast.makeText(getActivity(), R.string.network_error, Toast.LENGTH_SHORT).show();
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                adapter.setItems(new Items());
-                adapter.notifyDataSetChanged();
-                canLoadMore = false;
-            }
+        getActivity().runOnUiThread(() -> {
+            adapter.setItems(new Items());
+            adapter.notifyDataSetChanged();
+            canLoadMore = false;
         });
     }
 
@@ -99,22 +79,19 @@ public abstract class BaseListFragment<T extends IBasePresenter> extends LazyLoa
 
     @Override
     public void onShowNoMore() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (oldItems.size() > 0) {
-                    Items newItems = new Items(oldItems);
-                    newItems.remove(newItems.size() - 1);
-                    newItems.add(new LoadingEndBean());
-                    adapter.setItems(newItems);
-                    adapter.notifyDataSetChanged();
-                } else if (oldItems.size() == 0) {
-                    oldItems.add(new LoadingEndBean());
-                    adapter.setItems(oldItems);
-                    adapter.notifyDataSetChanged();
-                }
-                canLoadMore = false;
+        getActivity().runOnUiThread(() -> {
+            if (oldItems.size() > 0) {
+                Items newItems = new Items(oldItems);
+                newItems.remove(newItems.size() - 1);
+                newItems.add(new LoadingEndBean());
+                adapter.setItems(newItems);
+                adapter.notifyDataSetChanged();
+            } else if (oldItems.size() == 0) {
+                oldItems.add(new LoadingEndBean());
+                adapter.setItems(oldItems);
+                adapter.notifyDataSetChanged();
             }
+            canLoadMore = false;
         });
     }
 

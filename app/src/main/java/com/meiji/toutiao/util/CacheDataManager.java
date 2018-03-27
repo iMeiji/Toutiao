@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 
 public class CacheDataManager {
 
-    public static String getTotalCacheSize(Context context) throws Exception {
+    public static String getTotalCacheSize(Context context) {
 
         long cacheSize = getFolderSize(context.getCacheDir());
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -50,7 +50,7 @@ public class CacheDataManager {
      * Context.getExternalCacheDir() -->
      * SDCard/Android/data/你的应用包名/cache/目录，一般存放临时缓存数据
      */
-    public static long getFolderSize(File file) throws Exception {
+    public static long getFolderSize(File file) {
 
         long size = 0;
         try {

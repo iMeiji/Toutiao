@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by Meiji on 2016/12/12.
@@ -79,12 +78,7 @@ public class NewsTabLayout extends Fragment {
         tab_layout.setupWithViewPager(viewPager);
         tab_layout.setTabMode(TabLayout.MODE_SCROLLABLE);
         ImageView add_channel_iv = view.findViewById(R.id.add_channel_iv);
-        add_channel_iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), NewsChannelActivity.class));
-            }
-        });
+        add_channel_iv.setOnClickListener(v -> startActivity(new Intent(getActivity(), NewsChannelActivity.class)));
         linearLayout = view.findViewById(R.id.header_layout);
         linearLayout.setBackgroundColor(SettingUtil.getInstance().getColor());
     }
@@ -96,13 +90,10 @@ public class NewsTabLayout extends Fragment {
         viewPager.setOffscreenPageLimit(15);
 
         observable = RxBus.getInstance().register(NewsTabLayout.TAG);
-        observable.subscribe(new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean isRefresh) throws Exception {
-                if (isRefresh) {
-                    initTabs();
-                    adapter.recreateItems(fragmentList, titleList);
-                }
+        observable.subscribe(isRefresh -> {
+            if (isRefresh) {
+                initTabs();
+                adapter.recreateItems(fragmentList, titleList);
             }
         });
     }

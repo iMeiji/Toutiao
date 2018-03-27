@@ -29,14 +29,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
@@ -79,32 +77,24 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
         }
 
         Observable
-                .create(new ObservableOnSubscribe<String>() {
-                    @Override
-                    public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
-                        try {
-                            Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(IPhotoApi.class)
-                                    .getPhotoContentHTML(shareUrl).execute();
-                            if (response.isSuccessful()) {
-                                e.onNext(response.body().string());
-                            } else {
-                                e.onError(new Throwable());
-                            }
-                        } catch (Exception e1) {
-                            e.onComplete();
-                            ErrorAction.print(e1);
+                .create((ObservableOnSubscribe<String>) e -> {
+                    try {
+                        Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(IPhotoApi.class)
+                                .getPhotoContentHTML(shareUrl).execute();
+                        if (response.isSuccessful()) {
+                            e.onNext(response.body().string());
+                        } else {
+                            e.onError(new Throwable());
                         }
+                    } catch (Exception e1) {
+                        e.onComplete();
+                        ErrorAction.print(e1);
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .map(new Function<String, Boolean>() {
-                    @Override
-                    public Boolean apply(@NonNull String s) throws Exception {
-                        return parseHTML(s);
-                    }
-                })
+                .map(this::parseHTML)
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(view.<Boolean>bindAutoDispose())
+                .as(view.bindAutoDispose())
                 .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -138,46 +128,33 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
 
     private void doLoadWebView() {
         Observable
-                .create(new ObservableOnSubscribe<String>() {
-                    @Override
-                    public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
-                        try {
-                            Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(INewsApi.class)
-                                    .getNewsContentRedirectUrl(shareUrl).execute();
-                            // 获取重定向后的 URL 用于拼凑API
-                            if (response.isSuccessful()) {
-                                String httpUrl = response.raw().request().url().toString();
-                                if (!TextUtils.isEmpty(httpUrl) && httpUrl.contains("toutiao")) {
-                                    String api = httpUrl + "info/";
-                                    e.onNext(api);
-                                } else {
-                                    e.onError(new Throwable());
-                                }
+                .create((ObservableOnSubscribe<String>) e -> {
+                    try {
+                        Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(INewsApi.class)
+                                .getNewsContentRedirectUrl(shareUrl).execute();
+                        // 获取重定向后的 URL 用于拼凑API
+                        if (response.isSuccessful()) {
+                            String httpUrl = response.raw().request().url().toString();
+                            if (!TextUtils.isEmpty(httpUrl) && httpUrl.contains("toutiao")) {
+                                String api = httpUrl + "info/";
+                                e.onNext(api);
                             } else {
                                 e.onError(new Throwable());
                             }
-                        } catch (Exception e1) {
-                            e.onComplete();
-                            ErrorAction.print(e1);
+                        } else {
+                            e.onError(new Throwable());
                         }
+                    } catch (Exception e1) {
+                        e.onComplete();
+                        ErrorAction.print(e1);
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .flatMap(new Function<String, ObservableSource<NewsContentBean>>() {
-                    @Override
-                    public ObservableSource<NewsContentBean> apply(@NonNull String s) throws Exception {
-                        return RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsContent(s);
-                    }
-                })
-                .map(new Function<NewsContentBean, String>() {
-                    @Override
-                    public String apply(@NonNull NewsContentBean bean) throws Exception {
-                        return getHTML(bean);
-                    }
-                })
+                .flatMap((Function<String, ObservableSource<NewsContentBean>>) s -> RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsContent(s))
+                .map(this::getHTML)
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(view.<String>bindAutoDispose())
+                .as(view.bindAutoDispose())
                 .subscribe(new Observer<String>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -218,33 +195,24 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
     public void doSaveImage() {
 
         Observable
-                .create(new ObservableOnSubscribe<Boolean>() {
-                    @Override
-                    public void subscribe(@NonNull ObservableEmitter<Boolean> e) throws Exception {
-                        List<PhotoGalleryBean.SubImagesBean> sub_images = bean.getSub_images();
-                        final String url = sub_images.get(position).getUrl();
-                        Log.d(TAG, "doSaveImage: " + url);
-                        e.onNext(DownloadUtil.saveImage(url, InitApp.AppContext));
-                    }
+                .create((ObservableOnSubscribe<Boolean>) e -> {
+                    List<PhotoGalleryBean.SubImagesBean> sub_images = bean.getSub_images();
+                    final String url = sub_images.get(position).getUrl();
+                    Log.d(TAG, "doSaveImage: " + url);
+                    e.onNext(DownloadUtil.saveImage(url, InitApp.AppContext));
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(view.<Boolean>bindAutoDispose())
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(@NonNull Boolean aBoolean) throws Exception {
-                        if (aBoolean) {
-                            view.onShowSaveSuccess();
-                        } else {
-                            view.onShowNetError();
-                        }
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
+                .as(view.bindAutoDispose())
+                .subscribe(aBoolean -> {
+                    if (aBoolean) {
+                        view.onShowSaveSuccess();
+                    } else {
                         view.onShowNetError();
-                        ErrorAction.print(throwable);
                     }
+                }, throwable -> {
+                    view.onShowNetError();
+                    ErrorAction.print(throwable);
                 });
     }
 
@@ -320,46 +288,35 @@ class PhotoContentPresenter implements IPhotoContent.Presenter {
     @Override
     public void doGoMediaHome(final String media_url) {
         Observable
-                .create(new ObservableOnSubscribe<String>() {
-                    @Override
-                    public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
-                        try {
-                            Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(INewsApi.class)
-                                    .getNewsContentRedirectUrl(shareUrl).execute();
-                            // 获取重定向后的 URL 用于拼凑API
-                            if (response.isSuccessful()) {
-                                String httpUrl = response.raw().request().url().toString();
-                                if (!TextUtils.isEmpty(httpUrl) && httpUrl.contains("toutiao")) {
-                                    String api = httpUrl + "info/";
-                                    e.onNext(api);
-                                } else {
-                                    e.onComplete();
-                                }
+                .create((ObservableOnSubscribe<String>) e -> {
+                    try {
+                        Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(INewsApi.class)
+                                .getNewsContentRedirectUrl(shareUrl).execute();
+                        // 获取重定向后的 URL 用于拼凑API
+                        if (response.isSuccessful()) {
+                            String httpUrl = response.raw().request().url().toString();
+                            if (!TextUtils.isEmpty(httpUrl) && httpUrl.contains("toutiao")) {
+                                String api = httpUrl + "info/";
+                                e.onNext(api);
                             } else {
                                 e.onComplete();
                             }
-                        } catch (Exception e1) {
+                        } else {
                             e.onComplete();
-                            ErrorAction.print(e1);
                         }
+                    } catch (Exception e1) {
+                        e.onComplete();
+                        ErrorAction.print(e1);
                     }
                 })
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
-                .switchMap(new Function<String, ObservableSource<NewsContentBean>>() {
-                    @Override
-                    public ObservableSource<NewsContentBean> apply(@NonNull String s) throws Exception {
-                        return RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsContent(s);
-                    }
-                })
+                .switchMap((Function<String, ObservableSource<NewsContentBean>>) s -> RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsContent(s))
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(view.<NewsContentBean>bindAutoDispose())
-                .subscribe(new Consumer<NewsContentBean>() {
-                    @Override
-                    public void accept(@NonNull NewsContentBean bean) throws Exception {
-                        String id = bean.getData().getMedia_user().getId() + "";
-                        MediaHomeActivity.launch(id);
-                    }
+                .as(view.bindAutoDispose())
+                .subscribe(bean -> {
+                    String id = bean.getData().getMedia_user().getId() + "";
+                    MediaHomeActivity.launch(id);
                 }, ErrorAction.error());
     }
 }

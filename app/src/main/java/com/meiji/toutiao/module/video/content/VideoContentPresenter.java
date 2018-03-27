@@ -13,9 +13,6 @@ import java.util.Random;
 import java.util.zip.CRC32;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -59,48 +56,39 @@ public class VideoContentPresenter extends NewsCommentPresenter implements IVide
         String url = getVideoContentApi(videoid);
         RetrofitFactory.getRetrofit().create(IVideoApi.class).getVideoContent(url)
                 .subscribeOn(Schedulers.io())
-                .map(new Function<VideoContentBean, String>() {
-                    @Override
-                    public String apply(@NonNull VideoContentBean videoContentBean) throws Exception {
-                        VideoContentBean.DataBean.VideoListBean videoList = videoContentBean.getData().getVideo_list();
-                        if (videoList.getVideo_3() != null) {
-                            String base64 = videoList.getVideo_3().getMain_url();
-                            String url = (new String(Base64.decode(base64.getBytes(), Base64.DEFAULT)));
-                            Log.d(TAG, "getVideoUrls: " + url);
-                            return url;
-                        }
-
-                        if (videoList.getVideo_2() != null) {
-                            String base64 = videoList.getVideo_2().getMain_url();
-                            String url = (new String(Base64.decode(base64.getBytes(), Base64.DEFAULT)));
-                            Log.d(TAG, "getVideoUrls: " + url);
-                            return url;
-                        }
-
-                        if (videoList.getVideo_1() != null) {
-                            String base64 = videoList.getVideo_1().getMain_url();
-                            String url = (new String(Base64.decode(base64.getBytes(), Base64.DEFAULT)));
-                            Log.d(TAG, "getVideoUrls: " + url);
-                            return url;
-                        }
-                        return null;
+                .map(videoContentBean -> {
+                    VideoContentBean.DataBean.VideoListBean videoList = videoContentBean.getData().getVideo_list();
+                    if (videoList.getVideo_3() != null) {
+                        String base64 = videoList.getVideo_3().getMain_url();
+                        String url1 = (new String(Base64.decode(base64.getBytes(), Base64.DEFAULT)));
+                        Log.d(TAG, "getVideoUrls: " + url1);
+                        return url1;
                     }
+
+                    if (videoList.getVideo_2() != null) {
+                        String base64 = videoList.getVideo_2().getMain_url();
+                        String url1 = (new String(Base64.decode(base64.getBytes(), Base64.DEFAULT)));
+                        Log.d(TAG, "getVideoUrls: " + url1);
+                        return url1;
+                    }
+
+                    if (videoList.getVideo_1() != null) {
+                        String base64 = videoList.getVideo_1().getMain_url();
+                        String url1 = (new String(Base64.decode(base64.getBytes(), Base64.DEFAULT)));
+                        Log.d(TAG, "getVideoUrls: " + url1);
+                        return url1;
+                    }
+                    return null;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(view.<String>bindAutoDispose())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(@NonNull String s) throws Exception {
-                        view.onSetVideoPlay(s);
-                        view.onHideLoading();
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        view.onShowNetError();
-                        view.onHideLoading();
-                        ErrorAction.print(throwable);
-                    }
+                .as(view.bindAutoDispose())
+                .subscribe(s -> {
+                    view.onSetVideoPlay(s);
+                    view.onHideLoading();
+                }, throwable -> {
+                    view.onShowNetError();
+                    view.onHideLoading();
+                    ErrorAction.print(throwable);
                 });
     }
 }

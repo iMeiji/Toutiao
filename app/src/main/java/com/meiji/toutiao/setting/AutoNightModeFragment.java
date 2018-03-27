@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
-import android.widget.TimePicker;
 
 import com.meiji.toutiao.R;
 import com.meiji.toutiao.util.SettingUtil;
@@ -37,41 +36,29 @@ public class AutoNightModeFragment extends PreferenceFragment {
 
         setText();
 
-        autoNight.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                TimePickerDialog dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                                settingUtil.setNightStartHour(hour > 9 ? "" + hour : "0" + hour);
-                                settingUtil.setNightStartMinute(minute > 9 ? "" + minute : "0" + minute);
-                                setText();
-                            }
-                        }, Integer.parseInt(nightStartHour), Integer.parseInt(nightStartMinute), true);
-                dialog.show();
-                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText(R.string.done);
-                dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setText(R.string.cancel);
-                return false;
-            }
+        autoNight.setOnPreferenceClickListener(preference -> {
+            TimePickerDialog dialog = new TimePickerDialog(getActivity(),
+                    (timePicker, hour, minute) -> {
+                        settingUtil.setNightStartHour(hour > 9 ? "" + hour : "0" + hour);
+                        settingUtil.setNightStartMinute(minute > 9 ? "" + minute : "0" + minute);
+                        setText();
+                    }, Integer.parseInt(nightStartHour), Integer.parseInt(nightStartMinute), true);
+            dialog.show();
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText(R.string.done);
+            dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setText(R.string.cancel);
+            return false;
         });
-        autoDay.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                TimePickerDialog dialog = new TimePickerDialog(getActivity(),
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                                settingUtil.setDayStartHour(hour > 9 ? "" + hour : "0" + hour);
-                                settingUtil.setDayStartMinute(minute > 9 ? "" + minute : "0" + minute);
-                                setText();
-                            }
-                        }, Integer.parseInt(dayStartHour), Integer.parseInt(dayStartMinute), true);
-                dialog.show();
-                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText(R.string.done);
-                dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setText(R.string.cancel);
-                return false;
-            }
+        autoDay.setOnPreferenceClickListener(preference -> {
+            TimePickerDialog dialog = new TimePickerDialog(getActivity(),
+                    (timePicker, hour, minute) -> {
+                        settingUtil.setDayStartHour(hour > 9 ? "" + hour : "0" + hour);
+                        settingUtil.setDayStartMinute(minute > 9 ? "" + minute : "0" + minute);
+                        setText();
+                    }, Integer.parseInt(dayStartHour), Integer.parseInt(dayStartMinute), true);
+            dialog.show();
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText(R.string.done);
+            dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setText(R.string.cancel);
+            return false;
         });
     }
 

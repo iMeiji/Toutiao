@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -29,7 +28,6 @@ import com.meiji.toutiao.util.TimeUtil;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import me.drakeet.multitype.ItemViewBinder;
 
@@ -85,67 +83,55 @@ public class MediaArticleVideoViewBinder extends ItemViewBinder<MultiMediaArticl
             RxView.clicks(holder.itemView)
                     .throttleFirst(1, TimeUnit.SECONDS)
                     .observeOn(Schedulers.io())
-                    .subscribe(new Consumer<Object>() {
-                        @Override
-                        public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
-                            MultiNewsArticleDataBean bean = new MultiNewsArticleDataBean();
-                            bean.setTitle(title);
-                            bean.setGroup_id(item.getGroup_id());
-                            bean.setItem_id(item.getItem_id());
-                            bean.setVideo_id(item.getVideo_infos().get(0).getVid());
-                            bean.setAbstractX(item.getAbstractX());
-                            bean.setSource(item.getSource());
+                    .subscribe(o -> {
+                        MultiNewsArticleDataBean bean = new MultiNewsArticleDataBean();
+                        bean.setTitle(title);
+                        bean.setGroup_id(item.getGroup_id());
+                        bean.setItem_id(item.getItem_id());
+                        bean.setVideo_id(item.getVideo_infos().get(0).getVid());
+                        bean.setAbstractX(item.getAbstractX());
+                        bean.setSource(item.getSource());
 
-                            String s = item.getVideo_duration_str();
-                            int time = 0;
-                            if (s.contains(":")) {
-                                String[] split = s.split(":");
-                                for (int i = 0; i < split.length; i++) {
-                                    if (i == 0) {
-                                        time = Integer.parseInt(split[i]) * 60;
-                                    }
-                                    time += Integer.parseInt(split[i]);
+                        String s = item.getVideo_duration_str();
+                        int time = 0;
+                        if (s.contains(":")) {
+                            String[] split = s.split(":");
+                            for (int i = 0; i < split.length; i++) {
+                                if (i == 0) {
+                                    time = Integer.parseInt(split[i]) * 60;
                                 }
+                                time += Integer.parseInt(split[i]);
                             }
-                            bean.setVideo_duration(time);
-
-                            MultiNewsArticleDataBean.MediaInfoBean mediaInfoBean = new MultiNewsArticleDataBean.MediaInfoBean();
-                            mediaInfoBean.setMedia_id(item.getMedia_id() + "");
-                            bean.setMedia_info(mediaInfoBean);
-
-                            MultiNewsArticleDataBean.VideoDetailInfoBean.DetailVideoLargeImageBean videobean = new MultiNewsArticleDataBean.VideoDetailInfoBean.DetailVideoLargeImageBean();
-                            MultiNewsArticleDataBean.VideoDetailInfoBean videoDetail = new MultiNewsArticleDataBean.VideoDetailInfoBean();
-                            videobean.setUrl(finalUrl);
-                            videoDetail.setDetail_video_large_image(videobean);
-                            bean.setVideo_detail_info(videoDetail);
-
-                            VideoContentActivity.launch(bean);
                         }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
-                            Toast.makeText(context, context.getString(R.string.error), Toast.LENGTH_SHORT).show();
-                            ErrorAction.print(throwable);
-                        }
+                        bean.setVideo_duration(time);
+
+                        MultiNewsArticleDataBean.MediaInfoBean mediaInfoBean = new MultiNewsArticleDataBean.MediaInfoBean();
+                        mediaInfoBean.setMedia_id(item.getMedia_id() + "");
+                        bean.setMedia_info(mediaInfoBean);
+
+                        MultiNewsArticleDataBean.VideoDetailInfoBean.DetailVideoLargeImageBean videobean = new MultiNewsArticleDataBean.VideoDetailInfoBean.DetailVideoLargeImageBean();
+                        MultiNewsArticleDataBean.VideoDetailInfoBean videoDetail = new MultiNewsArticleDataBean.VideoDetailInfoBean();
+                        videobean.setUrl(finalUrl);
+                        videoDetail.setDetail_video_large_image(videobean);
+                        bean.setVideo_detail_info(videoDetail);
+
+                        VideoContentActivity.launch(bean);
+                    }, throwable -> {
+                        Toast.makeText(context, context.getString(R.string.error), Toast.LENGTH_SHORT).show();
+                        ErrorAction.print(throwable);
                     });
-            holder.iv_dots.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    PopupMenu popupMenu = new PopupMenu(context,
-                            holder.iv_dots, Gravity.END, 0, R.style.MyPopupMenu);
-                    popupMenu.inflate(R.menu.menu_share);
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menu) {
-                            int itemId = menu.getItemId();
-                            if (itemId == R.id.action_share) {
-                                IntentAction.send(context, item.getTitle() + "\n" + item.getDisplay_url());
-                            }
-                            return false;
-                        }
-                    });
-                    popupMenu.show();
-                }
+            holder.iv_dots.setOnClickListener(view -> {
+                PopupMenu popupMenu = new PopupMenu(context,
+                        holder.iv_dots, Gravity.END, 0, R.style.MyPopupMenu);
+                popupMenu.inflate(R.menu.menu_share);
+                popupMenu.setOnMenuItemClickListener(menu -> {
+                    int itemId = menu.getItemId();
+                    if (itemId == R.id.action_share) {
+                        IntentAction.send(context, item.getTitle() + "\n" + item.getDisplay_url());
+                    }
+                    return false;
+                });
+                popupMenu.show();
             });
         } catch (Exception e) {
             ErrorAction.print(e);

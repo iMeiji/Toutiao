@@ -113,24 +113,21 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onStop() {
 
         if (iconType != SettingUtil.getInstance().getCustomIconValue()) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
+            new Thread(() -> {
 
-                    String act = ".SplashActivity_";
+                String act = ".SplashActivity_";
 
-                    for (String s : Constant.ICONS_TYPE) {
-                        getPackageManager().setComponentEnabledSetting(new ComponentName(BaseActivity.this, getPackageName() + act + s),
-                                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                                PackageManager.DONT_KILL_APP);
-                    }
-
-                    act += Constant.ICONS_TYPE[SettingUtil.getInstance().getCustomIconValue()];
-
-                    getPackageManager().setComponentEnabledSetting(new ComponentName(BaseActivity.this, getPackageName() + act),
-                            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                for (String s : Constant.ICONS_TYPE) {
+                    getPackageManager().setComponentEnabledSetting(new ComponentName(BaseActivity.this, getPackageName() + act + s),
+                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                             PackageManager.DONT_KILL_APP);
                 }
+
+                act += Constant.ICONS_TYPE[SettingUtil.getInstance().getCustomIconValue()];
+
+                getPackageManager().setComponentEnabledSetting(new ComponentName(BaseActivity.this, getPackageName() + act),
+                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                        PackageManager.DONT_KILL_APP);
             }).start();
         }
 

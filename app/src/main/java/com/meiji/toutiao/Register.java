@@ -40,8 +40,6 @@ import com.meiji.toutiao.binder.wenda.WendaContentHeaderViewBinder;
 import com.meiji.toutiao.binder.wenda.WendaContentViewBinder;
 import com.meiji.toutiao.interfaces.IOnItemLongClickListener;
 
-import me.drakeet.multitype.ClassLinker;
-import me.drakeet.multitype.ItemViewBinder;
 import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
@@ -56,18 +54,14 @@ public class Register {
                 .to(new NewsArticleImgViewBinder(),
                         new NewsArticleVideoViewBinder(),
                         new NewsArticleTextViewBinder())
-                .withClassLinker(new ClassLinker<MultiNewsArticleDataBean>() {
-                    @NonNull
-                    @Override
-                    public Class<? extends ItemViewBinder<MultiNewsArticleDataBean, ?>> index(int position, @NonNull MultiNewsArticleDataBean item) {
-                        if (item.isHas_video()) {
-                            return NewsArticleVideoViewBinder.class;
-                        }
-                        if (null != item.getImage_list() && item.getImage_list().size() > 0) {
-                            return NewsArticleImgViewBinder.class;
-                        }
-                        return NewsArticleTextViewBinder.class;
+                .withClassLinker((position, item) -> {
+                    if (item.isHas_video()) {
+                        return NewsArticleVideoViewBinder.class;
                     }
+                    if (null != item.getImage_list() && item.getImage_list().size() > 0) {
+                        return NewsArticleImgViewBinder.class;
+                    }
+                    return NewsArticleTextViewBinder.class;
                 });
         adapter.register(LoadingBean.class, new LoadingViewBinder());
         adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
@@ -117,22 +111,18 @@ public class Register {
                 .to(new WendaArticleTextViewBinder(),
                         new WendaArticleOneImgViewBinder(),
                         new WendaArticleThreeImgViewBinder())
-                .withClassLinker(new ClassLinker<WendaArticleDataBean>() {
-                    @NonNull
-                    @Override
-                    public Class<? extends ItemViewBinder<WendaArticleDataBean, ?>> index(int position, @NonNull WendaArticleDataBean item) {
-                        if (null != item.getExtraBean().getWenda_image() &&
-                                null != item.getExtraBean().getWenda_image().getThree_image_list() &&
-                                item.getExtraBean().getWenda_image().getThree_image_list().size() > 0) {
-                            return WendaArticleThreeImgViewBinder.class;
-                        }
-                        if (null != item.getExtraBean().getWenda_image() &&
-                                null != item.getExtraBean().getWenda_image().getLarge_image_list() &&
-                                item.getExtraBean().getWenda_image().getLarge_image_list().size() > 0) {
-                            return WendaArticleOneImgViewBinder.class;
-                        }
-                        return WendaArticleTextViewBinder.class;
+                .withClassLinker((position, item) -> {
+                    if (null != item.getExtraBean().getWenda_image() &&
+                            null != item.getExtraBean().getWenda_image().getThree_image_list() &&
+                            item.getExtraBean().getWenda_image().getThree_image_list().size() > 0) {
+                        return WendaArticleThreeImgViewBinder.class;
                     }
+                    if (null != item.getExtraBean().getWenda_image() &&
+                            null != item.getExtraBean().getWenda_image().getLarge_image_list() &&
+                            item.getExtraBean().getWenda_image().getLarge_image_list().size() > 0) {
+                        return WendaArticleOneImgViewBinder.class;
+                    }
+                    return WendaArticleTextViewBinder.class;
                 });
         adapter.register(LoadingBean.class, new LoadingViewBinder());
         adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
@@ -154,18 +144,14 @@ public class Register {
                 .to(new NewsArticleImgViewBinder(),
                         new SearchArticleVideoViewBinder(),
                         new NewsArticleTextViewBinder())
-                .withClassLinker(new ClassLinker<MultiNewsArticleDataBean>() {
-                    @NonNull
-                    @Override
-                    public Class<? extends ItemViewBinder<MultiNewsArticleDataBean, ?>> index(int position, @NonNull MultiNewsArticleDataBean item) {
-                        if (item.isHas_video()) {
-                            return SearchArticleVideoViewBinder.class;
-                        }
-                        if (null != item.getImage_list() && item.getImage_list().size() > 0) {
-                            return NewsArticleImgViewBinder.class;
-                        }
-                        return NewsArticleTextViewBinder.class;
+                .withClassLinker((position, item) -> {
+                    if (item.isHas_video()) {
+                        return SearchArticleVideoViewBinder.class;
                     }
+                    if (null != item.getImage_list() && item.getImage_list().size() > 0) {
+                        return NewsArticleImgViewBinder.class;
+                    }
+                    return NewsArticleTextViewBinder.class;
                 });
         adapter.register(LoadingBean.class, new LoadingViewBinder());
         adapter.register(LoadingEndBean.class, new LoadingEndViewBinder());
@@ -176,18 +162,14 @@ public class Register {
                 .to(new MediaArticleImgViewBinder(),
                         new MediaArticleVideoViewBinder(),
                         new MediaArticleTextViewBinder())
-                .withClassLinker(new ClassLinker<MultiMediaArticleBean.DataBean>() {
-                    @NonNull
-                    @Override
-                    public Class<? extends ItemViewBinder<MultiMediaArticleBean.DataBean, ?>> index(int position, @NonNull MultiMediaArticleBean.DataBean item) {
-                        if (item.isHas_video()) {
-                            return MediaArticleVideoViewBinder.class;
-                        }
-                        if (null != item.getImage_list() && item.getImage_list().size() > 0) {
-                            return MediaArticleImgViewBinder.class;
-                        }
-                        return MediaArticleTextViewBinder.class;
+                .withClassLinker((position, item) -> {
+                    if (item.isHas_video()) {
+                        return MediaArticleVideoViewBinder.class;
                     }
+                    if (null != item.getImage_list() && item.getImage_list().size() > 0) {
+                        return MediaArticleImgViewBinder.class;
+                    }
+                    return MediaArticleTextViewBinder.class;
                 });
         adapter.register(MediaProfileBean.DataBean.class, new MediaArticleHeaderViewBinder());
         adapter.register(LoadingBean.class, new LoadingViewBinder());

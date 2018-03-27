@@ -18,10 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -62,28 +60,15 @@ public class SearchHistoryAdapter extends ArrayAdapter<SearchHistoryBean> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.tv_keyword.setText(data.get(position).getKeyWord());
-        viewHolder.iv_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Observable
-                        .create(new ObservableOnSubscribe<List<SearchHistoryBean>>() {
-                            @Override
-                            public void subscribe(@io.reactivex.annotations.NonNull ObservableEmitter<List<SearchHistoryBean>> e) throws Exception {
-                                SearchHistoryDao dao = new SearchHistoryDao();
-                                dao.delete(data.get(position).getKeyWord());
-                                e.onNext(dao.queryAll());
-                            }
-                        })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<List<SearchHistoryBean>>() {
-                            @Override
-                            public void accept(@io.reactivex.annotations.NonNull List<SearchHistoryBean> list) throws Exception {
-                                updateDataSource(list);
-                            }
-                        }, ErrorAction.error());
-            }
-        });
+        viewHolder.iv_close.setOnClickListener(v -> Observable
+                .create((ObservableOnSubscribe<List<SearchHistoryBean>>) e -> {
+                    SearchHistoryDao dao = new SearchHistoryDao();
+                    dao.delete(data.get(position).getKeyWord());
+                    e.onNext(dao.queryAll());
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateDataSource, ErrorAction.error()));
         return convertView;
     }
 

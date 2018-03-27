@@ -61,33 +61,24 @@ public class JokeCommentHeaderViewBinder extends ItemViewBinder<JokeContentBean.
             }
             holder.iv_dots.setVisibility(View.GONE);
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final String content = item.getText();
-                    final BottomSheetDialogFixed dialog = new BottomSheetDialogFixed(context);
-                    dialog.setOwnerActivity((BaseActivity) context);
-                    View view = ((BaseActivity) context).getLayoutInflater().inflate(R.layout.item_comment_action_sheet, null);
-                    view.findViewById(R.id.layout_copy_text).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            ClipboardManager copy = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData clipData = ClipData.newPlainText("text", content);
-                            copy.setPrimaryClip(clipData);
-                            Snackbar.make(holder.itemView, R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        }
-                    });
-                    view.findViewById(R.id.layout_share_text).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            IntentAction.send(context, content);
-                            dialog.dismiss();
-                        }
-                    });
-                    dialog.setContentView(view);
-                    dialog.show();
-                }
+            holder.itemView.setOnClickListener(v -> {
+                final String content = item.getText();
+                final BottomSheetDialogFixed dialog = new BottomSheetDialogFixed(context);
+                dialog.setOwnerActivity((BaseActivity) context);
+                View view = ((BaseActivity) context).getLayoutInflater().inflate(R.layout.item_comment_action_sheet, null);
+                view.findViewById(R.id.layout_copy_text).setOnClickListener(view12 -> {
+                    ClipboardManager copy = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clipData = ClipData.newPlainText("text", content);
+                    copy.setPrimaryClip(clipData);
+                    Snackbar.make(holder.itemView, R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                });
+                view.findViewById(R.id.layout_share_text).setOnClickListener(view1 -> {
+                    IntentAction.send(context, content);
+                    dialog.dismiss();
+                });
+                dialog.setContentView(view);
+                dialog.show();
             });
         } catch (Exception e) {
             ErrorAction.print(e);
