@@ -11,10 +11,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -52,47 +49,35 @@ class PhotoArticlePresenter implements IPhotoArticle.Presenter {
 
         RetrofitFactory.getRetrofit().create(IPhotoApi.class).getPhotoArticle(this.category, time)
                 .subscribeOn(Schedulers.io())
-                .switchMap(new Function<PhotoArticleBean, Observable<PhotoArticleBean.DataBean>>() {
-                    @Override
-                    public Observable<PhotoArticleBean.DataBean> apply(@NonNull PhotoArticleBean photoArticleBean) throws Exception {
-                        List<PhotoArticleBean.DataBean> data = photoArticleBean.getData();
-                        // 移除最后一项 数据有重复
-                        if (data.size() > 0)
-                            data.remove(data.size() - 1);
-                        time = photoArticleBean.getNext().getMax_behot_time();
-                        return Observable.fromIterable(data);
-                    }
+                .switchMap((Function<PhotoArticleBean, Observable<PhotoArticleBean.DataBean>>) photoArticleBean -> {
+                    List<PhotoArticleBean.DataBean> data = photoArticleBean.getData();
+                    // 移除最后一项 数据有重复
+                    if (data.size() > 0)
+                        data.remove(data.size() - 1);
+                    time = photoArticleBean.getNext().getMax_behot_time();
+                    return Observable.fromIterable(data);
                 })
-                .filter(new Predicate<PhotoArticleBean.DataBean>() {
-                    @Override
-                    public boolean test(@NonNull PhotoArticleBean.DataBean dataBean) throws Exception {
-                        // 去除重复新闻
-                        for (PhotoArticleBean.DataBean bean : dataList) {
-                            if (dataBean.getTitle().equals(bean.getTitle())) {
-                                return false;
-                            }
+                .filter(dataBean -> {
+                    // 去除重复新闻
+                    for (PhotoArticleBean.DataBean bean : dataList) {
+                        if (dataBean.getTitle().equals(bean.getTitle())) {
+                            return false;
                         }
-                        return true;
                     }
+                    return true;
                 })
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(view.<List<PhotoArticleBean.DataBean>>bindAutoDispose())
-                .subscribe(new Consumer<List<PhotoArticleBean.DataBean>>() {
-                    @Override
-                    public void accept(@NonNull List<PhotoArticleBean.DataBean> list) throws Exception {
-                        if (null != list && list.size() > 0) {
-                            doSetAdapter(list);
-                        } else {
-                            doShowNoMore();
-                        }
+                .as(view.bindAutoDispose())
+                .subscribe(list -> {
+                    if (null != list && list.size() > 0) {
+                        doSetAdapter(list);
+                    } else {
+                        doShowNoMore();
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        doShowNetError();
-                        ErrorAction.print(throwable);
-                    }
+                }, throwable -> {
+                    doShowNetError();
+                    ErrorAction.print(throwable);
                 });
     }
 

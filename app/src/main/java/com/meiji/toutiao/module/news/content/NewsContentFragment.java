@@ -153,25 +153,17 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
     protected void initView(View view) {
         toolbar = view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, "");
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                scrollView.smoothScrollTo(0, 0);
+        toolbar.setOnClickListener(view1 -> {
+            scrollView.smoothScrollTo(0, 0);
 //                ObjectAnimator anim = ObjectAnimator.ofInt(webView, "scrollY", webView.getScrollY(), 0);
 //                anim.setDuration(500).start();
-            }
         });
 
         webView = view.findViewById(R.id.webview);
         initWebClient();
 
         scrollView = view.findViewById(R.id.scrollView);
-        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                onHideLoading();
-            }
-        });
+        scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> onHideLoading());
 
         progressBar = view.findViewById(R.id.pb_progress);
         int color = SettingUtil.getInstance().getColor();
@@ -180,17 +172,9 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
 
         swipeRefreshLayout = view.findViewById(R.id.refresh_layout);
         swipeRefreshLayout.setColorSchemeColors(SettingUtil.getInstance().getColor());
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayout.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(true);
-                    }
-                });
-                presenter.doLoadData(bean);
-            }
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
+            presenter.doLoadData(bean);
         });
 
         if (isHasImage) {
@@ -234,15 +218,12 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
             }
         });
 
-        webView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if ((keyEvent.getKeyCode() == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
-                    webView.goBack();
-                    return true;
-                }
-                return false;
+        webView.setOnKeyListener((view, i, keyEvent) -> {
+            if ((keyEvent.getKeyCode() == KeyEvent.KEYCODE_BACK) && webView.canGoBack()) {
+                webView.goBack();
+                return true;
             }
+            return false;
         });
 
         webView.setWebChromeClient(new WebChromeClient() {
@@ -297,12 +278,7 @@ public class NewsContentFragment extends BaseFragment<INewsContent.Presenter> im
     @Override
     public void onHideLoading() {
         progressBar.hide();
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
     @Override

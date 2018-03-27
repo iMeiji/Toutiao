@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -40,7 +39,6 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import me.drakeet.multitype.ItemViewBinder;
@@ -115,95 +113,67 @@ public class SearchArticleVideoViewBinder extends ItemViewBinder<MultiNewsArticl
             final String finalImage = image;
             RxView.clicks(holder.itemView)
                     .throttleFirst(1300, TimeUnit.MILLISECONDS)
-                    .doOnNext(new Consumer<Object>() {
-                        @Override
-                        public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
-                            dialog.show();
-                        }
-                    })
+                    .doOnNext(o -> dialog.show())
                     .observeOn(Schedulers.io())
-                    .switchMap(new Function<Object, ObservableSource<String>>() {
-                        @Override
-                        public ObservableSource<String> apply(@io.reactivex.annotations.NonNull Object o) throws Exception {
-                            String url = item.getDisplay_url();
-                            try {
-                                Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(INewsApi.class)
-                                        .getNewsContentRedirectUrl(url).execute();
-                                // 获取重定向后的 URL 用于拼凑API
-                                if (response.isSuccessful()) {
-                                    String httpUrl = response.raw().request().url().toString();
-                                    if (!TextUtils.isEmpty(httpUrl) && httpUrl.contains("toutiao")) {
-                                        String api = httpUrl + "info/";
-                                        return Observable.just(api);
-                                    } else {
-                                        return null;
-                                    }
+                    .switchMap((Function<Object, ObservableSource<String>>) o -> {
+                        String url = item.getDisplay_url();
+                        try {
+                            Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(INewsApi.class)
+                                    .getNewsContentRedirectUrl(url).execute();
+                            // 获取重定向后的 URL 用于拼凑API
+                            if (response.isSuccessful()) {
+                                String httpUrl = response.raw().request().url().toString();
+                                if (!TextUtils.isEmpty(httpUrl) && httpUrl.contains("toutiao")) {
+                                    String api = httpUrl + "info/";
+                                    return Observable.just(api);
                                 } else {
                                     return null;
                                 }
-                            } catch (Exception e) {
-                                ErrorAction.print(e);
+                            } else {
+                                return null;
                             }
-                            return null;
+                        } catch (Exception e) {
+                            ErrorAction.print(e);
                         }
+                        return null;
                     })
-                    .switchMap(new Function<String, ObservableSource<SearchVideoInfoBean>>() {
-                        @Override
-                        public ObservableSource<SearchVideoInfoBean> apply(@io.reactivex.annotations.NonNull String s) throws Exception {
-                            return RetrofitFactory.getRetrofit().create(IMobileSearchApi.class)
-                                    .getSearchVideoInfo(s);
+                    .switchMap((Function<String, ObservableSource<SearchVideoInfoBean>>) s -> RetrofitFactory.getRetrofit().create(IMobileSearchApi.class)
+                            .getSearchVideoInfo(s))
+                    .map(bean -> {
+                        // 获取视频 ID
+                        String content = bean.getData().getContent();
+                        if (!TextUtils.isEmpty(content)) {
+                            Map<String, String> map = parseJson(content);
+                            String id = map.get("id");
+                            String imageUrl = map.get("imageUrl");
+                            item.setVideo_id(id);
+                            MultiNewsArticleDataBean.VideoDetailInfoBean.DetailVideoLargeImageBean videobean = new MultiNewsArticleDataBean.VideoDetailInfoBean.DetailVideoLargeImageBean();
+                            MultiNewsArticleDataBean.VideoDetailInfoBean videoDetail = new MultiNewsArticleDataBean.VideoDetailInfoBean();
+                            videobean.setUrl(finalImage);
+                            videoDetail.setDetail_video_large_image(videobean);
+                            item.setVideo_detail_info(videoDetail);
                         }
+                        return item;
                     })
-                    .map(new Function<SearchVideoInfoBean, MultiNewsArticleDataBean>() {
-                        @Override
-                        public MultiNewsArticleDataBean apply(@io.reactivex.annotations.NonNull SearchVideoInfoBean bean) throws Exception {
-                            // 获取视频 ID
-                            String content = bean.getData().getContent();
-                            if (!TextUtils.isEmpty(content)) {
-                                Map<String, String> map = parseJson(content);
-                                String id = map.get("id");
-                                String imageUrl = map.get("imageUrl");
-                                item.setVideo_id(id);
-                                MultiNewsArticleDataBean.VideoDetailInfoBean.DetailVideoLargeImageBean videobean = new MultiNewsArticleDataBean.VideoDetailInfoBean.DetailVideoLargeImageBean();
-                                MultiNewsArticleDataBean.VideoDetailInfoBean videoDetail = new MultiNewsArticleDataBean.VideoDetailInfoBean();
-                                videobean.setUrl(finalImage);
-                                videoDetail.setDetail_video_large_image(videobean);
-                                item.setVideo_detail_info(videoDetail);
-                            }
-                            return item;
-                        }
-                    })
-                    .subscribe(new Consumer<MultiNewsArticleDataBean>() {
-                        @Override
-                        public void accept(@io.reactivex.annotations.NonNull MultiNewsArticleDataBean dataBean) throws Exception {
-                            dialog.dismiss();
-                            VideoContentActivity.launch(dataBean);
-                        }
-                    }, new Consumer<Throwable>() {
-                        @Override
-                        public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
-                            dialog.dismiss();
-                            ErrorAction.print(throwable);
-                        }
+                    .subscribe(dataBean -> {
+                        dialog.dismiss();
+                        VideoContentActivity.launch(dataBean);
+                    }, throwable -> {
+                        dialog.dismiss();
+                        ErrorAction.print(throwable);
                     });
-            holder.iv_dots.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    PopupMenu popupMenu = new PopupMenu(context,
-                            holder.iv_dots, Gravity.END, 0, R.style.MyPopupMenu);
-                    popupMenu.inflate(R.menu.menu_share);
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menu) {
-                            int itemId = menu.getItemId();
-                            if (itemId == R.id.action_share) {
-                                IntentAction.send(context, item.getTitle() + "\n" + item.getShare_url());
-                            }
-                            return false;
-                        }
-                    });
-                    popupMenu.show();
-                }
+            holder.iv_dots.setOnClickListener(view -> {
+                PopupMenu popupMenu = new PopupMenu(context,
+                        holder.iv_dots, Gravity.END, 0, R.style.MyPopupMenu);
+                popupMenu.inflate(R.menu.menu_share);
+                popupMenu.setOnMenuItemClickListener(menu -> {
+                    int itemId = menu.getItemId();
+                    if (itemId == R.id.action_share) {
+                        IntentAction.send(context, item.getTitle() + "\n" + item.getShare_url());
+                    }
+                    return false;
+                });
+                popupMenu.show();
             });
         } catch (Exception e) {
             ErrorAction.print(e);

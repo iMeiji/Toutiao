@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -25,7 +24,6 @@ import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.functions.Consumer;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -64,41 +62,32 @@ public class MediaArticleTextViewBinder extends ItemViewBinder<MultiMediaArticle
 
             RxView.clicks(holder.itemView)
                     .throttleFirst(1, TimeUnit.SECONDS)
-                    .subscribe(new Consumer<Object>() {
-                        @Override
-                        public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
-                            MultiNewsArticleDataBean bean = new MultiNewsArticleDataBean();
-                            bean.setTitle(item.getTitle());
-                            bean.setDisplay_url(item.getDisplay_url());
-                            bean.setShare_url(item.getDisplay_url());
-                            bean.setMedia_name(item.getSource());
-                            MultiNewsArticleDataBean.MediaInfoBean mediaInfo = new MultiNewsArticleDataBean.MediaInfoBean();
-                            mediaInfo.setMedia_id(item.getMedia_id() + "");
-                            bean.setMedia_info(mediaInfo);
-                            bean.setGroup_id(item.getGroup_id());
-                            bean.setItem_id(item.getItem_id());
-                            NewsContentActivity.launch(bean);
-                        }
+                    .subscribe(o -> {
+                        MultiNewsArticleDataBean bean = new MultiNewsArticleDataBean();
+                        bean.setTitle(item.getTitle());
+                        bean.setDisplay_url(item.getDisplay_url());
+                        bean.setShare_url(item.getDisplay_url());
+                        bean.setMedia_name(item.getSource());
+                        MultiNewsArticleDataBean.MediaInfoBean mediaInfo = new MultiNewsArticleDataBean.MediaInfoBean();
+                        mediaInfo.setMedia_id(item.getMedia_id() + "");
+                        bean.setMedia_info(mediaInfo);
+                        bean.setGroup_id(item.getGroup_id());
+                        bean.setItem_id(item.getItem_id());
+                        NewsContentActivity.launch(bean);
                     });
 
-            holder.iv_dots.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    PopupMenu popupMenu = new PopupMenu(context,
-                            holder.iv_dots, Gravity.END, 0, R.style.MyPopupMenu);
-                    popupMenu.inflate(R.menu.menu_share);
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menu) {
-                            int itemId = menu.getItemId();
-                            if (itemId == R.id.action_share) {
-                                IntentAction.send(context, item.getTitle() + "\n" + item.getDisplay_url());
-                            }
-                            return false;
-                        }
-                    });
-                    popupMenu.show();
-                }
+            holder.iv_dots.setOnClickListener(view -> {
+                PopupMenu popupMenu = new PopupMenu(context,
+                        holder.iv_dots, Gravity.END, 0, R.style.MyPopupMenu);
+                popupMenu.inflate(R.menu.menu_share);
+                popupMenu.setOnMenuItemClickListener(menu -> {
+                    int itemId = menu.getItemId();
+                    if (itemId == R.id.action_share) {
+                        IntentAction.send(context, item.getTitle() + "\n" + item.getDisplay_url());
+                    }
+                    return false;
+                });
+                popupMenu.show();
             });
         } catch (Exception e) {
             ErrorAction.print(e);

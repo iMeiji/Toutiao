@@ -65,6 +65,13 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    lintOptions {
+        disable 'CheckResult'
+    }
 }
 
 dependencies {
@@ -112,9 +119,9 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
 
     // AutoDispose
-    implementation 'com.uber.autodispose:autodispose:0.6.1'
-    implementation 'com.uber.autodispose:autodispose-android:0.6.1'
-    implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.6.1'
+    implementation 'com.uber.autodispose:autodispose:0.7.0'
+    implementation 'com.uber.autodispose:autodispose-android:0.7.0'
+    implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.7.0'
 
     // okhttp 3
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
@@ -128,7 +135,6 @@ dependencies {
 
     // 调试工具
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
-    testCompile 'junit:junit:4.12'
 
     // 简化版 Adapter
     implementation 'me.drakeet.multitype:multitype:3.4.0'

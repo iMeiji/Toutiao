@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -113,25 +111,19 @@ public class MediaHomeActivity extends BaseActivity {
                 .getMediaProfile(mediaId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(this.<MediaProfileBean>bindAutoDispose())
-                .subscribe(new Consumer<MediaProfileBean>() {
-                    @Override
-                    public void accept(@NonNull MediaProfileBean bean) throws Exception {
-                        String name = bean.getData().getName();
-                        initToolBar(toolbar, true, name);
-                        List<MediaProfileBean.DataBean.TopTabBean> topTab = bean.getData().getTop_tab();
-                        if (null != topTab && topTab.size() < 0) {
-                            onError();
-                            return;
-                        }
-                        initTabLayout(bean.getData());
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
+                .as(this.bindAutoDispose())
+                .subscribe(bean -> {
+                    String name = bean.getData().getName();
+                    initToolBar(toolbar, true, name);
+                    List<MediaProfileBean.DataBean.TopTabBean> topTab = bean.getData().getTop_tab();
+                    if (null != topTab && topTab.size() < 0) {
                         onError();
-                        ErrorAction.print(throwable);
+                        return;
                     }
+                    initTabLayout(bean.getData());
+                }, throwable -> {
+                    onError();
+                    ErrorAction.print(throwable);
                 });
     }
 

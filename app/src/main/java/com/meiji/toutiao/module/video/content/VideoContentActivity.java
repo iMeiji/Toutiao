@@ -195,12 +195,7 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
     @Override
     public void onHideLoading() {
         progressBar.hide();
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
     @Override
@@ -215,22 +210,19 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
 
     @Override
     public void onShowNoMore() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (oldItems.size() > 1) {
-                    Items newItems = new Items(oldItems);
-                    newItems.remove(newItems.size() - 1);
-                    newItems.add(new LoadingEndBean());
-                    adapter.setItems(newItems);
-                    adapter.notifyDataSetChanged();
-                } else if (oldItems.size() == 0) {
-                    oldItems.add(new LoadingEndBean());
-                    adapter.setItems(oldItems);
-                    adapter.notifyDataSetChanged();
-                }
-                canLoadMore = false;
+        runOnUiThread(() -> {
+            if (oldItems.size() > 1) {
+                Items newItems = new Items(oldItems);
+                newItems.remove(newItems.size() - 1);
+                newItems.add(new LoadingEndBean());
+                adapter.setItems(newItems);
+                adapter.notifyDataSetChanged();
+            } else if (oldItems.size() == 0) {
+                oldItems.add(new LoadingEndBean());
+                adapter.setItems(oldItems);
+                adapter.notifyDataSetChanged();
             }
+            canLoadMore = false;
         });
     }
 
@@ -242,45 +234,42 @@ public class VideoContentActivity extends BaseActivity implements IVideoContent.
         }
 
         // 设置监听事件 判断是否进入全屏
-        JZVideoPlayer.setJzUserAction(new JZUserAction() {
-            @Override
-            public void onEvent(int type, Object url, int screen, Object... objects) {
-                if (type == JZUserActionStandard.ON_CLICK_START_THUMB ||
-                        type == JZUserAction.ON_CLICK_START_ICON ||
-                        type == JZUserAction.ON_CLICK_RESUME ||
-                        type == JZUserAction.ON_CLICK_START_AUTO_COMPLETE) {
+        JZVideoPlayer.setJzUserAction((type, url, screen, objects) -> {
+            if (type == JZUserActionStandard.ON_CLICK_START_THUMB ||
+                    type == JZUserAction.ON_CLICK_START_ICON ||
+                    type == JZUserAction.ON_CLICK_RESUME ||
+                    type == JZUserAction.ON_CLICK_START_AUTO_COMPLETE) {
+            }
+
+            if (type == JZUserAction.ON_CLICK_PAUSE || type == JZUserAction.ON_AUTO_COMPLETE) {
+            }
+
+            if (type == JZUserAction.ON_ENTER_FULLSCREEN) {
+                currentAction = JZUserAction.ON_ENTER_FULLSCREEN;
+
+                View decorView = getWindow().getDecorView();
+                int uiOptions = 0;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+                } else {
+                    uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
                 }
+                decorView.setSystemUiVisibility(uiOptions);
 
-                if (type == JZUserAction.ON_CLICK_PAUSE || type == JZUserAction.ON_AUTO_COMPLETE) {
+                if (slidrInterface != null) {
+                    slidrInterface.lock();
                 }
+            }
 
-                if (type == JZUserAction.ON_ENTER_FULLSCREEN) {
-                    currentAction = JZUserAction.ON_ENTER_FULLSCREEN;
+            if (type == JZUserAction.ON_QUIT_FULLSCREEN) {
+                currentAction = JZUserAction.ON_QUIT_FULLSCREEN;
 
-                    View decorView = getWindow().getDecorView();
-                    int uiOptions = 0;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                        uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-                    } else {
-                        uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-                    }
-                    decorView.setSystemUiVisibility(uiOptions);
+                View decorView = getWindow().getDecorView();
+                decorView.setSystemUiVisibility(0);
 
-                    if (slidrInterface != null) {
-                        slidrInterface.lock();
-                    }
-                }
-
-                if (type == JZUserAction.ON_QUIT_FULLSCREEN) {
-                    currentAction = JZUserAction.ON_QUIT_FULLSCREEN;
-
-                    View decorView = getWindow().getDecorView();
-                    decorView.setSystemUiVisibility(0);
-
-                    if (slidrInterface != null) {
-                        slidrInterface.unlock();
-                    }
+                if (slidrInterface != null) {
+                    slidrInterface.unlock();
                 }
             }
         });

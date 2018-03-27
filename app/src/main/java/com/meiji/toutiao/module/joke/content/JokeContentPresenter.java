@@ -13,9 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -40,27 +37,21 @@ class JokeContentPresenter implements IJokeContent.Presenter {
 
         RetrofitFactory.getRetrofit().create(IJokeApi.class).getJokeContent(time, map.get(Constant.AS), map.get(Constant.CP))
                 .subscribeOn(Schedulers.io())
-                .map(new Function<JokeContentBean, List<JokeContentBean.DataBean.GroupBean>>() {
-                    @Override
-                    public List<JokeContentBean.DataBean.GroupBean> apply(@NonNull JokeContentBean jokeContentBean) throws Exception {
-                        List<JokeContentBean.DataBean> data = jokeContentBean.getData();
-                        for (JokeContentBean.DataBean dataBean : data) {
-                            groupList.add(dataBean.getGroup());
-                        }
-                        time = jokeContentBean.getNext().getMax_behot_time() + "";
-                        return groupList;
+                .map(jokeContentBean -> {
+                    List<JokeContentBean.DataBean> data = jokeContentBean.getData();
+                    for (JokeContentBean.DataBean dataBean : data) {
+                        groupList.add(dataBean.getGroup());
                     }
+                    time = jokeContentBean.getNext().getMax_behot_time() + "";
+                    return groupList;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(view.<List<JokeContentBean.DataBean.GroupBean>>bindAutoDispose())
-                .subscribe(new Consumer<List<JokeContentBean.DataBean.GroupBean>>() {
-                    @Override
-                    public void accept(@NonNull List<JokeContentBean.DataBean.GroupBean> groupBeen) throws Exception {
-                        if (groupBeen.size() > 0) {
-                            doSetAdapter();
-                        } else {
-                            doShowNoMore();
-                        }
+                .as(view.bindAutoDispose())
+                .subscribe(groupBeen -> {
+                    if (groupBeen.size() > 0) {
+                        doSetAdapter();
+                    } else {
+                        doShowNoMore();
                     }
                 }, ErrorAction.error());
     }

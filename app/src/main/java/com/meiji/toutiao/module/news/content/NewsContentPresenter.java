@@ -18,7 +18,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
@@ -53,15 +52,13 @@ class NewsContentPresenter implements INewsContent.Presenter {
         final String url = dataBean.getDisplay_url();
 
         Observable
-                .create(new ObservableOnSubscribe<String>() {
-                    @Override
-                    public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
-                        // https://toutiao.com/group/6530252650288513540/
-                        // https://m.toutiao.com/i6530252650288513540/info/
-                        String api = url.replace("www.", "")
-                                .replace("toutiao", "m.toutiao")
-                                .replace("group/", "i") + "info/";
-                        e.onNext(api);
+                .create((ObservableOnSubscribe<String>) e -> {
+                    // https://toutiao.com/group/6530252650288513540/
+                    // https://m.toutiao.com/i6530252650288513540/info/
+                    String api = url.replace("www.", "")
+                            .replace("toutiao", "m.toutiao")
+                            .replace("group/", "i") + "info/";
+                    e.onNext(api);
 //                        try {
 //                            Response<ResponseBody> response = RetrofitFactory.getRetrofit().create(INewsApi.class)
 //                                    .getNewsContentRedirectUrl(url).execute();
@@ -82,23 +79,12 @@ class NewsContentPresenter implements INewsContent.Presenter {
 //                            e.onComplete();
 //                            ErrorAction.print(e1);
 //                        }
-                    }
                 })
                 .subscribeOn(Schedulers.io())
-                .switchMap(new Function<String, ObservableSource<NewsContentBean>>() {
-                    @Override
-                    public ObservableSource<NewsContentBean> apply(@NonNull String s) throws Exception {
-                        return RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsContent(s);
-                    }
-                })
-                .map(new Function<NewsContentBean, String>() {
-                    @Override
-                    public String apply(@NonNull NewsContentBean bean) throws Exception {
-                        return getHTML(bean);
-                    }
-                })
+                .switchMap((Function<String, ObservableSource<NewsContentBean>>) s -> RetrofitFactory.getRetrofit().create(INewsApi.class).getNewsContent(s))
+                .map(this::getHTML)
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(view.<String>bindAutoDispose())
+                .as(view.bindAutoDispose())
                 .subscribe(new Observer<String>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {

@@ -47,12 +47,7 @@ public class JokeCommentFragment extends BaseListFragment<IJokeComment.Presenter
         super.initView(view);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, "");
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recyclerView.smoothScrollToPosition(0);
-            }
-        });
+        toolbar.setOnClickListener(view1 -> recyclerView.smoothScrollToPosition(0));
 
         adapter = new MultiTypeAdapter(oldItems);
         Register.registerJokeCommentItem(adapter);

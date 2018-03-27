@@ -18,7 +18,6 @@ import com.meiji.toutiao.util.TimeUtil;
 
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.functions.Consumer;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -52,12 +51,7 @@ public class WendaArticleTextViewBinder extends ItemViewBinder<WendaArticleDataB
 
             RxView.clicks(holder.itemView)
                     .throttleFirst(1, TimeUnit.SECONDS)
-                    .subscribe(new Consumer<Object>() {
-                        @Override
-                        public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
-                            WendaContentActivity.launch(item.getQuestionBean().getQid() + "");
-                        }
-                    });
+                    .subscribe(o -> WendaContentActivity.launch(item.getQuestionBean().getQid() + ""));
         } catch (Exception e) {
             ErrorAction.print(e);
         }

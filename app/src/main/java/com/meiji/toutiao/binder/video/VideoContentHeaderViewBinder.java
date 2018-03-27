@@ -24,7 +24,6 @@ import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.functions.Consumer;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -105,28 +104,15 @@ public class VideoContentHeaderViewBinder extends ItemViewBinder<MultiNewsArticl
 
             final String videoTitle = item.getTitle();
             final String shareUrl = item.getDisplay_url();
-            holder.ll_share.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    IntentAction.send(holder.itemView.getContext(), videoTitle + "\n" + shareUrl);
-                }
-            });
+            holder.ll_share.setOnClickListener(v -> IntentAction.send(holder.itemView.getContext(), videoTitle + "\n" + shareUrl));
 
-            holder.ll_dl.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // TODO 下载视频
-                }
+            holder.ll_dl.setOnClickListener(v -> {
+                // TODO 下载视频
             });
 
             RxView.clicks(holder.media_layout)
                     .throttleFirst(1, TimeUnit.SECONDS)
-                    .subscribe(new Consumer<Object>() {
-                        @Override
-                        public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
-                            MediaHomeActivity.launch(media_id);
-                        }
-                    });
+                    .subscribe(o -> MediaHomeActivity.launch(media_id));
         } catch (Exception e) {
             ErrorAction.print(e);
         }

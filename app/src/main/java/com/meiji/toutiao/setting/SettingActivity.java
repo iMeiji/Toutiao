@@ -45,7 +45,7 @@ public class SettingActivity extends BaseActivity implements ColorChooserDialog.
             setupFragment(initFragment, initArguments);
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         initToolBar(toolbar, true, TextUtils.isEmpty(initTitle) ? getString(R.string.title_settings) : initTitle);
     }
 

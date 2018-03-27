@@ -140,28 +140,25 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         bottom_navigation = findViewById(R.id.bottom_navigation);
         BottomNavigationViewHelper.disableShiftMode(bottom_navigation);
         setSupportActionBar(toolbar);
-        bottom_navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_news:
-                        showFragment(FRAGMENT_NEWS);
-                        doubleClick(FRAGMENT_NEWS);
-                        break;
-                    case R.id.action_photo:
-                        showFragment(FRAGMENT_PHOTO);
-                        doubleClick(FRAGMENT_PHOTO);
-                        break;
-                    case R.id.action_video:
-                        showFragment(FRAGMENT_VIDEO);
-                        doubleClick(FRAGMENT_VIDEO);
-                        break;
-                    case R.id.action_media:
-                        showFragment(FRAGMENT_MEDIA);
-                        break;
-                }
-                return true;
+        bottom_navigation.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_news:
+                    showFragment(FRAGMENT_NEWS);
+                    doubleClick(FRAGMENT_NEWS);
+                    break;
+                case R.id.action_photo:
+                    showFragment(FRAGMENT_PHOTO);
+                    doubleClick(FRAGMENT_PHOTO);
+                    break;
+                case R.id.action_video:
+                    showFragment(FRAGMENT_VIDEO);
+                    doubleClick(FRAGMENT_VIDEO);
+                    break;
+                case R.id.action_media:
+                    showFragment(FRAGMENT_MEDIA);
+                    break;
             }
+            return true;
         });
 
         drawer_layout = findViewById(R.id.drawer_layout);

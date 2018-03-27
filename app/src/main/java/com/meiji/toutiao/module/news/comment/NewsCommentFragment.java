@@ -56,12 +56,7 @@ public class NewsCommentFragment extends BaseListFragment<INewsComment.Presenter
         super.initView(view);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         initToolBar(toolbar, true, getString(R.string.title_comment));
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recyclerView.smoothScrollToPosition(0);
-            }
-        });
+        toolbar.setOnClickListener(view1 -> recyclerView.smoothScrollToPosition(0));
         toolbar.setBackgroundColor(SettingUtil.getInstance().getColor());
 
         adapter = new MultiTypeAdapter(oldItems);

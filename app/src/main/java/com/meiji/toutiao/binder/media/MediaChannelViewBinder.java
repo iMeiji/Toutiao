@@ -19,7 +19,6 @@ import com.meiji.toutiao.widget.CircleImageView;
 
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.functions.Consumer;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
@@ -52,12 +51,7 @@ public class MediaChannelViewBinder extends ItemViewBinder<MediaChannelBean, Med
 
             RxView.clicks(holder.itemView)
                     .throttleFirst(1, TimeUnit.SECONDS)
-                    .subscribe(new Consumer<Object>() {
-                        @Override
-                        public void accept(@io.reactivex.annotations.NonNull Object o) throws Exception {
-                            MediaHomeActivity.launch(item.getId());
-                        }
-                    });
+                    .subscribe(o -> MediaHomeActivity.launch(item.getId()));
         } catch (Exception e) {
             ErrorAction.print(e);
         }
