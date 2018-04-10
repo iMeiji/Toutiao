@@ -18,7 +18,6 @@ import com.meiji.toutiao.adapter.base.BasePagerAdapter;
 import com.meiji.toutiao.bean.news.NewsChannelBean;
 import com.meiji.toutiao.database.dao.NewsChannelDao;
 import com.meiji.toutiao.module.base.BaseListFragment;
-import com.meiji.toutiao.module.joke.content.JokeContentView;
 import com.meiji.toutiao.module.news.article.NewsArticleView;
 import com.meiji.toutiao.module.news.channel.NewsChannelActivity;
 import com.meiji.toutiao.module.wenda.article.WendaArticleView;
@@ -113,15 +112,6 @@ public class NewsTabLayout extends Fragment {
             String channelId = bean.getChannelId();
 
             switch (channelId) {
-                case "essay_joke":
-                    if (map.containsKey(channelId)) {
-                        fragmentList.add(map.get(channelId));
-                    } else {
-                        fragment = JokeContentView.newInstance();
-                        fragmentList.add(fragment);
-                    }
-
-                    break;
                 case "question_and_answer":
                     if (map.containsKey(channelId)) {
                         fragmentList.add(map.get(channelId));
