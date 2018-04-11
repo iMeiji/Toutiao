@@ -17,7 +17,7 @@ import com.meiji.toutiao.database.table.SearchHistoryTable;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "Toutiao";
-    private static final int DB_VERSION = 5;
+    private static final int DB_VERSION = 6;
     private static final String CLEAR_TABLE_DATA = "delete from ";
     private static final String DROP_TABLE = "drop table if exists ";
     private static DatabaseHelper instance = null;
@@ -73,6 +73,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 break;
             case 4:
                 db.execSQL(SearchHistoryTable.CREATE_TABLE);
+            case 5:
+                db.delete(NewsChannelTable.TABLENAME, NewsChannelTable.ID + "=?", new String[]{"essay_joke"});
                 break;
         }
     }
